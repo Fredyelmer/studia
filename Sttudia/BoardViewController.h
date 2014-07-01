@@ -20,6 +20,7 @@
     BOOL mouseSwiped;
 }
 
+//comentario de teste
 @property (strong, nonatomic) IBOutlet CorUIButton *cor1UIButton;
 @property (strong, nonatomic) IBOutlet CorUIButton *cor2UIButton;
 @property (strong, nonatomic) IBOutlet CorUIButton *cor3UIButton;
