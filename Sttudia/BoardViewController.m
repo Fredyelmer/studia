@@ -32,6 +32,8 @@
     brush = 10.0;
     opacity = 1.0;
     
+    self.arraySnapshots = [[NSMutableArray alloc]init];
+    
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
@@ -138,6 +140,21 @@
     UIGraphicsEndImageContext();
     
     lastPoint = currentPoint;
+    
+    UIImage* snapShotImage = [self snapshot:self.view];
+    [self.arraySnapshots addObject:snapShotImage];
+    
+    self.pipImageView.image = snapShotImage;
+}
+
+- (UIImage *)snapshot:(UIView *)view
+{
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, 0);
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 @end

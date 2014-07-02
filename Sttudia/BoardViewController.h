@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CorUIButton.h"
 
+
 @interface BoardViewController : UIViewController <UIActionSheetDelegate>
 {
     CGPoint lastPoint;
@@ -29,7 +30,9 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;
+@property (strong, nonatomic) IBOutlet UIImageView *pipImageView;
 
+@property (strong, nonatomic) NSMutableArray *arraySnapshots;
 
 - (IBAction)corPressed:(id)sender;
 @end
