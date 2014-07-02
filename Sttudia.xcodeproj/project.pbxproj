@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D70227A1964855E004DB9EC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7022791964855E004DB9EC /* AVFoundation.framework */; };
 		0D9ECF451961867300882007 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF441961867300882007 /* Foundation.framework */; };
 		0D9ECF471961867300882007 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF461961867300882007 /* CoreGraphics.framework */; };
 		0D9ECF491961867300882007 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF481961867300882007 /* UIKit.framework */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D7022791964855E004DB9EC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0D9ECF411961867300882007 /* Sttudia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sttudia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D9ECF441961867300882007 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0D9ECF461961867300882007 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -76,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D70227A1964855E004DB9EC /* AVFoundation.framework in Frameworks */,
 				71B9CB8019630EF200DC3697 /* QuartzCore.framework in Frameworks */,
 				0D9ECF471961867300882007 /* CoreGraphics.framework in Frameworks */,
 				0D9ECF4B1961867300882007 /* CoreData.framework in Frameworks */,
@@ -120,6 +123,7 @@
 		0D9ECF431961867300882007 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D7022791964855E004DB9EC /* AVFoundation.framework */,
 				71B9CB7F19630EF200DC3697 /* QuartzCore.framework */,
 				0D9ECF441961867300882007 /* Foundation.framework */,
 				0D9ECF461961867300882007 /* CoreGraphics.framework */,

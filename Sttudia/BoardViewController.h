@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import "CorUIButton.h"
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -26,10 +27,15 @@
 @property (strong, nonatomic) IBOutlet CorUIButton *cor3UIButton;
 @property (strong, nonatomic) IBOutlet CorUIButton *cor4UIButton;
 @property (strong, nonatomic) IBOutlet CorUIButton *cor5UIButton;
+@property (strong, nonatomic) IBOutlet UIButton *snapShotButtom;
+@property (strong, nonatomic) IBOutlet UIButton *recAudio;
+@property (strong, nonatomic) IBOutlet UIButton *pauseRecAudio;
 
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;
-
+@property (strong, nonatomic) NSMutableArray* arraySnapshots;
+@property (strong, nonatomic) IBOutlet UIButton *takeSnapshot;
+@property (strong, nonatomic) IBOutlet UIImageView *drawView;
 
 - (IBAction)corPressed:(id)sender;
 @end
