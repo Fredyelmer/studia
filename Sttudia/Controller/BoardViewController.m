@@ -103,7 +103,6 @@
 -(void)chamada{
     
     UIImage *image = [self snapshot:self.tempImageView];
-    self.previewImage.image = image;
     [self.arraySnapshots addObject:image];
     NSLog(@"tirou foto");
 }
