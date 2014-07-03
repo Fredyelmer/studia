@@ -14,7 +14,7 @@
     AVAudioRecorder *recorder;
     AVAudioPlayer *player;
 }
-@property (strong, nonatomic) IBOutlet UIImageView *previewImage;
+
 @property (assign, nonatomic) BOOL isRecording;
 
 @end
