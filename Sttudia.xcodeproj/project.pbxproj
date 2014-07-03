@@ -24,6 +24,12 @@
 		0D9ECF6E1961867300882007 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6C1961867300882007 /* InfoPlist.strings */; };
 		0D9ECF701961867300882007 /* SttudiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6F1961867300882007 /* SttudiaTests.m */; };
 		0D9ECF7B196186A200882007 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0D9ECF7A196186A200882007 /* MainStoryboard.storyboard */; };
+		48C52E681965CED200AD013F /* Video tutorial icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48C52E671965CED200AD013F /* Video tutorial icon.jpg */; };
+		48C52E6B1965CEFE00AD013F /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E6A1965CEFE00AD013F /* TutorialViewController.m */; };
+		48C52E6E1965D0A700AD013F /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E6D1965D0A700AD013F /* RegisterViewController.m */; };
+		48C52E711965D0B800AD013F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E701965D0B800AD013F /* LoginViewController.m */; };
+		48C52E741965D13A00AD013F /* ClassesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E731965D13A00AD013F /* ClassesViewController.m */; };
+		48C52E7A1965D23500AD013F /* SpecificClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E791965D23500AD013F /* SpecificClassViewController.m */; };
 		719FE17A1961D86200938952 /* rec.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE1791961D86200938952 /* rec.png */; };
 		719FE17C1961DBF600938952 /* undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE17B1961DBF600938952 /* undo.png */; };
 		719FE17E1961DC4200938952 /* borracha.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE17D1961DC4200938952 /* borracha.png */; };
@@ -63,6 +69,17 @@
 		0D9ECF6D1961867300882007 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0D9ECF6F1961867300882007 /* SttudiaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SttudiaTests.m; sourceTree = "<group>"; };
 		0D9ECF7A196186A200882007 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
+		48C52E671965CED200AD013F /* Video tutorial icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Video tutorial icon.jpg"; sourceTree = "<group>"; };
+		48C52E691965CEFE00AD013F /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
+		48C52E6A1965CEFE00AD013F /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
+		48C52E6C1965D0A700AD013F /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		48C52E6D1965D0A700AD013F /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		48C52E6F1965D0B800AD013F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		48C52E701965D0B800AD013F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		48C52E721965D13A00AD013F /* ClassesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassesViewController.h; sourceTree = "<group>"; };
+		48C52E731965D13A00AD013F /* ClassesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassesViewController.m; sourceTree = "<group>"; };
+		48C52E781965D23500AD013F /* SpecificClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecificClassViewController.h; sourceTree = "<group>"; };
+		48C52E791965D23500AD013F /* SpecificClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecificClassViewController.m; sourceTree = "<group>"; };
 		719FE1791961D86200938952 /* rec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rec.png; sourceTree = "<group>"; };
 		719FE17B1961DBF600938952 /* undo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = undo.png; sourceTree = "<group>"; };
 		719FE17D1961DC4200938952 /* borracha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = borracha.png; sourceTree = "<group>"; };
@@ -144,10 +161,21 @@
 				0D9ECF581961867300882007 /* Sttudia.xcdatamodeld */,
 				0D9ECF4D1961867300882007 /* Supporting Files */,
 				0D9ECF7A196186A200882007 /* MainStoryboard.storyboard */,
+				48C52E781965D23500AD013F /* SpecificClassViewController.h */,
+				48C52E791965D23500AD013F /* SpecificClassViewController.m */,
+				48C52E721965D13A00AD013F /* ClassesViewController.h */,
+				48C52E731965D13A00AD013F /* ClassesViewController.m */,
+				48C52E6F1965D0B800AD013F /* LoginViewController.h */,
+				48C52E701965D0B800AD013F /* LoginViewController.m */,
+				48C52E6C1965D0A700AD013F /* RegisterViewController.h */,
+				48C52E6D1965D0A700AD013F /* RegisterViewController.m */,
+				48C52E691965CEFE00AD013F /* TutorialViewController.h */,
+				48C52E6A1965CEFE00AD013F /* TutorialViewController.m */,
 				71B9CB811963136700DC3697 /* CorUIButton.h */,
 				71B9CB821963136700DC3697 /* CorUIButton.m */,
 				719FE17F1961DE3800938952 /* BoardViewController.h */,
 				719FE1801961DE3800938952 /* BoardViewController.m */,
+				48C52E671965CED200AD013F /* Video tutorial icon.jpg */,
 			);
 			path = Sttudia;
 			sourceTree = "<group>";
@@ -271,6 +299,7 @@
 				0D9ECF7B196186A200882007 /* MainStoryboard.storyboard in Resources */,
 				0D9ECF511961867300882007 /* InfoPlist.strings in Resources */,
 				0D9ECF5C1961867300882007 /* Images.xcassets in Resources */,
+				48C52E681965CED200AD013F /* Video tutorial icon.jpg in Resources */,
 				719FE17E1961DC4200938952 /* borracha.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,11 +319,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48C52E741965D13A00AD013F /* ClassesViewController.m in Sources */,
+				48C52E711965D0B800AD013F /* LoginViewController.m in Sources */,
 				0D9ECF5A1961867300882007 /* Sttudia.xcdatamodeld in Sources */,
 				0D9ECF571961867300882007 /* AppDelegate.m in Sources */,
+				48C52E6B1965CEFE00AD013F /* TutorialViewController.m in Sources */,
 				71B9CB831963136700DC3697 /* CorUIButton.m in Sources */,
+				48C52E6E1965D0A700AD013F /* RegisterViewController.m in Sources */,
 				0D9ECF531961867300882007 /* main.m in Sources */,
 				719FE1811961DE3800938952 /* BoardViewController.m in Sources */,
+				48C52E7A1965D23500AD013F /* SpecificClassViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
