@@ -37,5 +37,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *takeSnapshot;
 @property (strong, nonatomic) IBOutlet UIImageView *drawView;
 
+@property (strong, nonatomic) NSTimer* snapshotTimer;
+
+- (IBAction)startVideoRecord:(id)sender;
+
 - (IBAction)corPressed:(id)sender;
 @end

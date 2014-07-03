@@ -14,6 +14,8 @@
     AVAudioRecorder *recorder;
     AVAudioPlayer *player;
 }
+@property (strong, nonatomic) IBOutlet UIImageView *previewImage;
+@property (assign, nonatomic) BOOL isRecording;
 
 @end
 
@@ -38,6 +40,7 @@
     opacity = 1.0;
     
     self.arraySnapshots = [[NSMutableArray alloc]init];
+    self.isRecording = NO;
     
     [self.recAudio setEnabled:YES];
     [self.pauseRecAudio setHidden:YES];
@@ -84,6 +87,27 @@
     // Pass the selected object to the new view controller.
 }
 */
+- (IBAction)startVideoRecord:(id)sender {
+    
+    
+    if (!self.isRecording) {
+        self.snapshotTimer = [NSTimer scheduledTimerWithTimeInterval:1/30 target:self selector:@selector(chamada) userInfo:nil repeats:YES];
+        self.isRecording = YES;
+    }
+    else{
+        [self.snapshotTimer invalidate];
+    }
+    
+}
+
+-(void)chamada{
+    
+    UIImage *image = [self snapshot:self.tempImageView];
+    self.previewImage.image = image;
+    [self.arraySnapshots addObject:image];
+    NSLog(@"tirou foto");
+}
+
 - (IBAction)corPressed:(id)sender
 {
     
@@ -185,6 +209,8 @@
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
+    //self.previewImage.image = image;
+    
     return image;
 }
 
@@ -245,5 +271,6 @@
                                           otherButtonTitles:nil];
     [alert show];
 }
+
 
 @end
