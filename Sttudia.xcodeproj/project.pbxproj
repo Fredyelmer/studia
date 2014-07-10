@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D081747196ED95A0007399B /* DrawPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D081746196ED95A0007399B /* DrawPoint.m */; };
 		0D70227A1964855E004DB9EC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7022791964855E004DB9EC /* AVFoundation.framework */; };
 		0D9ECF451961867300882007 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF441961867300882007 /* Foundation.framework */; };
 		0D9ECF471961867300882007 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF461961867300882007 /* CoreGraphics.framework */; };
@@ -53,6 +54,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D081745196ED95A0007399B /* DrawPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawPoint.h; sourceTree = "<group>"; };
+		0D081746196ED95A0007399B /* DrawPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawPoint.m; sourceTree = "<group>"; };
 		0D7022791964855E004DB9EC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0D9ECF411961867300882007 /* Sttudia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sttudia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D9ECF441961867300882007 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -251,6 +254,8 @@
 				48C52E991965E65700AD013F /* Question.m */,
 				48C52E9B1965E67000AD013F /* Answer.h */,
 				48C52E9C1965E67000AD013F /* Answer.m */,
+				0D081745196ED95A0007399B /* DrawPoint.h */,
+				0D081746196ED95A0007399B /* DrawPoint.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -367,6 +372,7 @@
 				48C52E8C1965E52D00AD013F /* LoginViewController.m in Sources */,
 				48C52E971965E57700AD013F /* CorUIButton.m in Sources */,
 				48C52EA01965EC6B00AD013F /* Forum.m in Sources */,
+				0D081747196ED95A0007399B /* DrawPoint.m in Sources */,
 				0D9ECF5A1961867300882007 /* Sttudia.xcdatamodeld in Sources */,
 				48C52E8B1965E52D00AD013F /* ClassesViewController.m in Sources */,
 				48C52E9D1965E67000AD013F /* Answer.m in Sources */,

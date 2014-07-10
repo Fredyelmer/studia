@@ -13,6 +13,7 @@
 {
     AVAudioRecorder *recorder;
     AVAudioPlayer *player;
+    NSTimeInterval lastTouch;
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -40,6 +41,7 @@
     opacity = 1.0;
     
     self.arraySnapshots = [[NSMutableArray alloc]init];
+    self.arrayPoints = [[NSMutableArray alloc]init];
     self.isRecording = NO;
     
     [self.recAudio setEnabled:YES];
@@ -98,6 +100,17 @@
         [self.snapshotTimer invalidate];
     }
     
+}
+
+- (IBAction)reproduzirGravacao:(id)sender {
+    
+    self.tempImageView.image = nil;
+    
+    for (int i = 0; i < [self.arrayPoints count]; i++) {
+        
+        [self performSelector:@selector(draw:) withObject:self.arrayPoints[i] afterDelay:[self.arrayPoints[i] interval]];
+        
+    }
 }
 
 -(void)chamada{
@@ -167,6 +180,8 @@
     UITouch *touch = [touches anyObject];
     lastPoint = [touch locationInView:self.mainImageView];
     
+    lastTouch = [event timestamp];
+    
     NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
 }
 
@@ -191,6 +206,12 @@
     self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
     [self.tempImageView setAlpha:opacity];
     UIGraphicsEndImageContext();
+    
+    NSTimeInterval interval = [event timestamp] - lastTouch;
+    
+    DrawPoint *drawPoint = [[DrawPoint alloc] initWithPoint: lastPoint: currentPoint: interval];
+    
+    [self.arrayPoints addObject:drawPoint];
     
     lastPoint = currentPoint;
 }
@@ -269,6 +290,25 @@
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
     [alert show];
+}
+
+- (void)draw : (DrawPoint *)point
+{
+    UIGraphicsBeginImageContext(self.mainImageView.frame.size);
+    [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), [point initialPoint].x, [point initialPoint].y);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), [point finalPoint].x, [point finalPoint].y);
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
+    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
+    CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+    
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
+    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    [self.tempImageView setAlpha:opacity];
+    UIGraphicsEndImageContext();
+
+
 }
 
 

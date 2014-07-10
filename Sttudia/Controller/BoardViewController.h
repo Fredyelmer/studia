@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "CorUIButton.h"
+#import "DrawPoint.h"
 
 @interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
@@ -38,8 +39,10 @@
 @property (strong, nonatomic) IBOutlet UIImageView *drawView;
 
 @property (strong, nonatomic) NSTimer* snapshotTimer;
+@property (strong, nonatomic) NSMutableArray* arrayPoints;
 
 - (IBAction)startVideoRecord:(id)sender;
+- (IBAction)reproduzirGravacao:(id)sender;
 
 - (IBAction)corPressed:(id)sender;
 @end
