@@ -41,6 +41,10 @@
 @property (strong, nonatomic) NSTimer* snapshotTimer;
 @property (strong, nonatomic) NSMutableArray* arrayPoints;
 
+@property (assign, nonatomic) NSTimeInterval lastTouch;
+@property (assign, nonatomic) NSTimeInterval lastTimeTouch;
+@property (assign, nonatomic) NSTimeInterval initialTimeInterval;
+
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;
 

@@ -13,7 +13,8 @@
 {
     AVAudioRecorder *recorder;
     AVAudioPlayer *player;
-    NSTimeInterval lastTouch;
+    NSTimeInterval totalInterval;
+    BOOL isScreenTouched;
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -33,6 +34,7 @@
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
     red = 0.0/255.0;
     green = 0.0/255.0;
@@ -70,6 +72,11 @@
     recorder.meteringEnabled = YES;
     [recorder prepareToRecord];
     
+    isScreenTouched = NO;
+    
+    self.lastTimeTouch = 0;
+    
+    totalInterval = 0;
     
 }
 
@@ -100,6 +107,7 @@
         [self.snapshotTimer invalidate];
     }
     
+    //self.initialTimeInterval = [[NSDate date]timeIntervalSince1970];
 }
 
 - (IBAction)reproduzirGravacao:(id)sender {
@@ -109,7 +117,7 @@
     for (int i = 0; i < [self.arrayPoints count]; i++) {
         
         [self performSelector:@selector(draw:) withObject:self.arrayPoints[i] afterDelay:[self.arrayPoints[i] interval]];
-        
+        NSLog(@"%d", i);
     }
 }
 
@@ -176,13 +184,23 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    
     mouseSwiped = NO;
     UITouch *touch = [touches anyObject];
     lastPoint = [touch locationInView:self.mainImageView];
+
+
+    if (!isScreenTouched) {
+        self.lastTouch = [event timestamp];
+    }
+    else{
+        self.lastTouch =[event timestamp]-totalInterval;
+    }
+
     
-    lastTouch = [event timestamp];
-    
+    isScreenTouched = YES;
     NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
+    
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -207,13 +225,30 @@
     [self.tempImageView setAlpha:opacity];
     UIGraphicsEndImageContext();
     
-    NSTimeInterval interval = [event timestamp] - lastTouch;
+    NSTimeInterval interval = [event timestamp] - self.lastTouch;
     
     DrawPoint *drawPoint = [[DrawPoint alloc] initWithPoint: lastPoint: currentPoint: interval];
     
     [self.arrayPoints addObject:drawPoint];
     
     lastPoint = currentPoint;
+    
+    
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    CGPoint currentPoint = [touch locationInView:self.mainImageView];
+    
+    totalInterval = [event timestamp]-self.lastTouch;
+    
+    //DrawPoint *drawPoint = [[DrawPoint alloc] initWithPoint: lastPoint: currentPoint: interval];
+    
+    //[self.arrayPoints addObject:drawPoint];
+    
+    lastPoint = currentPoint;
+
 }
 
 - (IBAction)takeSnapshot:(id)sender
