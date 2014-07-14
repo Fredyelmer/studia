@@ -117,7 +117,6 @@
     for (int i = 0; i < [self.arrayPoints count]; i++) {
         
         [self performSelector:@selector(draw:) withObject:self.arrayPoints[i] afterDelay:[self.arrayPoints[i] interval]];
-        NSLog(@"%d", i);
     }
 }
 
@@ -227,9 +226,9 @@
     
     NSTimeInterval interval = [event timestamp] - self.lastTouch;
     
-    DrawPoint *drawPoint = [[DrawPoint alloc] initWithPoint: lastPoint: currentPoint: interval];
+    VideoParameter *parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :red : green: blue];
     
-    [self.arrayPoints addObject:drawPoint];
+    [self.arrayPoints addObject:parameter];
     
     lastPoint = currentPoint;
     
@@ -327,15 +326,15 @@
     [alert show];
 }
 
-- (void)draw : (DrawPoint *)point
+- (void)draw : (VideoParameter *)parameter
 {
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
     [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
-    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), [point initialPoint].x, [point initialPoint].y);
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), [point finalPoint].x, [point finalPoint].y);
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), [parameter initialPoint].x, [parameter initialPoint].y);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), [parameter finalPoint].x, [parameter finalPoint].y);
     CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
     CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
-    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
+    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), [parameter currentRed], [parameter currentGreen], [parameter currentBlue], 1.0);
     CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
     
     CGContextStrokePath(UIGraphicsGetCurrentContext());

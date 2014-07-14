@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "CorUIButton.h"
-#import "DrawPoint.h"
+#import "VideoParameter.h"
 
 @interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
@@ -36,7 +36,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;
 @property (strong, nonatomic) NSMutableArray* arraySnapshots;
 @property (strong, nonatomic) IBOutlet UIButton *takeSnapshot;
-@property (strong, nonatomic) IBOutlet UIImageView *drawView;
 
 @property (strong, nonatomic) NSTimer* snapshotTimer;
 @property (strong, nonatomic) NSMutableArray* arrayPoints;
