@@ -11,7 +11,8 @@
 #import "CorUIButton.h"
 #import "VideoParameter.h"
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate>
+
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -31,6 +32,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *snapShotButtom;
 @property (strong, nonatomic) IBOutlet UIButton *recAudio;
 @property (strong, nonatomic) IBOutlet UIButton *pauseRecAudio;
+@property (strong, nonatomic) IBOutlet UIButton *confirmImageButton;
+@property (strong, nonatomic) IBOutlet UIButton *addImageButton;
+@property (strong, nonatomic) UIImage* choseImage;
 
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;
@@ -43,9 +47,15 @@
 @property (assign, nonatomic) NSTimeInterval lastTouch;
 @property (assign, nonatomic) NSTimeInterval lastTimeTouch;
 @property (assign, nonatomic) NSTimeInterval initialTimeInterval;
+@property (strong, nonatomic) NSMutableArray* arrayImages;
 
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;
+- (IBAction)confirmImageEdition:(id)sender;
+
 
 - (IBAction)corPressed:(id)sender;
+- (IBAction)addImage:(id)sender;
+- (IBAction)addText:(id)sender;
+
 @end

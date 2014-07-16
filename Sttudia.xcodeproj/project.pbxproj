@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D081747196ED95A0007399B /* VideoParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D081746196ED95A0007399B /* VideoParameter.m */; };
+		0D4FDE0E19745CC100C23D15 /* bloodseeker_by_keterok-d7ak1hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D4FDE0D19745CC100C23D15 /* bloodseeker_by_keterok-d7ak1hq.png */; };
 		0D70227A1964855E004DB9EC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7022791964855E004DB9EC /* AVFoundation.framework */; };
 		0D9ECF451961867300882007 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF441961867300882007 /* Foundation.framework */; };
 		0D9ECF471961867300882007 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF461961867300882007 /* CoreGraphics.framework */; };
@@ -24,6 +25,7 @@
 		0D9ECF661961867300882007 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF4A1961867300882007 /* CoreData.framework */; };
 		0D9ECF6E1961867300882007 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6C1961867300882007 /* InfoPlist.strings */; };
 		0D9ECF701961867300882007 /* SttudiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6F1961867300882007 /* SttudiaTests.m */; };
+		0DA8EFA11976C052006A5589 /* ImagePickerLandscapeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA8EFA01976C052006A5589 /* ImagePickerLandscapeController.m */; };
 		48C52E681965CED200AD013F /* Video tutorial icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48C52E671965CED200AD013F /* Video tutorial icon.jpg */; };
 		48C52E8A1965E52D00AD013F /* BoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E7D1965E52D00AD013F /* BoardViewController.m */; };
 		48C52E8B1965E52D00AD013F /* ClassesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E7F1965E52D00AD013F /* ClassesViewController.m */; };
@@ -56,6 +58,7 @@
 /* Begin PBXFileReference section */
 		0D081745196ED95A0007399B /* VideoParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoParameter.h; sourceTree = "<group>"; };
 		0D081746196ED95A0007399B /* VideoParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoParameter.m; sourceTree = "<group>"; };
+		0D4FDE0D19745CC100C23D15 /* bloodseeker_by_keterok-d7ak1hq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bloodseeker_by_keterok-d7ak1hq.png"; sourceTree = "<group>"; };
 		0D7022791964855E004DB9EC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0D9ECF411961867300882007 /* Sttudia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sttudia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D9ECF441961867300882007 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -75,6 +78,8 @@
 		0D9ECF6B1961867300882007 /* SttudiaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SttudiaTests-Info.plist"; sourceTree = "<group>"; };
 		0D9ECF6D1961867300882007 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0D9ECF6F1961867300882007 /* SttudiaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SttudiaTests.m; sourceTree = "<group>"; };
+		0DA8EF9F1976C052006A5589 /* ImagePickerLandscapeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerLandscapeController.h; sourceTree = "<group>"; };
+		0DA8EFA01976C052006A5589 /* ImagePickerLandscapeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerLandscapeController.m; sourceTree = "<group>"; };
 		48C52E671965CED200AD013F /* Video tutorial icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Video tutorial icon.jpg"; sourceTree = "<group>"; };
 		48C52E7C1965E52D00AD013F /* BoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardViewController.h; sourceTree = "<group>"; };
 		48C52E7D1965E52D00AD013F /* BoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardViewController.m; sourceTree = "<group>"; };
@@ -215,6 +220,7 @@
 		0D9ECF7F1961911100882007 /* AppImages */ = {
 			isa = PBXGroup;
 			children = (
+				0D4FDE0D19745CC100C23D15 /* bloodseeker_by_keterok-d7ak1hq.png */,
 				719FE17D1961DC4200938952 /* borracha.png */,
 				719FE17B1961DBF600938952 /* undo.png */,
 				719FE1791961D86200938952 /* rec.png */,
@@ -239,6 +245,8 @@
 				48C52E871965E52D00AD013F /* SpecificViewController.m */,
 				48C52E881965E52D00AD013F /* TutorialViewController.h */,
 				48C52E891965E52D00AD013F /* TutorialViewController.m */,
+				0DA8EF9F1976C052006A5589 /* ImagePickerLandscapeController.h */,
+				0DA8EFA01976C052006A5589 /* ImagePickerLandscapeController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -343,6 +351,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D4FDE0E19745CC100C23D15 /* bloodseeker_by_keterok-d7ak1hq.png in Resources */,
 				719FE17A1961D86200938952 /* rec.png in Resources */,
 				719FE17C1961DBF600938952 /* undo.png in Resources */,
 				0D9ECF511961867300882007 /* InfoPlist.strings in Resources */,
@@ -374,6 +383,7 @@
 				48C52EA01965EC6B00AD013F /* Forum.m in Sources */,
 				0D081747196ED95A0007399B /* VideoParameter.m in Sources */,
 				0D9ECF5A1961867300882007 /* Sttudia.xcdatamodeld in Sources */,
+				0DA8EFA11976C052006A5589 /* ImagePickerLandscapeController.m in Sources */,
 				48C52E8B1965E52D00AD013F /* ClassesViewController.m in Sources */,
 				48C52E9D1965E67000AD013F /* Answer.m in Sources */,
 				0D9ECF571961867300882007 /* AppDelegate.m in Sources */,

@@ -8,6 +8,7 @@
 
 #import "BoardViewController.h"
 #import "CorUIButton.h"
+#import "ImagePickerLandscapeController.h"
 
 @interface BoardViewController ()
 {
@@ -15,6 +16,8 @@
     AVAudioPlayer *player;
     NSTimeInterval totalInterval;
     BOOL isScreenTouched;
+    BOOL isImageEditing;
+    int indexImage;
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -32,10 +35,12 @@
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     
     [super viewDidLoad];
+    
     red = 0.0/255.0;
     green = 0.0/255.0;
     blue = 0.0/255.0;
@@ -77,6 +82,14 @@
     self.lastTimeTouch = 0;
     
     totalInterval = 0;
+    indexImage = 0;
+    
+    self.arrayImages = [[NSMutableArray alloc]init];
+    
+    self.addImageButton.enabled = YES;
+    self.addImageButton.hidden = NO;
+    self.confirmImageButton.enabled = NO;
+    self.confirmImageButton.hidden = YES;
     
 }
 
@@ -116,8 +129,28 @@
     
     for (int i = 0; i < [self.arrayPoints count]; i++) {
         
-        [self performSelector:@selector(draw:) withObject:self.arrayPoints[i] afterDelay:[self.arrayPoints[i] interval]];
+        if ([self.arrayPoints[i] isDrawing]){
+            [self performSelector:@selector(draw:) withObject:self.arrayPoints[i] afterDelay:[self.arrayPoints[i] interval]];
+        }
     }
+}
+
+- (IBAction)confirmImageEdition:(id)sender {
+    
+    UIImageView *image = self.arrayImages[indexImage];
+    
+    [self.view sendSubviewToBack:image];
+    image.userInteractionEnabled = NO;
+    indexImage += 1;
+    
+    self.addImageButton.enabled = YES;
+    self.addImageButton.hidden = NO;
+    self.confirmImageButton.enabled = NO;
+    self.confirmImageButton.hidden = YES;
+    
+    isImageEditing = NO;
+    
+    
 }
 
 -(void)chamada{
@@ -129,7 +162,6 @@
 
 - (IBAction)corPressed:(id)sender
 {
-    
     CorUIButton * PressedButton = (CorUIButton *)sender;
     
     switch(PressedButton.tag)
@@ -172,6 +204,7 @@
     }
 }
 
+
 - (void) selectCorButton
 {
     [_cor1UIButton initialise];
@@ -185,6 +218,7 @@
 {
     
     mouseSwiped = NO;
+    if(!isImageEditing){
     UITouch *touch = [touches anyObject];
     lastPoint = [touch locationInView:self.mainImageView];
 
@@ -199,12 +233,14 @@
     
     isScreenTouched = YES;
     NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
-    
+    }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     mouseSwiped = YES;
+    
+    if(!isImageEditing){
     UITouch *touch = [touches anyObject];
     CGPoint currentPoint = [touch locationInView:self.mainImageView];
     
@@ -231,12 +267,13 @@
     [self.arrayPoints addObject:parameter];
     
     lastPoint = currentPoint;
-    
+    }
     
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if(!isImageEditing){
     UITouch *touch = [touches anyObject];
     CGPoint currentPoint = [touch locationInView:self.mainImageView];
     
@@ -247,14 +284,18 @@
     //[self.arrayPoints addObject:drawPoint];
     
     lastPoint = currentPoint;
-
+    }
 }
 
+
+//metodos para tirar snapshots da tela
 - (IBAction)takeSnapshot:(id)sender
 {
-    UIImage *image = [self snapshot:self.view];
-    [self.arraySnapshots addObject:image];
+    UIImage *snapShot = [self snapshot:self.view];
+    [self.arraySnapshots addObject:snapShot];
 }
+
+
 
 - (UIImage *)snapshot:(UIView *)view
 {
@@ -263,11 +304,11 @@
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    //self.previewImage.image = image;
-    
     return image;
 }
 
+
+//métodos para gravar o audio e reproduzí-los
 - (IBAction)gravarAudio:(id)sender {
     
     if(player.playing) {
@@ -326,6 +367,7 @@
     [alert show];
 }
 
+//método chamado quando o vídeo precisa desenhar na tela
 - (void)draw : (VideoParameter *)parameter
 {
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
@@ -345,5 +387,108 @@
 
 }
 
+- (IBAction)addImage:(id)sender {
+    
+    UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
+    pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    pickerLibrary.delegate = self;
+    [self presentViewController:pickerLibrary animated:YES completion:nil];
+    
+//    UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, self.tempImageView.frame.size.height/2, 300, 300)];
+//    isImageEditing = YES;
+//    
+//    customImage.image = self.choseImage;
+//    customImage.contentMode = UIViewContentModeScaleAspectFill;
+//    customImage.userInteractionEnabled = YES;
+//    
+//    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
+//    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
+//    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
+//    
+//    [customImage addGestureRecognizer:pinchGesture];
+//    [customImage addGestureRecognizer:panGesture];
+//    [customImage addGestureRecognizer:rotationGesture];
+//    
+//    [self.arrayImages addObject:customImage];
+//    
+//    [self.view addSubview:customImage];
+//    
+//    self.addImageButton.enabled = NO;
+//    self.addImageButton.hidden = YES;
+//    self.confirmImageButton.enabled = YES;
+//    self.confirmImageButton.hidden = NO;
+}
+-(void)resizingImage:(UIPinchGestureRecognizer *)recognizer
+{
+    static CGRect initialBounds;
+    
+    if(recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        initialBounds = recognizer.view.bounds;
+    }
+    
+    CGFloat factor = [(UIPinchGestureRecognizer *)recognizer scale];
+    
+    CGAffineTransform transform = CGAffineTransformScale(CGAffineTransformIdentity, factor, factor);
+    
+    recognizer.view.bounds = CGRectApplyAffineTransform(initialBounds, transform);
+
+}
+
+-(void)moveImage: (UIPanGestureRecognizer *)recognizer
+{
+    if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
+    {
+        CGPoint touchLocation = [recognizer locationInView:self.view];
+//        UIImageView *image = self.arrayImages[indexImage];
+//        image.center = touchLocation;
+        
+        recognizer.view.center = touchLocation;
+    }
+}
+
+-(void)rotateImage: (UIRotationGestureRecognizer *)recognizer
+{
+    if(recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
+    {
+        recognizer.view.transform = CGAffineTransformRotate(recognizer.view.transform, recognizer.rotation);
+        [recognizer setRotation:0];
+    }
+}
+
+- (IBAction)addText:(id)sender {
+}
+
+#pragma mark - ImagePickerControllerDelegateMethod
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+	[self dismissViewControllerAnimated:NO completion:nil];
+	self.choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    
+    UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, self.tempImageView.frame.size.height/2, 300, 300)];
+    isImageEditing = YES;
+    
+    customImage.image = self.choseImage;
+    customImage.contentMode = UIViewContentModeScaleAspectFill;
+    customImage.userInteractionEnabled = YES;
+    
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
+    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
+    
+    [customImage addGestureRecognizer:pinchGesture];
+    [customImage addGestureRecognizer:panGesture];
+    [customImage addGestureRecognizer:rotationGesture];
+    
+    [self.arrayImages addObject:customImage];
+    
+    [self.view addSubview:customImage];
+    
+    self.addImageButton.enabled = NO;
+    self.addImageButton.hidden = YES;
+    self.confirmImageButton.enabled = YES;
+    self.confirmImageButton.hidden = NO;
+
+}
 
 @end
