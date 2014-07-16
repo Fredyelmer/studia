@@ -205,6 +205,26 @@
 }
 
 
+//metodos para forçar em landscape mode
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (UIInterfaceOrientationMaskLandscapeLeft);
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskLandscapeLeft;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationLandscapeLeft;
+}
+
+- (NSUInteger) application:(UIApplication *)application     supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    return UIInterfaceOrientationLandscapeLeft;
+}
+
 - (void) selectCorButton
 {
     [_cor1UIButton initialise];
