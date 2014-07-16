@@ -12,7 +12,7 @@
 #import "VideoParameter.h"
 
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -48,6 +48,8 @@
 @property (assign, nonatomic) NSTimeInterval lastTimeTouch;
 @property (assign, nonatomic) NSTimeInterval initialTimeInterval;
 @property (strong, nonatomic) NSMutableArray* arrayImages;
+@property (strong, nonatomic) NSMutableArray* arrayTexts;
+@property (strong, nonatomic) UITextField* currentTextField;
 
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;

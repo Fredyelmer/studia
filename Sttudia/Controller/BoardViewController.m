@@ -261,6 +261,7 @@
     mouseSwiped = YES;
     
     if(!isImageEditing){
+        
     UITouch *touch = [touches anyObject];
     CGPoint currentPoint = [touch locationInView:self.mainImageView];
     
@@ -294,6 +295,7 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     if(!isImageEditing){
+        
     UITouch *touch = [touches anyObject];
     CGPoint currentPoint = [touch locationInView:self.mainImageView];
     
@@ -477,6 +479,21 @@
 }
 
 - (IBAction)addText:(id)sender {
+    
+    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, self.tempImageView.frame.size.height/2, 300, 40)];
+    textField.borderStyle = UITextBorderStyleRoundedRect;
+    textField.font = [UIFont systemFontOfSize:50];
+    textField.placeholder = @"enter text";
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.keyboardType = UIKeyboardTypeDefault;
+    textField.returnKeyType = UIReturnKeyDone;
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    //textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    textField.textAlignment = NSTextAlignmentCenter;
+    textField.delegate = self;
+    
+    self.currentTextField = textField;
+    [self.view addSubview:textField];
 }
 
 #pragma mark - ImagePickerControllerDelegateMethod
@@ -510,5 +527,32 @@
     self.confirmImageButton.hidden = NO;
 
 }
+
+#pragma mark - UItextFieldDelegateMethods
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    
+    
+    self.currentTextField.userInteractionEnabled = YES;
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
+    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
+    
+    [self.currentTextField addGestureRecognizer:pinchGesture];
+    [self.currentTextField addGestureRecognizer:panGesture];
+    [self.currentTextField addGestureRecognizer:rotationGesture];
+    
+    [self.currentTextField setBorderStyle:UITextBorderStyleNone];
+    [self.currentTextField setNeedsDisplay];
+    
+    return YES;
+}
+
+//- (void)resizingText : (UIPinchGestureRecognizer)*sender
+//{
+//    
+//}
+
+
 
 @end
