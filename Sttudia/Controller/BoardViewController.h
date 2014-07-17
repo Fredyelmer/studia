@@ -21,6 +21,10 @@
     CGFloat brush;
     CGFloat opacity;
     BOOL mouseSwiped;
+    
+    CGFloat backGroundRed;
+    CGFloat backGroundGreen;
+    CGFloat backGroundBlue;
 }
 
 //comentario de teste
@@ -59,5 +63,6 @@
 - (IBAction)corPressed:(id)sender;
 - (IBAction)addImage:(id)sender;
 - (IBAction)addText:(id)sender;
+- (IBAction)erasePressed:(id)sender;
 
 @end

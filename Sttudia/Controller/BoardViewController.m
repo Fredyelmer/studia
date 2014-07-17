@@ -18,6 +18,8 @@
     BOOL isScreenTouched;
     BOOL isImageEditing;
     int indexImage;
+    BOOL isEraser;
+    BOOL finishTextEdit;
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -44,8 +46,14 @@
     red = 0.0/255.0;
     green = 0.0/255.0;
     blue = 0.0/255.0;
-    brush = 10.0;
+    brush = 5.0;
     opacity = 1.0;
+    
+    backGroundRed = 255.0/255.0;
+    backGroundGreen = 255.0/255.0;
+    backGroundBlue = 255.0/255.0;
+    
+    [self.view setBackgroundColor:[UIColor colorWithRed:backGroundRed green:backGroundGreen blue:backGroundBlue alpha:1]];
     
     self.arraySnapshots = [[NSMutableArray alloc]init];
     self.arrayPoints = [[NSMutableArray alloc]init];
@@ -78,6 +86,7 @@
     [recorder prepareToRecord];
     
     isScreenTouched = NO;
+    isEraser = NO;
     
     self.lastTimeTouch = 0;
     
@@ -91,6 +100,8 @@
     self.confirmImageButton.enabled = NO;
     self.confirmImageButton.hidden = YES;
     
+    finishTextEdit = YES;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -99,28 +110,37 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 - (IBAction)startVideoRecord:(id)sender {
     
     
     if (!self.isRecording) {
-        self.snapshotTimer = [NSTimer scheduledTimerWithTimeInterval:1/30 target:self selector:@selector(chamada) userInfo:nil repeats:YES];
         self.isRecording = YES;
+        
+        //inicia a gravação de aúdio
+        if(player.playing) {
+            [player stop];
+        }
+        
+        if(!recorder.recording){
+            AVAudioSession *session = [AVAudioSession sharedInstance];
+            [session setActive:YES error:nil];
+            
+            // Start recording
+            [recorder record];
+            //[recordPauseButton setTitle:@"Pause" forStateUIControlStateNormal];
+        }
+
     }
     else{
-        [self.snapshotTimer invalidate];
+        
+        //termina a gravação de aúdio
+        [recorder stop];
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession setActive:NO error:nil];
+        
+        
+        self.isRecording = NO;
     }
-    
-    //self.initialTimeInterval = [[NSDate date]timeIntervalSince1970];
 }
 
 - (IBAction)reproduzirGravacao:(id)sender {
@@ -135,24 +155,6 @@
     }
 }
 
-- (IBAction)confirmImageEdition:(id)sender {
-    
-    UIImageView *image = self.arrayImages[indexImage];
-    
-    [self.view sendSubviewToBack:image];
-    image.userInteractionEnabled = NO;
-    indexImage += 1;
-    
-    self.addImageButton.enabled = YES;
-    self.addImageButton.hidden = NO;
-    self.confirmImageButton.enabled = NO;
-    self.confirmImageButton.hidden = YES;
-    
-    isImageEditing = NO;
-    
-    
-}
-
 -(void)chamada{
     
     UIImage *image = [self snapshot:self.tempImageView];
@@ -163,6 +165,8 @@
 - (IBAction)corPressed:(id)sender
 {
     CorUIButton * PressedButton = (CorUIButton *)sender;
+    
+    isEraser = NO;
     
     switch(PressedButton.tag)
     {
@@ -204,6 +208,17 @@
     }
 }
 
+- (IBAction)erasePressed:(id)sender{
+    isEraser = YES;
+    
+    red = backGroundRed;
+    green = backGroundGreen;
+    blue = backGroundBlue;
+    brush = 20;
+    opacity = 1;
+}
+
+//- (IBAction)<#selector#>:(id)sender)
 
 //metodos para forçar em landscape mode
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -265,10 +280,13 @@
     UITouch *touch = [touches anyObject];
     CGPoint currentPoint = [touch locationInView:self.mainImageView];
     
-    NSLog(@"cuurent point %f %f", currentPoint.x, currentPoint.y);
+    //NSLog(@"cuurent point %f %f", currentPoint.x, currentPoint.y);
+        
     
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
     [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
+        
+        
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
     CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
@@ -301,10 +319,6 @@
     
     totalInterval = [event timestamp]-self.lastTouch;
     
-    //DrawPoint *drawPoint = [[DrawPoint alloc] initWithPoint: lastPoint: currentPoint: interval];
-    
-    //[self.arrayPoints addObject:drawPoint];
-    
     lastPoint = currentPoint;
     }
 }
@@ -315,6 +329,12 @@
 {
     UIImage *snapShot = [self snapshot:self.view];
     [self.arraySnapshots addObject:snapShot];
+    
+    backGroundRed = 145.0/255.0;
+    backGroundGreen = 0.0/255.0;
+    backGroundBlue = 255.0/255.0;
+    
+    [self.view setBackgroundColor:[UIColor colorWithRed:backGroundRed green:backGroundGreen blue:backGroundBlue alpha:1]];
 }
 
 
@@ -409,6 +429,8 @@
 
 }
 
+#pragma mark - AddImageMethods
+
 - (IBAction)addImage:(id)sender {
     
     UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
@@ -416,29 +438,6 @@
     pickerLibrary.delegate = self;
     [self presentViewController:pickerLibrary animated:YES completion:nil];
     
-//    UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, self.tempImageView.frame.size.height/2, 300, 300)];
-//    isImageEditing = YES;
-//    
-//    customImage.image = self.choseImage;
-//    customImage.contentMode = UIViewContentModeScaleAspectFill;
-//    customImage.userInteractionEnabled = YES;
-//    
-//    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
-//    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
-//    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
-//    
-//    [customImage addGestureRecognizer:pinchGesture];
-//    [customImage addGestureRecognizer:panGesture];
-//    [customImage addGestureRecognizer:rotationGesture];
-//    
-//    [self.arrayImages addObject:customImage];
-//    
-//    [self.view addSubview:customImage];
-//    
-//    self.addImageButton.enabled = NO;
-//    self.addImageButton.hidden = YES;
-//    self.confirmImageButton.enabled = YES;
-//    self.confirmImageButton.hidden = NO;
 }
 -(void)resizingImage:(UIPinchGestureRecognizer *)recognizer
 {
@@ -462,9 +461,6 @@
     if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
     {
         CGPoint touchLocation = [recognizer locationInView:self.view];
-//        UIImageView *image = self.arrayImages[indexImage];
-//        image.center = touchLocation;
-        
         recognizer.view.center = touchLocation;
     }
 }
@@ -478,6 +474,26 @@
     }
 }
 
+//Termina processo de edição de imagens fixando-a e colocando atrás da tela de desenho.
+- (IBAction)confirmImageEdition:(id)sender {
+    
+    UIImageView *image = self.arrayImages[indexImage];
+    
+    [self.view sendSubviewToBack:image];
+    image.userInteractionEnabled = NO;
+    indexImage += 1;
+    
+    self.addImageButton.enabled = YES;
+    self.addImageButton.hidden = NO;
+    self.confirmImageButton.enabled = NO;
+    self.confirmImageButton.hidden = YES;
+    
+    isImageEditing = NO;
+    
+}
+
+#pragma mark - AddTextMethods
+
 - (IBAction)addText:(id)sender {
     
     UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, self.tempImageView.frame.size.height/2, 300, 40)];
@@ -488,13 +504,14 @@
     textField.keyboardType = UIKeyboardTypeDefault;
     textField.returnKeyType = UIReturnKeyDone;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    //textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.textAlignment = NSTextAlignmentCenter;
     textField.delegate = self;
     
     self.currentTextField = textField;
     [self.view addSubview:textField];
 }
+
 
 #pragma mark - ImagePickerControllerDelegateMethod
 
@@ -531,8 +548,6 @@
 #pragma mark - UItextFieldDelegateMethods
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    
-    
     self.currentTextField.userInteractionEnabled = YES;
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
@@ -545,13 +560,11 @@
     [self.currentTextField setBorderStyle:UITextBorderStyleNone];
     [self.currentTextField setNeedsDisplay];
     
+    [self.arrayTexts addObject:self.currentTextField];
+    
     return YES;
 }
 
-//- (void)resizingText : (UIPinchGestureRecognizer)*sender
-//{
-//    
-//}
 
 
 
