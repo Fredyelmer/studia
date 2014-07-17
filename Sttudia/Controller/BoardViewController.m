@@ -94,6 +94,8 @@
     indexImage = 0;
     
     self.arrayImages = [[NSMutableArray alloc]init];
+    self.arrayViews = [[NSMutableArray alloc]init];
+    self.arrayTexts = [[NSMutableArray alloc]init];
     
     self.addImageButton.enabled = YES;
     self.addImageButton.hidden = NO;
@@ -211,11 +213,51 @@
 - (IBAction)erasePressed:(id)sender{
     isEraser = YES;
     
-    red = backGroundRed;
-    green = backGroundGreen;
-    blue = backGroundBlue;
+//    red = backGroundRed;
+//    green = backGroundGreen;
+//    blue = backGroundBlue;
     brush = 20;
-    opacity = 1;
+//    opacity = 1;
+}
+
+- (IBAction)nextPage:(id)sender {
+    
+    
+    //[self.arrayViews addObject:[self.view subviews]];
+    
+    [self.arrayViews addObject:self.tempImageView];
+    
+    
+    NSMutableArray *array = [self.arrayImages copy];
+    [self.arrayViews addObject:array];
+    
+    
+    for (UIImageView *image in self.arrayImages) {
+        [image removeFromSuperview];
+    }
+    for (UITextField *text in self.arrayTexts) {
+        [text removeFromSuperview];
+    }
+    
+    [self.arrayImages removeAllObjects];
+    indexImage = 0;
+    self.tempImageView.image = nil;
+}
+
+- (IBAction)previewsPage:(id)sender {
+    
+//    for (UIView *subView in self.arrayViews[0]) {
+//        if([subView isKindOfClass:[UIImageView class]]){
+//            [self.view addSubview:subView];
+//        }
+//    }
+    
+    UIImageView *image = self.arrayViews[0];
+    self.tempImageView.image = image.image;
+    
+    for (UIImageView *image in self.arrayViews[1]) {
+        [self.view addSubview:image];
+    }
 }
 
 //- (IBAction)<#selector#>:(id)sender)
@@ -292,16 +334,26 @@
     CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
     CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
     CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
-    CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
     
+        if (isEraser) {
+            CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeClear);
+        }
+        else{
+            CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+        }
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
     [self.tempImageView setAlpha:opacity];
     UIGraphicsEndImageContext();
     
     NSTimeInterval interval = [event timestamp] - self.lastTouch;
-    
-    VideoParameter *parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :red : green: blue];
+        VideoParameter *parameter;
+        if (isEraser) {
+            parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :-1 : -1: -1: 20];
+        }
+        else{
+            parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :red : green: blue : 5];
+        }
     
     [self.arrayPoints addObject:parameter];
     
@@ -417,9 +469,15 @@
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), [parameter initialPoint].x, [parameter initialPoint].y);
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), [parameter finalPoint].x, [parameter finalPoint].y);
     CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
+    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), [parameter currentBrush] );
     CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), [parameter currentRed], [parameter currentGreen], [parameter currentBlue], 1.0);
-    CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+    
+    if ([parameter currentRed] == -1 && [parameter currentGreen] == -1 &&[parameter currentBlue] == -1) {
+        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeClear);
+    }
+    else{
+        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+    }
     
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
@@ -509,6 +567,7 @@
     textField.delegate = self;
     
     self.currentTextField = textField;
+    
     [self.view addSubview:textField];
 }
 

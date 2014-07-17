@@ -553,6 +553,9 @@
                                 <state key="normal" title="Anterior">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="previewsPage:" destination="cOT-VF-1aa" eventType="touchUpInside" id="Xcg-aE-eNX"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zi9-xp-EF2">
                                 <rect key="frame" x="855" y="732" width="57" height="30"/>
@@ -560,6 +563,9 @@
                                 <state key="normal" title="Proximo">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="nextPage:" destination="cOT-VF-1aa" eventType="touchUpInside" id="j92-ce-RWb"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

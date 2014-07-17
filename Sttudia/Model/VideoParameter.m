@@ -10,7 +10,7 @@
 
 @implementation VideoParameter
 
-- (id) initWithParameter: (CGPoint)initialPoint : (CGPoint)finalPoint : (NSTimeInterval)interval : (int)typeChange : (float) red : (float) green : (float) blue
+- (id) initWithParameter: (CGPoint)initialPoint : (CGPoint)finalPoint : (NSTimeInterval)interval : (int)typeChange : (float) red : (float) green : (float) blue : (float) brush
 {
     self = [super init];
     
@@ -21,6 +21,7 @@
         self.currentRed = red;
         self.currentGreen = green;
         self.currentBlue = blue;
+        self.currentBrush = brush;
         
         switch (typeChange) {
             case 0:

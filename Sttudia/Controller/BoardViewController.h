@@ -54,15 +54,18 @@
 @property (strong, nonatomic) NSMutableArray* arrayImages;
 @property (strong, nonatomic) NSMutableArray* arrayTexts;
 @property (strong, nonatomic) UITextField* currentTextField;
+@property (strong, nonatomic) NSMutableArray* arrayViews;
 
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;
 - (IBAction)confirmImageEdition:(id)sender;
 
-
 - (IBAction)corPressed:(id)sender;
 - (IBAction)addImage:(id)sender;
 - (IBAction)addText:(id)sender;
 - (IBAction)erasePressed:(id)sender;
+- (IBAction)nextPage:(id)sender;
+- (IBAction)previewsPage:(id)sender;
+
 
 @end
