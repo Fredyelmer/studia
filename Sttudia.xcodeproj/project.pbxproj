@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0D081747196ED95A0007399B /* VideoParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D081746196ED95A0007399B /* VideoParameter.m */; };
 		0D4FDE0E19745CC100C23D15 /* bloodseeker_by_keterok-d7ak1hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D4FDE0D19745CC100C23D15 /* bloodseeker_by_keterok-d7ak1hq.png */; };
+		0D63B589197833B20099797F /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 710DE2151976EA700095E34E /* MainStoryboard.storyboard */; };
 		0D70227A1964855E004DB9EC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7022791964855E004DB9EC /* AVFoundation.framework */; };
 		0D9ECF451961867300882007 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF441961867300882007 /* Foundation.framework */; };
 		0D9ECF471961867300882007 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF461961867300882007 /* CoreGraphics.framework */; };
@@ -39,7 +40,6 @@
 		48C52E9A1965E65700AD013F /* Question.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E991965E65700AD013F /* Question.m */; };
 		48C52E9D1965E67000AD013F /* Answer.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E9C1965E67000AD013F /* Answer.m */; };
 		48C52EA01965EC6B00AD013F /* Forum.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E9F1965EC6B00AD013F /* Forum.m */; };
-		710DE2131976EA700095E34E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 710DE2151976EA700095E34E /* MainStoryboard.storyboard */; };
 		719FE17A1961D86200938952 /* rec.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE1791961D86200938952 /* rec.png */; };
 		719FE17C1961DBF600938952 /* undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE17B1961DBF600938952 /* undo.png */; };
 		719FE17E1961DC4200938952 /* borracha.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE17D1961DC4200938952 /* borracha.png */; };
@@ -60,6 +60,7 @@
 		0D081745196ED95A0007399B /* VideoParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoParameter.h; sourceTree = "<group>"; };
 		0D081746196ED95A0007399B /* VideoParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoParameter.m; sourceTree = "<group>"; };
 		0D4FDE0D19745CC100C23D15 /* bloodseeker_by_keterok-d7ak1hq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bloodseeker_by_keterok-d7ak1hq.png"; sourceTree = "<group>"; };
+		0D63B58A197833FC0099797F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		0D7022791964855E004DB9EC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0D9ECF411961867300882007 /* Sttudia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sttudia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D9ECF441961867300882007 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -106,7 +107,6 @@
 		48C52E9C1965E67000AD013F /* Answer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Answer.m; sourceTree = "<group>"; };
 		48C52E9E1965EC6B00AD013F /* Forum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Forum.h; sourceTree = "<group>"; };
 		48C52E9F1965EC6B00AD013F /* Forum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Forum.m; sourceTree = "<group>"; };
-		710DE2141976EA700095E34E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		719FE1791961D86200938952 /* rec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rec.png; sourceTree = "<group>"; };
 		719FE17B1961DBF600938952 /* undo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = undo.png; sourceTree = "<group>"; };
 		719FE17D1961DC4200938952 /* borracha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = borracha.png; sourceTree = "<group>"; };
@@ -339,6 +339,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 0D9ECF381961867300882007;
 			productRefGroup = 0D9ECF421961867300882007 /* Products */;
@@ -356,13 +357,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D63B589197833B20099797F /* MainStoryboard.storyboard in Resources */,
 				0D4FDE0E19745CC100C23D15 /* bloodseeker_by_keterok-d7ak1hq.png in Resources */,
 				719FE17A1961D86200938952 /* rec.png in Resources */,
 				719FE17C1961DBF600938952 /* undo.png in Resources */,
 				0D9ECF511961867300882007 /* InfoPlist.strings in Resources */,
 				0D9ECF5C1961867300882007 /* Images.xcassets in Resources */,
 				48C52E681965CED200AD013F /* Video tutorial icon.jpg in Resources */,
-				710DE2131976EA700095E34E /* MainStoryboard.storyboard in Resources */,
 				719FE17E1961DC4200938952 /* borracha.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,7 +441,7 @@
 		710DE2151976EA700095E34E /* MainStoryboard.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				710DE2141976EA700095E34E /* en */,
+				0D63B58A197833FC0099797F /* Base */,
 			);
 			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";

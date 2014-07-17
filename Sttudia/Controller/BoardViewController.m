@@ -165,7 +165,7 @@
 - (IBAction)corPressed:(id)sender
 {
     CorUIButton * PressedButton = (CorUIButton *)sender;
-    
+    brush = 5;
     isEraser = NO;
     
     switch(PressedButton.tag)
