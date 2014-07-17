@@ -434,6 +434,9 @@
                                 <state key="normal" title="Borracha" image="borracha.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="erasePressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="n14-kT-CCi"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="75t-Fd-3l2">
                                 <rect key="frame" x="942" y="730" width="70" height="30"/>
