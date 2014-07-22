@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "CorUIButton.h"
 #import "VideoParameter.h"
+#import "Page.h"
 
 
 @interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate>
@@ -25,6 +26,9 @@
     CGFloat backGroundRed;
     CGFloat backGroundGreen;
     CGFloat backGroundBlue;
+    
+    int maxPageIndex;
+    int currentPageIndex;
 }
 
 //comentario de teste
@@ -54,7 +58,8 @@
 @property (strong, nonatomic) NSMutableArray* arrayImages;
 @property (strong, nonatomic) NSMutableArray* arrayTexts;
 @property (strong, nonatomic) UITextField* currentTextField;
-@property (strong, nonatomic) NSMutableArray* arrayViews;
+@property (strong, nonatomic) NSMutableArray* arrayPages;
+@property (strong, nonatomic) IBOutlet UILabel *pageNumberLabel;
 
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;

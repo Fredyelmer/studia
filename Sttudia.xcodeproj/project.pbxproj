@@ -26,6 +26,7 @@
 		0D9ECF661961867300882007 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF4A1961867300882007 /* CoreData.framework */; };
 		0D9ECF6E1961867300882007 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6C1961867300882007 /* InfoPlist.strings */; };
 		0D9ECF701961867300882007 /* SttudiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6F1961867300882007 /* SttudiaTests.m */; };
+		0DA2FFA4197EA2E000C4ADA3 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA2FFA3197EA2E000C4ADA3 /* Page.m */; };
 		0DA8EFA11976C052006A5589 /* ImagePickerLandscapeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA8EFA01976C052006A5589 /* ImagePickerLandscapeController.m */; };
 		0DA8EFA41976F772006A5589 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA8EFA31976F772006A5589 /* Image.m */; };
 		48C52E681965CED200AD013F /* Video tutorial icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48C52E671965CED200AD013F /* Video tutorial icon.jpg */; };
@@ -80,6 +81,8 @@
 		0D9ECF6B1961867300882007 /* SttudiaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SttudiaTests-Info.plist"; sourceTree = "<group>"; };
 		0D9ECF6D1961867300882007 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0D9ECF6F1961867300882007 /* SttudiaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SttudiaTests.m; sourceTree = "<group>"; };
+		0DA2FFA2197EA2E000C4ADA3 /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
+		0DA2FFA3197EA2E000C4ADA3 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		0DA8EF9F1976C052006A5589 /* ImagePickerLandscapeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerLandscapeController.h; sourceTree = "<group>"; };
 		0DA8EFA01976C052006A5589 /* ImagePickerLandscapeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerLandscapeController.m; sourceTree = "<group>"; };
 		0DA8EFA21976F772006A5589 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
@@ -269,6 +272,8 @@
 				0D081746196ED95A0007399B /* VideoParameter.m */,
 				0DA8EFA21976F772006A5589 /* Image.h */,
 				0DA8EFA31976F772006A5589 /* Image.m */,
+				0DA2FFA2197EA2E000C4ADA3 /* Page.h */,
+				0DA2FFA3197EA2E000C4ADA3 /* Page.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -395,6 +400,7 @@
 				0D9ECF571961867300882007 /* AppDelegate.m in Sources */,
 				48C52E8F1965E52D00AD013F /* SpecificViewController.m in Sources */,
 				0DA8EFA41976F772006A5589 /* Image.m in Sources */,
+				0DA2FFA4197EA2E000C4ADA3 /* Page.m in Sources */,
 				48C52E8E1965E52D00AD013F /* SpecificClassViewController.m in Sources */,
 				48C52E8A1965E52D00AD013F /* BoardViewController.m in Sources */,
 				48C52E9A1965E65700AD013F /* Question.m in Sources */,

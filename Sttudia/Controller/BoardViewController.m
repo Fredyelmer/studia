@@ -94,7 +94,7 @@
     indexImage = 0;
     
     self.arrayImages = [[NSMutableArray alloc]init];
-    self.arrayViews = [[NSMutableArray alloc]init];
+    self.arrayPages = [[NSMutableArray alloc]init];
     self.arrayTexts = [[NSMutableArray alloc]init];
     
     self.addImageButton.enabled = YES;
@@ -104,6 +104,10 @@
     
     finishTextEdit = YES;
     
+    maxPageIndex = 0;
+    currentPageIndex = 0;
+    
+    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d",currentPageIndex];
 }
 
 - (void)didReceiveMemoryWarning
@@ -223,44 +227,123 @@
 - (IBAction)nextPage:(id)sender {
     
     
-    //[self.arrayViews addObject:[self.view subviews]];
-    
-    [self.arrayViews addObject:self.tempImageView];
-    
-    
-    NSMutableArray *array = [self.arrayImages copy];
-    [self.arrayViews addObject:array];
-    
-    
+    //retira as imagens e textos da tela
     for (UIImageView *image in self.arrayImages) {
         [image removeFromSuperview];
     }
     for (UITextField *text in self.arrayTexts) {
         [text removeFromSuperview];
     }
-    
-    [self.arrayImages removeAllObjects];
     indexImage = 0;
-    self.tempImageView.image = nil;
+    
+    //se a página é a última
+    if (maxPageIndex == currentPageIndex) {
+        
+        //salva as infomações da página em uma lista
+        UIImage *drawImageView = [self.tempImageView.image copy];
+        NSMutableArray *arrayImage = [self.arrayImages mutableCopy];
+        NSMutableArray *arrayText = [self.arrayTexts mutableCopy];
+        
+        Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
+        
+        [self.arrayPages addObject:page];
+        
+        
+        //reseta as imagens e textos
+        [self.arrayImages removeAllObjects];
+        [self.arrayTexts removeAllObjects];
+        
+        //aumenta o numero de paginas total e avanca uma pagina
+        maxPageIndex += 1;
+        currentPageIndex +=1;
+        
+        //apaga o desenho
+        self.tempImageView.image = nil;
+        
+    }
+    
+    //se a pagina atual não é a ultima
+    else if(currentPageIndex < maxPageIndex) {
+        
+        //apaga a tela de desenho
+        self.tempImageView.image = nil;
+        
+        //resgata a pagina posterior
+        currentPageIndex +=1;
+        
+        Page *nextPage = [self.arrayPages objectAtIndex:currentPageIndex];
+        
+        self.tempImageView.image = [nextPage drawView];
+        self.arrayImages = [nextPage arrayImage];
+        self.arrayTexts = [nextPage arrayText];
+        
+        
+        //adiciona imagens e textos
+        for (UIImageView *image in self.arrayImages) {
+            [self.view addSubview:image];
+            [image sendSubviewToBack:self.view];
+        }
+        
+        for (UITextField *text in self.arrayTexts) {
+            [self.view addSubview:text];
+            
+        }
+    }
+    
+    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d",currentPageIndex];
 }
 
 - (IBAction)previewsPage:(id)sender {
     
-//    for (UIView *subView in self.arrayViews[0]) {
-//        if([subView isKindOfClass:[UIImageView class]]){
-//            [self.view addSubview:subView];
-//        }
-//    }
-    
-    UIImageView *image = self.arrayViews[0];
-    self.tempImageView.image = image.image;
-    
-    for (UIImageView *image in self.arrayViews[1]) {
-        [self.view addSubview:image];
+    if (currentPageIndex >= 1) {
+        
+        //Salva a infomação da tela
+        UIImage *drawImageView = [self.tempImageView.image copy];
+        NSMutableArray *arrayImage = [self.arrayImages mutableCopy];
+        NSMutableArray *arrayText = [self.arrayTexts mutableCopy];
+        
+        Page *newPage = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
+        
+        
+        //[self.arrayPages setObject:newPage atIndexedSubscript:currentPageIndex];
+        //self.arrayPages[currentPageIndex] = newPage;
+        [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:newPage];
+        
+        //esvazia a página atual
+        for (UIImageView *image in self.arrayImages) {
+            [image removeFromSuperview];
+        }
+        for (UITextField *text in self.arrayTexts) {
+            [text removeFromSuperview];
+        }
+        
+        [self.arrayImages removeAllObjects];
+        [self.arrayTexts removeAllObjects];
+        indexImage = 0;
+        self.tempImageView.image = nil;
+
+        
+        //preenche a pagina com a informaçao anterior
+        currentPageIndex -= 1;
+        Page *currentPage = [self.arrayPages objectAtIndex:currentPageIndex];
+        
+        self.tempImageView.image = [currentPage drawView];
+        self.arrayImages = [currentPage arrayImage];
+        self.arrayTexts = [currentPage arrayText];
+        
+        for (UIImageView *image in self.arrayImages) {
+            [self.view addSubview:image];
+            [image sendSubviewToBack:self.view];
+        }
+        
+        for (UITextField *text in self.arrayTexts) {
+            [self.view addSubview:text];
+        }
+
     }
+    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d",currentPageIndex];
 }
 
-//- (IBAction)<#selector#>:(id)sender)
 
 //metodos para forçar em landscape mode
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -601,6 +684,8 @@
     self.addImageButton.hidden = YES;
     self.confirmImageButton.enabled = YES;
     self.confirmImageButton.hidden = NO;
+    
+    self.choseImage = nil;
 
 }
 
@@ -620,6 +705,8 @@
     [self.currentTextField setNeedsDisplay];
     
     [self.arrayTexts addObject:self.currentTextField];
+    
+    self.currentTextField = nil;
     
     return YES;
 }

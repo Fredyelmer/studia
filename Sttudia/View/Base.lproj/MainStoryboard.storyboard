@@ -558,7 +558,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zi9-xp-EF2">
-                                <rect key="frame" x="855" y="732" width="57" height="30"/>
+                                <rect key="frame" x="861" y="732" width="57" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Proximo">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -567,6 +567,13 @@
                                     <action selector="nextPage:" destination="cOT-VF-1aa" eventType="touchUpInside" id="j92-ce-RWb"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgG-jR-Ms5">
+                                <rect key="frame" x="839" y="739" width="17" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -581,6 +588,7 @@
                         <outlet property="cor4UIButton" destination="xkq-10-0iF" id="SRn-uJ-Nby"/>
                         <outlet property="cor5UIButton" destination="bNY-DR-d0F" id="v5c-cJ-VFo"/>
                         <outlet property="mainImageView" destination="sVE-PJ-wbj" id="juW-5g-BeV"/>
+                        <outlet property="pageNumberLabel" destination="wgG-jR-Ms5" id="DxD-Ih-pb4"/>
                         <outlet property="pauseRecAudio" destination="Rd0-cs-JBD" id="x9S-Lh-tFX"/>
                         <outlet property="recAudio" destination="Gwd-3y-oKD" id="ZVt-Ke-qIo"/>
                         <outlet property="snapShotButtom" destination="kR3-oG-Xxm" id="LNn-T1-w3n"/>
