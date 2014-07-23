@@ -784,6 +784,7 @@
     [self.layoutView setHidden:NO];
 }
 
+
 - (IBAction)changeLayout:(UIButton *)sender
 {
     NSLog(@"button %@", sender.titleLabel.text);

@@ -1097,15 +1097,12 @@
         <image name="Video tutorial icon.jpg" width="250" height="293"/>
         <image name="agenda.png" width="640" height="405"/>
         <image name="borracha.png" width="256" height="290"/>
-<<<<<<< HEAD
         <image name="forrado.png" width="788" height="590"/>
         <image name="quadrado.jpg" width="298" height="225"/>
-=======
         <image name="next.png" width="32" height="51"/>
         <image name="photo.png" width="64" height="64"/>
         <image name="preview.png" width="32" height="51"/>
         <image name="question.png" width="32" height="28"/>
->>>>>>> FETCH_HEAD
         <image name="rec.png" width="200" height="200"/>
         <image name="undo.png" width="256" height="256"/>
     </resources>
