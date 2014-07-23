@@ -20,6 +20,7 @@
     int indexImage;
     BOOL isEraser;
     BOOL finishTextEdit;
+    UIImageView *currentImage;
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -42,6 +43,8 @@
 {
     
     [super viewDidLoad];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     red = 0.0/255.0;
     green = 0.0/255.0;
@@ -109,6 +112,14 @@
     
     self.pageNumberLabel.text = [NSString stringWithFormat:@"%d",currentPageIndex];
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+}
+
+-(BOOL)prefersStatusBarHidden { return YES; }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -235,39 +246,65 @@
         [text removeFromSuperview];
     }
     indexImage = 0;
-    
+    //currentImage.image = [self.tempImageView.image copy];
     //se a página é a última
     if (maxPageIndex == currentPageIndex) {
         
-        //salva as infomações da página em uma lista
-        UIImage *drawImageView = [self.tempImageView.image copy];
-        NSMutableArray *arrayImage = [self.arrayImages mutableCopy];
-        NSMutableArray *arrayText = [self.arrayTexts mutableCopy];
-        
-        Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
-        
-        [self.arrayPages addObject:page];
+        if ([self.arrayPages count]-1 != currentPageIndex) {
+            //salva as infomações da página em uma lista
+            UIImage *drawImageView = self.tempImageView.image;
+            NSMutableArray *arrayImage = self.arrayImages;
+            NSMutableArray *arrayText = self.arrayTexts;
+            
+            Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
+            
+            [self.arrayPages addObject:page];
+        }
+//        //salva as infomações da página em uma lista
+//        UIImage *drawImageView = self.tempImageView.image;
+//        NSMutableArray *arrayImage = self.arrayImages;
+//        NSMutableArray *arrayText = self.arrayTexts;
+//        
+//        Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
+//        
+//        [self.arrayPages addObject:page];
         
         
         //reseta as imagens e textos
-        [self.arrayImages removeAllObjects];
-        [self.arrayTexts removeAllObjects];
+        //self.arrayImages = nil;
+        self.arrayImages = [[NSMutableArray alloc]init];
+        //self.arrayTexts = nil;
+        self.arrayTexts = [[NSMutableArray alloc]init];
+        
         
         //aumenta o numero de paginas total e avanca uma pagina
         maxPageIndex += 1;
         currentPageIndex +=1;
         
+        //currentImage.image = [self.tempImageView.image copy];
+        //CGRect rect = self.tempImageView.frame;
         //apaga o desenho
-        self.tempImageView.image = nil;
+        self.tempImageView.image = [[UIImage alloc] init] ;
         
     }
     
     //se a pagina atual não é a ultima
-    else if(currentPageIndex < maxPageIndex) {
+    else {
+        
+        
+        //substitui as infomações da página atual na lista
+        UIImage *drawImageView = self.tempImageView.image;
+        NSMutableArray *arrayImage = self.arrayImages;
+        NSMutableArray *arrayText = self.arrayTexts;
+        
+        Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
+        
+        [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:page];
+
         
         //apaga a tela de desenho
-        self.tempImageView.image = nil;
-        
+        //self.tempImageView.image = nil;
+        self.tempImageView.image = [[UIImage alloc] init];
         //resgata a pagina posterior
         currentPageIndex +=1;
         
@@ -290,7 +327,7 @@
         }
     }
     
-    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d",currentPageIndex];
+    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d", currentPageIndex];
 }
 
 - (IBAction)previewsPage:(id)sender {
@@ -298,16 +335,21 @@
     if (currentPageIndex >= 1) {
         
         //Salva a infomação da tela
-        UIImage *drawImageView = [self.tempImageView.image copy];
-        NSMutableArray *arrayImage = [self.arrayImages mutableCopy];
-        NSMutableArray *arrayText = [self.arrayTexts mutableCopy];
+        UIImage *drawImageView = self.tempImageView.image;
+        NSMutableArray *arrayImage = self.arrayImages;
+        NSMutableArray *arrayText = self.arrayTexts;
         
         Page *newPage = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
         
         
-        //[self.arrayPages setObject:newPage atIndexedSubscript:currentPageIndex];
-        //self.arrayPages[currentPageIndex] = newPage;
-        [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:newPage];
+        if ([self.arrayPages count]-1 >= currentPageIndex)
+        {
+            [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:newPage];
+        }
+        else
+        {
+            [self.arrayPages addObject:newPage];
+        }
         
         //esvazia a página atual
         for (UIImageView *image in self.arrayImages) {
@@ -317,10 +359,10 @@
             [text removeFromSuperview];
         }
         
-        [self.arrayImages removeAllObjects];
-        [self.arrayTexts removeAllObjects];
+       // [self.arrayImages removeAllObjects];
+        //[self.arrayTexts removeAllObjects];
         indexImage = 0;
-        self.tempImageView.image = nil;
+        //self.tempImageView.image = nil;
 
         
         //preenche a pagina com a informaçao anterior
@@ -659,12 +701,12 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	[self dismissViewControllerAnimated:NO completion:nil];
-	self.choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
     UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, self.tempImageView.frame.size.height/2, 300, 300)];
     isImageEditing = YES;
     
-    customImage.image = self.choseImage;
+    customImage.image = choseImage;
     customImage.contentMode = UIViewContentModeScaleAspectFill;
     customImage.userInteractionEnabled = YES;
     
@@ -684,8 +726,6 @@
     self.addImageButton.hidden = YES;
     self.confirmImageButton.enabled = YES;
     self.confirmImageButton.hidden = NO;
-    
-    self.choseImage = nil;
 
 }
 
