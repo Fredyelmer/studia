@@ -55,7 +55,6 @@
 @property (strong, nonatomic) IBOutlet UIButton *pauseRecAudio;
 @property (strong, nonatomic) IBOutlet UIButton *confirmImageButton;
 @property (strong, nonatomic) IBOutlet UIButton *addImageButton;
-@property (strong, nonatomic) UIImage* choseImage;
 
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;

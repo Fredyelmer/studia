@@ -225,6 +225,7 @@
 
 - (IBAction)nextPage:(id)sender {
     
+    [self takePrintScreen];
     
     //retira as imagens e textos da tela
     for (UIImageView *image in self.arrayImages) {
@@ -316,6 +317,8 @@
     }
     
     self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
+    
+    //[UIView animateWithDuration:2.0 delay:0.1 options:UIViewAnimationOptionAutoreverse animations:<#^(void)animations#> completion:<#^(BOOL finished)completion#>];
 }
 
 - (IBAction)previewsPage:(id)sender {
@@ -491,17 +494,10 @@
 //metodos para tirar snapshots da tela
 - (IBAction)takeSnapshot:(id)sender
 {
-    UIImage *snapShot = [self snapshot:self.view];
+    UIImage *snapShot = [self snapshot:self.tempImageView];
     [self.arraySnapshots addObject:snapShot];
-    
-    backGroundRed = 145.0/255.0;
-    backGroundGreen = 0.0/255.0;
-    backGroundBlue = 255.0/255.0;
-    
-    [self.view setBackgroundColor:[UIColor colorWithRed:backGroundRed green:backGroundGreen blue:backGroundBlue alpha:1]];
+
 }
-
-
 
 - (UIImage *)snapshot:(UIView *)view
 {
@@ -513,6 +509,16 @@
     return image;
 }
 
+- (void)takePrintScreen
+{
+    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
+    [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
+    UIImage *printScreen = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [self.arraySnapshots addObject:printScreen];
+
+}
 
 //métodos para gravar o audio e reproduzí-los
 - (IBAction)gravarAudio:(id)sender {
