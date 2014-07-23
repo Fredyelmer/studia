@@ -28,6 +28,11 @@
 @end
 
 @implementation BoardViewController
+{
+    float _hue;
+	float _saturation;
+	float _brightness;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -66,6 +71,21 @@
     [self.pauseRecAudio setHidden:YES];
     [self.pauseRecAudio setEnabled:YES];
     
+    //long press gesture
+    [self.colorPicker setHidden:YES];
+    [self.squarePicker setHue:0.2];
+    // self.squarePicker up
+    
+    UILongPressGestureRecognizer *longPressGesture1 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
+    UILongPressGestureRecognizer *longPressGesture2 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
+    UILongPressGestureRecognizer *longPressGesture3 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
+    UILongPressGestureRecognizer *longPressGesture4 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
+    UILongPressGestureRecognizer *longPressGesture5 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
+    [[self.ColorButton objectAtIndex:0] addGestureRecognizer:longPressGesture1];
+    [[self.ColorButton objectAtIndex:1] addGestureRecognizer:longPressGesture2];
+    [[self.ColorButton objectAtIndex:2] addGestureRecognizer:longPressGesture3];
+    [[self.ColorButton objectAtIndex:3] addGestureRecognizer:longPressGesture4];
+    [[self.ColorButton objectAtIndex:4] addGestureRecognizer:longPressGesture5];
     
     // Set the audio file
     NSArray *pathComponents = [NSArray arrayWithObjects:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],@"MyAudioMemo.m4a",nil];
@@ -179,49 +199,17 @@
     NSLog(@"tirou foto");
 }
 
-- (IBAction)corPressed:(id)sender
+- (void) longPressedButton:(UIGestureRecognizer *)gesture
 {
-    CorUIButton * PressedButton = (CorUIButton *)sender;
-    brush = 5;
-    isEraser = NO;
-    
-    switch(PressedButton.tag)
+    if (gesture.state==UIGestureRecognizerStateBegan)
     {
-        case 0:
-            red = 0.0/255.0;
-            green = 0.0/255.0;
-            blue = 0.0/255.0;
-            [self selectCorButton];
-            PressedButton.layer.borderColor = [[UIColor  yellowColor] CGColor];
-            break;
-        case 1:
-            red = 255.0/255.0;
-            green = 255.0/255.0;
-            blue = 255.0/255.0;
-            [self selectCorButton];
-            PressedButton.layer.borderColor = [[UIColor  yellowColor] CGColor];
-            break;
-        case 2:
-            red = 255.0/255.0;
-            green = 0.0/255.0;
-            blue = 0.0/255.0;
-            [self selectCorButton];
-            PressedButton.layer.borderColor = [[UIColor  yellowColor] CGColor];
-            break;
-        case 3:
-            red = 0.0/255.0;
-            green = 255.0/255.0;
-            blue = 0.0/255.0;
-            [self selectCorButton];
-            PressedButton.layer.borderColor = [[UIColor  yellowColor] CGColor];
-            break;
-        case 4:
-            red = 0.0/255.0;
-            green = 0.0/255.0;
-            blue = 255.0/255.0;
-            [self selectCorButton];
-            PressedButton.layer.borderColor = [[UIColor  yellowColor] CGColor];
-            break;
+        NSLog(@"long press: %d",[gesture.view tag]);
+        selectedButton = [gesture.view tag];
+        
+        _sourceColor = [[_ColorButton objectAtIndex:selectedButton] backgroundColor];
+        _sourceColorButton.backgroundColor = _sourceColor;
+        _resultColorButton.backgroundColor = _sourceColor;
+        [self.colorPicker setHidden:NO];
     }
 }
 
@@ -409,11 +397,10 @@
 
 - (void) selectCorButton
 {
-    [_cor1UIButton initialise];
-    [_cor2UIButton initialise];
-    [_cor3UIButton initialise];
-    [_cor4UIButton initialise];
-    [_cor5UIButton initialise];
+    for (CorUIButton *colorButton in self.ColorButton)
+    {
+        [colorButton initialise];
+    }
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -675,6 +662,20 @@
     
 }
 
+- (IBAction)ColorPressed:(CorUIButton *)sender
+{
+    brush = 5;
+    isEraser = NO;
+    
+    UIColor *color = sender.backgroundColor;
+    [color getRed:&red green:&green blue:&blue alpha:&opacity];
+    
+    [self selectCorButton];
+    sender.layer.borderColor = [[UIColor  yellowColor] CGColor];
+    
+    [self.colorPicker setHidden:YES];
+}
+
 #pragma mark - AddTextMethods
 
 - (IBAction)addText:(id)sender {
@@ -751,6 +752,45 @@
     return YES;
 }
 
+
+- (IBAction)takeBarValue:(ColorBarPicker *)sender
+
+{
+    _hue = sender.value;
+	_squarePicker.hue = _hue;
+	
+	[self updateResultColor];
+}
+
+- (IBAction)setResultColor:(id)sender
+{
+    NSLog(@"as %d",selectedButton);
+    [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)_resultColorButton.backgroundColor];
+}
+
+- (IBAction)setSourceColor:(id)sender
+{
+    [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)_sourceColorButton.backgroundColor];
+}
+
+- (IBAction)setCustomColor:(CorUIButton *)sender
+{
+    [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)sender.backgroundColor];
+}
+
+- (IBAction)takeSquareValue:(ColorSquarePicker *)sender
+{
+    _saturation = sender.value.x;
+    _brightness = sender.value.y;
+    
+    [self updateResultColor];
+}
+
+- (void) updateResultColor
+{
+	_resultColorButton.backgroundColor = [UIColor colorWithHue: _hue saturation: _saturation brightness: _brightness alpha: 1.0f];
+    
+}
 
 
 

@@ -10,6 +10,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import "CorUIButton.h"
 #import "VideoParameter.h"
+#import "ColorPickerView.h"
+#import "ColorBarPicker.h"
+#import "ColorSquarePicker.h"
+#import "SourceColorView.h"
 #import "Page.h"
 
 
@@ -27,16 +31,25 @@
     CGFloat backGroundGreen;
     CGFloat backGroundBlue;
     
+    NSInteger selectedButton;
+    
     int maxPageIndex;
     int currentPageIndex;
 }
 
 //comentario de teste
-@property (strong, nonatomic) IBOutlet CorUIButton *cor1UIButton;
-@property (strong, nonatomic) IBOutlet CorUIButton *cor2UIButton;
-@property (strong, nonatomic) IBOutlet CorUIButton *cor3UIButton;
-@property (strong, nonatomic) IBOutlet CorUIButton *cor4UIButton;
-@property (strong, nonatomic) IBOutlet CorUIButton *cor5UIButton;
+@property (strong, nonatomic) IBOutlet ColorPickerView *colorPicker;
+
+@property (nonatomic) UIColor* sourceColor;
+@property (nonatomic) UIColor* resultColor;
+@property (strong, nonatomic) IBOutlet CorUIButton *resultColorButton;
+@property (strong, nonatomic) IBOutlet CorUIButton *sourceColorButton;
+
+@property (nonatomic) IBOutlet ColorBarPicker* barPicker;
+@property (strong, nonatomic) IBOutlet ColorSquarePicker *squarePicker;
+
+@property (strong, nonatomic) IBOutletCollection(CorUIButton) NSArray *ColorButton;
+
 @property (strong, nonatomic) IBOutlet UIButton *snapShotButtom;
 @property (strong, nonatomic) IBOutlet UIButton *recAudio;
 @property (strong, nonatomic) IBOutlet UIButton *pauseRecAudio;
@@ -65,12 +78,16 @@
 - (IBAction)reproduzirGravacao:(id)sender;
 - (IBAction)confirmImageEdition:(id)sender;
 
-- (IBAction)corPressed:(id)sender;
 - (IBAction)addImage:(id)sender;
 - (IBAction)addText:(id)sender;
 - (IBAction)erasePressed:(id)sender;
 - (IBAction)nextPage:(id)sender;
 - (IBAction)previewsPage:(id)sender;
 
+- (IBAction)takeBarValue:(ColorBarPicker *)sender;
+- (IBAction)ColorPressed:(CorUIButton *)sender;
+- (IBAction)setResultColor:(id)sender;
+- (IBAction)setSourceColor:(id)sender;
+- (IBAction)setCustomColor:(CorUIButton *)sender;
 
 @end

@@ -364,7 +364,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <action selector="corPressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="4PS-8M-fJB"/>
+                                    <action selector="ColorPressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="SRa-Qp-Fdq"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gSS-gw-ipC" userLabel="Button - Cor2" customClass="CorUIButton">
@@ -375,7 +375,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="corPressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="1cw-I3-mIC"/>
+                                    <action selector="ColorPressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="NOJ-V7-iMb"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r6M-bk-o8H" userLabel="Button - Cor3" customClass="CorUIButton">
@@ -386,7 +386,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="corPressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="gMf-VY-S3C"/>
+                                    <action selector="ColorPressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="Mfh-R8-B6g"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xkq-10-0iF" userLabel="Button - Cor4" customClass="CorUIButton">
@@ -397,7 +397,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="corPressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="uhv-iU-STR"/>
+                                    <action selector="ColorPressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="Onh-TZ-UPn"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNY-DR-d0F" userLabel="Button - Cor5" customClass="CorUIButton">
@@ -408,7 +408,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="corPressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="Fjd-4S-mqx"/>
+                                    <action selector="ColorPressed:" destination="cOT-VF-1aa" eventType="touchUpInside" id="FhA-1H-ZOU"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAi-N1-go1">
@@ -450,6 +450,135 @@
                                 <rect key="frame" x="5" y="56" width="1014" height="660"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vct-qW-I0A" customClass="ColorPickerView">
+                                <rect key="frame" x="0.0" y="51" width="440" height="382"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pof-5D-idQ" customClass="ColorBarPicker">
+                                        <rect key="frame" x="20" y="239" width="400" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <connections>
+                                            <action selector="takeBarValue:" destination="cOT-VF-1aa" eventType="valueChanged" id="5bc-eE-9mj"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rph-gw-PWu" customClass="ColorSquarePicker">
+                                        <rect key="frame" x="220" y="20" width="200" height="200"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="takeSquareValue:" destination="cOT-VF-1aa" eventType="valueChanged" id="GII-yU-oLv"/>
+                                        </connections>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WRC-So-RO2" customClass="CorUIButton">
+                                        <rect key="frame" x="30" y="30" width="120" height="120"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setSourceColor:" destination="cOT-VF-1aa" eventType="touchUpInside" id="gLJ-0e-sS4"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RRh-b3-bS6" customClass="CorUIButton">
+                                        <rect key="frame" x="90" y="90" width="120" height="120"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.20000001789999999" green="0.66666668650000005" blue="0.55294120309999995" alpha="1" colorSpace="deviceRGB"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setResultColor:" destination="cOT-VF-1aa" eventType="touchUpInside" id="m0m-Ah-cKg"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nj9-X1-rtC" customClass="CorUIButton">
+                                        <rect key="frame" x="20" y="312" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setCustomColor:" destination="cOT-VF-1aa" eventType="touchUpInside" id="e1O-N1-Uyy"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pf9-SA-Rwk" customClass="CorUIButton">
+                                        <rect key="frame" x="78" y="312" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setCustomColor:" destination="cOT-VF-1aa" eventType="touchUpInside" id="oWV-fd-8ej"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="giN-7M-f6K" customClass="CorUIButton">
+                                        <rect key="frame" x="136" y="312" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.01085100634" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setCustomColor:" destination="cOT-VF-1aa" eventType="touchUpInside" id="O2S-mg-pAd"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UyZ-MA-4ez" customClass="CorUIButton">
+                                        <rect key="frame" x="194" y="312" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setCustomColor:" destination="cOT-VF-1aa" eventType="touchUpInside" id="d2h-45-d5B"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r2o-dp-kJZ" customClass="CorUIButton">
+                                        <rect key="frame" x="252" y="312" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setCustomColor:" destination="cOT-VF-1aa" eventType="touchUpInside" id="MWk-It-Tak"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hHB-bj-RAW" customClass="CorUIButton">
+                                        <rect key="frame" x="310" y="312" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.99324524400000003" green="0.99101432060000005" blue="0.1706127506" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setCustomColor:" destination="cOT-VF-1aa" eventType="touchUpInside" id="QA6-jK-dPR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Inj-O8-97z" customClass="CorUIButton">
+                                        <rect key="frame" x="368" y="312" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="1" green="0.59501712569999998" blue="0.18358037930000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setCustomColor:" destination="cOT-VF-1aa" eventType="touchUpInside" id="W1E-oB-vEY"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kR3-oG-Xxm">
                                 <rect key="frame" x="586" y="732" width="66" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -581,19 +710,24 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="addImageButton" destination="cSs-mD-fas" id="Z2M-7I-jW7"/>
+                        <outlet property="barPicker" destination="pof-5D-idQ" id="h4g-Qe-cOT"/>
+                        <outlet property="colorPicker" destination="Vct-qW-I0A" id="mqi-IA-sFO"/>
                         <outlet property="confirmImageButton" destination="lvg-Hz-03v" id="jj3-dB-yi9"/>
-                        <outlet property="cor1UIButton" destination="dYJ-pN-4xZ" id="NGa-aa-oev"/>
-                        <outlet property="cor2UIButton" destination="gSS-gw-ipC" id="Kf4-bv-lh2"/>
-                        <outlet property="cor3UIButton" destination="r6M-bk-o8H" id="QM3-2R-m4L"/>
-                        <outlet property="cor4UIButton" destination="xkq-10-0iF" id="SRn-uJ-Nby"/>
-                        <outlet property="cor5UIButton" destination="bNY-DR-d0F" id="v5c-cJ-VFo"/>
                         <outlet property="mainImageView" destination="sVE-PJ-wbj" id="juW-5g-BeV"/>
                         <outlet property="pageNumberLabel" destination="wgG-jR-Ms5" id="DxD-Ih-pb4"/>
                         <outlet property="pauseRecAudio" destination="Rd0-cs-JBD" id="x9S-Lh-tFX"/>
                         <outlet property="recAudio" destination="Gwd-3y-oKD" id="ZVt-Ke-qIo"/>
+                        <outlet property="resultColorButton" destination="RRh-b3-bS6" id="Lu7-mC-6mn"/>
                         <outlet property="snapShotButtom" destination="kR3-oG-Xxm" id="LNn-T1-w3n"/>
+                        <outlet property="sourceColorButton" destination="WRC-So-RO2" id="OEw-KA-lbt"/>
+                        <outlet property="squarePicker" destination="rph-gw-PWu" id="YGT-tf-mhz"/>
                         <outlet property="takeSnapshot" destination="kR3-oG-Xxm" id="ATJ-g4-XPQ"/>
                         <outlet property="tempImageView" destination="zMY-7J-QW2" id="EQk-Mm-as2"/>
+                        <outletCollection property="ColorButton" destination="dYJ-pN-4xZ" id="6e7-Ru-26x"/>
+                        <outletCollection property="ColorButton" destination="gSS-gw-ipC" id="dfa-lg-bVx"/>
+                        <outletCollection property="ColorButton" destination="r6M-bk-o8H" id="1je-Xa-wTR"/>
+                        <outletCollection property="ColorButton" destination="xkq-10-0iF" id="ey7-xb-RrO"/>
+                        <outletCollection property="ColorButton" destination="bNY-DR-d0F" id="b6e-sQ-mEQ"/>
                         <segue destination="4B5-hI-csY" kind="modal" identifier="questionsSegue" id="LgZ-dr-XPV"/>
                     </connections>
                 </viewController>
