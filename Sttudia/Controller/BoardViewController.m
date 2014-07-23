@@ -130,7 +130,7 @@
     maxPageIndex = 0;
     currentPageIndex = 0;
     
-    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d",currentPageIndex];
+    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -315,7 +315,7 @@
         }
     }
     
-    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d", currentPageIndex];
+    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
 }
 
 - (IBAction)previewsPage:(id)sender {
@@ -371,7 +371,7 @@
         }
 
     }
-    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d",currentPageIndex];
+    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
 }
 
 
