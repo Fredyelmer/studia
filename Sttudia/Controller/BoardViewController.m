@@ -73,6 +73,7 @@
     
     //long press gesture
     [self.colorPicker setHidden:YES];
+    [self.layoutView setHidden:YES];
     [self.squarePicker setHue:0.2];
     // self.squarePicker up
     
@@ -782,6 +783,34 @@
 - (IBAction)setCustomColor:(CorUIButton *)sender
 {
     [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)sender.backgroundColor];
+}
+
+- (IBAction)setBackgroundView:(id)sender
+{
+    [self.layoutView setHidden:NO];
+}
+
+
+- (IBAction)changeLayout:(UIButton *)sender
+{
+    NSLog(@"button %@", sender.titleLabel.text);
+    UIImage *image;
+    
+    if ([sender.titleLabel.text  isEqual: @"branco"]) {
+        image = [[UIImage alloc] init];
+    }
+    if ([sender.titleLabel.text  isEqual: @"quadrado"]) {
+        image = [UIImage imageNamed:@"quadrado.jpg"];
+    }
+    if ([sender.titleLabel.text  isEqual: @"forrado"]) {
+        image = [UIImage imageNamed:@"forrado.png"];
+    }
+    if ([sender.titleLabel.text  isEqual: @"agenda"]) {
+        image = [UIImage imageNamed:@"agenda.png"];
+    }
+    
+    [self.layoutImageView setImage:image];
+    [self.layoutView setHidden:YES];
 }
 
 - (IBAction)takeSquareValue:(ColorSquarePicker *)sender

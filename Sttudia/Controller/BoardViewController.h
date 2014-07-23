@@ -39,6 +39,7 @@
 
 //comentario de teste
 @property (strong, nonatomic) IBOutlet ColorPickerView *colorPicker;
+@property (strong, nonatomic) IBOutlet UIView *layoutView;
 
 @property (nonatomic) UIColor* sourceColor;
 @property (nonatomic) UIColor* resultColor;
@@ -58,6 +59,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;
+@property (strong, nonatomic) IBOutlet UIImageView *layoutImageView;
+
 @property (strong, nonatomic) NSMutableArray* arraySnapshots;
 @property (strong, nonatomic) IBOutlet UIButton *takeSnapshot;
 
@@ -88,5 +91,7 @@
 - (IBAction)setResultColor:(id)sender;
 - (IBAction)setSourceColor:(id)sender;
 - (IBAction)setCustomColor:(CorUIButton *)sender;
+- (IBAction)setBackgroundView:(id)sender;
+- (IBAction)changeLayout:(UIButton *)sender;
 
 @end
