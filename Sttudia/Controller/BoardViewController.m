@@ -21,6 +21,7 @@
     BOOL isEraser;
     BOOL finishTextEdit;
     UIImageView *currentImage;
+    CGContextRef context;
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -185,11 +186,39 @@
     
     self.tempImageView.image = nil;
     
+    if (!recorder.recording){
+        player = [[AVAudioPlayer alloc] initWithContentsOfURL:recorder.url error:nil];
+        [player setDelegate:self];
+        [player play];
+    }
+    
     for (int i = 0; i < [self.arrayPoints count]; i++) {
         
-        if ([self.arrayPoints[i] isDrawing]){
-            [self performSelector:@selector(draw:) withObject:self.arrayPoints[i] afterDelay:[self.arrayPoints[i] interval]];
+        VideoParameter *parameter = self.arrayPoints[i];
+        if ([parameter isDrawing]){
+            [self performSelector:@selector(draw:) withObject:parameter afterDelay:[parameter interval]];
         }
+//        else if ([self.arrayPoints[i] imageAdded]){
+//            while (![self.arrayPoints[i] isTaskTerminated]) {
+//                NSLog(@"não terminado");
+//                if ([self.arrayPoints[i-1] isTaskTerminated]) {
+//                    
+//                     NSLog(@"terminado");
+//                    [self.view addSubview:[self.arrayPoints[i] imageView]];
+//                    [self.view sendSubviewToBack:[self.arrayPoints[i] imageView]];
+//                }
+//            }
+//        }
+//        else if ([parameter pageChanged]){
+//            if ([parameter isForward]) {
+//                if ([parameter pageNumber] == [parameter maxPageNumber]) {
+//                    self.tempImageView.image = nil;
+//                }
+//                else{
+//                    
+//                }
+//            }
+//        }
     }
 }
 
@@ -217,16 +246,13 @@
 - (IBAction)erasePressed:(id)sender{
     isEraser = YES;
     
-//    red = backGroundRed;
-//    green = backGroundGreen;
-//    blue = backGroundBlue;
     brush = 20;
-//    opacity = 1;
 }
 
 - (IBAction)nextPage:(id)sender {
     
-    [self takePrintScreen];
+    //método para tirar printscreen
+    //[self takePrintScreen];
     
     //retira as imagens e textos da tela
     for (UIImageView *image in self.arrayImages) {
@@ -236,7 +262,7 @@
         [text removeFromSuperview];
     }
     indexImage = 0;
-    //currentImage.image = [self.tempImageView.image copy];
+    
     //se a página é a última
     if (maxPageIndex == currentPageIndex) {
         
@@ -250,20 +276,9 @@
             
             [self.arrayPages addObject:page];
         }
-//        //salva as infomações da página em uma lista
-//        UIImage *drawImageView = self.tempImageView.image;
-//        NSMutableArray *arrayImage = self.arrayImages;
-//        NSMutableArray *arrayText = self.arrayTexts;
-//        
-//        Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
-//        
-//        [self.arrayPages addObject:page];
-        
         
         //reseta as imagens e textos
-        //self.arrayImages = nil;
         self.arrayImages = [[NSMutableArray alloc]init];
-        //self.arrayTexts = nil;
         self.arrayTexts = [[NSMutableArray alloc]init];
         
         
@@ -271,10 +286,17 @@
         maxPageIndex += 1;
         currentPageIndex +=1;
         
-        //currentImage.image = [self.tempImageView.image copy];
-        //CGRect rect = self.tempImageView.frame;
         //apaga o desenho
         self.tempImageView.image = [[UIImage alloc] init] ;
+        
+        [UIView transitionWithView:self.view
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            /* any other animation you want */
+                        } completion:^(BOOL finished) {
+                            /* hide/show the required cells*/
+                        }];
         
     }
     
@@ -293,8 +315,9 @@
 
         
         //apaga a tela de desenho
-        //self.tempImageView.image = nil;
         self.tempImageView.image = [[UIImage alloc] init];
+        
+        
         //resgata a pagina posterior
         currentPageIndex +=1;
         
@@ -308,18 +331,30 @@
         //adiciona imagens e textos
         for (UIImageView *image in self.arrayImages) {
             [self.view addSubview:image];
-            [image sendSubviewToBack:self.view];
+            [self.view sendSubviewToBack:image];
+            [self.view sendSubviewToBack:self.layoutImageView];
         }
         
         for (UITextField *text in self.arrayTexts) {
             [self.view addSubview:text];
             
         }
+        
+        [UIView transitionWithView:self.view
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            /* any other animation you want */
+                        } completion:^(BOOL finished) {
+                            /* hide/show the required cells*/
+                        }];
+
     }
     
     self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
+    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :YES];
     
-    //[UIView animateWithDuration:2.0 delay:0.1 options:UIViewAnimationOptionAutoreverse animations:<#^(void)animations#> completion:<#^(BOOL finished)completion#>];
+    [self.arrayPoints addObject:parameter];
 }
 
 - (IBAction)previewsPage:(id)sender {
@@ -351,11 +386,7 @@
             [text removeFromSuperview];
         }
         
-       // [self.arrayImages removeAllObjects];
-        //[self.arrayTexts removeAllObjects];
         indexImage = 0;
-        //self.tempImageView.image = nil;
-
         
         //preenche a pagina com a informaçao anterior
         currentPageIndex -= 1;
@@ -367,15 +398,27 @@
         
         for (UIImageView *image in self.arrayImages) {
             [self.view addSubview:image];
-            [image sendSubviewToBack:self.view];
+            [self.view sendSubviewToBack:image];
         }
         
         for (UITextField *text in self.arrayTexts) {
             [self.view addSubview:text];
         }
+        [UIView transitionWithView:self.view
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            /* any other animation you want */
+                        } completion:^(BOOL finished) {
+                            /* hide/show the required cells*/
+                        }];
 
     }
     self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
+    
+    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :NO];
+    
+    [self.arrayPoints addObject:parameter];
 }
 
 
@@ -395,7 +438,7 @@
     return UIInterfaceOrientationLandscapeLeft;
 }
 
-- (NSUInteger) application:(UIApplication *)application     supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+- (NSUInteger) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
     return UIInterfaceOrientationLandscapeLeft;
 }
 
@@ -427,6 +470,7 @@
     isScreenTouched = YES;
     NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
     }
+   
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -438,12 +482,8 @@
     UITouch *touch = [touches anyObject];
     CGPoint currentPoint = [touch locationInView:self.mainImageView];
     
-    //NSLog(@"cuurent point %f %f", currentPoint.x, currentPoint.y);
-        
-    
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
     [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
-        
         
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
@@ -474,6 +514,7 @@
     [self.arrayPoints addObject:parameter];
     
     lastPoint = currentPoint;
+        
     }
     
 }
@@ -488,6 +529,7 @@
     totalInterval = [event timestamp]-self.lastTouch;
     
     lastPoint = currentPoint;
+        
     }
 }
 
@@ -602,8 +644,10 @@
     self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
     [self.tempImageView setAlpha:opacity];
     UIGraphicsEndImageContext();
-
-
+    
+    [parameter setIsTaskTerminated: YES];
+    NSLog(@"Terminou task");
+    
 }
 
 #pragma mark - AddImageMethods
@@ -638,6 +682,7 @@
     if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
     {
         CGPoint touchLocation = [recognizer locationInView:self.view];
+        
         recognizer.view.center = touchLocation;
     }
 }
@@ -657,6 +702,7 @@
     UIImageView *image = self.arrayImages[indexImage];
     
     [self.view sendSubviewToBack:image];
+    [self.view sendSubviewToBack:self.layoutImageView];
     image.userInteractionEnabled = NO;
     indexImage += 1;
     
@@ -666,6 +712,9 @@
     self.confirmImageButton.hidden = YES;
     
     isImageEditing = NO;
+    
+    VideoParameter *parameter = [[VideoParameter alloc]initWithImage:image];
+    [self.arrayPoints addObject:parameter];
     
 }
 
@@ -808,8 +857,8 @@
     if ([sender.titleLabel.text  isEqual: @"agenda"]) {
         image = [UIImage imageNamed:@"agenda.png"];
     }
-    
     [self.layoutImageView setImage:image];
+    [self.view sendSubviewToBack:self.layoutImageView];
     [self.layoutView setHidden:YES];
 }
 
@@ -827,6 +876,10 @@
     
 }
 
+- (IBAction)undo:(id)sender {
+    NSLog(@"undo");
+    //CGContextRestoreGState();
+}
 
 
 @end

@@ -22,6 +22,7 @@
         self.currentGreen = green;
         self.currentBlue = blue;
         self.currentBrush = brush;
+        self.isTaskTerminated = NO;
         
         switch (typeChange) {
             case 0:
@@ -54,4 +55,50 @@
     }
     return self;
 }
+
+- (id) initWithImage: (UIImageView *)image
+{
+    self = [super init];
+    if (self) {
+        
+        self.imageView = image;
+        self.isDrawing = NO;
+        self.imageAdded = YES;
+        self.textAdded = NO;
+        self.pageChanged = NO;
+    }
+    return self;
+}
+
+- (id) initWithText: (UITextField *)text
+{
+    self = [super init];
+    if (self) {
+        
+        self.isDrawing = NO;
+        self.imageAdded = NO;
+        self.textAdded = YES;
+        self.pageChanged = NO;
+        
+    }
+    return self;
+}
+
+- (id) initWithNumberOfPage: (NSInteger)pageNumber : (NSInteger)maxPageNumber : (BOOL)isForward
+{
+    self = [super init];
+    if (self) {
+        
+        self.isDrawing = NO;
+        self.imageAdded = NO;
+        self.textAdded = NO;
+        self.pageChanged = YES;
+        self.pageNumber = pageNumber;
+        self.maxPageNumber = maxPageNumber;
+        self.isForward = isForward;
+    }
+    
+    return self;
+}
+
 @end

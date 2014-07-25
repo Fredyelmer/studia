@@ -414,7 +414,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAi-N1-go1">
                                 <rect key="frame" x="490" y="724" width="45" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Rec" image="rec.png">
+                                <state key="normal" image="Record-Pressed-icon.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -427,6 +427,9 @@
                                 <state key="normal" title="Undo" image="undo.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="undo:" destination="cOT-VF-1aa" eventType="touchUpInside" id="SVD-7S-zn7"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="75t-Fd-3l2">
                                 <rect key="frame" x="978" y="734" width="32" height="28"/>
@@ -446,11 +449,11 @@
                                 <rect key="frame" x="5" y="54" width="1014" height="660"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zMY-7J-QW2" userLabel="temp Image View">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sVE-PJ-wbj" userLabel="main Image View">
                                 <rect key="frame" x="5" y="56" width="1014" height="660"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sVE-PJ-wbj" userLabel="main Image View">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zMY-7J-QW2" userLabel="temp Image View">
                                 <rect key="frame" x="5" y="56" width="1014" height="660"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -681,7 +684,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Lg-YR-MdO">
-                                <rect key="frame" x="787" y="734" width="25" height="27"/>
+                                <rect key="frame" x="778" y="732" width="29" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="preview.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -691,7 +694,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zi9-xp-EF2">
-                                <rect key="frame" x="883" y="734" width="25" height="27"/>
+                                <rect key="frame" x="888" y="732" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="next.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -701,7 +704,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgG-jR-Ms5">
-                                <rect key="frame" x="820" y="737" width="55" height="21"/>
+                                <rect key="frame" x="815" y="736" width="65" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1093,17 +1096,17 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Record-Pressed-icon.png" width="32" height="32"/>
         <image name="Text.png" width="32" height="32"/>
         <image name="Video tutorial icon.jpg" width="250" height="293"/>
         <image name="agenda.png" width="640" height="405"/>
         <image name="borracha.png" width="256" height="290"/>
         <image name="forrado.png" width="788" height="590"/>
-        <image name="quadrado.jpg" width="298" height="225"/>
         <image name="next.png" width="32" height="51"/>
         <image name="photo.png" width="64" height="64"/>
         <image name="preview.png" width="32" height="51"/>
+        <image name="quadrado.jpg" width="298" height="225"/>
         <image name="question.png" width="32" height="28"/>
-        <image name="rec.png" width="200" height="200"/>
         <image name="undo.png" width="256" height="256"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
