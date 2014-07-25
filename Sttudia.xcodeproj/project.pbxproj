@@ -26,6 +26,11 @@
 		0D9ECF6E1961867300882007 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6C1961867300882007 /* InfoPlist.strings */; };
 		0D9ECF701961867300882007 /* SttudiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6F1961867300882007 /* SttudiaTests.m */; };
 		0DA2FFA4197EA2E000C4ADA3 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA2FFA3197EA2E000C4ADA3 /* Page.m */; };
+		0DA6C91C1982C71E006AB299 /* question.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C9171982C71E006AB299 /* question.png */; };
+		0DA6C91D1982C71E006AB299 /* Text.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C9181982C71E006AB299 /* Text.png */; };
+		0DA6C91E1982C71E006AB299 /* preview.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C9191982C71E006AB299 /* preview.png */; };
+		0DA6C91F1982C71E006AB299 /* next.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C91A1982C71E006AB299 /* next.png */; };
+		0DA6C9201982C71E006AB299 /* photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C91B1982C71E006AB299 /* photo.png */; };
 		0DA75FE81981738D00BAE5E1 /* Record-Pressed-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA75FE71981738D00BAE5E1 /* Record-Pressed-icon.png */; };
 		0DA75FEB198175A700BAE5E1 /* VideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA75FEA198175A700BAE5E1 /* VideoPlayer.m */; };
 		0DA8EFA11976C052006A5589 /* ImagePickerLandscapeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA8EFA01976C052006A5589 /* ImagePickerLandscapeController.m */; };
@@ -94,6 +99,11 @@
 		0D9ECF6F1961867300882007 /* SttudiaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SttudiaTests.m; sourceTree = "<group>"; };
 		0DA2FFA2197EA2E000C4ADA3 /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
 		0DA2FFA3197EA2E000C4ADA3 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
+		0DA6C9171982C71E006AB299 /* question.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = question.png; sourceTree = "<group>"; };
+		0DA6C9181982C71E006AB299 /* Text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Text.png; sourceTree = "<group>"; };
+		0DA6C9191982C71E006AB299 /* preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = preview.png; sourceTree = "<group>"; };
+		0DA6C91A1982C71E006AB299 /* next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = next.png; sourceTree = "<group>"; };
+		0DA6C91B1982C71E006AB299 /* photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photo.png; sourceTree = "<group>"; };
 		0DA75FE71981738D00BAE5E1 /* Record-Pressed-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Record-Pressed-icon.png"; sourceTree = "<group>"; };
 		0DA75FE9198175A700BAE5E1 /* VideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayer.h; sourceTree = "<group>"; };
 		0DA75FEA198175A700BAE5E1 /* VideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayer.m; sourceTree = "<group>"; };
@@ -260,6 +270,11 @@
 		0D9ECF7F1961911100882007 /* AppImages */ = {
 			isa = PBXGroup;
 			children = (
+				0DA6C9171982C71E006AB299 /* question.png */,
+				0DA6C9181982C71E006AB299 /* Text.png */,
+				0DA6C9191982C71E006AB299 /* preview.png */,
+				0DA6C91A1982C71E006AB299 /* next.png */,
+				0DA6C91B1982C71E006AB299 /* photo.png */,
 				0DA75FE71981738D00BAE5E1 /* Record-Pressed-icon.png */,
 				710DE25B198032CD0095E34E /* quadrado.jpg */,
 				710DE259198032290095E34E /* forrado.png */,
@@ -426,12 +441,17 @@
 			files = (
 				0D63B589197833B20099797F /* MainStoryboard.storyboard in Resources */,
 				710DE25819802ED70095E34E /* agenda.png in Resources */,
+				0DA6C91D1982C71E006AB299 /* Text.png in Resources */,
 				710DE25C198032CD0095E34E /* quadrado.jpg in Resources */,
 				719FE17A1961D86200938952 /* rec.png in Resources */,
 				719FE17C1961DBF600938952 /* undo.png in Resources */,
+				0DA6C9201982C71E006AB299 /* photo.png in Resources */,
+				0DA6C91E1982C71E006AB299 /* preview.png in Resources */,
 				0D9ECF511961867300882007 /* InfoPlist.strings in Resources */,
 				0DA75FE81981738D00BAE5E1 /* Record-Pressed-icon.png in Resources */,
+				0DA6C91C1982C71E006AB299 /* question.png in Resources */,
 				0D9ECF5C1961867300882007 /* Images.xcassets in Resources */,
+				0DA6C91F1982C71E006AB299 /* next.png in Resources */,
 				48C52E681965CED200AD013F /* Video tutorial icon.jpg in Resources */,
 				719FE17E1961DC4200938952 /* borracha.png in Resources */,
 				710DE25A198032290095E34E /* forrado.png in Resources */,
