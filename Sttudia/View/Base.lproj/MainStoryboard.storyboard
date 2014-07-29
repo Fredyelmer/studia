@@ -456,9 +456,10 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zMY-7J-QW2" userLabel="temp Image View">
                                 <rect key="frame" x="5" y="56" width="1014" height="660"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
                             </imageView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vct-qW-I0A" customClass="ColorPickerView">
-                                <rect key="frame" x="0.0" y="51" width="440" height="382"/>
+                                <rect key="frame" x="0.0" y="51" width="440" height="420"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pof-5D-idQ" customClass="ColorBarPicker">
@@ -580,6 +581,16 @@
                                             <action selector="setCustomColor:" destination="cOT-VF-1aa" eventType="touchUpInside" id="W1E-oB-vEY"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zyO-gU-rMa">
+                                        <rect key="frame" x="197" y="380" width="30" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Ok">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="closeColorPicker:" destination="cOT-VF-1aa" eventType="touchUpInside" id="cOF-WS-2U4"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <accessibility key="accessibilityConfiguration">
@@ -673,7 +684,7 @@
                                     <action selector="confirmImageEdition:" destination="cOT-VF-1aa" eventType="touchUpInside" id="Zn6-9R-xve"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0vR-rb-MlG">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0vR-rb-MlG" customClass="CorUIButton">
                                 <rect key="frame" x="334" y="3" width="45" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Borracha" image="borracha.png">
@@ -793,6 +804,7 @@
                         <outlet property="barPicker" destination="pof-5D-idQ" id="h4g-Qe-cOT"/>
                         <outlet property="colorPicker" destination="Vct-qW-I0A" id="mqi-IA-sFO"/>
                         <outlet property="confirmImageButton" destination="lvg-Hz-03v" id="jj3-dB-yi9"/>
+                        <outlet property="eraseButton" destination="0vR-rb-MlG" id="5We-wl-t0v"/>
                         <outlet property="layoutImageView" destination="LpN-uf-Xjo" id="u4B-fy-vDq"/>
                         <outlet property="layoutView" destination="B9K-PA-0Ot" id="YMi-sE-rQe"/>
                         <outlet property="mainImageView" destination="sVE-PJ-wbj" id="juW-5g-BeV"/>

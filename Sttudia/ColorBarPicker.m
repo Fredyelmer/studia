@@ -63,6 +63,7 @@
 #pragma mark	Properties
 - (void) setValue: (float) newValue
 {
+    NSLog(@"aca hue");
 	if (newValue != _value) {
 		_value = newValue;
 		

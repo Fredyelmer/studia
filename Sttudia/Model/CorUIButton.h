@@ -10,6 +10,8 @@
 
 @interface CorUIButton : UIButton
 
+@property Boolean state;
+
 - (void)initialise;
 - (void) buttonPressed;
 

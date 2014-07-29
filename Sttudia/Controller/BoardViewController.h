@@ -50,6 +50,8 @@
 @property (strong, nonatomic) IBOutlet ColorSquarePicker *squarePicker;
 
 @property (strong, nonatomic) IBOutletCollection(CorUIButton) NSArray *ColorButton;
+@property (strong, nonatomic) IBOutlet CorUIButton *eraseButton;
+
 
 @property (strong, nonatomic) IBOutlet UIButton *snapShotButtom;
 @property (strong, nonatomic) IBOutlet UIButton *recAudio;
@@ -82,7 +84,7 @@
 
 - (IBAction)addImage:(id)sender;
 - (IBAction)addText:(id)sender;
-- (IBAction)erasePressed:(id)sender;
+- (IBAction)erasePressed:(CorUIButton*)sender;
 - (IBAction)nextPage:(id)sender;
 - (IBAction)previewsPage:(id)sender;
 
@@ -93,5 +95,10 @@
 - (IBAction)setCustomColor:(CorUIButton *)sender;
 - (IBAction)setBackgroundView:(id)sender;
 - (IBAction)changeLayout:(UIButton *)sender;
+
+- (IBAction)closeColorPicker:(id)sender;
+
+- (IBAction)tapScreen:(id)sender;
+
 
 @end

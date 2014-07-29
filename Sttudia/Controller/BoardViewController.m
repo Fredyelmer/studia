@@ -63,6 +63,7 @@
     backGroundBlue = 255.0/255.0;
     
     [self.view setBackgroundColor:[UIColor colorWithRed:backGroundRed green:backGroundGreen blue:backGroundBlue alpha:1]];
+    [self selectCorButton];
     
     self.arraySnapshots = [[NSMutableArray alloc]init];
     self.arrayPoints = [[NSMutableArray alloc]init];
@@ -243,10 +244,13 @@
     }
 }
 
-- (IBAction)erasePressed:(id)sender{
+- (IBAction)erasePressed:(CorUIButton*)sender{
     isEraser = YES;
     
     brush = 20;
+    
+    [self selectCorButton];
+    sender.layer.borderColor = [[UIColor  yellowColor] CGColor];
 }
 
 - (IBAction)nextPage:(id)sender {
@@ -448,6 +452,7 @@
     {
         [colorButton initialise];
     }
+    _eraseButton.layer.borderColor = [[UIColor  lightGrayColor] CGColor];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -469,6 +474,7 @@
     
     isScreenTouched = YES;
     NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
+        [self.colorPicker setHidden:YES];
     }
    
 }
@@ -723,13 +729,25 @@
     brush = 5;
     isEraser = NO;
     
-    UIColor *color = sender.backgroundColor;
-    [color getRed:&red green:&green blue:&blue alpha:&opacity];
-    
     [self selectCorButton];
     sender.layer.borderColor = [[UIColor  yellowColor] CGColor];
     
-    [self.colorPicker setHidden:YES];
+    if (sender.state) {
+        //ativa acao de cor customizado
+        UIColor *color = _sourceColorButton.backgroundColor = sender.backgroundColor;
+        [color getHue:&_hue saturation:&_saturation brightness:&_brightness alpha:&opacity];
+        _barPicker.value = _hue;
+        _squarePicker.hue = _hue;
+        _squarePicker.value = CGPointMake(_saturation, _brightness);
+        [self.colorPicker setHidden: NO];
+        sender.state = NO;
+    } else {
+        //ativa o cor que vai se usar
+        UIColor *color = sender.backgroundColor;
+        [color getRed:&red green:&green blue:&blue alpha:&opacity];
+        [sender setState:YES];
+        [self.colorPicker setHidden:YES];
+    }
 }
 
 #pragma mark - AddTextMethods
@@ -813,6 +831,7 @@
 
 {
     _hue = sender.value;
+    
 	_squarePicker.hue = _hue;
 	
 	[self updateResultColor];
@@ -862,6 +881,11 @@
     [self.layoutView setHidden:YES];
 }
 
+- (IBAction)closeColorPicker:(id)sender
+{
+    [_colorPicker setHidden:YES];
+}
+
 - (IBAction)takeSquareValue:(ColorSquarePicker *)sender
 {
     _saturation = sender.value.x;
@@ -872,11 +896,13 @@
 
 - (void) updateResultColor
 {
-	_resultColorButton.backgroundColor = [UIColor colorWithHue: _hue saturation: _saturation brightness: _brightness alpha: 1.0f];
-    
+    UIColor *color = [UIColor colorWithHue: _hue saturation: _saturation brightness: _brightness alpha: 1.0f];
+	_resultColorButton.backgroundColor = color;
+    [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)color];
 }
 
 - (IBAction)undo:(id)sender {
+    
     NSLog(@"undo");
     //CGContextRestoreGState();
 }
