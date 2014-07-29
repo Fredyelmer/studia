@@ -77,6 +77,9 @@
     [self.colorPicker setHidden:YES];
     [self.layoutView setHidden:YES];
     [self.squarePicker setHue:0.2];
+    
+    [[[self.ColorButton objectAtIndex:0 ] layer] setBorderColor:[[UIColor  yellowColor] CGColor]];
+
     // self.squarePicker up
     
     UILongPressGestureRecognizer *longPressGesture1 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
@@ -729,6 +732,7 @@
     brush = 5;
     isEraser = NO;
     
+    selectedButton = sender.tag;
     [self selectCorButton];
     sender.layer.borderColor = [[UIColor  yellowColor] CGColor];
     
