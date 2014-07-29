@@ -77,6 +77,12 @@
 @property (strong, nonatomic) UITextField* currentTextField;
 @property (strong, nonatomic) NSMutableArray* arrayPages;
 @property (strong, nonatomic) IBOutlet UILabel *pageNumberLabel;
+@property (strong, nonatomic) IBOutlet UIButton *undoButton;
+@property (strong, nonatomic) IBOutlet UIButton *redoButton;
+@property (strong, nonatomic) IBOutlet UIButton *backButton;
+
+@property (strong, nonatomic) NSMutableArray* arrayUndo;
+@property (strong, nonatomic) NSMutableArray* arrayRedo;
 
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;
