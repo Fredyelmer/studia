@@ -422,7 +422,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J7F-3u-two">
-                                <rect key="frame" x="281" y="3" width="45" height="45"/>
+                                <rect key="frame" x="284" y="2" width="45" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Undo" image="undo.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -685,7 +685,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0vR-rb-MlG" customClass="CorUIButton">
-                                <rect key="frame" x="334" y="3" width="45" height="45"/>
+                                <rect key="frame" x="448" y="2" width="45" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Borracha" image="borracha.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -794,6 +794,16 @@
                                     <action selector="setBackgroundView:" destination="cOT-VF-1aa" eventType="touchUpInside" id="dau-78-UcT"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5dp-Fh-fuJ">
+                                <rect key="frame" x="358" y="2" width="45" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="redo.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="redo:" destination="cOT-VF-1aa" eventType="touchUpInside" id="Xfv-Bm-HSF"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -801,6 +811,7 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="addImageButton" destination="cSs-mD-fas" id="Z2M-7I-jW7"/>
+                        <outlet property="backButton" destination="1Lg-YR-MdO" id="VgR-qe-0R1"/>
                         <outlet property="barPicker" destination="pof-5D-idQ" id="h4g-Qe-cOT"/>
                         <outlet property="colorPicker" destination="Vct-qW-I0A" id="mqi-IA-sFO"/>
                         <outlet property="confirmImageButton" destination="lvg-Hz-03v" id="jj3-dB-yi9"/>
@@ -811,12 +822,14 @@
                         <outlet property="pageNumberLabel" destination="wgG-jR-Ms5" id="DxD-Ih-pb4"/>
                         <outlet property="pauseRecAudio" destination="Rd0-cs-JBD" id="x9S-Lh-tFX"/>
                         <outlet property="recAudio" destination="Gwd-3y-oKD" id="ZVt-Ke-qIo"/>
+                        <outlet property="redoButton" destination="5dp-Fh-fuJ" id="pj8-P5-aBY"/>
                         <outlet property="resultColorButton" destination="RRh-b3-bS6" id="Lu7-mC-6mn"/>
                         <outlet property="snapShotButtom" destination="kR3-oG-Xxm" id="LNn-T1-w3n"/>
                         <outlet property="sourceColorButton" destination="WRC-So-RO2" id="OEw-KA-lbt"/>
                         <outlet property="squarePicker" destination="rph-gw-PWu" id="YGT-tf-mhz"/>
                         <outlet property="takeSnapshot" destination="kR3-oG-Xxm" id="ATJ-g4-XPQ"/>
                         <outlet property="tempImageView" destination="zMY-7J-QW2" id="EQk-Mm-as2"/>
+                        <outlet property="undoButton" destination="J7F-3u-two" id="bgj-Qc-rXS"/>
                         <outletCollection property="ColorButton" destination="dYJ-pN-4xZ" id="6e7-Ru-26x"/>
                         <outletCollection property="ColorButton" destination="gSS-gw-ipC" id="dfa-lg-bVx"/>
                         <outletCollection property="ColorButton" destination="r6M-bk-o8H" id="1je-Xa-wTR"/>
@@ -1119,7 +1132,8 @@
         <image name="preview.png" width="32" height="51"/>
         <image name="quadrado.jpg" width="298" height="225"/>
         <image name="question.png" width="32" height="28"/>
-        <image name="undo.png" width="256" height="256"/>
+        <image name="redo.png" width="128" height="128"/>
+        <image name="undo.png" width="64" height="64"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

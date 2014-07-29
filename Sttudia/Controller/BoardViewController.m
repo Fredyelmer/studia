@@ -125,6 +125,8 @@
     self.arrayImages = [[NSMutableArray alloc]init];
     self.arrayPages = [[NSMutableArray alloc]init];
     self.arrayTexts = [[NSMutableArray alloc]init];
+    self.arrayUndo = [[NSMutableArray alloc]init];
+    self.arrayRedo = [[NSMutableArray alloc]init];
     
     self.addImageButton.enabled = YES;
     self.addImageButton.hidden = NO;
@@ -137,6 +139,10 @@
     currentPageIndex = 0;
     
     self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
+    
+    self.undoButton.enabled = NO;
+    self.redoButton.enabled = NO;
+    self.backButton.enabled = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -362,6 +368,9 @@
     VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :YES];
     
     [self.arrayPoints addObject:parameter];
+    
+    self.backButton.enabled = YES;
+
 }
 
 - (IBAction)previewsPage:(id)sender {
@@ -395,8 +404,14 @@
         
         indexImage = 0;
         
-        //preenche a pagina com a informaçao anterior
+        
         currentPageIndex -= 1;
+        
+        //desabilita o botão de voltar
+        if (currentPageIndex == 0) {
+            self.backButton.enabled = NO;
+        }
+        //preenche a pagina com a informaçao anterior
         Page *currentPage = [self.arrayPages objectAtIndex:currentPageIndex];
         
         self.tempImageView.image = [currentPage drawView];
@@ -532,13 +547,18 @@
 {
     if(!isImageEditing){
         
-    UITouch *touch = [touches anyObject];
-    CGPoint currentPoint = [touch locationInView:self.mainImageView];
+        UITouch *touch = [touches anyObject];
+        CGPoint currentPoint = [touch locationInView:self.mainImageView];
     
-    totalInterval = [event timestamp]-self.lastTouch;
+        totalInterval = [event timestamp]-self.lastTouch;
     
-    lastPoint = currentPoint;
+        lastPoint = currentPoint;
         
+        UIImage *newImage = self.tempImageView.image;
+        
+        [self.arrayUndo addObject:newImage];
+        
+        self.undoButton.enabled = YES;
     }
 }
 
@@ -688,6 +708,24 @@
 
 -(void)moveImage: (UIPanGestureRecognizer *)recognizer
 {
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        
+        for (UIImageView* image in self.arrayImages) {
+            if ([image isEqual:recognizer.view]) {
+                currentImage = image;
+            }
+        }
+        UIImageView *image = self.arrayImages[indexImage];
+        CGPoint locationInImage = [recognizer locationInView:currentImage];
+        
+        CGPoint newAnchor = CGPointMake(locationInImage.x/image.frame.size.width, locationInImage.y/image.frame.size.height);
+        recognizer.view.layer.anchorPoint = newAnchor;
+        NSLog(@"%f, %f", image.frame.size.width, image.frame.size.height);
+        NSLog(@"%f, %f", recognizer.view.center.x, recognizer.view.center.y);
+        
+        
+    }
+    
     if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
     {
         CGPoint touchLocation = [recognizer locationInView:self.view];
@@ -907,9 +945,41 @@
 
 - (IBAction)undo:(id)sender {
     
+    UIImage *image = [self.arrayUndo lastObject];
+    
+    if (image) {
+        [self.arrayRedo addObject:image];
+        [self.arrayUndo removeLastObject];
+        self.tempImageView.image = [self.arrayUndo lastObject];
+        
+    }
+    
+    if ([self.arrayUndo count] == 0) {
+        self.undoButton.enabled = NO;
+    }
+    
+    self.redoButton.enabled = YES;
+    
     NSLog(@"undo");
     //CGContextRestoreGState();
 }
 
+- (IBAction)redo:(id)sender {
+    
+    UIImage *image = [self.arrayRedo lastObject];
+    
+    if (image) {
+        [self.arrayUndo addObject:image];
+        [self.arrayRedo removeLastObject];
+        self.tempImageView.image = image;
+        
+    }
+    
+    if ([self.arrayRedo count] == 0) {
+        self.redoButton.enabled = NO;
+    }
+    self.undoButton.enabled = YES;
+
+}
 
 @end
