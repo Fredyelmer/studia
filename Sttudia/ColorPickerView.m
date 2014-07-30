@@ -15,6 +15,16 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        
+    }
+    return self;
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        self.isEnable = NO;
     }
     return self;
 }
