@@ -22,6 +22,7 @@
     BOOL finishTextEdit;
     UIImageView *currentImage;
     UIWebView *webView;
+    CGPoint centerImage;
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -768,15 +769,10 @@
                 currentImage = image;
             }
         }
-        UIImageView *image = self.arrayImages[indexImage];
         CGPoint locationInImage = [recognizer locationInView:currentImage];
         
-        CGPoint newAnchor = CGPointMake(locationInImage.x/image.frame.size.width, locationInImage.y/image.frame.size.height);
+        CGPoint newAnchor = CGPointMake(locationInImage.x/currentImage.frame.size.width, locationInImage.y/currentImage.frame.size.height);
         recognizer.view.layer.anchorPoint = newAnchor;
-        NSLog(@"%f, %f", image.frame.size.width, image.frame.size.height);
-        NSLog(@"%f, %f", recognizer.view.center.x, recognizer.view.center.y);
-        
-        
     }
     
     if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
@@ -785,12 +781,23 @@
         
         recognizer.view.center = touchLocation;
     }
+    
 }
 
 -(void)rotateImage: (UIRotationGestureRecognizer *)recognizer
 {
+//    if (recognizer.state == UIGestureRecognizerStateBegan){
+//        if (recognizer.view.layer.anchorPoint.x != 0.5 && recognizer.view.layer.anchorPoint.y != 0.5) {
+//            float newCenterX = recognizer.view.layer.anchorPoint.x*recognizer.view.frame.size.width;
+//            float newCenterY = recognizer.view.layer.anchorPoint.y*recognizer.view.frame.size.height;
+//            recognizer.view.layer.anchorPoint = CGPointMake(0.5, 0.5);
+//            recognizer.view.center = CGPointMake(recognizer.view.center.x - newCenterX, recognizer.view.center.y - newCenterY);
+//        }
+//    }
+    
     if(recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
     {
+        
         recognizer.view.transform = CGAffineTransformRotate(recognizer.view.transform, recognizer.rotation);
         [recognizer setRotation:0];
     }
