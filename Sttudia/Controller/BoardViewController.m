@@ -952,18 +952,31 @@
 
 - (IBAction)setResultColor:(id)sender
 {
-//    NSLog(@"as %d",selectedButton);
-//    [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)_resultColorButton.backgroundColor];
+    [_colorPicker setHidden:YES];
 }
 
-- (IBAction)setSourceColor:(id)sender
+- (IBAction)setSourceColor:(CorUIButton*)sender
 {
-    //[[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)_sourceColorButton.backgroundColor];
+    for (CorUIButton *button in self.ColorButton)
+    {
+        if (button.state)
+        {
+            button.backgroundColor = sender.backgroundColor;
+        }
+    }
+    [self initPickerColor:sender.backgroundColor];
 }
 
 - (IBAction)setCustomColor:(CorUIButton *)sender
 {
-   // [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)sender.backgroundColor];
+    for (CorUIButton *button in self.ColorButton)
+    {
+        if (button.state)
+        {
+            button.backgroundColor = sender.backgroundColor;
+        }
+    }
+   [self initPickerColor:sender.backgroundColor];
 }
 
 - (IBAction)setBackgroundView:(id)sender

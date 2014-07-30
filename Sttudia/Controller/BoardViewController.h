@@ -96,7 +96,7 @@
 - (IBAction)takeBarValue:(ColorBarPicker *)sender;
 - (IBAction)ColorPressed:(CorUIButton *)sender;
 - (IBAction)setResultColor:(id)sender;
-- (IBAction)setSourceColor:(id)sender;
+- (IBAction)setSourceColor:(CorUIButton *)sender;
 - (IBAction)setCustomColor:(CorUIButton *)sender;
 - (IBAction)setBackgroundView:(id)sender;
 - (IBAction)changeLayout:(UIButton *)sender;
