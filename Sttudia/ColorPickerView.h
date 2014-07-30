@@ -10,5 +10,6 @@
 
 @interface ColorPickerView : UIView
 
+@property (assign, nonatomic) BOOL isEnable;
 
 @end

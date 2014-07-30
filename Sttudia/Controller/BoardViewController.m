@@ -35,6 +35,7 @@
 	float _brightness;
 }
 
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -52,9 +53,8 @@
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
-    red = 0.0/255.0;
-    green = 0.0/255.0;
-    blue = 0.0/255.0;
+    //inicializa o brush
+    [self setBrushColor:[UIColor blackColor]];
     brush = 5.0;
     opacity = 1.0;
     
@@ -62,8 +62,9 @@
     backGroundGreen = 255.0/255.0;
     backGroundBlue = 255.0/255.0;
     
+    
     [self.view setBackgroundColor:[UIColor colorWithRed:backGroundRed green:backGroundGreen blue:backGroundBlue alpha:1]];
-    [self selectCorButton];
+    [self selectedButton:[self.ColorButton objectAtIndex:0 ]];
     
     self.arraySnapshots = [[NSMutableArray alloc]init];
     self.arrayPoints = [[NSMutableArray alloc]init];
@@ -78,8 +79,6 @@
     [self.layoutView setHidden:YES];
     [self.squarePicker setHue:0.2];
     
-    [[[self.ColorButton objectAtIndex:0 ] layer] setBorderColor:[[UIColor  yellowColor] CGColor]];
-
     // self.squarePicker up
     
     UILongPressGestureRecognizer *longPressGesture1 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
@@ -143,6 +142,11 @@
     self.undoButton.enabled = NO;
     self.redoButton.enabled = NO;
     self.backButton.enabled = NO;
+}
+
+- (void) setBrushColor:(UIColor *) color
+{
+    [color getRed:&red green:&green blue:&blue alpha:&opacity];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -244,12 +248,12 @@
     if (gesture.state==UIGestureRecognizerStateBegan)
     {
         NSLog(@"long press: %d",[gesture.view tag]);
-        selectedButton = [gesture.view tag];
-        
-        _sourceColor = [[_ColorButton objectAtIndex:selectedButton] backgroundColor];
-        _sourceColorButton.backgroundColor = _sourceColor;
-        _resultColorButton.backgroundColor = _sourceColor;
-        [self.colorPicker setHidden:NO];
+//        selectedButton = [gesture.view tag];
+//        
+//        _sourceColor = [[_ColorButton objectAtIndex:selectedButton] backgroundColor];
+//        _sourceColorButton.backgroundColor = _sourceColor;
+//        _resultColorButton.backgroundColor = _sourceColor;
+//        [self.colorPicker setHidden:NO];
     }
 }
 
@@ -258,8 +262,7 @@
     
     brush = 20;
     
-    [self selectCorButton];
-    sender.layer.borderColor = [[UIColor  yellowColor] CGColor];
+    [self selectedButton:sender];
 }
 
 - (IBAction)nextPage:(id)sender {
@@ -464,34 +467,45 @@
     return UIInterfaceOrientationLandscapeLeft;
 }
 
-- (void) selectCorButton
+//inisializ e marca o botao seleccionado
+- (void) selectedButton:(CorUIButton*) button
 {
     for (CorUIButton *colorButton in self.ColorButton)
     {
         [colorButton initialise];
+        [colorButton setState:NO];
     }
+    //inicialisa botao borracha
     _eraseButton.layer.borderColor = [[UIColor  lightGrayColor] CGColor];
+    _eraseButton.state = NO;
+    
+    button.layer.borderColor = [[UIColor yellowColor] CGColor];
+    button.state = YES;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     
     mouseSwiped = NO;
-    if(!isImageEditing){
-    UITouch *touch = [touches anyObject];
-    lastPoint = [touch locationInView:self.mainImageView];
+    if(!isImageEditing)
+    {
+        UITouch *touch = [touches anyObject];
+        lastPoint = [touch locationInView:self.mainImageView];
 
 
-    if (!isScreenTouched) {
-        self.lastTouch = [event timestamp];
-    }
-    else{
-        self.lastTouch =[event timestamp]-totalInterval;
-    }
+        if (!isScreenTouched)
+        {
+            self.lastTouch = [event timestamp];
+        }
+        else
+        {
+            self.lastTouch =[event timestamp]-totalInterval;
+        }
 
     
-    isScreenTouched = YES;
-    NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
+        isScreenTouched = YES;
+        NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
+        //[[self.ColorButton objectAtIndex:selectedButton] setState:NO];
         [self.colorPicker setHidden:YES];
     }
    
@@ -770,26 +784,31 @@
     brush = 5;
     isEraser = NO;
     
-    selectedButton = sender.tag;
-    [self selectCorButton];
-    sender.layer.borderColor = [[UIColor  yellowColor] CGColor];
-    
-    if (sender.state) {
+    if (sender.state)
+    {
         //ativa acao de cor customizado
-        UIColor *color = _sourceColorButton.backgroundColor = sender.backgroundColor;
-        [color getHue:&_hue saturation:&_saturation brightness:&_brightness alpha:&opacity];
-        _barPicker.value = _hue;
-        _squarePicker.hue = _hue;
-        _squarePicker.value = CGPointMake(_saturation, _brightness);
-        [self.colorPicker setHidden: NO];
-        sender.state = NO;
-    } else {
+        [self initPickerColor:sender.backgroundColor];
+        //sender.state = NO;
+    }
+    else
+    {
+        [self selectedButton:sender];
         //ativa o cor que vai se usar
-        UIColor *color = sender.backgroundColor;
-        [color getRed:&red green:&green blue:&blue alpha:&opacity];
-        [sender setState:YES];
+        [self setBrushColor:sender.backgroundColor];
         [self.colorPicker setHidden:YES];
     }
+}
+
+//inisializa e mostra o menu de cores customizados
+- (void) initPickerColor:(UIColor *) color
+{
+    _sourceColorButton.backgroundColor = color;
+    _resultColorButton.backgroundColor = color;
+    [color getHue:&_hue saturation:&_saturation brightness:&_brightness alpha:&opacity];
+    _barPicker.value = _hue;
+    _squarePicker.hue = _hue;
+    _squarePicker.value = CGPointMake(_saturation, _brightness);
+    [self.colorPicker setHidden: NO];
 }
 
 #pragma mark - AddTextMethods
@@ -873,7 +892,6 @@
 
 {
     _hue = sender.value;
-    
 	_squarePicker.hue = _hue;
 	
 	[self updateResultColor];
@@ -881,18 +899,18 @@
 
 - (IBAction)setResultColor:(id)sender
 {
-    NSLog(@"as %d",selectedButton);
-    [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)_resultColorButton.backgroundColor];
+//    NSLog(@"as %d",selectedButton);
+//    [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)_resultColorButton.backgroundColor];
 }
 
 - (IBAction)setSourceColor:(id)sender
 {
-    [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)_sourceColorButton.backgroundColor];
+    //[[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)_sourceColorButton.backgroundColor];
 }
 
 - (IBAction)setCustomColor:(CorUIButton *)sender
 {
-    [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)sender.backgroundColor];
+   // [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)sender.backgroundColor];
 }
 
 - (IBAction)setBackgroundView:(id)sender
@@ -932,15 +950,22 @@
 {
     _saturation = sender.value.x;
     _brightness = sender.value.y;
-    
+
     [self updateResultColor];
 }
 
 - (void) updateResultColor
 {
     UIColor *color = [UIColor colorWithHue: _hue saturation: _saturation brightness: _brightness alpha: 1.0f];
-	_resultColorButton.backgroundColor = color;
-    [[self.ColorButton objectAtIndex:selectedButton] setBackgroundColor:(CGColorRef)color];
+    for (CorUIButton *button in self.ColorButton)
+    {
+        if (button.state)
+        {
+            button.backgroundColor = color;
+        }
+    }
+    _resultColorButton.backgroundColor = color;
+    [self setBrushColor:color];
 }
 
 - (IBAction)undo:(id)sender {

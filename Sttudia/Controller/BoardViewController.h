@@ -31,8 +31,6 @@
     CGFloat backGroundGreen;
     CGFloat backGroundBlue;
     
-    NSInteger selectedButton;
-    
     int maxPageIndex;
     int currentPageIndex;
 }
