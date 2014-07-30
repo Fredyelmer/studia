@@ -21,7 +21,7 @@
     BOOL isEraser;
     BOOL finishTextEdit;
     UIImageView *currentImage;
-    CGContextRef context;
+    UIWebView *webView;
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -142,6 +142,7 @@
     self.undoButton.enabled = NO;
     self.redoButton.enabled = NO;
     self.backButton.enabled = NO;
+    self.photoChooseView.hidden = YES;
 }
 
 - (void) setBrushColor:(UIColor *) color
@@ -570,9 +571,10 @@
         
         UIImage *newImage = self.tempImageView.image;
         
-        [self.arrayUndo addObject:newImage];
-        
-        self.undoButton.enabled = YES;
+        if (self.tempImageView.image) {
+            [self.arrayUndo addObject:newImage];
+            self.undoButton.enabled = YES;
+        }
     }
 }
 
@@ -697,10 +699,7 @@
 
 - (IBAction)addImage:(id)sender {
     
-    UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
-    pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    pickerLibrary.delegate = self;
-    [self presentViewController:pickerLibrary animated:YES completion:nil];
+    self.photoChooseView.hidden = NO;
     
 }
 -(void)resizingImage:(UIPinchGestureRecognizer *)recognizer
@@ -718,6 +717,60 @@
     
     recognizer.view.bounds = CGRectApplyAffineTransform(initialBounds, transform);
 
+}
+- (IBAction)addSavedPhoto:(id)sender {
+    
+    UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
+    pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    pickerLibrary.delegate = self;
+    [self presentViewController:pickerLibrary animated:YES completion:nil];
+    
+    self.photoChooseView.hidden = YES;
+    
+}
+- (IBAction)takePhoto:(id)sender {
+    
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    
+    [self presentViewController:picker animated:YES completion:nil];
+    
+    self.photoChooseView.hidden = YES;
+}
+
+- (IBAction)getPhotoInternet:(id)sender {
+    
+    webView = [[UIWebView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.origin.x, self.tempImageView.frame.origin.y, self.tempImageView.frame.size.width, self.tempImageView.frame.size.height)];
+    
+    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 0, webView.frame.size.width, 40)];
+    searchBar.delegate = self;
+    searchBar.showsCancelButton = YES;
+    searchBar.placeholder = @"Insira nome da foto";
+
+    
+    [webView addSubview:searchBar];
+    [self.view addSubview:webView];
+    
+    self.photoChooseView.hidden = YES;
+}
+
+#pragma mark - UISearchBarDelegateMethods
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    NSString *url = @"http://google.com.br";
+    NSURL *nsurl = [NSURL URLWithString:url];
+    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:nsurl];
+    [webView loadRequest:nsrequest];
+
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    webView.hidden = YES;
+    [searchBar resignFirstResponder];
 }
 
 -(void)moveImage: (UIPanGestureRecognizer *)recognizer
@@ -779,6 +832,39 @@
     
 }
 
+#pragma mark - ImagePickerControllerDelegateMethod
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+	[self dismissViewControllerAnimated:NO completion:nil];
+	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    
+    UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, self.tempImageView.frame.size.height/2, 300, 300)];
+    isImageEditing = YES;
+    
+    customImage.image = choseImage;
+    customImage.contentMode = UIViewContentModeScaleAspectFill;
+    customImage.userInteractionEnabled = YES;
+    
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
+    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
+    
+    [customImage addGestureRecognizer:pinchGesture];
+    [customImage addGestureRecognizer:panGesture];
+    [customImage addGestureRecognizer:rotationGesture];
+    
+    [self.arrayImages addObject:customImage];
+    
+    [self.view addSubview:customImage];
+    
+    self.addImageButton.enabled = NO;
+    self.addImageButton.hidden = YES;
+    self.confirmImageButton.enabled = YES;
+    self.confirmImageButton.hidden = NO;
+    
+}
+
+
 - (IBAction)ColorPressed:(CorUIButton *)sender
 {
     brush = 5;
@@ -830,39 +916,6 @@
     self.currentTextField = textField;
     
     [self.view addSubview:textField];
-}
-
-
-#pragma mark - ImagePickerControllerDelegateMethod
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	[self dismissViewControllerAnimated:NO completion:nil];
-	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    
-    UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, self.tempImageView.frame.size.height/2, 300, 300)];
-    isImageEditing = YES;
-    
-    customImage.image = choseImage;
-    customImage.contentMode = UIViewContentModeScaleAspectFill;
-    customImage.userInteractionEnabled = YES;
-    
-    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
-    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
-    
-    [customImage addGestureRecognizer:pinchGesture];
-    [customImage addGestureRecognizer:panGesture];
-    [customImage addGestureRecognizer:rotationGesture];
-    
-    [self.arrayImages addObject:customImage];
-    
-    [self.view addSubview:customImage];
-    
-    self.addImageButton.enabled = NO;
-    self.addImageButton.hidden = YES;
-    self.confirmImageButton.enabled = YES;
-    self.confirmImageButton.hidden = NO;
-
 }
 
 #pragma mark - UItextFieldDelegateMethods

@@ -17,7 +17,7 @@
 #import "Page.h"
 
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -60,6 +60,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;
 @property (strong, nonatomic) IBOutlet UIImageView *layoutImageView;
+@property (strong, nonatomic) IBOutlet UIView *photoChooseView;
 
 @property (strong, nonatomic) NSMutableArray* arraySnapshots;
 @property (strong, nonatomic) IBOutlet UIButton *takeSnapshot;
@@ -102,7 +103,6 @@
 
 - (IBAction)closeColorPicker:(id)sender;
 
-- (IBAction)tapScreen:(id)sender;
 
 
 @end
