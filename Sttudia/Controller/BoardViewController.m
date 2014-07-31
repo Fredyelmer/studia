@@ -30,9 +30,9 @@
 
 @implementation BoardViewController
 {
-    float _hue;
-	float _saturation;
-	float _brightness;
+    CGFloat _hue;
+	CGFloat _saturation;
+	CGFloat _brightness;
 }
 
 
@@ -248,7 +248,7 @@
 {
     if (gesture.state==UIGestureRecognizerStateBegan)
     {
-        NSLog(@"long press: %d",[gesture.view tag]);
+        NSLog(@"long press: %ld",(long)[gesture.view tag]);
 //        selectedButton = [gesture.view tag];
 //        
 //        _sourceColor = [[_ColorButton objectAtIndex:selectedButton] backgroundColor];
@@ -911,17 +911,68 @@
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.textAlignment = NSTextAlignmentCenter;
+    //[textField invalidateIntrinsicContentSize];
     textField.delegate = self;
     
     self.currentTextField = textField;
+    //[self.currentTextField invalidateIntrinsicContentSize];
     
     [self.view addSubview:textField];
 }
 
 #pragma mark - UItextFieldDelegateMethods
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSLog(@"ee.e");
+    CGRect bounds = self.currentTextField.bounds;
+    [UIView animateWithDuration:0.1 animations:^{
+        textField.frame = CGRectMake(bounds.origin.x, bounds.origin.y, bounds.size.width + 10, bounds.size.height);
+       // [textField invalidateIntrinsicContentSize];
+    }];
+    return YES;
+}
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    
+    [UIView animateWithDuration:0.1 animations:^{
+        [self.currentTextField invalidateIntrinsicContentSize];
+    }];
+    //[self.currentTextField invalidateIntrinsicContentSize];
+    NSLog(@"editing");
+    
+    return YES;
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self.currentTextField invalidateIntrinsicContentSize];
+    NSLog(@"edit");
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.1 animations:^{
+        [self.currentTextField invalidateIntrinsicContentSize];
+    }];
+    //[self.currentTextField invalidateIntrinsicContentSize];
+    NSLog(@"end editing");
+    return YES;
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.1 animations:^{
+        [self.currentTextField invalidateIntrinsicContentSize];
+    }];
+    //[self.currentTextField invalidateIntrinsicContentSize];
+    NSLog(@"did end editing");
+
+}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    self.currentTextField.userInteractionEnabled = YES;
+    //self.currentTextField.userInteractionEnabled = YES;
+    textField.userInteractionEnabled = YES;
+
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
     UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
@@ -936,6 +987,7 @@
     [self.arrayTexts addObject:self.currentTextField];
     
     self.currentTextField = nil;
+    NSLog(@"teclado");
     
     return YES;
 }
