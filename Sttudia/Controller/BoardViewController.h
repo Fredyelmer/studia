@@ -15,9 +15,11 @@
 #import "ColorSquarePicker.h"
 #import "SourceColorView.h"
 #import "Page.h"
+#import "PhotoRequest.h"
+#import "PhotoRepository.h"
+#import "customCell.h"
 
-
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, UIPopoverControllerDelegate, UIGestureRecognizerDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -33,6 +35,8 @@
     
     int maxPageIndex;
     int currentPageIndex;
+    
+    UICollectionView *_collectionView;
 }
 
 //comentario de teste
