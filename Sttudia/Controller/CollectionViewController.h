@@ -11,11 +11,13 @@
 #import "PhotoRepository.h"
 #import "customCell.h"
 
-@interface CollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, PhotoRequestDelegate>
+@interface CollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PhotoRequestDelegate, UISearchBarDelegate>
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSMutableArray *photoArray;
 @property (strong, nonatomic) NSString *key;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
+
 
 @end
 

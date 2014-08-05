@@ -40,10 +40,11 @@
     NSString *keyWithPlus = [key stringByReplacingOccurrencesOfString: @" " withString:@"+"];
     NSString *strUrl = [NSString stringWithFormat:@"http://pixabay.com/api/?username=ranagaishi&key=4ad343b8010dd6deca29&search_term=%@",keyWithPlus];
     NSURL* url = [NSURL URLWithString:strUrl];
+    
     return url;
 }
 
--(void) requestForRecipes:(id<PhotoRequestDelegate>) delegate
+-(void) requestForPhotos:(id<PhotoRequestDelegate>) delegate
 {
     
     [self setDelegate: delegate];

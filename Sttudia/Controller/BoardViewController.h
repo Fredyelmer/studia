@@ -19,7 +19,7 @@
 #import "PhotoRepository.h"
 #import "customCell.h"
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, UIPopoverControllerDelegate, UIGestureRecognizerDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UIPopoverControllerDelegate, UIGestureRecognizerDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -43,8 +43,8 @@
 @property (strong, nonatomic) IBOutlet ColorPickerView *colorPicker;
 @property (strong, nonatomic) IBOutlet UIView *layoutView;
 
-@property (nonatomic) UIColor* sourceColor;
-@property (nonatomic) UIColor* resultColor;
+//@property (nonatomic) UIColor* sourceColor;
+//@property (nonatomic) UIColor* resultColor;
 @property (strong, nonatomic) IBOutlet CorUIButton *resultColorButton;
 @property (strong, nonatomic) IBOutlet CorUIButton *sourceColorButton;
 
@@ -86,6 +86,9 @@
 
 @property (strong, nonatomic) NSMutableArray* arrayUndo;
 @property (strong, nonatomic) NSMutableArray* arrayRedo;
+@property (strong, nonatomic) IBOutlet UIImageView *topBar;
+@property (strong, nonatomic) IBOutlet UIImageView *bottonBar;
+
 
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;

@@ -24,7 +24,7 @@
 
 @property (strong, nonatomic) NSString* key;
 - (id)initWithKey : (NSString*) key;
-- (void) requestForRecipes:(id<PhotoRequestDelegate>) delegate;
+- (void) requestForPhotos:(id<PhotoRequestDelegate>) delegate;
 - (NSURL*) urlForKey: (NSString*)key;
 
 @end

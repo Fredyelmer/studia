@@ -755,23 +755,6 @@
     self.photoChooseView.hidden = YES;
 }
 
-#pragma mark - UISearchBarDelegateMethods
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    NSString *url = @"http://google.com.br";
-    NSURL *nsurl = [NSURL URLWithString:url];
-    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:nsurl];
-    [webView loadRequest:nsrequest];
-
-    [searchBar resignFirstResponder];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    webView.hidden = YES;
-    [searchBar resignFirstResponder];
-}
-
 -(void)resizingImage:(UIPinchGestureRecognizer *)recognizer
 {
     [self.view bringSubviewToFront:recognizer.view];
@@ -947,7 +930,6 @@
 	return ![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]];
 }
 
-
 #pragma mark - ImagePickerControllerDelegateMethod
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -981,6 +963,10 @@
     
     [self.view addSubview:customImage];
     
+    [self.topBar bringSubviewToFront:self.view];
+    [self.bottonBar bringSubviewToFront:self.view];
+    
+    
     self.addImageButton.enabled = NO;
     self.addImageButton.hidden = YES;
     self.confirmImageButton.enabled = YES;
@@ -988,6 +974,7 @@
     
 }
 
+#pragma mark - ColorMethods
 
 - (IBAction)ColorPressed:(CorUIButton *)sender
 {

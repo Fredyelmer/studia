@@ -1,20 +1,19 @@
 //
-//  customCell.m
+//  CustomCell.m
 //  Sttudia
 //
-//  Created by Ricardo Nagaishi on 31/07/14.
+//  Created by Ricardo Nagaishi on 05/08/14.
 //  Copyright (c) 2014 Ricardo Nagaishi. All rights reserved.
 //
 
-#import "customCell.h"
+#import "CustomCell.h"
 
-@implementation customCell
+@implementation CustomCell
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
     }
     return self;
 }

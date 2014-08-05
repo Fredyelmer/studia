@@ -850,6 +850,7 @@
                         <outlet property="addImageButton" destination="cSs-mD-fas" id="Z2M-7I-jW7"/>
                         <outlet property="backButton" destination="1Lg-YR-MdO" id="VgR-qe-0R1"/>
                         <outlet property="barPicker" destination="pof-5D-idQ" id="h4g-Qe-cOT"/>
+                        <outlet property="bottonBar" destination="jci-4u-whL" id="try-KA-a9d"/>
                         <outlet property="colorPicker" destination="Vct-qW-I0A" id="mqi-IA-sFO"/>
                         <outlet property="confirmImageButton" destination="lvg-Hz-03v" id="jj3-dB-yi9"/>
                         <outlet property="eraseButton" destination="0vR-rb-MlG" id="5We-wl-t0v"/>
@@ -867,6 +868,7 @@
                         <outlet property="squarePicker" destination="rph-gw-PWu" id="YGT-tf-mhz"/>
                         <outlet property="takeSnapshot" destination="kR3-oG-Xxm" id="ATJ-g4-XPQ"/>
                         <outlet property="tempImageView" destination="zMY-7J-QW2" id="EQk-Mm-as2"/>
+                        <outlet property="topBar" destination="S2P-v6-Xrb" id="qVn-kx-TOL"/>
                         <outlet property="undoButton" destination="J7F-3u-two" id="bgj-Qc-rXS"/>
                         <outletCollection property="ColorButton" destination="dYJ-pN-4xZ" id="6e7-Ru-26x"/>
                         <outletCollection property="ColorButton" destination="gSS-gw-ipC" id="dfa-lg-bVx"/>
@@ -1043,61 +1045,56 @@
                         <viewControllerLayoutGuide type="bottom" id="YuF-se-cUs"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Sgl-9b-qJs">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <searchBar contentMode="redraw" fixedFrame="YES" showsSearchResultsButton="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ea8-Lx-VRT">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
+                            </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="93d-7B-eR4">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                                <rect key="frame" x="0.0" y="44" width="768" height="980"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hJ0-d3-hhB">
-                                    <size key="itemSize" width="105" height="115"/>
-                                    <size key="headerReferenceSize" width="50" height="50"/>
+                                    <size key="itemSize" width="100" height="100"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="b0s-J5-8I6" customClass="customCell">
-                                        <rect key="frame" x="0.0" y="50" width="105" height="115"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="b0s-J5-8I6" customClass="CustomCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="105" height="115"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kpl-Rc-j7h">
-                                                    <rect key="frame" x="0.0" y="0.0" width="105" height="115"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <connections>
-                                            <outlet property="imageView" destination="Kpl-Rc-j7h" id="8T7-uh-Nml"/>
+                                            <outlet property="imageView" destination="Kpl-Rc-j7h" id="SRA-nm-wWI"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="8KK-hi-Zeu">
-                                    <rect key="frame" x="0.0" y="0.0" width="1024" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <searchBar contentMode="redraw" fixedFrame="YES" showsSearchResultsButton="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ea8-Lx-VRT">
-                                            <rect key="frame" x="0.0" y="3" width="1024" height="44"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                            <textInputTraits key="textInputTraits"/>
-                                            <scopeButtonTitles>
-                                                <string>Title</string>
-                                                <string>Title</string>
-                                            </scopeButtonTitles>
-                                        </searchBar>
-                                    </subviews>
-                                </collectionReusableView>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="93d-7B-eR4" id="O1m-dE-zb5"/>
+                        <outlet property="searchBar" destination="Ea8-Lx-VRT" id="b2F-ch-lv6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7AJ-SJ-euy" userLabel="First Responder" sceneMemberID="firstResponder"/>

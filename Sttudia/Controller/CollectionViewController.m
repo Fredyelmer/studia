@@ -46,26 +46,12 @@
     // Do any additional setup after loading the view.
     
     self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    
     _queue = [[NSOperationQueue alloc] init];
     _photoNamesToRenderers = [[NSMutableDictionary alloc] init];
     _photoNamesToRenderingOperations = [[NSMutableDictionary alloc] init];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    
-    if(!_photos && !_photoRequest)
-    {
-        // quando a view for aparecer é criada uma request
-        _photoRequest = [[PhotoRequest alloc] initWithKey:self.key];
-        
-        // E a request é disparada levando em conta o grupo recebido na inicialização
-        [_photoRequest requestForRecipes:self];
-        
-        
-    }
+    self.searchBar.delegate = self;
     
 }
 
@@ -77,17 +63,11 @@
 }
 
 #pragma mark UICollectionViewDelegateMethods
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    PhotoRepository *repository = [PhotoRepository sharedRepository];
-    
-    return [[repository lista]count];
-}
 
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    customCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
+    CustomCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     
     PhotoRepository *repository = [PhotoRepository sharedRepository];
     Photo* photo = [[repository lista]objectAtIndex:indexPath.row];
@@ -100,6 +80,7 @@
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [cell.imageView setImage:[UIImage imageWithData:imageData]];
+            cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
         }];
     }];
     
@@ -110,16 +91,16 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(50, 50);
+    return CGSizeMake(100, 100);
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return CGSizeMake(0, 40);
-    }
-    return CGSizeMake(0, 40);
+    PhotoRepository *repository = [PhotoRepository sharedRepository];
+    
+    return [[repository lista]count];
 }
+
 
 #pragma mark - PhotoRequestMethods
 -(void) request: (PhotoRequest*) request didFinishWithObject:(id) object
@@ -167,6 +148,8 @@
     // Este bloco irá executar fora da Main Queue
     [_queue addOperation:operation];
     
+    [self.collectionView reloadData];
+    
 }
 
 -(void) request: (PhotoRequest*) request didFailWithError:(NSError*) error
@@ -174,6 +157,21 @@
     NSLog(@"error with stocks request: %@",error);
     
     _photoRequest = nil;
+}
+
+#pragma mark - UISearchBarDelegateMethods
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    _photoRequest = [[PhotoRequest alloc]initWithKey:searchBar.text];
+    [_photoRequest requestForPhotos:self];
+    
+    [searchBar resignFirstResponder];
+    [self.collectionView reloadData];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
 }
 
 @end

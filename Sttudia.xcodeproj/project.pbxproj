@@ -38,11 +38,11 @@
 		0DA7B58E198ABA7500D268E1 /* PhotoRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA7B58D198ABA7500D268E1 /* PhotoRepository.m */; };
 		0DA7B591198ABACE00D268E1 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA7B590198ABACE00D268E1 /* Photo.m */; };
 		0DA7B593198AC1DB00D268E1 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA7B592198AC1DB00D268E1 /* placeholder.png */; };
-		0DA7B596198AC41400D268E1 /* customCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA7B595198AC41400D268E1 /* customCell.m */; };
 		0DA7B599198ACECB00D268E1 /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA7B598198ACECB00D268E1 /* CollectionViewController.m */; };
 		0DA8EFA11976C052006A5589 /* ImagePickerLandscapeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA8EFA01976C052006A5589 /* ImagePickerLandscapeController.m */; };
 		0DA8EFA41976F772006A5589 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA8EFA31976F772006A5589 /* Image.m */; };
 		0DAACA1A19897974003B262D /* PhotoRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAACA1919897974003B262D /* PhotoRequest.m */; };
+		0DAB2FBD19912234002E3EBB /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAB2FBC19912234002E3EBB /* CustomCell.m */; };
 		48C52E681965CED200AD013F /* Video tutorial icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 48C52E671965CED200AD013F /* Video tutorial icon.jpg */; };
 		48C52E8A1965E52D00AD013F /* BoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E7D1965E52D00AD013F /* BoardViewController.m */; };
 		48C52E8B1965E52D00AD013F /* ClassesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C52E7F1965E52D00AD013F /* ClassesViewController.m */; };
@@ -121,8 +121,6 @@
 		0DA7B58F198ABACE00D268E1 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		0DA7B590198ABACE00D268E1 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 		0DA7B592198AC1DB00D268E1 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
-		0DA7B594198AC41400D268E1 /* customCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = customCell.h; sourceTree = "<group>"; };
-		0DA7B595198AC41400D268E1 /* customCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = customCell.m; sourceTree = "<group>"; };
 		0DA7B597198ACECB00D268E1 /* CollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewController.h; sourceTree = "<group>"; };
 		0DA7B598198ACECB00D268E1 /* CollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewController.m; sourceTree = "<group>"; };
 		0DA8EF9F1976C052006A5589 /* ImagePickerLandscapeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerLandscapeController.h; sourceTree = "<group>"; };
@@ -131,6 +129,8 @@
 		0DA8EFA31976F772006A5589 /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
 		0DAACA1819897974003B262D /* PhotoRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoRequest.h; sourceTree = "<group>"; };
 		0DAACA1919897974003B262D /* PhotoRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoRequest.m; sourceTree = "<group>"; };
+		0DAB2FBB19912234002E3EBB /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
+		0DAB2FBC19912234002E3EBB /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCell.m; sourceTree = "<group>"; };
 		48C52E671965CED200AD013F /* Video tutorial icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Video tutorial icon.jpg"; sourceTree = "<group>"; };
 		48C52E7C1965E52D00AD013F /* BoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardViewController.h; sourceTree = "<group>"; };
 		48C52E7D1965E52D00AD013F /* BoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardViewController.m; sourceTree = "<group>"; };
@@ -357,8 +357,8 @@
 				0DA7B58D198ABA7500D268E1 /* PhotoRepository.m */,
 				0DA7B58F198ABACE00D268E1 /* Photo.h */,
 				0DA7B590198ABACE00D268E1 /* Photo.m */,
-				0DA7B594198AC41400D268E1 /* customCell.h */,
-				0DA7B595198AC41400D268E1 /* customCell.m */,
+				0DAB2FBB19912234002E3EBB /* CustomCell.h */,
+				0DAB2FBC19912234002E3EBB /* CustomCell.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -508,6 +508,7 @@
 			files = (
 				0DA7B599198ACECB00D268E1 /* CollectionViewController.m in Sources */,
 				710DE25419801FA00095E34E /* ColorSquarePicker.m in Sources */,
+				0DAB2FBD19912234002E3EBB /* CustomCell.m in Sources */,
 				48C52E901965E52D00AD013F /* TutorialViewController.m in Sources */,
 				0DA75FEB198175A700BAE5E1 /* VideoPlayer.m in Sources */,
 				710DE24F19801FA00095E34E /* ColorBarView.m in Sources */,
@@ -526,7 +527,6 @@
 				0DAACA1A19897974003B262D /* PhotoRequest.m in Sources */,
 				710DE25219801FA00095E34E /* ColorBarPicker.m in Sources */,
 				0DA7B591198ABACE00D268E1 /* Photo.m in Sources */,
-				0DA7B596198AC41400D268E1 /* customCell.m in Sources */,
 				0DA2FFA4197EA2E000C4ADA3 /* Page.m in Sources */,
 				710DE25019801FA00095E34E /* ColorPickerView.m in Sources */,
 				48C52E8E1965E52D00AD013F /* SpecificClassViewController.m in Sources */,
