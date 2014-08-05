@@ -33,6 +33,8 @@
     
     int maxPageIndex;
     int currentPageIndex;
+    
+    UICollectionView *_collectionView;
 }
 
 @property (nonatomic,strong) UIPopoverController *popoverColorPicker;
@@ -75,6 +77,9 @@
 
 @property (strong, nonatomic) NSMutableArray* arrayUndo;
 @property (strong, nonatomic) NSMutableArray* arrayRedo;
+@property (strong, nonatomic) IBOutlet UIImageView *topBar;
+@property (strong, nonatomic) IBOutlet UIImageView *bottonBar;
+
 
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;

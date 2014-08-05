@@ -23,6 +23,9 @@
     UIImageView *currentImage;
     UIWebView *webView;
     CGPoint centerImage;
+    CGFloat lastScale;
+    CGFloat lastRotation;
+    
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -692,28 +695,16 @@
     self.photoChooseView.hidden = NO;
     
 }
--(void)resizingImage:(UIPinchGestureRecognizer *)recognizer
-{
-    static CGRect initialBounds;
-    
-    if(recognizer.state == UIGestureRecognizerStateBegan)
-    {
-        initialBounds = recognizer.view.bounds;
-    }
-    
-    CGFloat factor = [(UIPinchGestureRecognizer *)recognizer scale];
-    
-    CGAffineTransform transform = CGAffineTransformScale(CGAffineTransformIdentity, factor, factor);
-    
-    recognizer.view.bounds = CGRectApplyAffineTransform(initialBounds, transform);
-
-}
 - (IBAction)addSavedPhoto:(id)sender {
     
     UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
     pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     pickerLibrary.delegate = self;
     [self presentViewController:pickerLibrary animated:YES completion:nil];
+    
+//    UIPopoverController *popover = [[UIPopoverController alloc]initWithContentViewController:pickerLibrary];
+//    popover.delegate = self;
+//    [popover presentPopoverFromBarButtonItem:self.addImageButton permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
     
     self.photoChooseView.hidden = YES;
     
@@ -732,78 +723,173 @@
 
 - (IBAction)getPhotoInternet:(id)sender {
     
-    webView = [[UIWebView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.origin.x, self.tempImageView.frame.origin.y, self.tempImageView.frame.size.width, self.tempImageView.frame.size.height)];
-    
-    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 0, webView.frame.size.width, 40)];
-    searchBar.delegate = self;
-    searchBar.showsCancelButton = YES;
-    searchBar.placeholder = @"Insira nome da foto";
-
-    
-    [webView addSubview:searchBar];
-    [self.view addSubview:webView];
+//    webView = [[UIWebView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.origin.x, self.tempImageView.frame.origin.y, self.tempImageView.frame.size.width, self.tempImageView.frame.size.height)];
+//    
+//    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 0, webView.frame.size.width, 40)];
+//    searchBar.delegate = self;
+//    searchBar.showsCancelButton = YES;
+//    searchBar.placeholder = @"Insira nome da foto";
+//    
+//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+//    
+//    collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(self.tempImageView.frame.origin.x, self.tempImageView.frame.origin.y, self.tempImageView.frame.size.width, self.tempImageView.frame.size.height) collectionViewLayout:layout];
+//    [collectionView setDataSource:self];
+//    [collectionView setDelegate: self];
+//    
+//    [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
+//    
+//    [webView addSubview:searchBar];
+    [self.view addSubview:_collectionView];
     
     self.photoChooseView.hidden = YES;
 }
 
-#pragma mark - UISearchBarDelegateMethods
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+-(void)resizingImage:(UIPinchGestureRecognizer *)recognizer
 {
-    NSString *url = @"http://google.com.br";
-    NSURL *nsurl = [NSURL URLWithString:url];
-    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:nsurl];
-    [webView loadRequest:nsrequest];
-
-    [searchBar resignFirstResponder];
+    [self.view bringSubviewToFront:recognizer.view];
+    
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        lastScale = 1.0;
+        return;
+    }
+    
+    CGFloat scale = 1.0 - (lastScale - recognizer.scale);
+    
+//    static CGRect initialBounds;
+//    
+//    if(recognizer.state == UIGestureRecognizerStateBegan)
+//    {
+//        initialBounds = recognizer.view.bounds;
+//    }
+//    
+//    CGFloat factor = [(UIPinchGestureRecognizer *)recognizer scale];
+//    
+//    CGAffineTransform transform = CGAffineTransformScale(CGAffineTransformIdentity, factor, factor);
+//    
+//    recognizer.view.bounds = CGRectApplyAffineTransform(initialBounds, transform);
+    
+    CGAffineTransform currentTransform = recognizer.view.transform;
+    CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
+    
+    [recognizer.view setTransform:newTransform];
+    
+    lastScale = recognizer.scale;
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    webView.hidden = YES;
-    [searchBar resignFirstResponder];
-}
 
 -(void)moveImage: (UIPanGestureRecognizer *)recognizer
 {
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        
-        for (UIImageView* image in self.arrayImages) {
-            if ([image isEqual:recognizer.view]) {
-                currentImage = image;
-            }
-        }
-        CGPoint locationInImage = [recognizer locationInView:currentImage];
-        
-        CGPoint newAnchor = CGPointMake(locationInImage.x/currentImage.frame.size.width, locationInImage.y/currentImage.frame.size.height);
-        recognizer.view.layer.anchorPoint = newAnchor;
-    }
+//    if (recognizer.state == UIGestureRecognizerStateBegan) {
+//        
+//        for (UIImageView* image in self.arrayImages) {
+//            if ([image isEqual:recognizer.view]) {
+//                currentImage = image;
+//            }
+//        }
+//        CGPoint locationInImage = [recognizer locationInView:currentImage];
+//        
+//        CGPoint newAnchor = CGPointMake(locationInImage.x/currentImage.frame.size.width, locationInImage.y/currentImage.frame.size.height);
+//        recognizer.view.layer.anchorPoint = newAnchor;
+//    }
+//    
+//    if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
+//    {
+//        CGPoint touchLocation = [recognizer locationInView:self.view];
+//        
+//        recognizer.view.center = touchLocation;
+//    }
     
-    if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
-    {
-        CGPoint touchLocation = [recognizer locationInView:self.view];
-        
-        recognizer.view.center = touchLocation;
-    }
+    [[[recognizer view] layer] removeAllAnimations];
+    [self.view bringSubviewToFront:[recognizer view]];
+    CGPoint translatedPoint = [recognizer translationInView:self.view];
     
+    if([recognizer state] == UIGestureRecognizerStateBegan) {
+		
+		centerImage.x = [[recognizer view] center].x;
+		centerImage.y = [[recognizer view] center].y;
+	}
+    
+    translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
+	
+	[[recognizer view] setCenter:translatedPoint];
+    
+    if([recognizer state] == UIGestureRecognizerStateEnded) {
+		
+		CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.view].x);
+		CGFloat finalY = translatedPoint.y + (.35*[recognizer velocityInView:self.view].y);
+		
+		if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
+			
+			if(finalX < 0) {
+				
+				finalX = 0;
+			}
+			
+			else if(finalX > 768) {
+				
+				finalX = 768;
+			}
+			
+			if(finalY < 0) {
+				
+				finalY = 0;
+			}
+			
+			else if(finalY > 1024) {
+				
+				finalY = 1024;
+			}
+		}
+		
+		else {
+			
+			if(finalX < 0) {
+				
+				finalX = 0;
+			}
+			
+			else if(finalX > 1024) {
+				
+				finalX = 1024;
+			}
+			
+			if(finalY < 0) {
+				
+				finalY = 0;
+			}
+			
+			else if(finalY > 768) {
+				
+				finalY = 768;
+			}
+		}
+		
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:.35];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+		[[recognizer view] setCenter:CGPointMake(finalX, finalY)];
+		[UIView commitAnimations];
+	}
+
+
 }
 
 -(void)rotateImage: (UIRotationGestureRecognizer *)recognizer
 {
-//    if (recognizer.state == UIGestureRecognizerStateBegan){
-//        if (recognizer.view.layer.anchorPoint.x != 0.5 && recognizer.view.layer.anchorPoint.y != 0.5) {
-//            float newCenterX = recognizer.view.layer.anchorPoint.x*recognizer.view.frame.size.width;
-//            float newCenterY = recognizer.view.layer.anchorPoint.y*recognizer.view.frame.size.height;
-//            recognizer.view.layer.anchorPoint = CGPointMake(0.5, 0.5);
-//            recognizer.view.center = CGPointMake(recognizer.view.center.x - newCenterX, recognizer.view.center.y - newCenterY);
-//        }
-//    }
-    
-    if(recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
-    {
-        
-        recognizer.view.transform = CGAffineTransformRotate(recognizer.view.transform, recognizer.rotation);
-        [recognizer setRotation:0];
-    }
+    if([recognizer state] == UIGestureRecognizerStateEnded) {
+		
+		lastRotation = 0.0;
+		return;
+	}
+	
+	CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
+	
+	CGAffineTransform currentTransform = [recognizer view].transform;
+	CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
+	
+	[[recognizer view] setTransform:newTransform];
+	
+	lastRotation = [recognizer rotation];
 }
 
 //Termina processo de edição de imagens fixando-a e colocando atrás da tela de desenho.
@@ -828,22 +914,35 @@
     
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+	
+	return ![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]];
+}
+
 #pragma mark - ImagePickerControllerDelegateMethod
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	[self dismissViewControllerAnimated:NO completion:nil];
+	
+    [self dismissViewControllerAnimated:YES completion:nil];
 	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
-    UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, self.tempImageView.frame.size.height/2, 300, 300)];
-    isImageEditing = YES;
-    
+    UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2-150, self.tempImageView.frame.size.height/2-150, 300, 300)];
     customImage.image = choseImage;
     customImage.contentMode = UIViewContentModeScaleAspectFill;
+    
+    
+    isImageEditing = YES;
+    
     customImage.userInteractionEnabled = YES;
     
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
+    pinchGesture.delegate = self;
+    
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
+    panGesture.delegate = self;
+    
     UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
+    rotationGesture.delegate = self;
     
     [customImage addGestureRecognizer:pinchGesture];
     [customImage addGestureRecognizer:panGesture];
@@ -853,6 +952,10 @@
     
     [self.view addSubview:customImage];
     
+    [self.topBar bringSubviewToFront:self.view];
+    [self.bottonBar bringSubviewToFront:self.view];
+    
+    
     self.addImageButton.enabled = NO;
     self.addImageButton.hidden = YES;
     self.confirmImageButton.enabled = YES;
@@ -860,6 +963,7 @@
     
 }
 
+#pragma mark - ColorMethods
 
 - (IBAction)ColorPressed:(CorUIButton *)sender
 {
