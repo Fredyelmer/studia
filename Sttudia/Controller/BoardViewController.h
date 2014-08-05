@@ -17,7 +17,7 @@
 #import "ColorPickerViewController.h"
 #import "ThicknessViewController.h"
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
