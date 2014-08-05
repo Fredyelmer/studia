@@ -30,12 +30,6 @@
 @end
 
 @implementation BoardViewController
-{
-    CGFloat _hue;
-	CGFloat _saturation;
-	CGFloat _brightness;
-}
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -76,9 +70,7 @@
     [self.pauseRecAudio setEnabled:YES];
     
     //long press gesture
-    [self.colorPicker setHidden:YES];
     [self.layoutView setHidden:YES];
-    [self.squarePicker setHue:0.2];
     
     // self.squarePicker up
     
@@ -487,7 +479,6 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    
     mouseSwiped = NO;
     if(!isImageEditing)
     {
@@ -508,9 +499,7 @@
         isScreenTouched = YES;
         NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
         //[[self.ColorButton objectAtIndex:selectedButton] setState:NO];
-        [self.colorPicker setHidden:YES];
     }
-   
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -880,7 +869,7 @@
     if (sender.state)
     {
         //ativa acao de cor customizado
-        [self initPickerColor:sender.backgroundColor];
+        [self initPickerColor:sender];
         //sender.state = NO;
     }
     else
@@ -888,36 +877,44 @@
         [self selectedButton:sender];
         //ativa o cor que vai se usar
         [self setBrushColor:sender.backgroundColor];
-        [self.colorPicker setHidden:YES];
     }
 }
 
-//inisializa e mostra o menu de cores customizados
-- (void) initPickerColor:(UIColor *) color
+- (IBAction)changeThickness:(id)sender
 {
-    _sourceColorButton.backgroundColor = color;
-    _resultColorButton.backgroundColor = color;
-    [color getHue:&_hue saturation:&_saturation brightness:&_brightness alpha:&opacity];
-    _barPicker.value = _hue;
-    _squarePicker.hue = _hue;
-    _squarePicker.value = CGPointMake(_saturation, _brightness);
-    [self.colorPicker setHidden: NO];
+    ThicknessViewController *thicknessViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"Thickness"];
+    
+    self.popoverThickness = [[UIPopoverController alloc] initWithContentViewController:thicknessViewController];
+    [self.popoverThickness presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+//inisializa e mostra o menu de cores customizados
+- (void) initPickerColor:(CorUIButton *) sender
+{
+    UIColor *color = sender.backgroundColor;
+    ColorPickerViewController *colorPickerViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"ColorPickerPopover"];
+    
+    colorPickerViewController.color = color;
+    colorPickerViewController.delegate = self;
+    
+    self.popoverColorPicker = [[UIPopoverController alloc] initWithContentViewController:colorPickerViewController];
+    [self.popoverColorPicker presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 #pragma mark - AddTextMethods
 
 - (IBAction)addText:(id)sender {
     
-    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, self.tempImageView.frame.size.height/2, 300, 40)];
+    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2 - 50, self.tempImageView.frame.size.height/2 + 15, 100, 30)];
     textField.borderStyle = UITextBorderStyleRoundedRect;
-    textField.font = [UIFont systemFontOfSize:50];
+    textField.font = [UIFont systemFontOfSize:20];
     textField.placeholder = @"enter text";
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.keyboardType = UIKeyboardTypeDefault;
     textField.returnKeyType = UIReturnKeyDone;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    textField.textAlignment = NSTextAlignmentCenter;
+    textField.textAlignment = NSTextAlignmentLeft;
     //[textField invalidateIntrinsicContentSize];
     textField.delegate = self;
     
@@ -930,55 +927,16 @@
 #pragma mark - UItextFieldDelegateMethods
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    NSLog(@"ee.e");
-    CGRect bounds = self.currentTextField.bounds;
     [UIView animateWithDuration:0.1 animations:^{
-        textField.frame = CGRectMake(bounds.origin.x, bounds.origin.y, bounds.size.width + 10, bounds.size.height);
-       // [textField invalidateIntrinsicContentSize];
+        [textField sizeToFit];
     }];
     return YES;
 }
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    
-    [UIView animateWithDuration:0.1 animations:^{
-        [self.currentTextField invalidateIntrinsicContentSize];
-    }];
-    //[self.currentTextField invalidateIntrinsicContentSize];
-    NSLog(@"editing");
-    
-    return YES;
-}
 
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    [self.currentTextField invalidateIntrinsicContentSize];
-    NSLog(@"edit");
-}
-
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    [UIView animateWithDuration:0.1 animations:^{
-        [self.currentTextField invalidateIntrinsicContentSize];
-    }];
-    //[self.currentTextField invalidateIntrinsicContentSize];
-    NSLog(@"end editing");
-    return YES;
-}
-
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-    [UIView animateWithDuration:0.1 animations:^{
-        [self.currentTextField invalidateIntrinsicContentSize];
-    }];
-    //[self.currentTextField invalidateIntrinsicContentSize];
-    NSLog(@"did end editing");
-
-}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    //self.currentTextField.userInteractionEnabled = YES;
-    textField.userInteractionEnabled = YES;
+    self.currentTextField.userInteractionEnabled = YES;
+    //textField.userInteractionEnabled = YES;
 
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
@@ -991,51 +949,13 @@
     [self.currentTextField setBorderStyle:UITextBorderStyleNone];
     [self.currentTextField setNeedsDisplay];
     
-    [self.arrayTexts addObject:self.currentTextField];
+    //[self.arrayTexts addObject:self.currentTextField];
     
     self.currentTextField = nil;
     NSLog(@"teclado");
     
-    return YES;
-}
-
-
-- (IBAction)takeBarValue:(ColorBarPicker *)sender
-
-{
-    _hue = sender.value;
-	_squarePicker.hue = _hue;
-	
-	[self updateResultColor];
-}
-
-- (IBAction)setResultColor:(id)sender
-{
-    [_colorPicker setHidden:YES];
-}
-
-- (IBAction)setSourceColor:(CorUIButton*)sender
-{
-    for (CorUIButton *button in self.ColorButton)
-    {
-        if (button.state)
-        {
-            button.backgroundColor = sender.backgroundColor;
-        }
-    }
-    [self initPickerColor:sender.backgroundColor];
-}
-
-- (IBAction)setCustomColor:(CorUIButton *)sender
-{
-    for (CorUIButton *button in self.ColorButton)
-    {
-        if (button.state)
-        {
-            button.backgroundColor = sender.backgroundColor;
-        }
-    }
-   [self initPickerColor:sender.backgroundColor];
+    [textField resignFirstResponder];
+    return NO;
 }
 
 - (IBAction)setBackgroundView:(id)sender
@@ -1066,31 +986,21 @@
     [self.layoutView setHidden:YES];
 }
 
-- (IBAction)closeColorPicker:(id)sender
+-(void)newColorBrush:(UIColor *)newColor
 {
-    [_colorPicker setHidden:YES];
-}
-
-- (IBAction)takeSquareValue:(ColorSquarePicker *)sender
-{
-    _saturation = sender.value.x;
-    _brightness = sender.value.y;
-
-    [self updateResultColor];
-}
-
-- (void) updateResultColor
-{
-    UIColor *color = [UIColor colorWithHue: _hue saturation: _saturation brightness: _brightness alpha: 1.0f];
     for (CorUIButton *button in self.ColorButton)
     {
         if (button.state)
         {
-            button.backgroundColor = color;
+            button.backgroundColor = newColor;
         }
     }
-    _resultColorButton.backgroundColor = color;
-    [self setBrushColor:color];
+    [self setBrushColor:newColor];
+}
+
+-(void)dismissColorPicker
+{
+    [self.popoverColorPicker dismissPopoverAnimated:YES];
 }
 
 - (IBAction)undo:(id)sender {

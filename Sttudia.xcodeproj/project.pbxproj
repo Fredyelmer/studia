@@ -52,7 +52,6 @@
 		710DE24D19801FA00095E34E /* ColorSquareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710DE23E19801FA00095E34E /* ColorSquareView.m */; };
 		710DE24E19801FA00095E34E /* HSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 710DE24019801FA00095E34E /* HSBSupport.m */; };
 		710DE24F19801FA00095E34E /* ColorBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710DE24219801FA00095E34E /* ColorBarView.m */; };
-		710DE25019801FA00095E34E /* ColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710DE24419801FA00095E34E /* ColorPickerView.m */; };
 		710DE25119801FA00095E34E /* ColorIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710DE24619801FA00095E34E /* ColorIndicatorView.m */; };
 		710DE25219801FA00095E34E /* ColorBarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 710DE24819801FA00095E34E /* ColorBarPicker.m */; };
 		710DE25319801FA00095E34E /* SourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 710DE24A19801FA00095E34E /* SourceColorView.m */; };
@@ -60,9 +59,12 @@
 		710DE25819802ED70095E34E /* agenda.png in Resources */ = {isa = PBXBuildFile; fileRef = 710DE25719802ED70095E34E /* agenda.png */; };
 		710DE25A198032290095E34E /* forrado.png in Resources */ = {isa = PBXBuildFile; fileRef = 710DE259198032290095E34E /* forrado.png */; };
 		710DE25C198032CD0095E34E /* quadrado.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 710DE25B198032CD0095E34E /* quadrado.jpg */; };
+		714CEDD9198ACFA50092C98D /* ColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714CEDD8198ACFA50092C98D /* ColorPickerViewController.m */; };
+		714CEDE0198C1D6B0092C98D /* Brush.m in Sources */ = {isa = PBXBuildFile; fileRef = 714CEDDF198C1D6B0092C98D /* Brush.m */; };
 		719FE17A1961D86200938952 /* rec.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE1791961D86200938952 /* rec.png */; };
 		719FE17E1961DC4200938952 /* borracha.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE17D1961DC4200938952 /* borracha.png */; };
 		71B9CB8019630EF200DC3697 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B9CB7F19630EF200DC3697 /* QuartzCore.framework */; };
+		71E1B79B1990127C007C8425 /* ThicknessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1B79A1990127C007C8425 /* ThicknessViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,8 +145,6 @@
 		710DE24019801FA00095E34E /* HSBSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSBSupport.m; sourceTree = "<group>"; };
 		710DE24119801FA00095E34E /* ColorBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorBarView.h; sourceTree = "<group>"; };
 		710DE24219801FA00095E34E /* ColorBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorBarView.m; sourceTree = "<group>"; };
-		710DE24319801FA00095E34E /* ColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerView.h; sourceTree = "<group>"; };
-		710DE24419801FA00095E34E /* ColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerView.m; sourceTree = "<group>"; };
 		710DE24519801FA00095E34E /* ColorIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorIndicatorView.h; sourceTree = "<group>"; };
 		710DE24619801FA00095E34E /* ColorIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorIndicatorView.m; sourceTree = "<group>"; };
 		710DE24719801FA00095E34E /* ColorBarPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorBarPicker.h; sourceTree = "<group>"; };
@@ -156,9 +156,15 @@
 		710DE25719802ED70095E34E /* agenda.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = agenda.png; sourceTree = "<group>"; };
 		710DE259198032290095E34E /* forrado.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forrado.png; sourceTree = "<group>"; };
 		710DE25B198032CD0095E34E /* quadrado.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = quadrado.jpg; sourceTree = "<group>"; };
+		714CEDD7198ACFA50092C98D /* ColorPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPickerViewController.h; sourceTree = "<group>"; };
+		714CEDD8198ACFA50092C98D /* ColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerViewController.m; sourceTree = "<group>"; };
+		714CEDDE198C1D6B0092C98D /* Brush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Brush.h; sourceTree = "<group>"; };
+		714CEDDF198C1D6B0092C98D /* Brush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Brush.m; sourceTree = "<group>"; };
 		719FE1791961D86200938952 /* rec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rec.png; sourceTree = "<group>"; };
 		719FE17D1961DC4200938952 /* borracha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = borracha.png; sourceTree = "<group>"; };
 		71B9CB7F19630EF200DC3697 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		71E1B7991990127C007C8425 /* ThicknessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThicknessViewController.h; sourceTree = "<group>"; };
+		71E1B79A1990127C007C8425 /* ThicknessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThicknessViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -352,8 +358,6 @@
 				710DE24019801FA00095E34E /* HSBSupport.m */,
 				710DE24119801FA00095E34E /* ColorBarView.h */,
 				710DE24219801FA00095E34E /* ColorBarView.m */,
-				710DE24319801FA00095E34E /* ColorPickerView.h */,
-				710DE24419801FA00095E34E /* ColorPickerView.m */,
 				710DE24519801FA00095E34E /* ColorIndicatorView.h */,
 				710DE24619801FA00095E34E /* ColorIndicatorView.m */,
 				710DE24719801FA00095E34E /* ColorBarPicker.h */,
@@ -362,6 +366,12 @@
 				710DE24A19801FA00095E34E /* SourceColorView.m */,
 				710DE24B19801FA00095E34E /* ColorSquarePicker.h */,
 				710DE24C19801FA00095E34E /* ColorSquarePicker.m */,
+				714CEDD7198ACFA50092C98D /* ColorPickerViewController.h */,
+				714CEDD8198ACFA50092C98D /* ColorPickerViewController.m */,
+				714CEDDE198C1D6B0092C98D /* Brush.h */,
+				714CEDDF198C1D6B0092C98D /* Brush.m */,
+				71E1B7991990127C007C8425 /* ThicknessViewController.h */,
+				71E1B79A1990127C007C8425 /* ThicknessViewController.m */,
 			);
 			name = Tool;
 			sourceTree = "<group>";
@@ -487,6 +497,8 @@
 				48C52EA01965EC6B00AD013F /* Forum.m in Sources */,
 				0D081747196ED95A0007399B /* VideoParameter.m in Sources */,
 				0D9ECF5A1961867300882007 /* Sttudia.xcdatamodeld in Sources */,
+				714CEDE0198C1D6B0092C98D /* Brush.m in Sources */,
+				71E1B79B1990127C007C8425 /* ThicknessViewController.m in Sources */,
 				0DA8EFA11976C052006A5589 /* ImagePickerLandscapeController.m in Sources */,
 				48C52E8B1965E52D00AD013F /* ClassesViewController.m in Sources */,
 				48C52E9D1965E67000AD013F /* Answer.m in Sources */,
@@ -495,10 +507,10 @@
 				0DA8EFA41976F772006A5589 /* Image.m in Sources */,
 				710DE25219801FA00095E34E /* ColorBarPicker.m in Sources */,
 				0DA2FFA4197EA2E000C4ADA3 /* Page.m in Sources */,
-				710DE25019801FA00095E34E /* ColorPickerView.m in Sources */,
 				48C52E8E1965E52D00AD013F /* SpecificClassViewController.m in Sources */,
 				48C52E8A1965E52D00AD013F /* BoardViewController.m in Sources */,
 				710DE24D19801FA00095E34E /* ColorSquareView.m in Sources */,
+				714CEDD9198ACFA50092C98D /* ColorPickerViewController.m in Sources */,
 				48C52E9A1965E65700AD013F /* Question.m in Sources */,
 				710DE24E19801FA00095E34E /* HSBSupport.m in Sources */,
 				0D9ECF531961867300882007 /* main.m in Sources */,

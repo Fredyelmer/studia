@@ -10,14 +10,14 @@
 #import <AVFoundation/AVFoundation.h>
 #import "CorUIButton.h"
 #import "VideoParameter.h"
-#import "ColorPickerView.h"
 #import "ColorBarPicker.h"
 #import "ColorSquarePicker.h"
 #import "SourceColorView.h"
 #import "Page.h"
+#import "ColorPickerViewController.h"
+#import "ThicknessViewController.h"
 
-
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -35,17 +35,10 @@
     int currentPageIndex;
 }
 
-//comentario de teste
-@property (strong, nonatomic) IBOutlet ColorPickerView *colorPicker;
+@property (nonatomic,strong) UIPopoverController *popoverColorPicker;
+@property (nonatomic,strong) UIPopoverController *popoverThickness;
+
 @property (strong, nonatomic) IBOutlet UIView *layoutView;
-
-@property (nonatomic) UIColor* sourceColor;
-@property (nonatomic) UIColor* resultColor;
-@property (strong, nonatomic) IBOutlet CorUIButton *resultColorButton;
-@property (strong, nonatomic) IBOutlet CorUIButton *sourceColorButton;
-
-@property (nonatomic) IBOutlet ColorBarPicker* barPicker;
-@property (strong, nonatomic) IBOutlet ColorSquarePicker *squarePicker;
 
 @property (strong, nonatomic) IBOutletCollection(CorUIButton) NSArray *ColorButton;
 @property (strong, nonatomic) IBOutlet CorUIButton *eraseButton;
@@ -93,16 +86,11 @@
 - (IBAction)nextPage:(id)sender;
 - (IBAction)previewsPage:(id)sender;
 
-- (IBAction)takeBarValue:(ColorBarPicker *)sender;
 - (IBAction)ColorPressed:(CorUIButton *)sender;
-- (IBAction)setResultColor:(id)sender;
-- (IBAction)setSourceColor:(CorUIButton *)sender;
-- (IBAction)setCustomColor:(CorUIButton *)sender;
+- (IBAction)changeThickness:(id)sender;
+
+
 - (IBAction)setBackgroundView:(id)sender;
 - (IBAction)changeLayout:(UIButton *)sender;
-
-- (IBAction)closeColorPicker:(id)sender;
-
-
 
 @end
