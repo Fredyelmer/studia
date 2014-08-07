@@ -26,7 +26,7 @@
     CGFloat opacity;
 }
 
-@property (nonatomic, strong) id<ColorPickerViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<ColorPickerViewControllerDelegate> delegate;
 
 @property (nonatomic) UIColor* color;
 

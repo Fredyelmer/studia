@@ -101,6 +101,23 @@
     return [[repository lista]count];
 }
 
+- (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    PhotoRepository *repository = [PhotoRepository sharedRepository];
+    Photo *photo = [[repository lista]objectAtIndex:indexPath.row];
+    NSString* strURL = [photo webformatURL];
+    NSURL* url = [NSURL URLWithString:strURL];
+    NSData* imageData = [NSData dataWithContentsOfURL:url];
+    UIImage *image = [UIImage imageWithData:imageData];
+    
+    
+    
+    [self.delegate setInternetImageChose:image];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
 
 #pragma mark - PhotoRequestMethods
 -(void) request: (PhotoRequest*) request didFinishWithObject:(id) object

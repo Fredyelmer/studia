@@ -7,8 +7,6 @@
 //
 
 #import "BoardViewController.h"
-#import "CorUIButton.h"
-#import "ImagePickerLandscapeController.h"
 
 @interface BoardViewController ()
 {
@@ -138,7 +136,7 @@
     self.undoButton.enabled = NO;
     self.redoButton.enabled = NO;
     self.backButton.enabled = NO;
-    self.photoChooseView.hidden = YES;
+    
 }
 
 - (void) setBrushColor:(UIColor *) color
@@ -692,24 +690,28 @@
 
 - (IBAction)addImage:(id)sender {
     
-    self.photoChooseView.hidden = NO;
+    
+    AddImageViewController *addImageViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"AddImageVC"];
+    
+    addImageViewController.delegate = self;
+    
+    self.popoverAddImage = [[UIPopoverController alloc] initWithContentViewController:addImageViewController];
+    [self.popoverAddImage presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 }
-- (IBAction)addSavedPhoto:(id)sender {
-    
+
+-(void)addImageFromLibrary
+{
+    NSLog(@"delele");
     UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
     pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     pickerLibrary.delegate = self;
     [self presentViewController:pickerLibrary animated:YES completion:nil];
-    
-//    UIPopoverController *popover = [[UIPopoverController alloc]initWithContentViewController:pickerLibrary];
-//    popover.delegate = self;
-//    [popover presentPopoverFromBarButtonItem:self.addImageButton permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    
-    self.photoChooseView.hidden = YES;
+    [self.popoverAddImage dismissPopoverAnimated:YES];
     
 }
-- (IBAction)takePhoto:(id)sender {
+- (void)addPhoto
+{
     
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
@@ -717,31 +719,20 @@
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     
     [self presentViewController:picker animated:YES completion:nil];
+    [self.popoverAddImage dismissPopoverAnimated:YES];
     
-    self.photoChooseView.hidden = YES;
+    
 }
 
-- (IBAction)getPhotoInternet:(id)sender {
+- (void)getPhotoFromInternet
+{
+    CollectionViewController *collectionVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"collectionVC"];
     
-//    webView = [[UIWebView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.origin.x, self.tempImageView.frame.origin.y, self.tempImageView.frame.size.width, self.tempImageView.frame.size.height)];
-//    
-//    UISearchBar *searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 0, webView.frame.size.width, 40)];
-//    searchBar.delegate = self;
-//    searchBar.showsCancelButton = YES;
-//    searchBar.placeholder = @"Insira nome da foto";
-//    
-//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-//    
-//    collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(self.tempImageView.frame.origin.x, self.tempImageView.frame.origin.y, self.tempImageView.frame.size.width, self.tempImageView.frame.size.height) collectionViewLayout:layout];
-//    [collectionView setDataSource:self];
-//    [collectionView setDelegate: self];
-//    
-//    [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
-//    
-//    [webView addSubview:searchBar];
-    [self.view addSubview:_collectionView];
+    collectionVC.delegate = self;
     
-    self.photoChooseView.hidden = YES;
+    //[self performSegueWithIdentifier:@"collectionView" sender:nil];
+    [self presentViewController:collectionVC animated:YES completion:nil];
+    [self.popoverAddImage dismissPopoverAnimated:YES];
 }
 
 -(void)resizingImage:(UIPinchGestureRecognizer *)recognizer
@@ -755,18 +746,6 @@
     
     CGFloat scale = 1.0 - (lastScale - recognizer.scale);
     
-//    static CGRect initialBounds;
-//    
-//    if(recognizer.state == UIGestureRecognizerStateBegan)
-//    {
-//        initialBounds = recognizer.view.bounds;
-//    }
-//    
-//    CGFloat factor = [(UIPinchGestureRecognizer *)recognizer scale];
-//    
-//    CGAffineTransform transform = CGAffineTransformScale(CGAffineTransformIdentity, factor, factor);
-//    
-//    recognizer.view.bounds = CGRectApplyAffineTransform(initialBounds, transform);
     
     CGAffineTransform currentTransform = recognizer.view.transform;
     CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
@@ -779,25 +758,6 @@
 
 -(void)moveImage: (UIPanGestureRecognizer *)recognizer
 {
-//    if (recognizer.state == UIGestureRecognizerStateBegan) {
-//        
-//        for (UIImageView* image in self.arrayImages) {
-//            if ([image isEqual:recognizer.view]) {
-//                currentImage = image;
-//            }
-//        }
-//        CGPoint locationInImage = [recognizer locationInView:currentImage];
-//        
-//        CGPoint newAnchor = CGPointMake(locationInImage.x/currentImage.frame.size.width, locationInImage.y/currentImage.frame.size.height);
-//        recognizer.view.layer.anchorPoint = newAnchor;
-//    }
-//    
-//    if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
-//    {
-//        CGPoint touchLocation = [recognizer locationInView:self.view];
-//        
-//        recognizer.view.center = touchLocation;
-//    }
     
     [[[recognizer view] layer] removeAllAnimations];
     [self.view bringSubviewToFront:[recognizer view]];
@@ -926,8 +886,49 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
+    [self putImageInScreen:choseImage];
+    
+//    UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2-150, self.tempImageView.frame.size.height/2-150, 300, 300)];
+//    customImage.image = choseImage;
+//    customImage.contentMode = UIViewContentModeScaleAspectFill;
+//    
+//    
+//    isImageEditing = YES;
+//    
+//    customImage.userInteractionEnabled = YES;
+//    
+//    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
+//    pinchGesture.delegate = self;
+//    
+//    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
+//    panGesture.delegate = self;
+//    
+//    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
+//    rotationGesture.delegate = self;
+//    
+//    [customImage addGestureRecognizer:pinchGesture];
+//    [customImage addGestureRecognizer:panGesture];
+//    [customImage addGestureRecognizer:rotationGesture];
+//    
+//    [self.arrayImages addObject:customImage];
+//    
+//    [self.view addSubview:customImage];
+//    
+//    [self.topBar bringSubviewToFront:self.view];
+//    [self.bottonBar bringSubviewToFront:self.view];
+//    
+//    
+//    self.addImageButton.enabled = NO;
+//    self.addImageButton.hidden = YES;
+//    self.confirmImageButton.enabled = YES;
+//    self.confirmImageButton.hidden = NO;
+    
+}
+
+- (void) putImageInScreen : (UIImage *)image
+{
     UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2-150, self.tempImageView.frame.size.height/2-150, 300, 300)];
-    customImage.image = choseImage;
+    customImage.image = image;
     customImage.contentMode = UIViewContentModeScaleAspectFill;
     
     
@@ -960,7 +961,7 @@
     self.addImageButton.hidden = YES;
     self.confirmImageButton.enabled = YES;
     self.confirmImageButton.hidden = NO;
-    
+
 }
 
 #pragma mark - ColorMethods
@@ -1107,6 +1108,8 @@
     [self.popoverColorPicker dismissPopoverAnimated:YES];
 }
 
+#pragma mark - UNDO/REDO Methods
+
 - (IBAction)undo:(id)sender {
     
     UIImage *image = [self.arrayUndo lastObject];
@@ -1125,7 +1128,6 @@
     self.redoButton.enabled = YES;
     
     NSLog(@"undo");
-    //CGContextRestoreGState();
 }
 
 - (IBAction)redo:(id)sender {
@@ -1145,5 +1147,16 @@
     self.undoButton.enabled = YES;
 
 }
+
+#pragma mark - CollectionViewControllerDelegateMethod
+
+- (void)setInternetImageChose : (UIImage *)image{
+    
+    [self putImageInScreen:image];
+    
+    //self.internetImage = image;
+    
+}
+
 
 @end

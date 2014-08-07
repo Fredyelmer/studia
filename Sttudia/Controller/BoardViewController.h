@@ -16,8 +16,13 @@
 #import "Page.h"
 #import "ColorPickerViewController.h"
 #import "ThicknessViewController.h"
+#import "CorUIButton.h"
+#import "ImagePickerLandscapeController.h"
+#import "AddImageViewController.h"
+#import "CollectionViewController.h"
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate>
+
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -39,6 +44,7 @@
 
 @property (nonatomic,strong) UIPopoverController *popoverColorPicker;
 @property (nonatomic,strong) UIPopoverController *popoverThickness;
+@property (nonatomic,strong) UIPopoverController *popoverAddImage;
 
 @property (strong, nonatomic) IBOutlet UIView *layoutView;
 
@@ -55,7 +61,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;
 @property (strong, nonatomic) IBOutlet UIImageView *layoutImageView;
-@property (strong, nonatomic) IBOutlet UIView *photoChooseView;
+
 
 @property (strong, nonatomic) NSMutableArray* arraySnapshots;
 @property (strong, nonatomic) IBOutlet UIButton *takeSnapshot;
@@ -80,6 +86,8 @@
 @property (strong, nonatomic) IBOutlet UIImageView *topBar;
 @property (strong, nonatomic) IBOutlet UIImageView *bottonBar;
 
+//@property (strong, nonatomic) UIImage* internetImage;
+
 
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;
@@ -98,4 +106,7 @@
 - (IBAction)setBackgroundView:(id)sender;
 - (IBAction)changeLayout:(UIButton *)sender;
 
+//- (void)addImageFromLibrary;
+- (void)addPhoto;
+- (void)getPhotoFromInternet;
 @end

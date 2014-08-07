@@ -1,18 +1,18 @@
 //
-//  ImagePickerLandscapeController.m
+//  ImagePickerViewController.m
 //  Sttudia
 //
-//  Created by Ricardo Nagaishi on 16/07/14.
+//  Created by Ricardo Nagaishi on 06/08/14.
 //  Copyright (c) 2014 Ricardo Nagaishi. All rights reserved.
 //
 
-#import "ImagePickerLandscapeController.h"
+#import "ImagePickerViewController.h"
 
-@interface ImagePickerLandscapeController ()
+@interface ImagePickerViewController ()
 
 @end
 
-@implementation ImagePickerLandscapeController
+@implementation ImagePickerViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -26,7 +26,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc]init];
+    pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    pickerLibrary.delegate = self;
+    [self presentViewController:pickerLibrary animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -35,10 +38,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-- (NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskLandscape;
-}
 /*
 #pragma mark - Navigation
 

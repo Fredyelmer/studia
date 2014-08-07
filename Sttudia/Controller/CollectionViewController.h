@@ -11,8 +11,14 @@
 #import "PhotoRepository.h"
 #import "customCell.h"
 
+@protocol CollectionViewControllerDelegate <NSObject>
+
+- (void)setInternetImageChose : (UIImage *)image;
+
+@end
 @interface CollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, PhotoRequestDelegate, UISearchBarDelegate>
 
+@property (nonatomic, weak) id<CollectionViewControllerDelegate> delegate;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSMutableArray *photoArray;
 @property (strong, nonatomic) NSString *key;
