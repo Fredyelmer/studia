@@ -23,6 +23,7 @@
     CGPoint centerImage;
     CGFloat lastScale;
     CGFloat lastRotation;
+    int numEraserButtonTap;
     
 }
 
@@ -136,7 +137,11 @@
     self.undoButton.enabled = NO;
     self.redoButton.enabled = NO;
     self.backButton.enabled = NO;
+    [self.topBar bringSubviewToFront:self.view];
+    [self.bottonBar bringSubviewToFront:self.view];
     
+    undoMade = NO;
+    numEraserButtonTap = 0;
 }
 
 - (void) setBrushColor:(UIColor *) color
@@ -253,11 +258,23 @@
 }
 
 - (IBAction)erasePressed:(CorUIButton*)sender{
-    isEraser = YES;
     
-    brush = 20;
-    
-    [self selectedButton:sender];
+    if (numEraserButtonTap == 0) {
+        isEraser = YES;
+        brush = 20;
+        [self selectedButton:sender];
+        numEraserButtonTap += 1;
+    }
+    else {
+        ResetViewController *resetVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"resetVC"];
+        
+        resetVC. delegate = self;
+        
+        self.popoverAddImage = [[UIPopoverController alloc] initWithContentViewController:resetVC];
+        [self.popoverAddImage presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+
+        numEraserButtonTap = 0;
+    }
 }
 
 - (IBAction)nextPage:(id)sender {
@@ -566,6 +583,10 @@
             [self.arrayUndo addObject:newImage];
             self.undoButton.enabled = YES;
         }
+        if (undoMade) {
+            self.arrayRedo = [[NSMutableArray alloc]init];
+            self.redoButton.enabled = NO;
+        }
     }
 }
 
@@ -710,6 +731,7 @@
     [self.popoverAddImage dismissPopoverAnimated:YES];
     
 }
+
 - (void)addPhoto
 {
     
@@ -760,7 +782,7 @@
 {
     
     [[[recognizer view] layer] removeAllAnimations];
-    [self.view bringSubviewToFront:[recognizer view]];
+    //[self.view bringSubviewToFront:[recognizer view]];
     CGPoint translatedPoint = [recognizer translationInView:self.view];
     
     if([recognizer state] == UIGestureRecognizerStateBegan) {
@@ -858,6 +880,7 @@
     UIImageView *image = self.arrayImages[indexImage];
     
     [self.view sendSubviewToBack:image];
+    //[self.tempImageView addSubview:image];
     [self.view sendSubviewToBack:self.layoutImageView];
     image.userInteractionEnabled = NO;
     indexImage += 1;
@@ -867,10 +890,11 @@
     self.confirmImageButton.enabled = NO;
     self.confirmImageButton.hidden = YES;
     
+    
     isImageEditing = NO;
     
-    VideoParameter *parameter = [[VideoParameter alloc]initWithImage:image];
-    [self.arrayPoints addObject:parameter];
+    //VideoParameter *parameter = [[VideoParameter alloc]initWithImage:image];
+    //[self.arrayPoints addObject:parameter];
     
 }
 
@@ -887,41 +911,6 @@
 	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
     [self putImageInScreen:choseImage];
-    
-//    UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2-150, self.tempImageView.frame.size.height/2-150, 300, 300)];
-//    customImage.image = choseImage;
-//    customImage.contentMode = UIViewContentModeScaleAspectFill;
-//    
-//    
-//    isImageEditing = YES;
-//    
-//    customImage.userInteractionEnabled = YES;
-//    
-//    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
-//    pinchGesture.delegate = self;
-//    
-//    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
-//    panGesture.delegate = self;
-//    
-//    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
-//    rotationGesture.delegate = self;
-//    
-//    [customImage addGestureRecognizer:pinchGesture];
-//    [customImage addGestureRecognizer:panGesture];
-//    [customImage addGestureRecognizer:rotationGesture];
-//    
-//    [self.arrayImages addObject:customImage];
-//    
-//    [self.view addSubview:customImage];
-//    
-//    [self.topBar bringSubviewToFront:self.view];
-//    [self.bottonBar bringSubviewToFront:self.view];
-//    
-//    
-//    self.addImageButton.enabled = NO;
-//    self.addImageButton.hidden = YES;
-//    self.confirmImageButton.enabled = YES;
-//    self.confirmImageButton.hidden = NO;
     
 }
 
@@ -965,7 +954,6 @@
 }
 
 #pragma mark - ColorMethods
-
 - (IBAction)ColorPressed:(CorUIButton *)sender
 {
     brush = 5;
@@ -1054,13 +1042,13 @@
     [self.currentTextField setBorderStyle:UITextBorderStyleNone];
     [self.currentTextField setNeedsDisplay];
     
-    //[self.arrayTexts addObject:self.currentTextField];
+    [self.arrayTexts addObject:self.currentTextField];
     
     self.currentTextField = nil;
     NSLog(@"teclado");
     
     [textField resignFirstResponder];
-    return NO;
+    return YES;
 }
 
 - (IBAction)setBackgroundView:(id)sender
@@ -1118,6 +1106,7 @@
         [self.arrayRedo addObject:image];
         [self.arrayUndo removeLastObject];
         self.tempImageView.image = [self.arrayUndo lastObject];
+        undoMade = YES;
         
     }
     
@@ -1153,10 +1142,25 @@
 - (void)setInternetImageChose : (UIImage *)image{
     
     [self putImageInScreen:image];
-    
-    //self.internetImage = image;
-    
 }
 
+#pragma mark - ResetViewControllerDelegateMethods
+- (void) resetTint
+{
+    self.tempImageView.image = nil;
+}
+
+- (void) resetAll
+{
+    for (UIImageView* imageView in self.arrayImages) {
+        [imageView removeFromSuperview];
+    }
+    for (UITextField* textField in self.arrayTexts) {
+        [textField removeFromSuperview];
+    }
+    [self resetTint];
+    self.arrayImages = [[NSMutableArray alloc]init];
+    self.arrayTexts = [[NSMutableArray alloc]init];
+}
 
 @end

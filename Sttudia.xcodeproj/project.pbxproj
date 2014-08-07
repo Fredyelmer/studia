@@ -26,6 +26,7 @@
 		0D9ECF6E1961867300882007 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6C1961867300882007 /* InfoPlist.strings */; };
 		0D9ECF701961867300882007 /* SttudiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6F1961867300882007 /* SttudiaTests.m */; };
 		0DA267C21992A26B00AE00FF /* ImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA267C11992A26B00AE00FF /* ImagePickerViewController.m */; };
+		0DA267C51993DBAF00AE00FF /* ResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA267C41993DBAF00AE00FF /* ResetViewController.m */; };
 		0DA2FFA4197EA2E000C4ADA3 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA2FFA3197EA2E000C4ADA3 /* Page.m */; };
 		0DA6C91C1982C71E006AB299 /* question.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C9171982C71E006AB299 /* question.png */; };
 		0DA6C91D1982C71E006AB299 /* Text.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C9181982C71E006AB299 /* Text.png */; };
@@ -110,6 +111,8 @@
 		0D9ECF6F1961867300882007 /* SttudiaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SttudiaTests.m; sourceTree = "<group>"; };
 		0DA267C01992A26B00AE00FF /* ImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerViewController.h; sourceTree = "<group>"; };
 		0DA267C11992A26B00AE00FF /* ImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerViewController.m; sourceTree = "<group>"; };
+		0DA267C31993DBAF00AE00FF /* ResetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetViewController.h; sourceTree = "<group>"; };
+		0DA267C41993DBAF00AE00FF /* ResetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetViewController.m; sourceTree = "<group>"; };
 		0DA2FFA2197EA2E000C4ADA3 /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
 		0DA2FFA3197EA2E000C4ADA3 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		0DA6C9171982C71E006AB299 /* question.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = question.png; sourceTree = "<group>"; };
@@ -344,6 +347,8 @@
 				0DA7B598198ACECB00D268E1 /* CollectionViewController.m */,
 				0DA267C01992A26B00AE00FF /* ImagePickerViewController.h */,
 				0DA267C11992A26B00AE00FF /* ImagePickerViewController.m */,
+				0DA267C31993DBAF00AE00FF /* ResetViewController.h */,
+				0DA267C41993DBAF00AE00FF /* ResetViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -530,6 +535,7 @@
 				710DE25419801FA00095E34E /* ColorSquarePicker.m in Sources */,
 				0DAB2FBD19912234002E3EBB /* CustomCell.m in Sources */,
 				48C52E901965E52D00AD013F /* TutorialViewController.m in Sources */,
+				0DA267C51993DBAF00AE00FF /* ResetViewController.m in Sources */,
 				0DA75FEB198175A700BAE5E1 /* VideoPlayer.m in Sources */,
 				710DE24F19801FA00095E34E /* ColorBarView.m in Sources */,
 				48C52E8C1965E52D00AD013F /* LoginViewController.m in Sources */,

@@ -20,9 +20,10 @@
 #import "ImagePickerLandscapeController.h"
 #import "AddImageViewController.h"
 #import "CollectionViewController.h"
+#import "ResetViewController.h"
 
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -38,13 +39,13 @@
     
     int maxPageIndex;
     int currentPageIndex;
-    
-    UICollectionView *_collectionView;
+    BOOL undoMade;
 }
 
 @property (nonatomic,strong) UIPopoverController *popoverColorPicker;
 @property (nonatomic,strong) UIPopoverController *popoverThickness;
 @property (nonatomic,strong) UIPopoverController *popoverAddImage;
+@property (strong, nonatomic) UIPopoverController *popoverEraser;
 
 @property (strong, nonatomic) IBOutlet UIView *layoutView;
 
@@ -86,8 +87,6 @@
 @property (strong, nonatomic) IBOutlet UIImageView *topBar;
 @property (strong, nonatomic) IBOutlet UIImageView *bottonBar;
 
-//@property (strong, nonatomic) UIImage* internetImage;
-
 
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;
@@ -106,7 +105,7 @@
 - (IBAction)setBackgroundView:(id)sender;
 - (IBAction)changeLayout:(UIButton *)sender;
 
-//- (void)addImageFromLibrary;
+- (void)addImageFromLibrary;
 - (void)addPhoto;
 - (void)getPhotoFromInternet;
 @end
