@@ -49,12 +49,13 @@
 {
     
     [super viewDidLoad];
-    
+
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     //inicializa o brush
     [self setBrushColor:[UIColor blackColor]];
     brush = 5.0;
+    eraser = 20.0;
     opacity = 1.0;
     
     backGroundRed = 255.0/255.0;
@@ -88,6 +89,8 @@
     [[self.ColorButton objectAtIndex:2] addGestureRecognizer:longPressGesture3];
     [[self.ColorButton objectAtIndex:3] addGestureRecognizer:longPressGesture4];
     [[self.ColorButton objectAtIndex:4] addGestureRecognizer:longPressGesture5];
+    
+    [self updateThicknessButton];
     
     // Set the audio file
     NSArray *pathComponents = [NSArray arrayWithObjects:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],@"MyAudioMemo.m4a",nil];
@@ -263,12 +266,12 @@
 }
 
 - (IBAction)erasePressed:(CorUIButton*)sender{
-    
+
     if (numEraserButtonTap == 0) {
         isEraser = YES;
-        brush = 20;
         [self selectedButton:sender];
         numEraserButtonTap += 1;
+        [self updateThicknessButton];
     }
     else {
         ResetViewController *resetVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"resetVC"];
@@ -540,13 +543,15 @@
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
     CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
     CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
     
         if (isEraser) {
+            CGContextSetLineWidth(UIGraphicsGetCurrentContext(), eraser );
             CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeClear);
+            
         }
         else{
+            CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
             CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
         }
     CGContextStrokePath(UIGraphicsGetCurrentContext());
@@ -961,20 +966,18 @@
 #pragma mark - ColorMethods
 - (IBAction)ColorPressed:(CorUIButton *)sender
 {
-    brush = 5;
     isEraser = NO;
-    
     if (sender.state)
     {
         //ativa acao de cor customizado
         [self initPickerColor:sender];
-        //sender.state = NO;
     }
     else
     {
         [self selectedButton:sender];
         //ativa o cor que vai se usar
         [self setBrushColor:sender.backgroundColor];
+        [self updateThicknessButton];
     }
 }
 
@@ -982,8 +985,29 @@
 {
     ThicknessViewController *thicknessViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"Thickness"];
     
+    thicknessViewController.delegate = self;
+    
+    for (CorUIButton *button in self.ColorButton)
+    {
+        if (button.state)
+        {
+            thicknessViewController.color = button.backgroundColor;
+        }
+    }
+    
+    if (isEraser) {
+        thicknessViewController.brush = eraser;
+        thicknessViewController.color = [UIColor blackColor];
+    }
+    else
+    {
+        thicknessViewController.brush = brush;
+    }
+    
     self.popoverThickness = [[UIPopoverController alloc] initWithContentViewController:thicknessViewController];
     [self.popoverThickness presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+    [self updateThicknessButton];
 }
 
 //inisializa e mostra o menu de cores customizados
@@ -1295,4 +1319,39 @@
     self.arrayTexts = [[NSMutableArray alloc]init];
 }
 
+-(void)newThicknessBrush:(CGFloat)thickness
+{
+    if (isEraser) {
+        eraser = thickness;
+    }
+    else
+    {
+        brush = thickness;
+    }
+    
+    [self updateThicknessButton];
+}
+
+-(void) updateThicknessButton
+{
+    UIGraphicsBeginImageContext(self.thicknessButton.frame.size);
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
+    
+    if (isEraser) {
+        CGContextSetLineWidth(UIGraphicsGetCurrentContext(),eraser);
+        CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), 1.0, 1.0, 1.0, 1.0);
+    }
+    else
+    {
+        CGContextSetLineWidth(UIGraphicsGetCurrentContext(),brush);
+        
+    }
+    
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), 22, 22);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), 22, 22);
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
+    self.thicknessButton.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+}
 @end

@@ -27,7 +27,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    [self. color getRed:&(_red) green:&(_green) blue:&(_blue) alpha:&(_alpha)];
+    self.thicknessSlider.value = self.brush;
+    self.ThicknessValueLabel.text = [NSString stringWithFormat:@"%.1f", self.brush];
+    [self updateBrushView:self.brush];
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,40 +51,38 @@
 */
 
 - (IBAction)sliderChanged:(id)sender
+
 {
-    UISlider * changedSlider = (UISlider*)sender;
-    
-    if(changedSlider == self.thicknessSlider) {
-        
-        self.brush = self.thicknessSlider.value;
-        self.ThicknessValueLabel.text = [NSString stringWithFormat:@"%.1f", self.brush];
-        
-    } else if(changedSlider == self.opacitySlider) {
-        
-        self.opacity = self.opacitySlider.value;
-        self.opacityValueLabel.text = [NSString stringWithFormat:@"%.1f", self.opacity];
-        
-    }
+    self.brush = self.thicknessSlider.value;
+    self.ThicknessValueLabel.text = [NSString stringWithFormat:@"%.1f", self.brush];
     
     UIGraphicsBeginImageContext(self.ThicknessImageView.frame.size);
     CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
     CGContextSetLineWidth(UIGraphicsGetCurrentContext(),self.brush);
-    //CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), self.red, self.green, self.blue, 1.0);
-    //alguma coisa
+    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), self.red, self.green, self.blue, 1.0);
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), 45, 45);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), 45, 45);
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
+    self.ThicknessImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    [self updateBrushView:self.brush];
+}
+
+-(void) updateBrushView:(CGFloat ) brush
+
+{
+    UIGraphicsBeginImageContext(self.ThicknessImageView.frame.size);
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    CGContextSetLineWidth(UIGraphicsGetCurrentContext(),brush);
+    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), self.red, self.green, self.blue, 1.0);
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), 45, 45);
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), 45, 45);
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     self.ThicknessImageView.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    UIGraphicsBeginImageContext(self.opacityImageView.frame.size);
-    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-    CGContextSetLineWidth(UIGraphicsGetCurrentContext(),self.brush);
-    //CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), self.red, self.green, self.blue, self.opacity);
-    CGContextMoveToPoint(UIGraphicsGetCurrentContext(),45, 45);
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(),45, 45);
-    CGContextStrokePath(UIGraphicsGetCurrentContext());
-    self.opacityImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+    [self.delegate newThicknessBrush:brush];
 }
+
 @end

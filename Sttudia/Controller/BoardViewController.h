@@ -23,15 +23,17 @@
 #import "ResetViewController.h"
 #import "FontTypeViewController.h"
 #import "ColorFontViewController.h"
+#import "ThicknessViewController.h"
 
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
     CGFloat green;
     CGFloat blue;
     CGFloat brush;
+    CGFloat eraser;
     CGFloat opacity;
     BOOL mouseSwiped;
     
@@ -52,6 +54,7 @@
 @property (strong, nonatomic) UIPopoverController *popoverFontColor;
 
 @property (strong, nonatomic) IBOutlet UIView *layoutView;
+@property (strong, nonatomic) IBOutlet UIButton *thicknessButton;
 
 @property (strong, nonatomic) IBOutletCollection(CorUIButton) NSArray *ColorButton;
 @property (strong, nonatomic) IBOutlet CorUIButton *eraseButton;
