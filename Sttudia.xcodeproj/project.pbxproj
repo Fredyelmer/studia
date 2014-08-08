@@ -70,6 +70,7 @@
 		710DE25C198032CD0095E34E /* quadrado.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 710DE25B198032CD0095E34E /* quadrado.jpg */; };
 		714CEDD9198ACFA50092C98D /* ColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714CEDD8198ACFA50092C98D /* ColorPickerViewController.m */; };
 		714CEDE0198C1D6B0092C98D /* Brush.m in Sources */ = {isa = PBXBuildFile; fileRef = 714CEDDF198C1D6B0092C98D /* Brush.m */; };
+		71913C20199542720097162C /* Expand_B-512.png in Resources */ = {isa = PBXBuildFile; fileRef = 71913C1F199542720097162C /* Expand_B-512.png */; };
 		719FE17A1961D86200938952 /* rec.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE1791961D86200938952 /* rec.png */; };
 		719FE17E1961DC4200938952 /* borracha.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE17D1961DC4200938952 /* borracha.png */; };
 		71B9CB8019630EF200DC3697 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B9CB7F19630EF200DC3697 /* QuartzCore.framework */; };
@@ -186,6 +187,7 @@
 		714CEDD8198ACFA50092C98D /* ColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerViewController.m; sourceTree = "<group>"; };
 		714CEDDE198C1D6B0092C98D /* Brush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Brush.h; sourceTree = "<group>"; };
 		714CEDDF198C1D6B0092C98D /* Brush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Brush.m; sourceTree = "<group>"; };
+		71913C1F199542720097162C /* Expand_B-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Expand_B-512.png"; sourceTree = "<group>"; };
 		719FE1791961D86200938952 /* rec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rec.png; sourceTree = "<group>"; };
 		719FE17D1961DC4200938952 /* borracha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = borracha.png; sourceTree = "<group>"; };
 		71B9CB7F19630EF200DC3697 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -304,6 +306,7 @@
 		0D9ECF7F1961911100882007 /* AppImages */ = {
 			isa = PBXGroup;
 			children = (
+				71913C1F199542720097162C /* Expand_B-512.png */,
 				0DA7B592198AC1DB00D268E1 /* placeholder.png */,
 				0DA6C92519880956006AB299 /* redo.png */,
 				0DA6C9171982C71E006AB299 /* question.png */,
@@ -508,6 +511,7 @@
 				0D9ECF5C1961867300882007 /* Images.xcassets in Resources */,
 				0DA6C91F1982C71E006AB299 /* next.png in Resources */,
 				0DA6C928198809BF006AB299 /* undo.png in Resources */,
+				71913C20199542720097162C /* Expand_B-512.png in Resources */,
 				0DA7B593198AC1DB00D268E1 /* placeholder.png in Resources */,
 				48C52E681965CED200AD013F /* Video tutorial icon.jpg in Resources */,
 				0DA6C92619880956006AB299 /* redo.png in Resources */,
