@@ -21,9 +21,11 @@
 #import "AddImageViewController.h"
 #import "CollectionViewController.h"
 #import "ResetViewController.h"
+#import "FontTypeViewController.h"
+#import "ColorFontViewController.h"
 
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;
@@ -46,6 +48,8 @@
 @property (nonatomic,strong) UIPopoverController *popoverThickness;
 @property (nonatomic,strong) UIPopoverController *popoverAddImage;
 @property (strong, nonatomic) UIPopoverController *popoverEraser;
+@property (strong, nonatomic) UIPopoverController *popoverFont;
+@property (strong, nonatomic) UIPopoverController *popoverFontColor;
 
 @property (strong, nonatomic) IBOutlet UIView *layoutView;
 

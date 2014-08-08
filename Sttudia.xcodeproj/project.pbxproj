@@ -27,6 +27,8 @@
 		0D9ECF701961867300882007 /* SttudiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9ECF6F1961867300882007 /* SttudiaTests.m */; };
 		0DA267C21992A26B00AE00FF /* ImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA267C11992A26B00AE00FF /* ImagePickerViewController.m */; };
 		0DA267C51993DBAF00AE00FF /* ResetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA267C41993DBAF00AE00FF /* ResetViewController.m */; };
+		0DA267C8199515AD00AE00FF /* FontTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA267C7199515AD00AE00FF /* FontTypeViewController.m */; };
+		0DA267CB19953B0F00AE00FF /* ColorFontViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA267CA19953B0F00AE00FF /* ColorFontViewController.m */; };
 		0DA2FFA4197EA2E000C4ADA3 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA2FFA3197EA2E000C4ADA3 /* Page.m */; };
 		0DA6C91C1982C71E006AB299 /* question.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C9171982C71E006AB299 /* question.png */; };
 		0DA6C91D1982C71E006AB299 /* Text.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C9181982C71E006AB299 /* Text.png */; };
@@ -113,6 +115,10 @@
 		0DA267C11992A26B00AE00FF /* ImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerViewController.m; sourceTree = "<group>"; };
 		0DA267C31993DBAF00AE00FF /* ResetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetViewController.h; sourceTree = "<group>"; };
 		0DA267C41993DBAF00AE00FF /* ResetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetViewController.m; sourceTree = "<group>"; };
+		0DA267C6199515AD00AE00FF /* FontTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontTypeViewController.h; sourceTree = "<group>"; };
+		0DA267C7199515AD00AE00FF /* FontTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontTypeViewController.m; sourceTree = "<group>"; };
+		0DA267C919953B0F00AE00FF /* ColorFontViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorFontViewController.h; sourceTree = "<group>"; };
+		0DA267CA19953B0F00AE00FF /* ColorFontViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorFontViewController.m; sourceTree = "<group>"; };
 		0DA2FFA2197EA2E000C4ADA3 /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
 		0DA2FFA3197EA2E000C4ADA3 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		0DA6C9171982C71E006AB299 /* question.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = question.png; sourceTree = "<group>"; };
@@ -349,6 +355,10 @@
 				0DA267C11992A26B00AE00FF /* ImagePickerViewController.m */,
 				0DA267C31993DBAF00AE00FF /* ResetViewController.h */,
 				0DA267C41993DBAF00AE00FF /* ResetViewController.m */,
+				0DA267C6199515AD00AE00FF /* FontTypeViewController.h */,
+				0DA267C7199515AD00AE00FF /* FontTypeViewController.m */,
+				0DA267C919953B0F00AE00FF /* ColorFontViewController.h */,
+				0DA267CA19953B0F00AE00FF /* ColorFontViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -560,6 +570,7 @@
 				0DA2FFA4197EA2E000C4ADA3 /* Page.m in Sources */,
 				48C52E8E1965E52D00AD013F /* SpecificClassViewController.m in Sources */,
 				48C52E8A1965E52D00AD013F /* BoardViewController.m in Sources */,
+				0DA267C8199515AD00AE00FF /* FontTypeViewController.m in Sources */,
 				710DE24D19801FA00095E34E /* ColorSquareView.m in Sources */,
 				714CEDD9198ACFA50092C98D /* ColorPickerViewController.m in Sources */,
 				48C52E9A1965E65700AD013F /* Question.m in Sources */,
@@ -567,6 +578,7 @@
 				0DA7B58E198ABA7500D268E1 /* PhotoRepository.m in Sources */,
 				0D9ECF531961867300882007 /* main.m in Sources */,
 				48C52E8D1965E52D00AD013F /* RegisterViewController.m in Sources */,
+				0DA267CB19953B0F00AE00FF /* ColorFontViewController.m in Sources */,
 				710DE25119801FA00095E34E /* ColorIndicatorView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

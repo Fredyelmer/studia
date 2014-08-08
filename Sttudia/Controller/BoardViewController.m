@@ -24,6 +24,8 @@
     CGFloat lastScale;
     CGFloat lastRotation;
     int numEraserButtonTap;
+    int textFont;
+    NSString* nameOfFont;
     
 }
 
@@ -142,6 +144,9 @@
     
     undoMade = NO;
     numEraserButtonTap = 0;
+    textFont = 20;
+    nameOfFont = @"Helvetica";
+    
 }
 
 - (void) setBrushColor:(UIColor *) color
@@ -998,9 +1003,73 @@
 
 - (IBAction)addText:(id)sender {
     
-    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2 - 50, self.tempImageView.frame.size.height/2 + 15, 100, 30)];
+    textFont = 20;
+    
+    
+    
+    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(50, 80, 100, 30)];
+    
+    [textField becomeFirstResponder];
+    
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f,
+                                                                     0.0f,
+                                                                     self.view.window.frame.size.width,
+                                                                     44.0f)];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        toolBar.tintColor = [UIColor colorWithRed:0.6f
+                                            green:0.6f
+                                             blue:0.64f
+                                            alpha:1.0f];
+    }
+    else
+    {
+        toolBar.tintColor = [UIColor colorWithRed:0.56f
+                                            green:0.59f
+                                             blue:0.63f
+                                            alpha:1.0f];
+    }
+    toolBar.translucent = NO;
+    toolBar.items =   @[ [[UIBarButtonItem alloc] initWithTitle:@"T+"
+                                                          style:UIBarButtonItemStyleBordered
+                                                         target:self
+                                                         action:@selector(barButtonPressed:)],
+                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                       target:nil
+                                                                       action:nil],
+                         // some more items could be added
+                         
+                         [[UIBarButtonItem alloc] initWithTitle:@"T-"
+                                                          style:UIBarButtonItemStyleBordered
+                                                         target:self
+                                                         action:@selector(barButtonPressed:)],
+                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                       target:nil
+                                                                       action:nil],
+                         
+                         [[UIBarButtonItem alloc] initWithTitle:@"Fonte"
+                                                          style:UIBarButtonItemStyleBordered
+                                                         target:self
+                                                         action:@selector(barButtonPressed:)],
+                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                       target:nil
+                                                                       action:nil],
+                                                  
+                         [[UIBarButtonItem alloc] initWithTitle:@"Cor"
+                                                          style:UIBarButtonItemStyleBordered
+                                                         target:self
+                                                         action:@selector(barButtonPressed:)],
+                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                       target:nil
+                                                                       action:nil],
+
+                         ];
+    textField.inputAccessoryView = toolBar;
+
+    
+    
     textField.borderStyle = UITextBorderStyleRoundedRect;
-    textField.font = [UIFont systemFontOfSize:20];
+    textField.font = [UIFont systemFontOfSize:textFont];
     textField.placeholder = @"enter text";
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.keyboardType = UIKeyboardTypeDefault;
@@ -1008,7 +1077,7 @@
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.textAlignment = NSTextAlignmentLeft;
-    //[textField invalidateIntrinsicContentSize];
+    textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     textField.delegate = self;
     
     self.currentTextField = textField;
@@ -1017,12 +1086,58 @@
     [self.view addSubview:textField];
 }
 
+- (void) barButtonPressed :(UIBarButtonItem*)sender
+{
+    if ([sender.title isEqualToString:@"T+"]) {
+        textFont += 1;
+        CGSize size = [self.currentTextField.text sizeWithAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:nameOfFont size:textFont] forKey:NSFontAttributeName]];
+        self.currentTextField.font = [UIFont systemFontOfSize:textFont];
+        CGPoint origin = self.currentTextField.frame.origin;
+        [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width + 30 , size.height + 10)];
+        
+    }
+    else if ([sender.title isEqualToString:@"T-"]) {
+        textFont -= 1;
+        CGSize size = [self.currentTextField.text sizeWithAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:nameOfFont size:textFont] forKey:NSFontAttributeName]];
+        self.currentTextField.font = [UIFont systemFontOfSize:textFont];
+        CGPoint origin = self.currentTextField.frame.origin;
+        [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width +30, size.height + 10)];
+    }
+    else if ([sender.title isEqualToString:@"Fonte"]) {
+        FontTypeViewController *fontVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"fontVC"];
+        
+        fontVC. delegate = self;
+        
+        self.popoverFont = [[UIPopoverController alloc] initWithContentViewController:fontVC];
+        //[self.popoverFont presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self.popoverFont presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    else if ([sender.title isEqualToString:@"Cor"]) {
+        ColorFontViewController *colorFontVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"colorFontVC"];
+        
+        colorFontVC.delegate = self;
+        
+        self.popoverFontColor = [[UIPopoverController alloc] initWithContentViewController:colorFontVC];
+        //[self.popoverFont presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self.popoverFontColor presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+
+    
+}
+
 #pragma mark - UItextFieldDelegateMethods
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    [UIView animateWithDuration:0.1 animations:^{
-        [textField sizeToFit];
-    }];
+//    [UIView animateWithDuration:0.1 animations:^{
+//        [textField sizeToFit];
+//    }];
+    
+    NSString *text = textField.text;
+    text = [text stringByReplacingCharactersInRange:range withString:string];
+    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:textField.font}];
+    CGPoint origin = self.currentTextField.frame.origin;
+    [textField setFrame:CGRectMake(origin.x, origin.y, textSize.width +30, textSize.height + 10)];
+    
     return YES;
 }
 
@@ -1039,16 +1154,33 @@
     [self.currentTextField addGestureRecognizer:panGesture];
     [self.currentTextField addGestureRecognizer:rotationGesture];
     
-    [self.currentTextField setBorderStyle:UITextBorderStyleNone];
-    [self.currentTextField setNeedsDisplay];
-    
-    [self.arrayTexts addObject:self.currentTextField];
-    
-    self.currentTextField = nil;
+    if (self.currentTextField.text) {
+        [self.currentTextField setBorderStyle:UITextBorderStyleNone];
+        [self.currentTextField setNeedsDisplay];
+        [self.arrayTexts addObject:self.currentTextField];
+    }
+    //self.currentTextField = nil;
     NSLog(@"teclado");
     
     [textField resignFirstResponder];
     return YES;
+}
+
+- (void) setFontType : (NSString*)fontName
+{
+    self.currentTextField.font = [UIFont fontWithName:fontName size:textFont];
+    CGSize size = [self.currentTextField.text sizeWithAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:fontName size:textFont] forKey:NSFontAttributeName]];
+    self.currentTextField.font = [UIFont systemFontOfSize:textFont];
+    CGPoint origin = self.currentTextField.frame.origin;
+    [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width +30, size.height + 10)];
+    self.currentTextField.font = [UIFont fontWithName:fontName size:textFont];
+    nameOfFont = fontName;
+    
+}
+
+- (void) setTextColor : (UIColor*)textColor
+{
+    self.currentTextField.textColor = textColor;
 }
 
 - (IBAction)setBackgroundView:(id)sender
