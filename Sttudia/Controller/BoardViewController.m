@@ -26,7 +26,9 @@
     int numEraserButtonTap;
     int textFont;
     NSString* nameOfFont;
-    
+    UIColor* _textColor;
+    BOOL allowImageEdition;
+    CAShapeLayer *_border;
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -149,6 +151,8 @@
     numEraserButtonTap = 0;
     textFont = 20;
     nameOfFont = @"Helvetica";
+    _textColor = [UIColor blackColor];
+    allowImageEdition = NO;
     
 }
 
@@ -255,7 +259,22 @@
 {
     if (gesture.state==UIGestureRecognizerStateBegan)
     {
-        NSLog(@"long press: %ld",(long)[gesture.view tag]);
+        NSLog(@"long press");
+        allowImageEdition = YES;
+        isImageEditing = YES;
+        gesture.view.alpha = 1.5;
+        
+        for (UIImageView* image in self.arrayImages) {
+            if ([image isEqual:(UIImageView*)gesture.view]) {
+                currentImage = image;
+            }
+        }
+        currentImage = (UIImageView*)gesture.view;
+        [currentImage.layer setBorderWidth:5.0];
+        UIButton *deleteButton = [[currentImage subviews] objectAtIndex:0];
+        deleteButton.hidden = NO;
+        deleteButton.enabled = YES;
+        self.addImageButton.enabled = NO;
 //        selectedButton = [gesture.view tag];
 //        
 //        _sourceColor = [[_ColorButton objectAtIndex:selectedButton] backgroundColor];
@@ -505,6 +524,20 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    
+    
+    //for (UIImageView* image in self.arrayImages){
+        if (![event touchesForView:currentImage]) {
+            allowImageEdition = NO;
+            isImageEditing = NO;
+            //currentImage.alpha = 1.0;
+            [currentImage.layer setBorderWidth:0.0];
+            UIButton *deleteButton = [[currentImage subviews] objectAtIndex:0];
+            deleteButton.hidden = YES;
+            deleteButton.enabled = NO;
+            self.addImageButton.enabled = YES;
+        };
+    //}
     mouseSwiped = NO;
     if(!isImageEditing)
     {
@@ -769,119 +802,234 @@
 
 -(void)resizingImage:(UIPinchGestureRecognizer *)recognizer
 {
-    [self.view bringSubviewToFront:recognizer.view];
     
-    if (recognizer.state == UIGestureRecognizerStateEnded) {
-        lastScale = 1.0;
-        return;
+    if (allowImageEdition) {
+        [self.view bringSubviewToFront:recognizer.view];
+        
+        if (recognizer.state == UIGestureRecognizerStateEnded) {
+            lastScale = 1.0;
+            return;
+        }
+        
+        CGFloat scale = 1.0 - (lastScale - recognizer.scale);
+        
+        
+        CGAffineTransform currentTransform = recognizer.view.transform;
+        CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
+        
+        [recognizer.view setTransform:newTransform];
+        
+        lastScale = recognizer.scale;
+
     }
     
-    CGFloat scale = 1.0 - (lastScale - recognizer.scale);
-    
-    
-    CGAffineTransform currentTransform = recognizer.view.transform;
-    CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
-    
-    [recognizer.view setTransform:newTransform];
-    
-    lastScale = recognizer.scale;
+//    [self.view bringSubviewToFront:recognizer.view];
+//    
+//    if (recognizer.state == UIGestureRecognizerStateEnded) {
+//        lastScale = 1.0;
+//        return;
+//    }
+//    
+//    CGFloat scale = 1.0 - (lastScale - recognizer.scale);
+//    
+//    
+//    CGAffineTransform currentTransform = recognizer.view.transform;
+//    CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
+//    
+//    [recognizer.view setTransform:newTransform];
+//    
+//    lastScale = recognizer.scale;
 }
 
 
 -(void)moveImage: (UIPanGestureRecognizer *)recognizer
 {
     
-    [[[recognizer view] layer] removeAllAnimations];
-    //[self.view bringSubviewToFront:[recognizer view]];
-    CGPoint translatedPoint = [recognizer translationInView:self.view];
+    if (allowImageEdition) {
+        [[[recognizer view] layer] removeAllAnimations];
+        //[self.view bringSubviewToFront:[recognizer view]];
+        CGPoint translatedPoint = [recognizer translationInView:self.view];
+        
+        if([recognizer state] == UIGestureRecognizerStateBegan) {
+            
+            centerImage.x = [[recognizer view] center].x;
+            centerImage.y = [[recognizer view] center].y;
+        }
+        
+        translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
+        
+        [[recognizer view] setCenter:translatedPoint];
+        
+        if([recognizer state] == UIGestureRecognizerStateEnded) {
+            
+            CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.view].x);
+            CGFloat finalY = translatedPoint.y + (.35*[recognizer velocityInView:self.view].y);
+            
+            if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
+                
+                if(finalX < 0) {
+                    
+                    finalX = 0;
+                }
+                
+                else if(finalX > 768) {
+                    
+                    finalX = 768;
+                }
+                
+                if(finalY < 0) {
+                    
+                    finalY = 0;
+                }
+                
+                else if(finalY > 1024) {
+                    
+                    finalY = 1024;
+                }
+            }
+            
+            else {
+                
+                if(finalX < 0) {
+                    
+                    finalX = 0;
+                }
+                
+                else if(finalX > 1024) {
+                    
+                    finalX = 1024;
+                }
+                
+                if(finalY < 0) {
+                    
+                    finalY = 0;
+                }
+                
+                else if(finalY > 768) {
+                    
+                    finalY = 768;
+                }
+            }
+            
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:.35];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [[recognizer view] setCenter:CGPointMake(finalX, finalY)];
+            [UIView commitAnimations];
+        }
+
+    }
     
-    if([recognizer state] == UIGestureRecognizerStateBegan) {
-		
-		centerImage.x = [[recognizer view] center].x;
-		centerImage.y = [[recognizer view] center].y;
-	}
     
-    translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
-	
-	[[recognizer view] setCenter:translatedPoint];
-    
-    if([recognizer state] == UIGestureRecognizerStateEnded) {
-		
-		CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.view].x);
-		CGFloat finalY = translatedPoint.y + (.35*[recognizer velocityInView:self.view].y);
-		
-		if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-			
-			if(finalX < 0) {
-				
-				finalX = 0;
-			}
-			
-			else if(finalX > 768) {
-				
-				finalX = 768;
-			}
-			
-			if(finalY < 0) {
-				
-				finalY = 0;
-			}
-			
-			else if(finalY > 1024) {
-				
-				finalY = 1024;
-			}
-		}
-		
-		else {
-			
-			if(finalX < 0) {
-				
-				finalX = 0;
-			}
-			
-			else if(finalX > 1024) {
-				
-				finalX = 1024;
-			}
-			
-			if(finalY < 0) {
-				
-				finalY = 0;
-			}
-			
-			else if(finalY > 768) {
-				
-				finalY = 768;
-			}
-		}
-		
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:.35];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-		[[recognizer view] setCenter:CGPointMake(finalX, finalY)];
-		[UIView commitAnimations];
-	}
+//    [[[recognizer view] layer] removeAllAnimations];
+//    //[self.view bringSubviewToFront:[recognizer view]];
+//    CGPoint translatedPoint = [recognizer translationInView:self.view];
+//    
+//    if([recognizer state] == UIGestureRecognizerStateBegan) {
+//		
+//		centerImage.x = [[recognizer view] center].x;
+//		centerImage.y = [[recognizer view] center].y;
+//	}
+//    
+//    translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
+//	
+//	[[recognizer view] setCenter:translatedPoint];
+//    
+//    if([recognizer state] == UIGestureRecognizerStateEnded) {
+//		
+//		CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.view].x);
+//		CGFloat finalY = translatedPoint.y + (.35*[recognizer velocityInView:self.view].y);
+//		
+//		if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
+//			
+//			if(finalX < 0) {
+//				
+//				finalX = 0;
+//			}
+//			
+//			else if(finalX > 768) {
+//				
+//				finalX = 768;
+//			}
+//			
+//			if(finalY < 0) {
+//				
+//				finalY = 0;
+//			}
+//			
+//			else if(finalY > 1024) {
+//				
+//				finalY = 1024;
+//			}
+//		}
+//		
+//		else {
+//			
+//			if(finalX < 0) {
+//				
+//				finalX = 0;
+//			}
+//			
+//			else if(finalX > 1024) {
+//				
+//				finalX = 1024;
+//			}
+//			
+//			if(finalY < 0) {
+//				
+//				finalY = 0;
+//			}
+//			
+//			else if(finalY > 768) {
+//				
+//				finalY = 768;
+//			}
+//		}
+//		
+//		[UIView beginAnimations:nil context:NULL];
+//		[UIView setAnimationDuration:.35];
+//		[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+//		[[recognizer view] setCenter:CGPointMake(finalX, finalY)];
+//		[UIView commitAnimations];
+//	}
 
 
 }
 
 -(void)rotateImage: (UIRotationGestureRecognizer *)recognizer
 {
-    if([recognizer state] == UIGestureRecognizerStateEnded) {
-		
-		lastRotation = 0.0;
-		return;
-	}
-	
-	CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
-	
-	CGAffineTransform currentTransform = [recognizer view].transform;
-	CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
-	
-	[[recognizer view] setTransform:newTransform];
-	
-	lastRotation = [recognizer rotation];
+    if (allowImageEdition) {
+        if([recognizer state] == UIGestureRecognizerStateEnded) {
+            
+            lastRotation = 0.0;
+            return;
+        }
+        
+        CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
+        
+        CGAffineTransform currentTransform = [recognizer view].transform;
+        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
+        
+        [[recognizer view] setTransform:newTransform];
+        
+        lastRotation = [recognizer rotation];
+
+    }
+    
+//    if([recognizer state] == UIGestureRecognizerStateEnded) {
+//		
+//		lastRotation = 0.0;
+//		return;
+//	}
+//	
+//	CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
+//	
+//	CGAffineTransform currentTransform = [recognizer view].transform;
+//	CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
+//	
+//	[[recognizer view] setTransform:newTransform];
+//	
+//	lastRotation = [recognizer rotation];
 }
 
 //Termina processo de edição de imagens fixando-a e colocando atrás da tela de desenho.
@@ -929,7 +1077,9 @@
     UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2-150, self.tempImageView.frame.size.height/2-150, 300, 300)];
     customImage.image = image;
     customImage.contentMode = UIViewContentModeScaleAspectFill;
-    
+    CGRect frame = [self getFrameSizeForImage:customImage.image inImageView:customImage];
+    CGRect imageViewFrame = CGRectMake(customImage.frame.origin.x + frame.origin.x, customImage.frame.origin.y + frame.origin.y, frame.size.width, frame.size.height);
+    customImage.frame = imageViewFrame;
     
     isImageEditing = YES;
     
@@ -944,23 +1094,73 @@
     UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
     rotationGesture.delegate = self;
     
+    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressedButton:)];
+    longPressGesture.delegate = self;
+    
     [customImage addGestureRecognizer:pinchGesture];
     [customImage addGestureRecognizer:panGesture];
     [customImage addGestureRecognizer:rotationGesture];
+    [customImage addGestureRecognizer:longPressGesture];
     
     [self.arrayImages addObject:customImage];
     
     [self.view addSubview:customImage];
     
+    currentImage = customImage;
+    
     [self.topBar bringSubviewToFront:self.view];
     [self.bottonBar bringSubviewToFront:self.view];
     
     
+//    self.addImageButton.enabled = NO;
+//    self.addImageButton.hidden = YES;
+//    self.confirmImageButton.enabled = YES;
+//    self.confirmImageButton.hidden = NO;
+    
+    allowImageEdition = YES;
+    
+    //customImage.alpha = 1.5
+    
+//    _border = [self addDashedBorderWithView:currentImage];
+//    
+//    [currentImage.layer addSublayer:_border];
+    
+    [currentImage.layer setBorderWidth:5.0];
+    [currentImage.layer setBorderColor:[[UIColor blueColor] CGColor]];
+    
+    UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    deleteButton.frame = CGRectMake(customImage.bounds.origin.x, customImage.bounds.origin.y, 30, 30);
+    [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
+    [deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
+    [customImage addSubview:deleteButton];
     self.addImageButton.enabled = NO;
-    self.addImageButton.hidden = YES;
-    self.confirmImageButton.enabled = YES;
-    self.confirmImageButton.hidden = NO;
+}
 
+
+- (CGRect)getFrameSizeForImage:(UIImage *)image inImageView:(UIImageView *)imageView {
+    
+    float hfactor = image.size.width / imageView.frame.size.width;
+    float vfactor = image.size.height / imageView.frame.size.height;
+    
+    float factor = fmax(hfactor, vfactor);
+    
+    // Divide the size by the greater of the vertical or horizontal shrinkage factor
+    float newWidth = image.size.width / factor;
+    float newHeight = image.size.height / factor;
+    
+    // Then figure out if you need to offset it to center vertically or horizontally
+    float leftOffset = (imageView.frame.size.width - newWidth) / 2;
+    float topOffset = (imageView.frame.size.height - newHeight) / 2;
+    
+    return CGRectMake(leftOffset, topOffset, newWidth, newHeight);
+}
+
+- (void) delete:(id)sender
+{
+    UIImageView* trashImage = (UIImageView*)[(UIButton*)sender superview];
+    
+    [trashImage removeFromSuperview];
+    [self.arrayImages removeObjectIdenticalTo:trashImage];
 }
 
 #pragma mark - ColorMethods
@@ -979,6 +1179,29 @@
         [self setBrushColor:sender.backgroundColor];
         [self updateThicknessButton];
     }
+}
+
+- (CAShapeLayer *) addDashedBorderWithView: (UIView*) view {
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    
+    CGSize frameSize = view.frame.size;
+    
+    CGRect shapeRect = CGRectMake(0.0f, 0.0f, frameSize.width, frameSize.height);
+    [shapeLayer setBounds:shapeRect];
+    [shapeLayer setPosition:CGPointMake( frameSize.width/2,frameSize.height/2)];
+    
+    [shapeLayer setFillColor:[[UIColor clearColor] CGColor]];
+    [shapeLayer setStrokeColor:[[UIColor blueColor] CGColor]];
+    [shapeLayer setLineWidth:5.0f];
+    [shapeLayer setLineJoin:kCALineJoinRound];
+    [shapeLayer setLineDashPattern:
+     [NSArray arrayWithObjects:[NSNumber numberWithInt:10],
+      [NSNumber numberWithInt:5],
+      nil]];
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:shapeRect cornerRadius:15.0];
+    [shapeLayer setPath:path.CGPath];
+    
+    return shapeLayer;
 }
 
 - (IBAction)changeThickness:(id)sender
@@ -1105,7 +1328,6 @@
     textField.delegate = self;
     
     self.currentTextField = textField;
-    //[self.currentTextField invalidateIntrinsicContentSize];
     
     [self.view addSubview:textField];
 }
@@ -1149,6 +1371,125 @@
     
 }
 
+-(void)resizingText:(UIPinchGestureRecognizer *)recognizer
+{
+    
+    [self.view bringSubviewToFront:recognizer.view];
+        
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        lastScale = 1.0;
+        return;
+    }
+        
+    CGFloat scale = 1.0 - (lastScale - recognizer.scale);
+        
+        
+    CGAffineTransform currentTransform = recognizer.view.transform;
+    CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
+        
+    [recognizer.view setTransform:newTransform];
+        
+    lastScale = recognizer.scale;
+        
+}
+
+
+-(void)moveText: (UIPanGestureRecognizer *)recognizer
+{
+    
+        [[[recognizer view] layer] removeAllAnimations];
+        //[self.view bringSubviewToFront:[recognizer view]];
+        CGPoint translatedPoint = [recognizer translationInView:self.view];
+        
+        if([recognizer state] == UIGestureRecognizerStateBegan) {
+            
+            centerImage.x = [[recognizer view] center].x;
+            centerImage.y = [[recognizer view] center].y;
+        }
+        
+        translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
+        
+        [[recognizer view] setCenter:translatedPoint];
+        
+        if([recognizer state] == UIGestureRecognizerStateEnded) {
+            
+            CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.view].x);
+            CGFloat finalY = translatedPoint.y + (.35*[recognizer velocityInView:self.view].y);
+            
+            if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
+                
+                if(finalX < 0) {
+                    
+                    finalX = 0;
+                }
+                
+                else if(finalX > 768) {
+                    
+                    finalX = 768;
+                }
+                
+                if(finalY < 0) {
+                    
+                    finalY = 0;
+                }
+                
+                else if(finalY > 1024) {
+                    
+                    finalY = 1024;
+                }
+            }
+            
+            else {
+                
+                if(finalX < 0) {
+                    
+                    finalX = 0;
+                }
+                
+                else if(finalX > 1024) {
+                    
+                    finalX = 1024;
+                }
+                
+                if(finalY < 0) {
+                    
+                    finalY = 0;
+                }
+                
+                else if(finalY > 768) {
+                    
+                    finalY = 768;
+                }
+            }
+            
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:.35];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [[recognizer view] setCenter:CGPointMake(finalX, finalY)];
+            [UIView commitAnimations];
+    }
+}
+
+-(void)rotateText: (UIRotationGestureRecognizer *)recognizer
+{
+    
+    if([recognizer state] == UIGestureRecognizerStateEnded) {
+    
+        lastRotation = 0.0;
+        return;
+    }
+    
+    CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
+
+    CGAffineTransform currentTransform = [recognizer view].transform;
+    CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
+    
+    [[recognizer view] setTransform:newTransform];
+    
+    lastRotation = [recognizer rotation];
+}
+
+
 #pragma mark - UItextFieldDelegateMethods
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -1170,15 +1511,16 @@
     self.currentTextField.userInteractionEnabled = YES;
     //textField.userInteractionEnabled = YES;
 
-    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
-    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingText:)];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveText:)];
+    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateText:)];
     
     [self.currentTextField addGestureRecognizer:pinchGesture];
     [self.currentTextField addGestureRecognizer:panGesture];
     [self.currentTextField addGestureRecognizer:rotationGesture];
     
     if (self.currentTextField.text) {
+        self.currentTextField.textColor = _textColor;
         [self.currentTextField setBorderStyle:UITextBorderStyleNone];
         [self.currentTextField setNeedsDisplay];
         [self.arrayTexts addObject:self.currentTextField];
@@ -1205,6 +1547,7 @@
 - (void) setTextColor : (UIColor*)textColor
 {
     self.currentTextField.textColor = textColor;
+    _textColor = textColor;
 }
 
 - (IBAction)setBackgroundView:(id)sender
@@ -1317,6 +1660,8 @@
     [self resetTint];
     self.arrayImages = [[NSMutableArray alloc]init];
     self.arrayTexts = [[NSMutableArray alloc]init];
+    indexImage = 0;
+    
 }
 
 -(void)newThicknessBrush:(CGFloat)thickness

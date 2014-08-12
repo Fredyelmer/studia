@@ -45,6 +45,7 @@
 		0DA7B599198ACECB00D268E1 /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA7B598198ACECB00D268E1 /* CollectionViewController.m */; };
 		0DA8EFA11976C052006A5589 /* ImagePickerLandscapeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA8EFA01976C052006A5589 /* ImagePickerLandscapeController.m */; };
 		0DA8EFA41976F772006A5589 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA8EFA31976F772006A5589 /* Image.m */; };
+		0DA9B429199A7FE500A86418 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA9B428199A7FE500A86418 /* delete.png */; };
 		0DAACA1A19897974003B262D /* PhotoRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAACA1919897974003B262D /* PhotoRequest.m */; };
 		0DAB2FBD19912234002E3EBB /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAB2FBC19912234002E3EBB /* CustomCell.m */; };
 		0DAB2FC019915794002E3EBB /* AddImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAB2FBF19915794002E3EBB /* AddImageViewController.m */; };
@@ -143,6 +144,7 @@
 		0DA8EFA01976C052006A5589 /* ImagePickerLandscapeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerLandscapeController.m; sourceTree = "<group>"; };
 		0DA8EFA21976F772006A5589 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		0DA8EFA31976F772006A5589 /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
+		0DA9B428199A7FE500A86418 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		0DAACA1819897974003B262D /* PhotoRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoRequest.h; sourceTree = "<group>"; };
 		0DAACA1919897974003B262D /* PhotoRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoRequest.m; sourceTree = "<group>"; };
 		0DAB2FBB19912234002E3EBB /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 		0D9ECF7F1961911100882007 /* AppImages */ = {
 			isa = PBXGroup;
 			children = (
+				0DA9B428199A7FE500A86418 /* delete.png */,
 				71913C1F199542720097162C /* Expand_B-512.png */,
 				0DA7B592198AC1DB00D268E1 /* placeholder.png */,
 				0DA6C92519880956006AB299 /* redo.png */,
@@ -516,6 +519,7 @@
 				0DA6C9201982C71E006AB299 /* photo.png in Resources */,
 				0DA6C91E1982C71E006AB299 /* preview.png in Resources */,
 				0D9ECF511961867300882007 /* InfoPlist.strings in Resources */,
+				0DA9B429199A7FE500A86418 /* delete.png in Resources */,
 				0DA75FE81981738D00BAE5E1 /* Record-Pressed-icon.png in Resources */,
 				0DA6C91C1982C71E006AB299 /* question.png in Resources */,
 				0D9ECF5C1961867300882007 /* Images.xcassets in Resources */,
