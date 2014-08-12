@@ -50,6 +50,7 @@
 @property (nonatomic,strong) UIPopoverController *popoverThickness;
 @property (nonatomic,strong) UIPopoverController *popoverAddImage;
 @property (strong, nonatomic) UIPopoverController *popoverEraser;
+
 @property (strong, nonatomic) UIPopoverController *popoverFont;
 @property (strong, nonatomic) UIPopoverController *popoverFontColor;
 
