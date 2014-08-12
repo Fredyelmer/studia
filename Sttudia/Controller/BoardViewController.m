@@ -26,7 +26,6 @@
     int numEraserButtonTap;
     int textFont;
     NSString* nameOfFont;
-    UIColor* _textColor;
     BOOL allowImageEdition;
     CAShapeLayer *_border;
 }
@@ -152,7 +151,6 @@
     numEraserButtonTap = 0;
     textFont = 20;
     nameOfFont = @"Helvetica";
-    _textColor = [UIColor blackColor];
     allowImageEdition = NO;
     
 }
@@ -1131,9 +1129,44 @@
     [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
     [deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
     [customImage addSubview:deleteButton];
+    
+//    UIView *blackView = [[UIView alloc]initWithFrame:CGRectMake(customImage.bounds.origin.x, customImage.bounds.origin.y, customImage.frame.size.width, customImage.frame.size.height)];
+//    [blackView setBackgroundColor:[UIColor blackColor]];
+//    [blackView setAlpha:0.5];
+//    
+//    [customImage addSubview:blackView];
+    
+    
     self.addImageButton.enabled = NO;
 }
 
++ (UIImage *)colorizeImage:(UIImage *)image withColor:(UIColor *)color {
+    UIGraphicsBeginImageContext(image.size);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGRect area = CGRectMake(0, 0, image.size.width, image.size.height);
+    
+    CGContextScaleCTM(context, 1, -1);
+    CGContextTranslateCTM(context, 0, -area.size.height);
+    
+    CGContextSaveGState(context);
+    CGContextClipToMask(context, area, image.CGImage);
+    
+    [color set];
+    CGContextFillRect(context, area);
+    
+    CGContextRestoreGState(context);
+    
+    CGContextSetBlendMode(context, kCGBlendModeMultiply);
+    
+    CGContextDrawImage(context, area, image.CGImage);
+    
+    UIImage *colorizedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsBeginImageContextWithOptions(image.size, NO, image.scale);
+    UIGraphicsEndImageContext();
+    
+    return colorizedImage;
+}
 
 - (CGRect)getFrameSizeForImage:(UIImage *)image inImageView:(UIImageView *)imageView {
     
@@ -1334,17 +1367,19 @@
     if ([sender.title isEqualToString:@"T+"]) {
         textFont += 1;
         CGSize size = [self.currentTextField.text sizeWithAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:nameOfFont size:textFont] forKey:NSFontAttributeName]];
-        self.currentTextField.font = [UIFont systemFontOfSize:textFont];
+//        self.currentTextField.font = [UIFont systemFontOfSize:textFont];
+        self.currentTextField.font = [UIFont fontWithName:nameOfFont size:textFont];
         CGPoint origin = self.currentTextField.frame.origin;
-        [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width + 30 , size.height + 10)];
+        [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width + 30 , size.height + 30)];
         
     }
     else if ([sender.title isEqualToString:@"T-"]) {
         textFont -= 1;
         CGSize size = [self.currentTextField.text sizeWithAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:nameOfFont size:textFont] forKey:NSFontAttributeName]];
-        self.currentTextField.font = [UIFont systemFontOfSize:textFont];
+//        self.currentTextField.font = [UIFont systemFontOfSize:textFont];
+        self.currentTextField.font = [UIFont fontWithName:nameOfFont size:textFont];
         CGPoint origin = self.currentTextField.frame.origin;
-        [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width +30, size.height + 10)];
+        [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width +30, size.height + 30)];
     }
     else if ([sender.title isEqualToString:@"Fonte"]) {
         FontTypeViewController *fontVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"fontVC"];
@@ -1490,15 +1525,12 @@
 #pragma mark - UItextFieldDelegateMethods
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-//    [UIView animateWithDuration:0.1 animations:^{
-//        [textField sizeToFit];
-//    }];
     
     NSString *text = textField.text;
     text = [text stringByReplacingCharactersInRange:range withString:string];
     CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:textField.font}];
     CGPoint origin = self.currentTextField.frame.origin;
-    [textField setFrame:CGRectMake(origin.x, origin.y, textSize.width +30, textSize.height + 10)];
+    [textField setFrame:CGRectMake(origin.x, origin.y, textSize.width +30, textSize.height + 30)];
     
     return YES;
 }
@@ -1543,7 +1575,7 @@
     CGSize size = [self.currentTextField.text sizeWithAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:fontName size:textFont] forKey:NSFontAttributeName]];
     self.currentTextField.font = [UIFont systemFontOfSize:textFont];
     CGPoint origin = self.currentTextField.frame.origin;
-    [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width +30, size.height + 10)];
+    [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width +30, size.height + 30)];
     self.currentTextField.font = [UIFont fontWithName:fontName size:textFont];
     nameOfFont = fontName;
     
@@ -1553,8 +1585,6 @@
 {
     self.currentTextField.textColor = textColor;
     self.currentColorText = textColor;
-    _textColor = textColor;
-
 }
 
 - (IBAction)setBackgroundView:(id)sender
