@@ -83,6 +83,7 @@
 @property (strong, nonatomic) NSMutableArray* arrayImages;
 @property (strong, nonatomic) NSMutableArray* arrayTexts;
 @property (strong, nonatomic) UITextField* currentTextField;
+@property (strong, nonatomic) UIColor *currentColorText;
 @property (strong, nonatomic) NSMutableArray* arrayPages;
 @property (strong, nonatomic) IBOutlet UILabel *pageNumberLabel;
 @property (strong, nonatomic) IBOutlet UIButton *undoButton;

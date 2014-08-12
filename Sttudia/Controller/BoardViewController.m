@@ -54,6 +54,7 @@
     
     //inicializa o brush
     [self setBrushColor:[UIColor blackColor]];
+    self.currentColorText = [UIColor blackColor];
     brush = 5.0;
     eraser = 20.0;
     opacity = 1.0;
@@ -793,7 +794,8 @@
     
     [[[recognizer view] layer] removeAllAnimations];
     //[self.view bringSubviewToFront:[recognizer view]];
-    CGPoint translatedPoint = [recognizer translationInView:self.view];
+    CGPoint translatedPoint = [recognizer translationInView:self.mainImageView];
+    CGRect bound = self.mainImageView.frame;
     
     if([recognizer state] == UIGestureRecognizerStateBegan) {
 		
@@ -807,8 +809,8 @@
     
     if([recognizer state] == UIGestureRecognizerStateEnded) {
 		
-		CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.view].x);
-		CGFloat finalY = translatedPoint.y + (.35*[recognizer velocityInView:self.view].y);
+		CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.mainImageView].x);
+		CGFloat finalY = translatedPoint.y + (.35*[recognizer velocityInView:self.mainImageView].y);
 		
 		if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
 			
@@ -817,9 +819,9 @@
 				finalX = 0;
 			}
 			
-			else if(finalX > 768) {
+			else if(finalX > bound.size.width) {
 				
-				finalX = 768;
+				finalX = bound.size.width;
 			}
 			
 			if(finalY < 0) {
@@ -827,32 +829,32 @@
 				finalY = 0;
 			}
 			
-			else if(finalY > 1024) {
+			else if(finalY > bound.size.height) {
 				
-				finalY = 1024;
+				finalY = bound.size.height;
 			}
 		}
 		
 		else {
 			
-			if(finalX < 0) {
+			if(finalX < bound.origin.x) {
 				
-				finalX = 0;
+				finalX = bound.origin.x;
 			}
 			
-			else if(finalX > 1024) {
+			else if(finalX > bound.size.width) {
 				
-				finalX = 1024;
+				finalX = bound.size.width;
 			}
 			
-			if(finalY < 0) {
+			if(finalY < bound.origin.y) {
 				
-				finalY = 0;
+				finalY = bound.origin.y;
 			}
 			
-			else if(finalY > 768) {
+			else if(finalY > bound.size.height) {
 				
-				finalY = 768;
+				finalY = bound.size.height;
 			}
 		}
 		
@@ -1029,11 +1031,11 @@
     
     textFont = 20;
     
-    
-    
     UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(50, 80, 100, 30)];
     
     [textField becomeFirstResponder];
+    
+    self.currentTextField = textField;
     
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f,
                                                                      0.0f,
@@ -1090,8 +1092,6 @@
                          ];
     textField.inputAccessoryView = toolBar;
 
-    
-    
     textField.borderStyle = UITextBorderStyleRoundedRect;
     textField.font = [UIFont systemFontOfSize:textFont];
     textField.placeholder = @"enter text";
@@ -1102,9 +1102,10 @@
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.textAlignment = NSTextAlignmentLeft;
     textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    textField.textColor = self.currentColorText;
     textField.delegate = self;
     
-    self.currentTextField = textField;
+    
     //[self.currentTextField invalidateIntrinsicContentSize];
     
     [self.view addSubview:textField];
@@ -1165,28 +1166,37 @@
     return YES;
 }
 
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    NSLog(@"aqqq");
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    self.currentTextField.userInteractionEnabled = YES;
-    //textField.userInteractionEnabled = YES;
+    self.currentTextField = textField;
+    //self.currentTextField.userInteractionEnabled = YES;
+    textField.userInteractionEnabled = YES;
 
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingImage:)];
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveImage:)];
     UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateImage:)];
     
-    [self.currentTextField addGestureRecognizer:pinchGesture];
-    [self.currentTextField addGestureRecognizer:panGesture];
-    [self.currentTextField addGestureRecognizer:rotationGesture];
+    [textField addGestureRecognizer:pinchGesture];
+    [textField addGestureRecognizer:panGesture];
+    [textField addGestureRecognizer:rotationGesture];
     
-    if (self.currentTextField.text) {
-        [self.currentTextField setBorderStyle:UITextBorderStyleNone];
-        [self.currentTextField setNeedsDisplay];
-        [self.arrayTexts addObject:self.currentTextField];
+    if (![textField.text isEqualToString:@""]) {
+        [textField setBorderStyle:UITextBorderStyleNone];
+        [self.arrayTexts addObject:textField];
+        
+        [textField resignFirstResponder];
+        textField.textColor = self.currentColorText;
     }
-    //self.currentTextField = nil;
-    NSLog(@"teclado");
+    else
+    {
+        [textField removeFromSuperview];
+    }
     
-    [textField resignFirstResponder];
     return YES;
 }
 
@@ -1205,6 +1215,7 @@
 - (void) setTextColor : (UIColor*)textColor
 {
     self.currentTextField.textColor = textColor;
+    self.currentColorText = textColor;
 }
 
 - (IBAction)setBackgroundView:(id)sender
