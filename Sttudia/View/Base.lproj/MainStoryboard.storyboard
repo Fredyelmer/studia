@@ -559,12 +559,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jci-4u-whL" userLabel="action Image View">
+                            <imageView userInteractionEnabled="NO" alpha="0.74999999999999978" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jci-4u-whL" userLabel="action Image View">
                                 <rect key="frame" x="0.0" y="722" width="1024" height="50"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S2P-v6-Xrb" userLabel="tool Image View">
+                            <imageView userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S2P-v6-Xrb" userLabel="tool Image View">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -776,7 +776,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Lg-YR-MdO">
-                                <rect key="frame" x="778" y="732" width="29" height="30"/>
+                                <rect key="frame" x="778" y="733" width="29" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="preview.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -892,19 +892,28 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="addImageButton" destination="cSs-mD-fas" id="Z2M-7I-jW7"/>
+                        <outlet property="addTextButton" destination="RW1-xX-8tG" id="6XO-C8-p08"/>
                         <outlet property="backButton" destination="1Lg-YR-MdO" id="VgR-qe-0R1"/>
                         <outlet property="bottonBar" destination="jci-4u-whL" id="JWX-DA-5Ac"/>
                         <outlet property="confirmImageButton" destination="lvg-Hz-03v" id="jj3-dB-yi9"/>
                         <outlet property="eraseButton" destination="0vR-rb-MlG" id="5We-wl-t0v"/>
+                        <outlet property="informationsButton" destination="OhL-kQ-LcR" id="QhB-0V-Dqp"/>
                         <outlet property="layoutImageView" destination="LpN-uf-Xjo" id="u4B-fy-vDq"/>
                         <outlet property="layoutView" destination="B9K-PA-0Ot" id="YMi-sE-rQe"/>
                         <outlet property="mainImageView" destination="sVE-PJ-wbj" id="juW-5g-BeV"/>
+                        <outlet property="nextButton" destination="zi9-xp-EF2" id="Nap-Sb-TlJ"/>
                         <outlet property="pageNumberLabel" destination="wgG-jR-Ms5" id="DxD-Ih-pb4"/>
+                        <outlet property="pauseButton" destination="Rd0-cs-JBD" id="kLb-he-gL8"/>
                         <outlet property="pauseRecAudio" destination="Rd0-cs-JBD" id="x9S-Lh-tFX"/>
+                        <outlet property="playAudioButton" destination="OJZ-vf-Ndz" id="Fev-yK-d2y"/>
+                        <outlet property="playButton" destination="zrf-Wb-ruv" id="NbA-Oc-Bii"/>
+                        <outlet property="previewButton" destination="1Lg-YR-MdO" id="bRL-mW-J2B"/>
+                        <outlet property="questionsButton" destination="75t-Fd-3l2" id="mwu-mB-oOU"/>
                         <outlet property="recAudio" destination="Gwd-3y-oKD" id="ZVt-Ke-qIo"/>
+                        <outlet property="recAudioButton" destination="Gwd-3y-oKD" id="12F-19-QsQ"/>
+                        <outlet property="recButton" destination="GAi-N1-go1" id="E9T-qx-gQI"/>
                         <outlet property="redoButton" destination="5dp-Fh-fuJ" id="pj8-P5-aBY"/>
-                        <outlet property="snapShotButtom" destination="kR3-oG-Xxm" id="LNn-T1-w3n"/>
-                        <outlet property="takeSnapshot" destination="kR3-oG-Xxm" id="ATJ-g4-XPQ"/>
+                        <outlet property="snapShotButtom" destination="kR3-oG-Xxm" id="EXK-vU-4lJ"/>
                         <outlet property="tempImageView" destination="zMY-7J-QW2" id="EQk-Mm-as2"/>
                         <outlet property="thicknessButton" destination="hu1-Vf-Ej0" id="QTk-2P-mS8"/>
                         <outlet property="topBar" destination="S2P-v6-Xrb" id="qVn-kx-TOL"/>

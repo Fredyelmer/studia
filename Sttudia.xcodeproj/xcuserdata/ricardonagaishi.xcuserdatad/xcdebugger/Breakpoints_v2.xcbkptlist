@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Sttudia/Controller/BoardViewController.m"
-            timestampString = "429561856.252253"
+            timestampString = "429649381.068577"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "267"
-            endingLineNumber = "267"
+            startingLineNumber = "266"
+            endingLineNumber = "266"
             landmarkName = "-longPressedButton:"
             landmarkType = "5">
          </BreakpointContent>
