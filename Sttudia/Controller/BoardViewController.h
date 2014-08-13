@@ -73,7 +73,7 @@
 
 
 @property (strong, nonatomic) NSMutableArray* arraySnapshots;
-@property (strong, nonatomic) IBOutlet UIButton *takeSnapshot;
+
 
 @property (strong, nonatomic) NSTimer* snapshotTimer;
 @property (strong, nonatomic) NSMutableArray* arrayPoints;
@@ -87,15 +87,24 @@
 @property (strong, nonatomic) UITextField* currentTextField;
 @property (strong, nonatomic) UIColor *currentColorText;
 @property (strong, nonatomic) NSMutableArray* arrayPages;
+@property (strong, nonatomic) NSMutableArray* arrayUndo;
+@property (strong, nonatomic) NSMutableArray* arrayRedo;
 @property (strong, nonatomic) IBOutlet UILabel *pageNumberLabel;
 @property (strong, nonatomic) IBOutlet UIButton *undoButton;
 @property (strong, nonatomic) IBOutlet UIButton *redoButton;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
-
-@property (strong, nonatomic) NSMutableArray* arrayUndo;
-@property (strong, nonatomic) NSMutableArray* arrayRedo;
 @property (strong, nonatomic) IBOutlet UIImageView *topBar;
 @property (strong, nonatomic) IBOutlet UIImageView *bottonBar;
+@property (strong, nonatomic) IBOutlet UIButton *addTextButton;
+@property (strong, nonatomic) IBOutlet UIButton *nextButton;
+@property (strong, nonatomic) IBOutlet UIButton *previewButton;
+@property (strong, nonatomic) IBOutlet UIButton *playButton;
+@property (strong, nonatomic) IBOutlet UIButton *recButton;
+@property (strong, nonatomic) IBOutlet UIButton *pauseButton;
+@property (strong, nonatomic) IBOutlet UIButton *recAudioButton;
+@property (strong, nonatomic) IBOutlet UIButton *playAudioButton;
+@property (strong, nonatomic) IBOutlet UIButton *informationsButton;
+@property (strong, nonatomic) IBOutlet UIButton *questionsButton;
 
 
 - (IBAction)startVideoRecord:(id)sender;

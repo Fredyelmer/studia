@@ -145,7 +145,6 @@
     self.undoButton.enabled = NO;
     self.redoButton.enabled = NO;
     self.backButton.enabled = NO;
-    [self.topBar bringSubviewToFront:self.view];
     [self.bottonBar bringSubviewToFront:self.view];
     
     undoMade = NO;
@@ -828,7 +827,7 @@
 {
     
     if (allowImageEdition) {
-        [self.view bringSubviewToFront:recognizer.view];
+        //[self.view bringSubviewToFront:recognizer.view];
         
         if (recognizer.state == UIGestureRecognizerStateEnded) {
             lastScale = 1.0;
@@ -1129,8 +1128,7 @@
     
     currentImage = customImage;
     
-    [self.topBar bringSubviewToFront:self.view];
-    [self.bottonBar bringSubviewToFront:self.view];
+    
     
     
 //    self.addImageButton.enabled = NO;
@@ -1162,7 +1160,7 @@
 //    [customImage addSubview:blackView];
     
     
-    self.addImageButton.enabled = NO;
+    [self bringToolBarToFront];
 }
 
 + (UIImage *)colorizeImage:(UIImage *)image withColor:(UIColor *)color {
@@ -1771,5 +1769,41 @@
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     self.thicknessButton.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+}
+
+- (void)bringToolBarToFront
+{
+    [self.view bringSubviewToFront: self.topBar];
+    [self.view bringSubviewToFront: self.bottonBar];
+    [self.view bringSubviewToFront: self.snapShotButtom];
+    [self.view bringSubviewToFront: self.recAudio];
+    [self.view bringSubviewToFront: self.pauseRecAudio];
+    [self.view bringSubviewToFront: self.confirmImageButton];
+    [self.view bringSubviewToFront: self.addImageButton];
+    [self.view bringSubviewToFront: self.pageNumberLabel];
+    [self.view bringSubviewToFront: self.undoButton];
+    [self.view bringSubviewToFront: self.redoButton];
+    [self.view bringSubviewToFront: self.backButton];
+    [self.view bringSubviewToFront: self.topBar];
+    [self.view bringSubviewToFront: self.bottonBar];
+    [self.view bringSubviewToFront: self.addTextButton];
+    [self.view bringSubviewToFront: self.nextButton];
+    [self.view bringSubviewToFront: self.previewButton];
+    [self.view bringSubviewToFront: self.playButton];
+    [self.view bringSubviewToFront: self.recButton];
+    [self.view bringSubviewToFront: self.pauseButton];
+    [self.view bringSubviewToFront: self.recAudioButton];
+    [self.view bringSubviewToFront: self.playAudioButton];
+    [self.view bringSubviewToFront: self.informationsButton];
+    [self.view bringSubviewToFront: self.questionsButton];
+    [self.view bringSubviewToFront:self.ColorButton[0]];
+    [self.view bringSubviewToFront:self.ColorButton[1]];
+    [self.view bringSubviewToFront:self.ColorButton[2]];
+    [self.view bringSubviewToFront:self.ColorButton[3]];
+    [self.view bringSubviewToFront:self.ColorButton[4]];
+    [self.view bringSubviewToFront:self.eraseButton];
+    [self.view bringSubviewToFront:self.thicknessButton];
+
+
 }
 @end
