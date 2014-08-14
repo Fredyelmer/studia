@@ -81,6 +81,7 @@
 @property (assign, nonatomic) NSTimeInterval lastTouch;
 @property (assign, nonatomic) NSTimeInterval lastTimeTouch;
 @property (assign, nonatomic) NSTimeInterval initialTimeInterval;
+
 @property (strong, nonatomic) NSMutableArray* arrayImages;
 @property (strong, nonatomic) NSMutableArray* arrayTexts;
 @property (strong, nonatomic) UITextField* currentTextField;

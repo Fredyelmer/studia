@@ -15,6 +15,7 @@
     NSTimeInterval totalInterval;
     BOOL isScreenTouched;
     BOOL isImageEditing;
+    BOOL isTextEditing;
     int indexImage;
     BOOL isEraser;
     BOOL finishTextEdit;
@@ -253,13 +254,28 @@
     NSLog(@"tirou foto");
 }
 
+- (void) longPressedText:(UIGestureRecognizer *)gesture
+{
+    if (gesture.state==UIGestureRecognizerStateBegan)
+    {
+        isTextEditing = YES;
+        allowImageEdition = YES;
+        [self.currentTextField.layer setBorderWidth:1];
+        [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
+        NSLog(@"long press text");
+    }
+}
+
 - (void) longPressedButton:(UIGestureRecognizer *)gesture
 {
     if (gesture.state==UIGestureRecognizerStateBegan)
     {
         NSLog(@"long press");
+        
         allowImageEdition = YES;
         isImageEditing = YES;
+        
+        
         gesture.view.alpha = 1.5;
         
         for (UIImageView* image in self.arrayImages) {
@@ -533,11 +549,20 @@
             UIButton *deleteButton = [[currentImage subviews] objectAtIndex:0];
             deleteButton.hidden = YES;
             deleteButton.enabled = NO;
-            self.addImageButton.enabled = YES;
+           
         };
     //}
+    
+    if (![event touchesForView:self.currentTextField]) {
+        NSLog(@"text not touched");
+        
+        isTextEditing = NO;
+        allowImageEdition = NO;
+        [self.currentTextField.layer setBorderWidth:0.0];
+        //[self.currentTextField setEnabled:NO];
+    }
     mouseSwiped = NO;
-    if(!isImageEditing)
+    if(!isImageEditing || !isTextEditing)
     {
         UITouch *touch = [touches anyObject];
         lastPoint = [touch locationInView:self.mainImageView];
@@ -609,7 +634,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if(!isImageEditing){
+    if(!isImageEditing || !isTextEditing){
         
         UITouch *touch = [touches anyObject];
         CGPoint currentPoint = [touch locationInView:self.mainImageView];
@@ -1343,6 +1368,8 @@
     textField.inputAccessoryView = toolBar;
 
     textField.borderStyle = UITextBorderStyleRoundedRect;
+    [textField.layer setBorderWidth:1];
+    [textField.layer setBorderColor:[[UIColor blueColor] CGColor]];
     textField.font = [UIFont systemFontOfSize:textFont];
     textField.placeholder = @"enter text";
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -1350,7 +1377,7 @@
     textField.returnKeyType = UIReturnKeyDone;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    textField.textAlignment = NSTextAlignmentLeft;
+    textField.textAlignment = NSTextAlignmentCenter;
     textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     textField.textColor = self.currentColorText;
     textField.delegate = self;
@@ -1403,30 +1430,32 @@
 
 -(void)resizingText:(UIPinchGestureRecognizer *)recognizer
 {
-    
-    [self.view bringSubviewToFront:recognizer.view];
+    if (isTextEditing) {
+        [self.view bringSubviewToFront:recognizer.view];
         
-    if (recognizer.state == UIGestureRecognizerStateEnded) {
-        lastScale = 1.0;
-        return;
+        if (recognizer.state == UIGestureRecognizerStateEnded) {
+            lastScale = 1.0;
+            return;
+        }
+        
+        CGFloat scale = 1.0 - (lastScale - recognizer.scale);
+        
+        
+        CGAffineTransform currentTransform = recognizer.view.transform;
+        CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
+        
+        [recognizer.view setTransform:newTransform];
+        
+        lastScale = recognizer.scale;
+
     }
-        
-    CGFloat scale = 1.0 - (lastScale - recognizer.scale);
-        
-        
-    CGAffineTransform currentTransform = recognizer.view.transform;
-    CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
-        
-    [recognizer.view setTransform:newTransform];
-        
-    lastScale = recognizer.scale;
-        
+    
 }
 
 
 -(void)moveText: (UIPanGestureRecognizer *)recognizer
 {
-    
+    if (isTextEditing) {
         [[[recognizer view] layer] removeAllAnimations];
         //[self.view bringSubviewToFront:[recognizer view]];
         CGPoint translatedPoint = [recognizer translationInView:self.view];
@@ -1497,26 +1526,30 @@
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
             [[recognizer view] setCenter:CGPointMake(finalX, finalY)];
             [UIView commitAnimations];
+        }
+
     }
 }
 
 -(void)rotateText: (UIRotationGestureRecognizer *)recognizer
 {
-    
-    if([recognizer state] == UIGestureRecognizerStateEnded) {
-    
-        lastRotation = 0.0;
-        return;
+    if (isTextEditing) {
+        if([recognizer state] == UIGestureRecognizerStateEnded) {
+            
+            lastRotation = 0.0;
+            return;
+        }
+        
+        CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
+        
+        CGAffineTransform currentTransform = [recognizer view].transform;
+        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
+        
+        [[recognizer view] setTransform:newTransform];
+        
+        lastRotation = [recognizer rotation];
     }
     
-    CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
-
-    CGAffineTransform currentTransform = [recognizer view].transform;
-    CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
-    
-    [[recognizer view] setTransform:newTransform];
-    
-    lastRotation = [recognizer rotation];
 }
 
 
@@ -1547,10 +1580,13 @@
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingText:)];
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveText:)];
     UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateText:)];
+    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressedText:)];
+
     
     [textField addGestureRecognizer:pinchGesture];
     [textField addGestureRecognizer:panGesture];
     [textField addGestureRecognizer:rotationGesture];
+    [textField addGestureRecognizer:longPressGesture];
     
     if (![textField.text isEqualToString:@""]) {
         [textField setBorderStyle:UITextBorderStyleNone];
