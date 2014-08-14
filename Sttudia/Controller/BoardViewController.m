@@ -1412,9 +1412,12 @@
 
 -(void)resizingText:(UIPinchGestureRecognizer *)recognizer
 {
-    if (isTextEditing) {
         [self.view bringSubviewToFront:recognizer.view];
-        
+    
+    if ([recognizer state] == UIGestureRecognizerStateBegan) {
+        [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
+        [self.currentTextField.layer setBorderWidth:1];
+    }
         if (recognizer.state == UIGestureRecognizerStateEnded) {
             lastScale = 1.0;
             return;
@@ -1430,14 +1433,12 @@
         
         lastScale = recognizer.scale;
 
-    }
     
 }
 
 
 -(void)moveText: (UIPanGestureRecognizer *)recognizer
 {
-    if (isTextEditing) {
         [[[recognizer view] layer] removeAllAnimations];
         //[self.view bringSubviewToFront:[recognizer view]];
         CGPoint translatedPoint = [recognizer translationInView:self.view];
@@ -1446,6 +1447,9 @@
             
             centerImage.x = [[recognizer view] center].x;
             centerImage.y = [[recognizer view] center].y;
+            
+            [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
+            [self.currentTextField.layer setBorderWidth:1];
         }
         
         translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
@@ -1509,19 +1513,22 @@
             [[recognizer view] setCenter:CGPointMake(finalX, finalY)];
             [UIView commitAnimations];
         }
-
-    }
 }
 
 -(void)rotateText: (UIRotationGestureRecognizer *)recognizer
 {
-    if (isTextEditing) {
         if([recognizer state] == UIGestureRecognizerStateEnded) {
             
             lastRotation = 0.0;
             return;
         }
-        
+    
+    if ([recognizer state] == UIGestureRecognizerStateBegan) {
+        [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
+        [self.currentTextField.layer setBorderWidth:1];
+    }
+   
+    
         CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
         
         CGAffineTransform currentTransform = [recognizer view].transform;
@@ -1530,7 +1537,7 @@
         [[recognizer view] setTransform:newTransform];
         
         lastRotation = [recognizer rotation];
-    }
+
     
 }
 
@@ -1548,9 +1555,10 @@
     return YES;
 }
 
--(void)textFieldDidEndEditing:(UITextField *)textField
+-(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    NSLog(@"aqqq");
+        [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
+        [self.currentTextField.layer setBorderWidth:1];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
