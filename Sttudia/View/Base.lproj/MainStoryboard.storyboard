@@ -559,7 +559,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.74999999999999978" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jci-4u-whL" userLabel="action Image View">
+                            <imageView userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jci-4u-whL" userLabel="action Image View">
                                 <rect key="frame" x="0.0" y="722" width="1024" height="50"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -894,6 +894,7 @@
                         <outlet property="addImageButton" destination="cSs-mD-fas" id="Z2M-7I-jW7"/>
                         <outlet property="addTextButton" destination="RW1-xX-8tG" id="6XO-C8-p08"/>
                         <outlet property="backButton" destination="1Lg-YR-MdO" id="VgR-qe-0R1"/>
+                        <outlet property="backGroundButton" destination="LXU-Mr-fSF" id="aTJ-rs-BKX"/>
                         <outlet property="bottonBar" destination="jci-4u-whL" id="JWX-DA-5Ac"/>
                         <outlet property="confirmImageButton" destination="lvg-Hz-03v" id="jj3-dB-yi9"/>
                         <outlet property="eraseButton" destination="0vR-rb-MlG" id="5We-wl-t0v"/>
@@ -913,7 +914,7 @@
                         <outlet property="recAudioButton" destination="Gwd-3y-oKD" id="12F-19-QsQ"/>
                         <outlet property="recButton" destination="GAi-N1-go1" id="E9T-qx-gQI"/>
                         <outlet property="redoButton" destination="5dp-Fh-fuJ" id="pj8-P5-aBY"/>
-                        <outlet property="snapShotButtom" destination="kR3-oG-Xxm" id="EXK-vU-4lJ"/>
+                        <outlet property="snapShotButtom" destination="kR3-oG-Xxm" id="DNN-jF-GTj"/>
                         <outlet property="tempImageView" destination="zMY-7J-QW2" id="EQk-Mm-as2"/>
                         <outlet property="thicknessButton" destination="hu1-Vf-Ej0" id="QTk-2P-mS8"/>
                         <outlet property="topBar" destination="S2P-v6-Xrb" id="qVn-kx-TOL"/>
