@@ -1783,14 +1783,10 @@
 {
     [self.view bringSubviewToFront: self.topBar];
     [self.view bringSubviewToFront: self.bottonBar];
-    [self.view bringSubviewToFront: self.snapShotButtom];
     [self.view bringSubviewToFront: self.recAudio];
     [self.view bringSubviewToFront: self.pauseRecAudio];
     [self.view bringSubviewToFront: self.confirmImageButton];
-    [self.view bringSubviewToFront: self.addImageButton];
     [self.view bringSubviewToFront: self.pageNumberLabel];
-    [self.view bringSubviewToFront: self.undoButton];
-    [self.view bringSubviewToFront: self.redoButton];
     [self.view bringSubviewToFront: self.backButton];
     [self.view bringSubviewToFront: self.topBar];
     [self.view bringSubviewToFront: self.bottonBar];
@@ -1811,6 +1807,12 @@
     [self.view bringSubviewToFront:self.ColorButton[4]];
     [self.view bringSubviewToFront:self.eraseButton];
     [self.view bringSubviewToFront:self.thicknessButton];
+    [self.view bringSubviewToFront:self.backGroundButton];
+    [self.view bringSubviewToFront:self.pageNumberLabel];
+    [self.view bringSubviewToFront: self.snapShotButtom];
+    [self.view bringSubviewToFront: self.undoButton];
+    [self.view bringSubviewToFront: self.redoButton];
+    [self.view bringSubviewToFront: self.addImageButton];
 
 
 }

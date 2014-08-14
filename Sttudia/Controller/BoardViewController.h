@@ -105,6 +105,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *playAudioButton;
 @property (strong, nonatomic) IBOutlet UIButton *informationsButton;
 @property (strong, nonatomic) IBOutlet UIButton *questionsButton;
+@property (strong, nonatomic) IBOutlet UIButton *backGroundButton;
 
 
 - (IBAction)startVideoRecord:(id)sender;
