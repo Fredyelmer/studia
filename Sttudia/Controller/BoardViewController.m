@@ -549,6 +549,7 @@
             UIButton *deleteButton = [[currentImage subviews] objectAtIndex:0];
             deleteButton.hidden = YES;
             deleteButton.enabled = NO;
+            self.addImageButton.enabled = YES;
            
         };
     //}
@@ -557,7 +558,6 @@
         NSLog(@"text not touched");
         
         isTextEditing = NO;
-        allowImageEdition = NO;
         [self.currentTextField.layer setBorderWidth:0.0];
         //[self.currentTextField setEnabled:NO];
     }
@@ -645,13 +645,14 @@
         
         UIImage *newImage = self.tempImageView.image;
         
-        if (self.tempImageView.image) {
+        if (newImage) {
             [self.arrayUndo addObject:newImage];
             self.undoButton.enabled = YES;
         }
         if (undoMade) {
             self.arrayRedo = [[NSMutableArray alloc]init];
             self.redoButton.enabled = NO;
+            undoMade = NO;
         }
     }
 }
@@ -1128,21 +1129,7 @@
     
     currentImage = customImage;
     
-    
-    
-    
-//    self.addImageButton.enabled = NO;
-//    self.addImageButton.hidden = YES;
-//    self.confirmImageButton.enabled = YES;
-//    self.confirmImageButton.hidden = NO;
-    
     allowImageEdition = YES;
-    
-    //customImage.alpha = 1.5
-    
-//    _border = [self addDashedBorderWithView:currentImage];
-//    
-//    [currentImage.layer addSublayer:_border];
     
     [currentImage.layer setBorderWidth:5.0];
     [currentImage.layer setBorderColor:[[UIColor blueColor] CGColor]];
@@ -1153,12 +1140,7 @@
     [deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
     [customImage addSubview:deleteButton];
     
-//    UIView *blackView = [[UIView alloc]initWithFrame:CGRectMake(customImage.bounds.origin.x, customImage.bounds.origin.y, customImage.frame.size.width, customImage.frame.size.height)];
-//    [blackView setBackgroundColor:[UIColor blackColor]];
-//    [blackView setAlpha:0.5];
-//    
-//    [customImage addSubview:blackView];
-    
+    self.addImageButton.enabled = NO;
     
     [self bringToolBarToFront];
 }
@@ -1674,7 +1656,7 @@
     
     if (image) {
         [self.arrayRedo addObject:image];
-        [self.arrayUndo removeLastObject];
+        [self.arrayUndo removeObject:image];
         self.tempImageView.image = [self.arrayUndo lastObject];
         undoMade = YES;
         
@@ -1695,14 +1677,17 @@
     
     if (image) {
         [self.arrayUndo addObject:image];
-        [self.arrayRedo removeLastObject];
+        [self.arrayRedo removeObject:image];
         self.tempImageView.image = image;
         
     }
     
     if ([self.arrayRedo count] == 0) {
         self.redoButton.enabled = NO;
+        undoMade = 0;
     }
+    
+    
     self.undoButton.enabled = YES;
 
 }
@@ -1774,7 +1759,9 @@
 - (void)bringToolBarToFront
 {
     [self.view bringSubviewToFront: self.topBar];
+    [self.view bringSubviewToFront:self.maskToolBarButton];
     [self.view bringSubviewToFront: self.bottonBar];
+    [self.view bringSubviewToFront:self.maskActionBarButton];
     [self.view bringSubviewToFront: self.recAudio];
     [self.view bringSubviewToFront: self.pauseRecAudio];
     [self.view bringSubviewToFront: self.confirmImageButton];

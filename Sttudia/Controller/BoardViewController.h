@@ -70,18 +70,12 @@
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;
 @property (strong, nonatomic) IBOutlet UIImageView *layoutImageView;
-
-
 @property (strong, nonatomic) NSMutableArray* arraySnapshots;
-
-
 @property (strong, nonatomic) NSTimer* snapshotTimer;
 @property (strong, nonatomic) NSMutableArray* arrayPoints;
-
 @property (assign, nonatomic) NSTimeInterval lastTouch;
 @property (assign, nonatomic) NSTimeInterval lastTimeTouch;
 @property (assign, nonatomic) NSTimeInterval initialTimeInterval;
-
 @property (strong, nonatomic) NSMutableArray* arrayImages;
 @property (strong, nonatomic) NSMutableArray* arrayTexts;
 @property (strong, nonatomic) UITextField* currentTextField;
@@ -106,6 +100,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *informationsButton;
 @property (strong, nonatomic) IBOutlet UIButton *questionsButton;
 @property (strong, nonatomic) IBOutlet UIButton *backGroundButton;
+@property (strong, nonatomic) IBOutlet UIButton *maskToolBarButton;
+@property (strong, nonatomic) IBOutlet UIButton *maskActionBarButton;
 
 
 - (IBAction)startVideoRecord:(id)sender;

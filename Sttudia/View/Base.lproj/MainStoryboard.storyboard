@@ -564,11 +564,25 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LdI-Pq-JAr" userLabel="maskActionBar">
+                                <rect key="frame" x="0.0" y="718" width="1024" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                             <imageView userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S2P-v6-Xrb" userLabel="tool Image View">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sxn-a5-G6X" userLabel="maskToolBar">
+                                <rect key="frame" x="0.0" y="-2" width="1024" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dYJ-pN-4xZ" userLabel="Button - Cor1" customClass="CorUIButton">
                                 <rect key="frame" x="10" y="3" width="45" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -902,6 +916,8 @@
                         <outlet property="layoutImageView" destination="LpN-uf-Xjo" id="u4B-fy-vDq"/>
                         <outlet property="layoutView" destination="B9K-PA-0Ot" id="YMi-sE-rQe"/>
                         <outlet property="mainImageView" destination="sVE-PJ-wbj" id="juW-5g-BeV"/>
+                        <outlet property="maskActionBarButton" destination="LdI-Pq-JAr" id="HWy-bE-VmT"/>
+                        <outlet property="maskToolBarButton" destination="Sxn-a5-G6X" id="4VB-7n-0Lc"/>
                         <outlet property="nextButton" destination="zi9-xp-EF2" id="Nap-Sb-TlJ"/>
                         <outlet property="pageNumberLabel" destination="wgG-jR-Ms5" id="DxD-Ih-pb4"/>
                         <outlet property="pauseButton" destination="Rd0-cs-JBD" id="kLb-he-gL8"/>
