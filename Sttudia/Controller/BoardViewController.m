@@ -29,6 +29,13 @@
     NSString* nameOfFont;
     BOOL allowImageEdition;
     CAShapeLayer *_border;
+    BOOL isFixTouch;
+    BOOL isForBackGround;
+    UIImage *backGroundImage;
+    //CGFloat currentTextRotation;
+    CGPoint currentTextCenter;
+    CGAffineTransform currentTextTransform;
+    
 }
 
 @property (assign, nonatomic) BOOL isRecording;
@@ -152,6 +159,7 @@
     textFont = 20;
     nameOfFont = @"Helvetica";
     allowImageEdition = NO;
+    lastScale = 1.0;
     
 }
 
@@ -274,27 +282,25 @@
         
         allowImageEdition = YES;
         isImageEditing = YES;
-        
-        
         gesture.view.alpha = 1.5;
         
         for (UIImageView* image in self.arrayImages) {
             if ([image isEqual:(UIImageView*)gesture.view]) {
                 currentImage = image;
+                //currentImageRotation = 0;
             }
         }
-        currentImage = (UIImageView*)gesture.view;
+        //currentImage = (UIImageView*)gesture.view;
         [currentImage.layer setBorderWidth:5.0];
         UIButton *deleteButton = [[currentImage subviews] objectAtIndex:0];
         deleteButton.hidden = NO;
         deleteButton.enabled = YES;
         self.addImageButton.enabled = NO;
-//        selectedButton = [gesture.view tag];
-//        
-//        _sourceColor = [[_ColorButton objectAtIndex:selectedButton] backgroundColor];
-//        _sourceColorButton.backgroundColor = _sourceColor;
-//        _resultColorButton.backgroundColor = _sourceColor;
-//        [self.colorPicker setHidden:NO];
+        //UIImage *backImage = self.mainImageView.image;
+        //self.mainImageView.image = [self mergeImage:backImage toImage:self.tempImageView.image];
+        [self.view bringSubviewToFront:(UIImageView*)gesture.view];
+        [self bringToolBarToFront];
+        //self.tempImageView.image = nil;
     }
 }
 
@@ -320,9 +326,6 @@
 
 - (IBAction)nextPage:(id)sender {
     
-    //método para tirar printscreen
-    //[self takePrintScreen];
-    
     //retira as imagens e textos da tela
     for (UIImageView *image in self.arrayImages) {
         [image removeFromSuperview];
@@ -340,8 +343,10 @@
             UIImage *drawImageView = self.tempImageView.image;
             NSMutableArray *arrayImage = self.arrayImages;
             NSMutableArray *arrayText = self.arrayTexts;
+            NSMutableArray *arrayUndo = self.arrayUndo;
+            NSMutableArray *arrayRedo = self.arrayRedo;
             
-            Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
+            Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
             
             [self.arrayPages addObject:page];
         }
@@ -349,6 +354,9 @@
         //reseta as imagens e textos
         self.arrayImages = [[NSMutableArray alloc]init];
         self.arrayTexts = [[NSMutableArray alloc]init];
+        self.arrayUndo = [[NSMutableArray alloc]init];
+        self.arrayRedo = [[NSMutableArray alloc]init];
+        self.layoutImageView.image = nil;
         
         
         //aumenta o numero de paginas total e avanca uma pagina
@@ -377,8 +385,10 @@
         UIImage *drawImageView = self.tempImageView.image;
         NSMutableArray *arrayImage = self.arrayImages;
         NSMutableArray *arrayText = self.arrayTexts;
+        NSMutableArray *arrayUndo = self.arrayUndo;
+        NSMutableArray *arrayRedo = self.arrayRedo;
         
-        Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
+        Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
         
         [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:page];
 
@@ -395,17 +405,21 @@
         self.tempImageView.image = [nextPage drawView];
         self.arrayImages = [nextPage arrayImage];
         self.arrayTexts = [nextPage arrayText];
+        self.arrayUndo = [nextPage arrayUndo];
+        self.arrayRedo = [nextPage arrayRedo];
+        self.layoutImageView.image = [nextPage backGroundImage];
         
         
         //adiciona imagens e textos
         for (UIImageView *image in self.arrayImages) {
             [self.view addSubview:image];
-            [self.view sendSubviewToBack:image];
+            [self bringToolBarToFront];
             [self.view sendSubviewToBack:self.layoutImageView];
         }
         
         for (UITextField *text in self.arrayTexts) {
             [self.view addSubview:text];
+            [self bringToolBarToFront];
             
         }
         
@@ -426,6 +440,20 @@
     [self.arrayPoints addObject:parameter];
     
     self.backButton.enabled = YES;
+    
+    if ([self.arrayUndo count] == 0) {
+        self.undoButton.enabled = NO;
+    }
+    else {
+        self.undoButton.enabled = YES;
+    }
+    if ([self.arrayRedo count] == 0) {
+        self.redoButton.enabled = NO;
+    }
+    else {
+        self.undoButton.enabled = YES;
+    }
+
 
 }
 
@@ -437,8 +465,10 @@
         UIImage *drawImageView = self.tempImageView.image;
         NSMutableArray *arrayImage = self.arrayImages;
         NSMutableArray *arrayText = self.arrayTexts;
+        NSMutableArray *arrayUndo = self.arrayUndo;
+        NSMutableArray *arrayRedo = self.arrayRedo;
         
-        Page *newPage = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText];
+        Page *newPage = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
         
         
         if ([self.arrayPages count]-1 >= currentPageIndex)
@@ -473,14 +503,18 @@
         self.tempImageView.image = [currentPage drawView];
         self.arrayImages = [currentPage arrayImage];
         self.arrayTexts = [currentPage arrayText];
+        self.arrayUndo = [currentPage arrayUndo];
+        self.arrayRedo = [currentPage arrayRedo];
+        self.layoutImageView.image = [currentPage backGroundImage];
         
         for (UIImageView *image in self.arrayImages) {
             [self.view addSubview:image];
-            [self.view sendSubviewToBack:image];
+            [self bringToolBarToFront];
         }
         
         for (UITextField *text in self.arrayTexts) {
             [self.view addSubview:text];
+            [self bringToolBarToFront];
         }
         [UIView transitionWithView:self.view
                           duration:0.3
@@ -493,6 +527,19 @@
 
     }
     self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
+    if ([self.arrayUndo count] == 0) {
+        self.undoButton.enabled = NO;
+    }
+    else {
+        self.undoButton.enabled = YES;
+    }
+    if ([self.arrayRedo count] == 0) {
+        self.redoButton.enabled = NO;
+    }
+    else {
+        self.undoButton.enabled = YES;
+    }
+
     
     VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :NO];
     
@@ -538,27 +585,43 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (currentImage && ![event touchesForView:currentImage]&& isImageEditing) {
+        allowImageEdition = NO;
+        isImageEditing = NO;
+        [currentImage.layer setBorderWidth:0.0];
+        UIButton *deleteButton = [[currentImage subviews] objectAtIndex:0];
+        deleteButton.hidden = YES;
+        deleteButton.enabled = NO;
+        self.addImageButton.enabled = YES;
+        [self.view bringSubviewToFront: self.tempImageView];
+        UIImageView* actualImage = currentImage;
+        
+        CGFloat angle = atan2(actualImage.transform.b, actualImage.transform.a);
+        
+        //[currentImage setTransform : CGAffineTransformRotate(currentImage.transform, 0.0)];
+        
+        Image *imgRef = [[Image alloc]initWithImage: actualImage :currentImage.center :currentImage.frame :angle : self.tempImageView.image : currentImage.transform];
+        //[currentImage setTransform : CGAffineTransformRotate(currentImage.transform, angle)];
+        //currentImage.transform = CGAffineTransformMakeRotation(angle);
+        [self.arrayUndo addObject:imgRef];
+        self.undoButton.enabled = YES;
+        isFixTouch = YES;
+        
+    };
     
-    
-    //for (UIImageView* image in self.arrayImages){
-        if (![event touchesForView:currentImage]) {
-            allowImageEdition = NO;
-            isImageEditing = NO;
-            //currentImage.alpha = 1.0;
-            [currentImage.layer setBorderWidth:0.0];
-            UIButton *deleteButton = [[currentImage subviews] objectAtIndex:0];
-            deleteButton.hidden = YES;
-            deleteButton.enabled = NO;
-            self.addImageButton.enabled = YES;
-           
-        };
-    //}
-    
-    if (![event touchesForView:self.currentTextField]) {
+    if (![event touchesForView:self.currentTextField] && isTextEditing) {
         NSLog(@"text not touched");
         
         isTextEditing = NO;
-        [self.currentTextField.layer setBorderWidth:0.0];
+        //[self.currentTextField.layer setBorderWidth:0.0];
+        
+        NSString *fontName = [self.currentTextField.font fontName];
+        
+        TextRef *textRef = [[TextRef alloc]initWithText:self.currentTextField :self.currentTextField.center :self.tempImageView.image :self.currentTextField.transform : self.currentTextField.text : fontName : textFont : self.currentColorText];
+        [self.arrayUndo addObject:textRef];
+        self.undoButton.enabled = YES;
+        isFixTouch = YES;
+        self.addTextButton.enabled = YES;
         //[self.currentTextField setEnabled:NO];
     }
     mouseSwiped = NO;
@@ -579,9 +642,12 @@
 
     
         isScreenTouched = YES;
-        NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
+        //NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
         //[[self.ColorButton objectAtIndex:selectedButton] setState:NO];
     }
+    
+    [self.currentTextField resignFirstResponder];
+    [self.currentTextField.layer setBorderWidth:0.0];
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -594,7 +660,9 @@
     CGPoint currentPoint = [touch locationInView:self.mainImageView];
     
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
+        
     [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
+
         
     CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
@@ -612,6 +680,7 @@
         }
     CGContextStrokePath(UIGraphicsGetCurrentContext());
     self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+        
     [self.tempImageView setAlpha:opacity];
     UIGraphicsEndImageContext();
     
@@ -634,7 +703,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if(!isImageEditing || !isTextEditing){
+    if((!isImageEditing || !isTextEditing) && !isFixTouch){
         
         UITouch *touch = [touches anyObject];
         CGPoint currentPoint = [touch locationInView:self.mainImageView];
@@ -649,12 +718,15 @@
             [self.arrayUndo addObject:newImage];
             self.undoButton.enabled = YES;
         }
-        if (undoMade) {
-            self.arrayRedo = [[NSMutableArray alloc]init];
-            self.redoButton.enabled = NO;
-            undoMade = NO;
-        }
     }
+    
+    if (undoMade) {
+        self.arrayRedo = [[NSMutableArray alloc]init];
+        self.redoButton.enabled = NO;
+        undoMade = NO;
+    }
+    isFixTouch = NO;
+
 }
 
 
@@ -844,25 +916,8 @@
         [recognizer.view setTransform:newTransform];
         
         lastScale = recognizer.scale;
-
+        NSLog(@"Resizing frame: (%f, %f)", recognizer.view.frame.size.width, recognizer.view.frame.size.height);
     }
-    
-//    [self.view bringSubviewToFront:recognizer.view];
-//    
-//    if (recognizer.state == UIGestureRecognizerStateEnded) {
-//        lastScale = 1.0;
-//        return;
-//    }
-//    
-//    CGFloat scale = 1.0 - (lastScale - recognizer.scale);
-//    
-//    
-//    CGAffineTransform currentTransform = recognizer.view.transform;
-//    CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
-//    
-//    [recognizer.view setTransform:newTransform];
-//    
-//    lastScale = recognizer.scale;
 }
 
 
@@ -942,89 +997,11 @@
         }
 
     }
-
-//    [[[recognizer view] layer] removeAllAnimations];
-//    //[self.view bringSubviewToFront:[recognizer view]];
-//    CGPoint translatedPoint = [recognizer translationInView:self.view];
-//    
-//    if([recognizer state] == UIGestureRecognizerStateBegan) {
-//		
-//		centerImage.x = [[recognizer view] center].x;
-//		centerImage.y = [[recognizer view] center].y;
-//	}
-//    
-//    translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
-//	
-//	[[recognizer view] setCenter:translatedPoint];
-//    
-//    if([recognizer state] == UIGestureRecognizerStateEnded) {
-//		
-//		CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.view].x);
-//		CGFloat finalY = translatedPoint.y + (.35*[recognizer velocityInView:self.view].y);
-//		
-//		if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-//			
-//			if(finalX < 0) {
-//				
-//				finalX = 0;
-//			}
-//			
-//			else if(finalX > 768) {
-//				
-//				finalX = 768;
-//			}
-//			
-//			if(finalY < 0) {
-//				
-//				finalY = 0;
-//			}
-//			
-//			else if(finalY > 1024) {
-//				
-//				finalY = 1024;
-//			}
-//		}
-//		
-//		else {
-//			
-//			if(finalX < 0) {
-//				
-//				finalX = 0;
-//			}
-//			
-//			else if(finalX > 1024) {
-//				
-//				finalX = 1024;
-//			}
-//			
-//			if(finalY < 0) {
-//				
-//				finalY = 0;
-//			}
-//			
-//			else if(finalY > 768) {
-//				
-//				finalY = 768;
-//			}
-//		}
-//		
-//		[UIView beginAnimations:nil context:NULL];
-//		[UIView setAnimationDuration:.35];
-//		[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-//		[[recognizer view] setCenter:CGPointMake(finalX, finalY)];
-//		[UIView commitAnimations];
-//	}
-
 }
 
 -(void)rotateImage: (UIRotationGestureRecognizer *)recognizer
 {
     if (allowImageEdition) {
-        if([recognizer state] == UIGestureRecognizerStateEnded) {
-            
-            lastRotation = 0.0;
-            return;
-        }
         
         CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
         
@@ -1034,23 +1011,14 @@
         [[recognizer view] setTransform:newTransform];
         
         lastRotation = [recognizer rotation];
+         NSLog(@"Rotate frame: (%f, %f)", recognizer.view.frame.size.width, recognizer.view.frame.size.height);
+        
+        if([recognizer state] == UIGestureRecognizerStateEnded) {
+            lastRotation = 0.0;
+            return;
+        }
 
     }
-    
-//    if([recognizer state] == UIGestureRecognizerStateEnded) {
-//		
-//		lastRotation = 0.0;
-//		return;
-//	}
-//	
-//	CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
-//	
-//	CGAffineTransform currentTransform = [recognizer view].transform;
-//	CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
-//	
-//	[[recognizer view] setTransform:newTransform];
-//	
-//	lastRotation = [recognizer rotation];
 }
 
 //Termina processo de edição de imagens fixando-a e colocando atrás da tela de desenho.
@@ -1089,8 +1057,15 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
-    [self putImageInScreen:choseImage];
-    
+    if(!isForBackGround){
+        [self putImageInScreen:choseImage];
+    }
+    else{
+        [self.layoutImageView setImage:choseImage];
+        [self.view sendSubviewToBack:self.layoutImageView];
+        [self.layoutView setHidden:YES];
+        isForBackGround = NO;
+    }
 }
 
 - (void) putImageInScreen : (UIImage *)image
@@ -1142,35 +1117,13 @@
     
     self.addImageButton.enabled = NO;
     
+    //UIImage *backImage = self.mainImageView.image;
+    //self.mainImageView.image = [self mergeImage:backImage toImage:self.tempImageView.image];
+    
+    //[self createNewDrawLayer];
+    //[self.view bringSubviewToFront:self.tempImageView];
+    
     [self bringToolBarToFront];
-}
-
-+ (UIImage *)colorizeImage:(UIImage *)image withColor:(UIColor *)color {
-    UIGraphicsBeginImageContext(image.size);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGRect area = CGRectMake(0, 0, image.size.width, image.size.height);
-    
-    CGContextScaleCTM(context, 1, -1);
-    CGContextTranslateCTM(context, 0, -area.size.height);
-    
-    CGContextSaveGState(context);
-    CGContextClipToMask(context, area, image.CGImage);
-    
-    [color set];
-    CGContextFillRect(context, area);
-    
-    CGContextRestoreGState(context);
-    
-    CGContextSetBlendMode(context, kCGBlendModeMultiply);
-    
-    CGContextDrawImage(context, area, image.CGImage);
-    
-    UIImage *colorizedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsBeginImageContextWithOptions(image.size, NO, image.scale);
-    UIGraphicsEndImageContext();
-    
-    return colorizedImage;
 }
 
 - (CGRect)getFrameSizeForImage:(UIImage *)image inImageView:(UIImageView *)imageView {
@@ -1197,6 +1150,11 @@
     
     [trashImage removeFromSuperview];
     [self.arrayImages removeObjectIdenticalTo:trashImage];
+    //Image *imgRef = [[Image alloc]initWithImage: trashImage :trashImage.center :trashImage.frame :currentImageRotation : self.tempImageView.image : trashImage.transform];
+    [self.arrayUndo addObject:trashImage];
+    
+    isImageEditing = NO;
+    self.addImageButton.enabled = YES;
 }
 
 #pragma mark - ColorMethods
@@ -1288,11 +1246,9 @@
     
     textFont = 20;
     
-    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(50, 80, 100, 30)];
+    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, 80, 100, 30)];
     
     [textField becomeFirstResponder];
-    
-    self.currentTextField = textField;
     
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f,
                                                                      0.0f,
@@ -1320,7 +1276,6 @@
                          [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                        target:nil
                                                                        action:nil],
-                         // some more items could be added
                          
                          [[UIBarButtonItem alloc] initWithTitle:@"T-"
                                                           style:UIBarButtonItemStyleBordered
@@ -1361,12 +1316,13 @@
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.textAlignment = NSTextAlignmentCenter;
     textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    textField.textColor = self.currentColorText;
+    textField.textColor = [UIColor blackColor];
     textField.delegate = self;
     
-    self.currentTextField = textField;
-    
     [self.view addSubview:textField];
+    self.currentTextField = textField;
+    self.currentColorText = [UIColor blackColor];
+    [self bringToolBarToFront];
 }
 
 - (void) barButtonPressed :(UIBarButtonItem*)sender
@@ -1374,7 +1330,6 @@
     if ([sender.title isEqualToString:@"T+"]) {
         textFont += 1;
         CGSize size = [self.currentTextField.text sizeWithAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:nameOfFont size:textFont] forKey:NSFontAttributeName]];
-//        self.currentTextField.font = [UIFont systemFontOfSize:textFont];
         self.currentTextField.font = [UIFont fontWithName:nameOfFont size:textFont];
         CGPoint origin = self.currentTextField.frame.origin;
         [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width + 30 , size.height + 30)];
@@ -1383,7 +1338,6 @@
     else if ([sender.title isEqualToString:@"T-"]) {
         textFont -= 1;
         CGSize size = [self.currentTextField.text sizeWithAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:nameOfFont size:textFont] forKey:NSFontAttributeName]];
-//        self.currentTextField.font = [UIFont systemFontOfSize:textFont];
         self.currentTextField.font = [UIFont fontWithName:nameOfFont size:textFont];
         CGPoint origin = self.currentTextField.frame.origin;
         [self.currentTextField setFrame:CGRectMake(origin.x, origin.y, size.width +30, size.height + 30)];
@@ -1394,7 +1348,6 @@
         fontVC. delegate = self;
         
         self.popoverFont = [[UIPopoverController alloc] initWithContentViewController:fontVC];
-        //[self.popoverFont presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         [self.popoverFont presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
     else if ([sender.title isEqualToString:@"Cor"]) {
@@ -1403,7 +1356,6 @@
         colorFontVC.delegate = self;
         
         self.popoverFontColor = [[UIPopoverController alloc] initWithContentViewController:colorFontVC];
-        //[self.popoverFont presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         [self.popoverFontColor presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 
@@ -1412,14 +1364,16 @@
 
 -(void)resizingText:(UIPinchGestureRecognizer *)recognizer
 {
-        [self.view bringSubviewToFront:recognizer.view];
+    [self.view bringSubviewToFront:recognizer.view];
     
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
-        [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
-        [self.currentTextField.layer setBorderWidth:1];
+        [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
+        [recognizer.view.layer setBorderWidth:1];
+        self.addTextButton.enabled = NO;
     }
         if (recognizer.state == UIGestureRecognizerStateEnded) {
             lastScale = 1.0;
+            self.currentTextField = (UITextField *)recognizer.view;
             return;
         }
         
@@ -1433,7 +1387,7 @@
         
         lastScale = recognizer.scale;
 
-    
+    isTextEditing = YES;
 }
 
 
@@ -1448,8 +1402,9 @@
             centerImage.x = [[recognizer view] center].x;
             centerImage.y = [[recognizer view] center].y;
             
-            [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
-            [self.currentTextField.layer setBorderWidth:1];
+            [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
+            [recognizer.view.layer setBorderWidth:1];
+            self.addTextButton.enabled = NO;
         }
         
         translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
@@ -1511,8 +1466,14 @@
             [UIView setAnimationDuration:.35];
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
             [[recognizer view] setCenter:CGPointMake(finalX, finalY)];
+            [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
+            [recognizer.view.layer setBorderWidth:1];
+
             [UIView commitAnimations];
+            
+            self.currentTextField = (UITextField *)recognizer.view;
         }
+    isTextEditing = YES;
 }
 
 -(void)rotateText: (UIRotationGestureRecognizer *)recognizer
@@ -1520,12 +1481,14 @@
         if([recognizer state] == UIGestureRecognizerStateEnded) {
             
             lastRotation = 0.0;
+            self.currentTextField = (UITextField *)recognizer.view;
             return;
         }
     
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
-        [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
-        [self.currentTextField.layer setBorderWidth:1];
+        [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
+        [recognizer.view.layer setBorderWidth:1];
+        self.addTextButton.enabled = NO;
     }
    
     
@@ -1538,7 +1501,7 @@
         
         lastRotation = [recognizer rotation];
 
-    
+    isTextEditing = YES;
 }
 
 
@@ -1557,14 +1520,24 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-        [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
-        [self.currentTextField.layer setBorderWidth:1];
+    [textField.layer setBorderColor:[[UIColor blueColor] CGColor]];
+    [textField.layer setBorderWidth:1];
+    currentTextCenter = textField.center;
+    currentTextTransform = textField.transform;
+    textField.transform = CGAffineTransformMakeRotation(0);
+    textField.center = CGPointMake(self.tempImageView.frame.size.width/2, 80);
+    self.currentColorText = textField.textColor;
+    //    [textField setFrame:CGRectMake(50, 80, self.currentTextField.frame.size.width, self.currentTextField.frame.size.height)];
+    
+    isTextEditing = YES;
+    
+    self.currentTextField = textField;
+    self.addTextButton.enabled = NO;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     self.currentTextField = textField;
-    //self.currentTextField.userInteractionEnabled = YES;
     textField.userInteractionEnabled = YES;
 
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingText:)];
@@ -1580,6 +1553,7 @@
     
     if (![textField.text isEqualToString:@""]) {
         [textField setBorderStyle:UITextBorderStyleNone];
+        //[textField.layer setBorderWidth:0.0];
         [self.arrayTexts addObject:textField];
         
         [textField resignFirstResponder];
@@ -1590,6 +1564,10 @@
         [textField removeFromSuperview];
     }
     
+    textField.center = currentTextCenter;
+    textField.transform = currentTextTransform;
+    self.addTextButton.enabled = YES;
+    [self bringToolBarToFront];
     return YES;
 }
 
@@ -1614,6 +1592,7 @@
 - (IBAction)setBackgroundView:(id)sender
 {
     [self.layoutView setHidden:NO];
+    [self.view bringSubviewToFront:self.layoutView];
 }
 
 
@@ -1621,22 +1600,43 @@
 {
     NSLog(@"button %@", sender.titleLabel.text);
     UIImage *image;
+    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
+    [self.arrayUndo addObject:bgImage];
     
     if ([sender.titleLabel.text  isEqual: @"branco"]) {
         image = [[UIImage alloc] init];
     }
     if ([sender.titleLabel.text  isEqual: @"quadrado"]) {
-        image = [UIImage imageNamed:@"quadrado.jpg"];
+        image = [UIImage imageNamed:@"squared.png"];
     }
     if ([sender.titleLabel.text  isEqual: @"forrado"]) {
-        image = [UIImage imageNamed:@"forrado.png"];
+        image = [UIImage imageNamed:@"notebookPaper.png"];
     }
     if ([sender.titleLabel.text  isEqual: @"agenda"]) {
         image = [UIImage imageNamed:@"agenda.png"];
     }
+    
+    if ([sender.titleLabel.text  isEqual: @"usar imagem"]) {
+        UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
+        pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        pickerLibrary.delegate = self;
+        [self presentViewController:pickerLibrary animated:YES completion:nil];
+        isForBackGround = YES;
+        
+    }
     [self.layoutImageView setImage:image];
+    
+    bgImage = [[BackGroundImage alloc]initWithImage:image];
     [self.view sendSubviewToBack:self.layoutImageView];
     [self.layoutView setHidden:YES];
+    [self.arrayUndo addObject:bgImage];
+    
+    if (undoMade) {
+        self.arrayRedo = [[NSMutableArray alloc]init];
+        self.redoButton.enabled = NO;
+        undoMade = NO;
+    }
+
 }
 
 -(void)newColorBrush:(UIColor *)newColor
@@ -1660,39 +1660,234 @@
 
 - (IBAction)undo:(id)sender {
     
-    UIImage *image = [self.arrayUndo lastObject];
-    
-    if (image) {
-        [self.arrayRedo addObject:image];
-        [self.arrayUndo removeObject:image];
-        self.tempImageView.image = [self.arrayUndo lastObject];
-        undoMade = YES;
+    if ([[self.arrayUndo lastObject] isKindOfClass:[UIImage class]]) {
+        UIImage *image = [self.arrayUndo lastObject];
+        if (image) {
+            [self.arrayRedo addObject:image];
+            [self.arrayUndo removeObject:image];
+            
+            if ([[self.arrayUndo lastObject] isKindOfClass:[UIImage class]]) {
+                self.tempImageView.image = [self.arrayUndo lastObject];
+            }
+            else if ([[self.arrayUndo lastObject] isKindOfClass:[Image class]]) {
+                Image *photo = [self.arrayUndo lastObject];
+                self.tempImageView.image = [photo canvasImage];
+            }
+            else if ([[self.arrayUndo lastObject] isKindOfClass:[UIImageView class]] || [[self.arrayUndo lastObject] isKindOfClass:[BackGroundImage class]]) {
+                int flag = 0;
+                
+                for (int i = ([self.arrayUndo count] - 1.0); i >= 0 && flag == 0; i--) {
+                    if ([self.arrayUndo[i] isKindOfClass:[UIImage class]]) {
+                        self.tempImageView.image = self.arrayUndo[i];
+                        flag = 1;
+                    }
+                }
+                
+                if (flag == 0) {
+                    self.tempImageView.image = nil;
+                }
+            }
+            else if ([[self.arrayUndo lastObject] isKindOfClass:[TextRef class]]) {
+                TextRef *textRef = [self.arrayUndo lastObject];
+                self.tempImageView.image = [textRef canvasImage];
+            }
+        }
         
     }
+    else if ([[self.arrayUndo lastObject] isKindOfClass:[Image class]]) {
+        Image *photo = [self.arrayUndo lastObject];
+        
+        if (photo) {
+            currentImage = [photo imageView];
+            [self.arrayRedo addObject:photo];
+            [self.arrayUndo removeObject:photo];
+            [currentImage removeFromSuperview];
+            
+            int flag = 0;
+
+            for (int i = ([self.arrayUndo count] - 1.0); i >= 0 && flag == 0; i--) {
+                if ([self.arrayUndo[i] isKindOfClass:[Image class]]) {
+                    if ([[self.arrayUndo[i] imageView] isEqual:currentImage]) {
+                        Image *photo = self.arrayUndo[i];
+                        currentImage.center = [photo imageCenter];
+                        currentImage.transform = [photo imageTransform];
+                        [self.view addSubview:currentImage];
+                        [self.view bringSubviewToFront:self.tempImageView];
+                        [self bringToolBarToFront];
+                        flag = 1;
+                    }
+                }
+            }
+        }
+    }
     
+    else if ([[self.arrayUndo lastObject] isKindOfClass:[UIImageView class]]) {
+        UIImageView *imageView = [self.arrayUndo lastObject];
+        [self.arrayRedo addObject:imageView];
+        [self.arrayUndo removeObject:imageView];
+        [self.view addSubview:imageView];
+        [imageView.layer setBorderWidth:0.0];
+        UIButton *deleteButton = [[imageView subviews] objectAtIndex:0];
+        deleteButton.hidden = YES;
+        deleteButton.enabled = NO;
+
+    }
+    else if ([[self.arrayUndo lastObject] isKindOfClass:[TextRef class]]) {
+        TextRef *text = [self.arrayUndo lastObject];
+        self.currentTextField = [text textField];
+        [self.arrayRedo addObject:text];
+        [self.arrayUndo removeObject:text];
+        [self.currentTextField removeFromSuperview];
+        
+        int flag = 0;
+        
+        for (int i = ([self.arrayUndo count] - 1.0); i >= 0 && flag == 0; i--) {
+            if ([self.arrayUndo[i] isKindOfClass:[TextRef class]]) {
+                if ([[self.arrayUndo[i] textField] isEqual:self.currentTextField]) {
+                    text = self.arrayUndo[i];
+                    self.currentTextField.text = [text textString];
+                    self.currentTextField.font = [UIFont fontWithName:[text textFontName] size:[text textFontSize]];
+                    self.currentTextField.textColor = [text textColor];
+                    self.currentTextField.center = [text textCenter];
+                    self.currentTextField.transform = [text textTransform];
+                    [self.view addSubview:self.currentTextField];
+                    //[self.view bringSubviewToFront:self.tempImageView];
+                    [self bringToolBarToFront];
+                    flag = 1;
+                }
+            }
+        }
+    }
+    else if ([[self.arrayUndo lastObject] isKindOfClass:[BackGroundImage class]]) {
+        BackGroundImage *bgImage = [self.arrayUndo lastObject];
+        [self.arrayRedo addObject:bgImage];
+        [self.arrayUndo removeObject:bgImage];
+        if ([[self.arrayUndo lastObject] isKindOfClass:[BackGroundImage class]]) {
+            bgImage = [self.arrayUndo lastObject];
+            self.layoutImageView.image = [bgImage image];
+            [self.arrayRedo addObject:bgImage];
+            [self.arrayUndo removeObject:bgImage];
+        }
+        
+    }
+
     if ([self.arrayUndo count] == 0) {
         self.undoButton.enabled = NO;
+        self.tempImageView.image = nil;
     }
     
     self.redoButton.enabled = YES;
-    
+    undoMade = YES;
     NSLog(@"undo");
 }
 
 - (IBAction)redo:(id)sender {
     
-    UIImage *image = [self.arrayRedo lastObject];
     
-    if (image) {
-        [self.arrayUndo addObject:image];
-        [self.arrayRedo removeObject:image];
-        self.tempImageView.image = image;
+    if ([[self.arrayRedo lastObject] isKindOfClass:[UIImage class]]) {
+        UIImage *image = [self.arrayRedo lastObject];
+        
+        if (image) {
+            [self.arrayUndo addObject:image];
+            [self.arrayRedo removeObject:image];
+            if ([[self.arrayRedo lastObject] isKindOfClass:[UIImage class]] || [[self.arrayRedo lastObject] isKindOfClass:[UIImageView class]]|| [[self.arrayRedo lastObject] isKindOfClass:[BackGroundImage class]]) {
+                self.tempImageView.image = image;
+            }
+            else if ([[self.arrayRedo lastObject] isKindOfClass:[Image class]]) {
+                Image *photo = [self.arrayRedo lastObject];
+                self.tempImageView.image = [photo canvasImage];
+                
+            }
+            else if ([[self.arrayRedo lastObject] isKindOfClass:[TextRef class]]){
+                TextRef *textRef = [self.arrayRedo lastObject];
+                self.tempImageView.image = [textRef canvasImage];
+            }
+        }
+        if ([self.arrayRedo count] == 0) {
+            self.tempImageView.image = image;
+        }
+    }
+    else if ([[self.arrayRedo lastObject] isKindOfClass:[Image class]]) {
+        Image *photo = [self.arrayRedo lastObject];
+        if (photo) {
+            currentImage = [photo imageView];
+            [self.arrayUndo addObject:photo];
+            [self.arrayRedo removeObject:photo];
+            [currentImage removeFromSuperview];
+            currentImage.center = [photo imageCenter];
+            currentImage.transform = [photo imageTransform];
+            self.tempImageView.image = [photo canvasImage];
+            [self.view addSubview:currentImage];
+            [self.view bringSubviewToFront:self.tempImageView];
+            [self bringToolBarToFront];
+            
+            if ([self.arrayRedo count] == 0) {
+                currentImage.center = [photo imageCenter];
+                currentImage.transform = [photo imageTransform];
+                [self.view addSubview:currentImage];
+                [self.view bringSubviewToFront:self.tempImageView];
+                [self bringToolBarToFront];
+            }
+        }
+    }
+    else if ([[self.arrayRedo lastObject] isKindOfClass:[UIImageView class]]) {
+        UIImageView *imageView = [self.arrayRedo lastObject];
+        [self.arrayUndo addObject:imageView];
+        [self.arrayRedo removeObject:imageView];
+        [imageView removeFromSuperview];
+        [imageView.layer setBorderWidth:0.0];
+        UIButton *deleteButton = [[imageView subviews] objectAtIndex:0];
+        deleteButton.hidden = YES;
+        deleteButton.enabled = NO;
+
+    }
+    else if ([[self.arrayRedo lastObject] isKindOfClass:[TextRef class]]) {
+        TextRef *text = [self.arrayRedo lastObject];
+        self.currentTextField = [text textField];
+        [self.arrayUndo addObject:text];
+        [self.arrayRedo removeObject:text];
+        [self.currentTextField removeFromSuperview];
+        self.currentTextField.text = [text textString];
+        self.currentTextField.font = [UIFont fontWithName:[text textFontName] size:[text textFontSize]];
+        self.currentTextField.textColor = [text textColor];
+        self.currentTextField.center = [text textCenter];
+        self.currentTextField.transform = [text textTransform];
+        self.tempImageView.image = [text canvasImage];
+        
+        [self.view addSubview:self.currentTextField];
+        [self bringToolBarToFront];
+        
+        if ([self.arrayRedo count] == 0) {
+            self.currentTextField.text = [text textString];
+            self.currentTextField.font = [UIFont fontWithName:[text textFontName] size:[text textFontSize]];
+            self.currentTextField.textColor = [text textColor];
+            self.currentTextField.center = [text textCenter];
+            self.currentTextField.transform = [text textTransform];
+            [self.view addSubview:self.currentTextField];
+            //[self.view bringSubviewToFront:self.tempImageView];
+            [self bringToolBarToFront];
+        }
+
+    }
+    
+    else if ([[self.arrayRedo lastObject] isKindOfClass:[BackGroundImage class]]) {
+        BackGroundImage *bgImage = [self.arrayRedo lastObject];
+        [self.arrayUndo addObject:bgImage];
+        [self.arrayRedo removeObject:bgImage];
+        if ([[self.arrayRedo lastObject] isKindOfClass:[BackGroundImage class]]) {
+            bgImage = [self.arrayRedo lastObject];
+            self.layoutImageView.image = [bgImage image];
+            [self.arrayUndo addObject:bgImage];
+            [self.arrayRedo removeObject:bgImage];
+        }
         
     }
+
+
     
     if ([self.arrayRedo count] == 0) {
         self.redoButton.enabled = NO;
-        undoMade = 0;
+        undoMade = NO;
     }
     
     
@@ -1767,9 +1962,9 @@
 - (void)bringToolBarToFront
 {
     [self.view bringSubviewToFront: self.topBar];
-    [self.view bringSubviewToFront:self.maskToolBarButton];
+    [self.view bringSubviewToFront: self.maskToolBarButton];
     [self.view bringSubviewToFront: self.bottonBar];
-    [self.view bringSubviewToFront:self.maskActionBarButton];
+    [self.view bringSubviewToFront: self.maskActionBarButton];
     [self.view bringSubviewToFront: self.recAudio];
     [self.view bringSubviewToFront: self.pauseRecAudio];
     [self.view bringSubviewToFront: self.confirmImageButton];
@@ -1787,15 +1982,15 @@
     [self.view bringSubviewToFront: self.playAudioButton];
     [self.view bringSubviewToFront: self.informationsButton];
     [self.view bringSubviewToFront: self.questionsButton];
-    [self.view bringSubviewToFront:self.ColorButton[0]];
-    [self.view bringSubviewToFront:self.ColorButton[1]];
-    [self.view bringSubviewToFront:self.ColorButton[2]];
-    [self.view bringSubviewToFront:self.ColorButton[3]];
-    [self.view bringSubviewToFront:self.ColorButton[4]];
-    [self.view bringSubviewToFront:self.eraseButton];
-    [self.view bringSubviewToFront:self.thicknessButton];
-    [self.view bringSubviewToFront:self.backGroundButton];
-    [self.view bringSubviewToFront:self.pageNumberLabel];
+    [self.view bringSubviewToFront: self.ColorButton[0]];
+    [self.view bringSubviewToFront: self.ColorButton[1]];
+    [self.view bringSubviewToFront: self.ColorButton[2]];
+    [self.view bringSubviewToFront: self.ColorButton[3]];
+    [self.view bringSubviewToFront: self.ColorButton[4]];
+    [self.view bringSubviewToFront: self.eraseButton];
+    [self.view bringSubviewToFront: self.thicknessButton];
+    [self.view bringSubviewToFront: self.backGroundButton];
+    [self.view bringSubviewToFront: self.pageNumberLabel];
     [self.view bringSubviewToFront: self.snapShotButtom];
     [self.view bringSubviewToFront: self.undoButton];
     [self.view bringSubviewToFront: self.redoButton];
@@ -1803,4 +1998,23 @@
 
 
 }
+
+//- (void)createNewDrawLayer
+//{
+//    self.mainImageView.image = self.tempImageView.image;
+//    self.tempImageView.image = nil;
+//    [self.view bringSubviewToFront:self.tempImageView];
+//}
+//
+//- (UIImage *) mergeImage: (UIImage *)backImage toImage: (UIImage *)frontImage
+//{
+//    UIGraphicsBeginImageContext(backImage.size);
+//    
+//    [backImage drawInRect:CGRectMake(0, 0, backImage.size.width, backImage.size.height)];
+//    [frontImage drawInRect:CGRectMake(0, 0, frontImage.size.width, frontImage.size.height)];
+//    
+//    UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
+//    
+//    return resultingImage;
+//}
 @end

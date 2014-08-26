@@ -10,7 +10,7 @@
 
 @implementation Image
 
-- (id)initWithImage : (UIImageView *)imageView : (CGPoint)imagePosition : (CGRect)imageBounds : (float)imageRotation
+- (id)initWithImage : (UIImageView *)imageView : (CGPoint)imagePosition : (CGRect)imageBounds : (CGFloat)angle : (UIImage*) canvas : (CGAffineTransform) imageTransform
 {
     self = [super init];
     
@@ -18,7 +18,9 @@
         self.imageView = imageView;
         self.imageBounds = imageBounds;
         self.imageCenter = imagePosition;
-        self.imageRotation = imageRotation;
+        self.imageAngle = angle;
+        self.canvasImage = canvas;
+        self.imageTransform  = imageTransform;
     }
     
     return self;

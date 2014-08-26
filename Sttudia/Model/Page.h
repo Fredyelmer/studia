@@ -13,7 +13,10 @@
 @property (strong, nonatomic) UIImage *drawView;
 @property (strong, nonatomic) NSMutableArray* arrayImage;
 @property (strong, nonatomic) NSMutableArray* arrayText;
+@property (strong, nonatomic) NSMutableArray* arrayUndo;
+@property (strong, nonatomic) NSMutableArray* arrayRedo;
+@property (strong, nonatomic) UIImage *backGroundImage;
 
-- (id)initWithElements : (UIImage *)mainView : (NSArray *)arrayImage : (NSArray *)arrayText;
+- (id)initWithElements : (UIImage *)drawView : (NSMutableArray *)arrayImage : (NSMutableArray *)arrayText : (NSMutableArray *)arrayUndo : (NSMutableArray *)arrayRedo : (UIImage *)bacKGroundImage;
 
 @end

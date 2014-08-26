@@ -10,7 +10,7 @@
 
 @implementation Page
 
-- (id)initWithElements : (UIImage *)drawView : (NSMutableArray *)arrayImage : (NSMutableArray *)arrayText
+- (id)initWithElements : (UIImage *)drawView : (NSMutableArray *)arrayImage : (NSMutableArray *)arrayText : (NSMutableArray *)arrayUndo : (NSMutableArray *)arrayRedo : (UIImage *)bacKGroundImage
 {
     self = [super init];
     
@@ -19,6 +19,9 @@
         self.drawView = drawView;
         self.arrayImage = arrayImage;
         self.arrayText = arrayText;
+        self.arrayUndo = arrayUndo;
+        self.arrayRedo = arrayRedo;
+        self.backGroundImage = bacKGroundImage;
     }
     
     return self;
