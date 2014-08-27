@@ -372,7 +372,7 @@
         self.addImageButton.enabled = NO;
         //UIImage *backImage = self.mainImageView.image;
         //self.mainImageView.image = [self mergeImage:backImage toImage:self.tempImageView.image];
-        [self.view bringSubviewToFront:(UIImageView*)gesture.view];
+        [self.scribbleView bringSubviewToFront:(UIImageView*)gesture.view];
         [self bringToolBarToFront];
         //self.tempImageView.image = nil;
     }
@@ -486,13 +486,13 @@
         
         //adiciona imagens e textos
         for (UIImageView *image in self.arrayImages) {
-            [self.view addSubview:image];
+            [self.scribbleView addSubview:image];
             [self bringToolBarToFront];
-            [self.view sendSubviewToBack:self.layoutImageView];
+            [self.scribbleView sendSubviewToBack:self.layoutImageView];
         }
         
         for (UITextField *text in self.arrayTexts) {
-            [self.view addSubview:text];
+            [self.scribbleView addSubview:text];
             [self bringToolBarToFront];
             
         }
@@ -525,7 +525,7 @@
         self.redoButton.enabled = NO;
     }
     else {
-        self.undoButton.enabled = YES;
+        self.redoButton.enabled = YES;
     }
 
 
@@ -582,12 +582,12 @@
         self.layoutImageView.image = [currentPage backGroundImage];
         
         for (UIImageView *image in self.arrayImages) {
-            [self.view addSubview:image];
+            [self.scribbleView addSubview:image];
             [self bringToolBarToFront];
         }
         
         for (UITextField *text in self.arrayTexts) {
-            [self.view addSubview:text];
+            [self.scribbleView addSubview:text];
             [self bringToolBarToFront];
         }
         [UIView transitionWithView:self.view
@@ -611,7 +611,7 @@
         self.redoButton.enabled = NO;
     }
     else {
-        self.undoButton.enabled = YES;
+        self.redoButton.enabled = YES;
     }
 
     
@@ -669,7 +669,7 @@ bool moveScribble = NO;
         deleteButton.hidden = YES;
         deleteButton.enabled = NO;
         self.addImageButton.enabled = YES;
-        [self.view bringSubviewToFront: self.tempImageView];
+        [self.scribbleView bringSubviewToFront: self.tempImageView];
         UIImageView* actualImage = currentImage;
         
         CGFloat angle = atan2(actualImage.transform.b, actualImage.transform.a);
@@ -908,6 +908,7 @@ bool moveScribble = NO;
         }
     }
     
+    isFixTouch = NO;
 }
 
 
@@ -1897,8 +1898,8 @@ bool moveScribble = NO;
                         Image *photo = self.arrayUndo[i];
                         currentImage.center = [photo imageCenter];
                         currentImage.transform = [photo imageTransform];
-                        [self.view addSubview:currentImage];
-                        [self.view bringSubviewToFront:self.tempImageView];
+                        [self.scribbleView addSubview:currentImage];
+                        [self.scribbleView bringSubviewToFront:self.tempImageView];
                         [self bringToolBarToFront];
                         flag = 1;
                     }
@@ -1911,7 +1912,7 @@ bool moveScribble = NO;
         UIImageView *imageView = [self.arrayUndo lastObject];
         [self.arrayRedo addObject:imageView];
         [self.arrayUndo removeObject:imageView];
-        [self.view addSubview:imageView];
+        [self.scribbleView addSubview:imageView];
         [imageView.layer setBorderWidth:0.0];
         UIButton *deleteButton = [[imageView subviews] objectAtIndex:0];
         deleteButton.hidden = YES;
@@ -1936,7 +1937,7 @@ bool moveScribble = NO;
                     self.currentTextField.textColor = [text textColor];
                     self.currentTextField.center = [text textCenter];
                     self.currentTextField.transform = [text textTransform];
-                    [self.view addSubview:self.currentTextField];
+                    [self.scribbleView addSubview:self.currentTextField];
                     //[self.view bringSubviewToFront:self.tempImageView];
                     [self bringToolBarToFront];
                     flag = 1;
@@ -2003,15 +2004,15 @@ bool moveScribble = NO;
             currentImage.center = [photo imageCenter];
             currentImage.transform = [photo imageTransform];
             self.tempImageView.image = [photo canvasImage];
-            [self.view addSubview:currentImage];
-            [self.view bringSubviewToFront:self.tempImageView];
+            [self.scribbleView addSubview:currentImage];
+            [self.scribbleView bringSubviewToFront:self.tempImageView];
             [self bringToolBarToFront];
             
             if ([self.arrayRedo count] == 0) {
                 currentImage.center = [photo imageCenter];
                 currentImage.transform = [photo imageTransform];
-                [self.view addSubview:currentImage];
-                [self.view bringSubviewToFront:self.tempImageView];
+                [self.scribbleView addSubview:currentImage];
+                [self.scribbleView bringSubviewToFront:self.tempImageView];
                 [self bringToolBarToFront];
             }
         }
@@ -2040,7 +2041,7 @@ bool moveScribble = NO;
         self.currentTextField.transform = [text textTransform];
         self.tempImageView.image = [text canvasImage];
         
-        [self.view addSubview:self.currentTextField];
+        [self.scribbleView addSubview:self.currentTextField];
         [self bringToolBarToFront];
         
         if ([self.arrayRedo count] == 0) {
@@ -2049,7 +2050,7 @@ bool moveScribble = NO;
             self.currentTextField.textColor = [text textColor];
             self.currentTextField.center = [text textCenter];
             self.currentTextField.transform = [text textTransform];
-            [self.view addSubview:self.currentTextField];
+            [self.scribbleView addSubview:self.currentTextField];
             //[self.view bringSubviewToFront:self.tempImageView];
             [self bringToolBarToFront];
         }
