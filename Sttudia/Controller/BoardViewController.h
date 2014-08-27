@@ -24,6 +24,9 @@
 #import "FontTypeViewController.h"
 #import "ColorFontViewController.h"
 #import "ThicknessViewController.h"
+#import "Image.h"
+#import "TextRef.h"
+#import "BackGroundImage.h"
 
 
 @interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate>

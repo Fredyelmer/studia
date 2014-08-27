@@ -13,6 +13,10 @@
 @property (strong, nonatomic) UIImageView* imageView;
 @property (assign, nonatomic) CGPoint imageCenter;
 @property (assign, nonatomic) CGRect imageBounds;
-@property (assign, nonatomic) float imageRotation;
+@property (assign, nonatomic) CGFloat imageAngle;
+@property (strong, nonatomic) UIImage* canvasImage;
+@property (assign, nonatomic) CGAffineTransform imageTransform;
+
+- (id)initWithImage : (UIImageView *)imageView : (CGPoint)imagePosition : (CGRect)imageBounds : (CGFloat)angle : (UIImage*) canvas : (CGAffineTransform) imageTransform;
 
 @end

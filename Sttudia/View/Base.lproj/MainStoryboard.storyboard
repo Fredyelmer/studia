@@ -827,6 +827,9 @@
                                         <state key="normal" title="usar imagem">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="changeLayout:" destination="cOT-VF-1aa" eventType="touchUpInside" id="XxB-GA-5eS"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="2nM-8l-XjB">
                                         <rect key="frame" x="10" y="8" width="100" height="75"/>
