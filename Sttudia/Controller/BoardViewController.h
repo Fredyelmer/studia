@@ -61,11 +61,14 @@
 @property (strong, nonatomic) IBOutlet CorUIButton *eraseButton;
 
 
+@property (strong, nonatomic) IBOutlet UIView *scribbleView;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIButton *snapShotButtom;
 @property (strong, nonatomic) IBOutlet UIButton *recAudio;
 @property (strong, nonatomic) IBOutlet UIButton *pauseRecAudio;
 @property (strong, nonatomic) IBOutlet UIButton *confirmImageButton;
 @property (strong, nonatomic) IBOutlet UIButton *addImageButton;
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;

@@ -8,7 +8,7 @@
 
 #import "BoardViewController.h"
 
-@interface BoardViewController ()
+@interface BoardViewController () <UIScrollViewDelegate>
 {
     AVAudioRecorder *recorder;
     AVAudioPlayer *player;
@@ -22,6 +22,14 @@
     UIImageView *currentImage;
     UIWebView *webView;
     CGPoint centerImage;
+    CGPoint centerPoint;
+    CGPoint actualPoint;
+    CGPoint firstPoint1;
+    CGPoint firstPoint2;
+    CGPoint point1;
+    CGPoint point2;
+    CGPoint point3;
+    CGPoint point4;
     CGFloat lastScale;
     CGFloat lastRotation;
     int numEraserButtonTap;
@@ -32,6 +40,8 @@
 }
 
 @property (assign, nonatomic) BOOL isRecording;
+@property float scaleX;
+@property float scaleY;
 
 @end
 
@@ -51,7 +61,16 @@
 {
     
     [super viewDidLoad];
+    
+    [self.scrollView setContentSize:self.mainImageView.bounds.size];
+    self.scrollView.delegate = self;
+    self.scrollView.minimumZoomScale = 0.5;
+    self.scrollView.maximumZoomScale = 8.0;
 
+    [self.scrollView setCanCancelContentTouches:YES];
+    
+    self.scribbleView.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     //inicializa o brush
@@ -87,6 +106,13 @@
     UILongPressGestureRecognizer *longPressGesture3 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
     UILongPressGestureRecognizer *longPressGesture4 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
     UILongPressGestureRecognizer *longPressGesture5 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
+    
+    //UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+    //UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    
+    //[self.view addGestureRecognizer:pinchGesture];
+    //[self.view addGestureRecognizer:panGesture];
+    
     [[self.ColorButton objectAtIndex:0] addGestureRecognizer:longPressGesture1];
     [[self.ColorButton objectAtIndex:1] addGestureRecognizer:longPressGesture2];
     [[self.ColorButton objectAtIndex:2] addGestureRecognizer:longPressGesture3];
@@ -153,6 +179,54 @@
     nameOfFont = @"Helvetica";
     allowImageEdition = NO;
     
+}
+
+-(void) handlePinch:(UIPinchGestureRecognizer*)sender
+{
+    NSLog(@"pinch");
+    if (!isImageEditing) {
+        if (sender.state == UIGestureRecognizerStateEnded) {
+            lastScale = 1.0;
+            return;
+        }
+        
+//        CGPoint center;
+//        
+//        if (sender.state == UIGestureRecognizerStateBegan) {
+//            center = self.scribbleView.center;
+//        }
+        CGFloat scale = 1.0 - (lastScale - sender.scale);
+        
+        
+        
+        CGAffineTransform currentTransform = self.scribbleView.transform;
+        CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
+        
+        [self.scribbleView setTransform:newTransform];
+        //self.scribbleView.center = center;
+        
+        lastScale = sender.scale;
+    }
+    
+
+//    static CGRect initialBounds;
+//    CGRect newBounds;
+//    
+//    switch (sender.state) {
+//        case UIGestureRecognizerStateBegan:
+//            initialBounds = self.scribbleView.bounds;
+//            break;
+//        case UIGestureRecognizerStateChanged:
+//            newBounds = initialBounds;
+//            newBounds.size.width *= sender.scale;
+//            newBounds.size.height *= sender.scale;
+//            self.scribbleView.bounds = newBounds;
+//            break;
+//        default:
+//            break;
+//    }
+//    
+//    [self.scribbleView setNeedsDisplay];
 }
 
 - (void) setBrushColor:(UIColor *) color
@@ -536,6 +610,8 @@
     button.state = YES;
 }
 
+bool moveScribble = NO;
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     
@@ -581,55 +657,158 @@
         isScreenTouched = YES;
         NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
         //[[self.ColorButton objectAtIndex:selectedButton] setState:NO];
+        
+        if ([[event allTouches] count] == 2)
+        {
+            //moveScribble =YES;
+            //actualPoint = [touch locationInView:self.view];
+            //actualPoint = self.scribbleView.center;
+            //NSLog(@"actual point: %@",NSStringFromCGPoint(actualPoint));
+//            touch=[[[event allTouches] allObjects] objectAtIndex:0];
+//            firstPoint1=[touch locationInView:self.view];
+//            touch=[[[event allTouches] allObjects] objectAtIndex:1];
+//            firstPoint2=[touch locationInView:self.view];
+//            
+//            point1 = CGPointMake((firstPoint1.x + firstPoint2.x)/2, (firstPoint1.y + firstPoint2.y)/2);
+            centerPoint = self.scribbleView.center;
+            NSLog(@"center 1 %f %f",self.scribbleView.center.x,self.scribbleView.center.y);
+        }
     }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    mouseSwiped = YES;
-    
-    if(!isImageEditing){
-        
     UITouch *touch = [touches anyObject];
-    CGPoint currentPoint = [touch locationInView:self.mainImageView];
-    
-    UIGraphicsBeginImageContext(self.mainImageView.frame.size);
-    [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
+    if ([[event allTouches] count] == 1) {
+        mouseSwiped = YES;
         
-    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
-    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
-    
-        if (isEraser) {
-            CGContextSetLineWidth(UIGraphicsGetCurrentContext(), eraser );
-            CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeClear);
+        if(!isImageEditing){
+            
+            CGPoint currentPoint = [touch locationInView:self.mainImageView];
+            
+            UIGraphicsBeginImageContext(self.mainImageView.frame.size);
+            [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
+            
+            CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
+            CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
+            CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+            CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
+            
+            if (isEraser) {
+                CGContextSetLineWidth(UIGraphicsGetCurrentContext(), eraser );
+                CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeClear);
+                
+            }
+            else{
+                CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
+                CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+            }
+            CGContextStrokePath(UIGraphicsGetCurrentContext());
+            self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+            [self.tempImageView setAlpha:opacity];
+            UIGraphicsEndImageContext();
+            
+            NSTimeInterval interval = [event timestamp] - self.lastTouch;
+            VideoParameter *parameter;
+            if (isEraser) {
+                parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :-1 : -1: -1: 20];
+            }
+            else{
+                parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :red : green: blue : 5];
+            }
+            
+            [self.arrayPoints addObject:parameter];
+            
+            lastPoint = currentPoint;
             
         }
-        else{
-            CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
-            CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
-        }
-    CGContextStrokePath(UIGraphicsGetCurrentContext());
-    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    [self.tempImageView setAlpha:opacity];
-    UIGraphicsEndImageContext();
-    
-    NSTimeInterval interval = [event timestamp] - self.lastTouch;
-        VideoParameter *parameter;
-        if (isEraser) {
-            parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :-1 : -1: -1: 20];
-        }
-        else{
-            parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :red : green: blue : 5];
-        }
-    
-    [self.arrayPoints addObject:parameter];
-    
-    lastPoint = currentPoint;
-        
+
     }
+    else if ([[event allTouches] count] == 2)
+    {
+        CGFloat scale = 1;
+        if(!isImageEditing)
+        {
+            touch=[[[event allTouches] allObjects] objectAtIndex:0];
+            firstPoint1=[touch previousLocationInView:self.view];
+            touch=[[[event allTouches] allObjects] objectAtIndex:1];
+            firstPoint2=[touch previousLocationInView:self.view];
+            
+           // point1 = CGPointMake((firstPoint1.x + firstPoint2.x)/2, (firstPoint1.y + firstPoint2.y)/2);
+
+            touch=[[[event allTouches] allObjects] objectAtIndex:0];
+            CGPoint currentPoint1=[touch locationInView:self.view];
+            touch=[[[event allTouches] allObjects] objectAtIndex:1];
+            CGPoint currentPoint2=[touch locationInView:self.view];
+            
+            
+            ///point2 = CGPointMake((currentPoint1.x + currentPoint2.x)/2, (currentPoint1.y + currentPoint2.y)/2);
+            
+            scale=[self distance:currentPoint1 toPoint:currentPoint2]/[self distance:firstPoint1 toPoint:firstPoint2];
+            NSLog(@"scale %f",scale);
+            
+            if(isnan(scale)){
+                scale=1.0f;
+            }
+            
+//            self.scribbleView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+//            self.scribbleView.superview.layer.anchorPoint = CGPointMake(0.5, 0.5);
+//            self.scribbleView.backgroundColor = [UIColor redColor];
+
+            //self.scribbleView.center = centerPoint;
+
+           self.scribbleView.transform=CGAffineTransformScale(self.scribbleView.transform, scale,scale);
+
+            NSLog(@"center %f %f",self.scribbleView.center.x,self.scribbleView.center.y);
+            //self.scribbleView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+            //self.scribbleView.transform = CGAffineTransformTranslate(self.scribbleView.transform, point2.x - point1.x, point2.y - point1.y);
+
+           // point1 = point2;
+            firstPoint1=currentPoint1;
+            firstPoint2=currentPoint2;
+        }
+    }
+    else if ([[event allTouches] count] == 3)
+    {
+        if(!isImageEditing)
+        {
+            touch=[[[event allTouches] allObjects] objectAtIndex:0];
+            point1=[touch previousLocationInView:self.view];
+//            touch=[[[event allTouches] allObjects] objectAtIndex:1];
+//            firstPoint2=[touch previousLocationInView:self.view];
+//            
+           // point1 = CGPointMake((firstPoint1.x + firstPoint2.x)/2, (firstPoint1.y + firstPoint2.y)/2);
+            
+            touch=[[[event allTouches] allObjects] objectAtIndex:0];
+            point2=[touch locationInView:self.view];
+//            touch=[[[event allTouches] allObjects] objectAtIndex:1];
+//            CGPoint currentPoint2=[touch locationInView:self.view];
+//            
+            
+            //point2 = CGPointMake((currentPoint1.x + currentPoint2.x)/2, (currentPoint1.y + currentPoint2.y)/2);
+            
+            //self.scribbleView.transform=CGAffineTransformScale(self.scribbleView.transform, scale,scale);
+            self.scribbleView.transform = CGAffineTransformTranslate(self.scribbleView.transform, point2.x - point1.x, point2.y - point1.y);
+            //self.scribbleView.center = CGPointMake(self.scribbleView.center.x + point2.x - point1.x, self.scribbleView.center.y + point2.y - point1.y);
+            
+            point1 = point2;
+        }
+    }
+
     
+}
+
+- (CGFloat) distance:(CGPoint) p1 toPoint:(CGPoint) p2
+{
+    CGFloat distance = hypotf(p1.x - p2.x, p1.y - p2.y);
+
+    if (distance != 0) {
+        return distance;
+    }
+    else
+    {
+        return 1;
+    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -654,7 +833,14 @@
             self.redoButton.enabled = NO;
             undoMade = NO;
         }
+        
+        if ([[event allTouches] count] == 2)
+        {
+            moveScribble = NO;
+        }
     }
+    
+    
 }
 
 
@@ -1125,7 +1311,7 @@
     
     [self.arrayImages addObject:customImage];
     
-    [self.view addSubview:customImage];
+    [self.scribbleView addSubview:customImage];
     
     currentImage = customImage;
     
@@ -1292,8 +1478,6 @@
     
     [textField becomeFirstResponder];
     
-    self.currentTextField = textField;
-    
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f,
                                                                      0.0f,
                                                                      self.view.window.frame.size.width,
@@ -1366,7 +1550,7 @@
     
     self.currentTextField = textField;
     
-    [self.view addSubview:textField];
+    [self.scribbleView addSubview:textField];
 }
 
 - (void) barButtonPressed :(UIBarButtonItem*)sender
@@ -1412,9 +1596,12 @@
 
 -(void)resizingText:(UIPinchGestureRecognizer *)recognizer
 {
-        [self.view bringSubviewToFront:recognizer.view];
+                [self.view bringSubviewToFront:recognizer.view];
     
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
+        [self.currentTextField.layer setBorderWidth:0];
+        self.currentTextField = (UITextField*)recognizer.view;
+
         [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
         [self.currentTextField.layer setBorderWidth:1];
     }
@@ -1439,6 +1626,8 @@
 
 -(void)moveText: (UIPanGestureRecognizer *)recognizer
 {
+    
+    
         [[[recognizer view] layer] removeAllAnimations];
         //[self.view bringSubviewToFront:[recognizer view]];
         CGPoint translatedPoint = [recognizer translationInView:self.view];
@@ -1448,6 +1637,8 @@
             centerImage.x = [[recognizer view] center].x;
             centerImage.y = [[recognizer view] center].y;
             
+            [self.currentTextField.layer setBorderWidth:0];
+            self.currentTextField = (UITextField*)recognizer.view;
             [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
             [self.currentTextField.layer setBorderWidth:1];
         }
@@ -1517,6 +1708,7 @@
 
 -(void)rotateText: (UIRotationGestureRecognizer *)recognizer
 {
+    
         if([recognizer state] == UIGestureRecognizerStateEnded) {
             
             lastRotation = 0.0;
@@ -1524,6 +1716,8 @@
         }
     
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
+        [self.currentTextField.layer setBorderWidth:0];
+        self.currentTextField = (UITextField*)recognizer.view;
         [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
         [self.currentTextField.layer setBorderWidth:1];
     }
@@ -1570,13 +1764,11 @@
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingText:)];
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveText:)];
     UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateText:)];
-    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressedText:)];
 
     
     [textField addGestureRecognizer:pinchGesture];
     [textField addGestureRecognizer:panGesture];
     [textField addGestureRecognizer:rotationGesture];
-    [textField addGestureRecognizer:longPressGesture];
     
     if (![textField.text isEqualToString:@""]) {
         [textField setBorderStyle:UITextBorderStyleNone];
@@ -1802,5 +1994,14 @@
     [self.view bringSubviewToFront: self.addImageButton];
 
 
+}
+
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
+    CGSize size = [scrollView contentSize];
+    _scaleX = 14364/size.width;//0
+    _scaleY = 8976/size.height;//674
+    NSLog(@"max: %f",scrollView.zoomScale);
+    NSLog(@"zoom w=%f h=%f",size.width,size.height);
 }
 @end
