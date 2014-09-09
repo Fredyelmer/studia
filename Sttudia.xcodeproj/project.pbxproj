@@ -38,6 +38,7 @@
 		0DA6C9201982C71E006AB299 /* photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C91B1982C71E006AB299 /* photo.png */; };
 		0DA6C92619880956006AB299 /* redo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C92519880956006AB299 /* redo.png */; };
 		0DA6C928198809BF006AB299 /* undo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA6C927198809BF006AB299 /* undo.png */; };
+
 		0DA7031319B4B78300139082 /* UnansweredTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA7031219B4B78300139082 /* UnansweredTableViewController.m */; };
 		0DA7031619B4B7BB00139082 /* AnsweredDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA7031519B4B7BB00139082 /* AnsweredDetailViewController.m */; };
 		0DA7031919B4B7F500139082 /* UnansweredDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA7031819B4B7F500139082 /* UnansweredDetailViewController.m */; };
@@ -52,6 +53,8 @@
 		0DA8EFA11976C052006A5589 /* ImagePickerLandscapeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA8EFA01976C052006A5589 /* ImagePickerLandscapeController.m */; };
 		0DA8EFA41976F772006A5589 /* Image.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA8EFA31976F772006A5589 /* Image.m */; };
 		0DA9B429199A7FE500A86418 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DA9B428199A7FE500A86418 /* delete.png */; };
+		0DA9D71419BDEF39006BE0C1 /* UnanswerQuestionListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA9D71319BDEF39006BE0C1 /* UnanswerQuestionListTableViewCell.m */; };
+		0DA9D71719BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA9D71619BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.m */; };
 		0DAA646F19ACFC3600529E74 /* BackGroundImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAA646E19ACFC3600529E74 /* BackGroundImage.m */; };
 		0DAA8ED219A3CE9E00F65CC9 /* squared.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DAA8ED119A3CE9E00F65CC9 /* squared.png */; };
 		0DAA8ED419A3D11800F65CC9 /* notebookPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DAA8ED319A3D11800F65CC9 /* notebookPaper.png */; };
@@ -175,6 +178,10 @@
 		0DA8EFA21976F772006A5589 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Image.h; sourceTree = "<group>"; };
 		0DA8EFA31976F772006A5589 /* Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Image.m; sourceTree = "<group>"; };
 		0DA9B428199A7FE500A86418 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+		0DA9D71219BDEF39006BE0C1 /* UnanswerQuestionListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnanswerQuestionListTableViewCell.h; sourceTree = "<group>"; };
+		0DA9D71319BDEF39006BE0C1 /* UnanswerQuestionListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnanswerQuestionListTableViewCell.m; sourceTree = "<group>"; };
+		0DA9D71519BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnanswerQuestionTableViewCell.h; sourceTree = "<group>"; };
+		0DA9D71619BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnanswerQuestionTableViewCell.m; sourceTree = "<group>"; };
 		0DAA646D19ACFC3600529E74 /* BackGroundImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackGroundImage.h; sourceTree = "<group>"; };
 		0DAA646E19ACFC3600529E74 /* BackGroundImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackGroundImage.m; sourceTree = "<group>"; };
 		0DAA8ED119A3CE9E00F65CC9 /* squared.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = squared.png; sourceTree = "<group>"; };
@@ -479,6 +486,12 @@
 				0DE062E519B638D600CFDF07 /* QuestionsTableViewCell.m */,
 				0DE062E719B6456A00CFDF07 /* QuestionListTableViewCell.h */,
 				0DE062E819B6456A00CFDF07 /* QuestionListTableViewCell.m */,
+
+				0DA9D71219BDEF39006BE0C1 /* UnanswerQuestionListTableViewCell.h */,
+				0DA9D71319BDEF39006BE0C1 /* UnanswerQuestionListTableViewCell.m */,
+				0DA9D71519BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.h */,
+				0DA9D71619BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.m */,
+
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -647,6 +660,7 @@
 				48C52E971965E57700AD013F /* CorUIButton.m in Sources */,
 				71305E6119AFBBEC00C94CF6 /* ConnectionsViewController.m in Sources */,
 				710DE25319801FA00095E34E /* SourceColorView.m in Sources */,
+				0DA9D71419BDEF39006BE0C1 /* UnanswerQuestionListTableViewCell.m in Sources */,
 				48C52EA01965EC6B00AD013F /* Forum.m in Sources */,
 				0D081747196ED95A0007399B /* VideoParameter.m in Sources */,
 				0DA7189519AFB77400B8B08E /* QuestionsRepository.m in Sources */,
@@ -670,6 +684,7 @@
 				710DE25219801FA00095E34E /* ColorBarPicker.m in Sources */,
 				0DA7031919B4B7F500139082 /* UnansweredDetailViewController.m in Sources */,
 				0DA7B591198ABACE00D268E1 /* Photo.m in Sources */,
+				0DA7031019B4B76000139082 /* AnsweredTableViewController.m in Sources */,
 				0DDF9CAF19B8FF390025AB0F /* TabViewController.m in Sources */,
 				0DA2FFA4197EA2E000C4ADA3 /* Page.m in Sources */,
 				48C52E8E1965E52D00AD013F /* SpecificClassViewController.m in Sources */,
@@ -685,6 +700,7 @@
 				0D9ECF531961867300882007 /* main.m in Sources */,
 				48C52E8D1965E52D00AD013F /* RegisterViewController.m in Sources */,
 				0DA267CB19953B0F00AE00FF /* ColorFontViewController.m in Sources */,
+				0DA9D71719BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.m in Sources */,
 				0DA7189219AFAAF200B8B08E /* NewQuestionViewController.m in Sources */,
 				0DA5A29F19A7831F0031C6F9 /* TextRef.m in Sources */,
 				710DE25119801FA00095E34E /* ColorIndicatorView.m in Sources */,

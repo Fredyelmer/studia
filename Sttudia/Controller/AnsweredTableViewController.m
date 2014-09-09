@@ -9,6 +9,7 @@
 #import "AnsweredTableViewController.h"
 
 @interface AnsweredTableViewController ()
+
 @property (strong, nonatomic) AnsweredDetailViewController * detail;
 
 @end
@@ -72,7 +73,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 140;
+    return 140.0;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

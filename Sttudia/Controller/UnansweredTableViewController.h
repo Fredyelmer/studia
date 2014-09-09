@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "QuestionsRepository.h"
 #import "Question.h"
+#import "UnanswerQuestionListTableViewCell.h"
+#import "UnansweredDetailViewController.h"
 
 @interface UnansweredTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
