@@ -1,23 +1,18 @@
 //
-//  AddImageViewController.m
+//  UnanwsredDetailViewController.m
 //  Sttudia
 //
-//  Created by Ricardo Nagaishi on 05/08/14.
+//  Created by Ricardo Nagaishi on 01/09/14.
 //  Copyright (c) 2014 Ricardo Nagaishi. All rights reserved.
 //
 
-#import "AddImageViewController.h"
+#import "UnansweredDetailViewController.h"
 
-@interface AddImageViewController ()
-{
-    float lastScale;
-    CGPoint centerImage;
-    CGFloat lastRotation;
-}
+@interface UnansweredDetailViewController ()
 
 @end
 
-@implementation AddImageViewController
+@implementation UnansweredDetailViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,21 +35,15 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)addSavedPhoto:(id)sender {
-    
-    [self.delegate addImageFromLibrary];
-    
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
 }
-- (IBAction)takePhoto:(id)sender {
-    
-    [self.delegate addPhoto];
-}
-
-- (IBAction)getPhotoInternet:(id)sender {
-
-    [self.delegate getPhotoFromInternet];
-}
-
-
+*/
 
 @end

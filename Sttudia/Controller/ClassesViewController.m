@@ -37,7 +37,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [self performSegueWithIdentifier:@"specificClassSegue" sender:self];
+    //[self performSegueWithIdentifier:@"specificClassSegue" sender:self];
 }
 
 @end

@@ -1826,6 +1826,9 @@ bool moveScribble = NO;
 
 }
 
+- (IBAction)acessQuestions:(id)sender {
+}
+
 -(void)newColorBrush:(UIColor *)newColor
 {
     for (CorUIButton *button in self.ColorButton)
@@ -2184,6 +2187,12 @@ bool moveScribble = NO;
     [self.view bringSubviewToFront: self.addImageButton];
 
 
+}
+
+- (IBAction)perguntas:(id)sender {
+    TabViewController *tab = [self.storyboard instantiateViewControllerWithIdentifier:@"tab"];
+    //[self.navigationController pushViewController:tab animated:YES];
+    [self presentViewController:tab animated:YES completion:nil];
 }
 
 //- (void)createNewDrawLayer
