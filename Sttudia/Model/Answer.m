@@ -11,7 +11,7 @@
 @implementation Answer
 
 // Inicia uma pergunta com texto proposto contadores de rank zerados
-- (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImageView *)image
+- (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImage *)image
 {
     self = [super init];
     if(self){
@@ -22,7 +22,7 @@
         self.upVotes = 0;
         self.downVotes = 0;
         self.spamCounter = 0;
-        self.drawImageView = image;
+        self.drawImage = image;
     }
     
     return self;

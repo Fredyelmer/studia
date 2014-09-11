@@ -34,10 +34,12 @@
     self.arrayAnsweredQuestion = [repository answeredQuestionsArray];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
     self.arrayAnsweredQuestion = [repository answeredQuestionsArray];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning

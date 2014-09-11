@@ -34,7 +34,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    self.currentQuestion = [[repository answeredQuestionsArray]objectAtIndex:0];
+    self.arrayAnswers = [self.currentQuestion answersArray];
     
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -82,13 +86,17 @@
             [cell questionTextTextView].text = [self.currentQuestion text];
             [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%d", [self.currentQuestion upVotes]];
             [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%d", [self.currentQuestion downVotes]];
-            
-            if ([self.currentQuestion drawImageView].image) {
-                UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0, 186.0, 362.0, 204.0)];
-                [imageView setBackgroundColor:[UIColor greenColor]];
-                imageView.image = [self.currentQuestion drawImageView].image;
-                [cell addSubview:imageView];
-                
+            [[cell answerQuestionButton]setHidden:NO];
+            [[cell answerQuestionButton] addTarget:self action:@selector(answerQuestion:) forControlEvents:UIControlEventTouchUpInside];
+            if ([self.currentQuestion drawImage]) {
+                [cell drawImageView].image = [self.currentQuestion drawImage];
+                [[cell drawImageView]setHidden:NO];
+                [[cell drawImageView] setUserInteractionEnabled:YES];
+                UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomImage:)];
+                [[cell drawImageView]addGestureRecognizer:tapGesture];
+            }
+            else {
+                [[cell drawImageView]setHidden:YES];
             }
             
         }
@@ -99,12 +107,16 @@
             [cell questionTextTextView].text = [answer text];
             [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%d", [answer upVotes]];
             [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%d", [answer downVotes]];
-            
-            if ([answer drawImageView].image) {
-                UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0, 186.0, 362.0, 204.0)];
-                [imageView setBackgroundColor:[UIColor greenColor]];
-                imageView.image = [answer drawImageView].image;
-                [cell addSubview:imageView];
+            [[cell answerQuestionButton]setHidden:YES];
+            if ([answer drawImage]) {
+                [cell drawImageView].image = [answer drawImage];
+                [[cell drawImageView]setHidden:NO];
+                [[cell drawImageView] setUserInteractionEnabled:YES];
+                UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomImage:)];
+                [[cell drawImageView]addGestureRecognizer:tapGesture];
+            }
+            else {
+                [[cell drawImageView]setHidden:YES];
             }
         }
     }
@@ -115,7 +127,7 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        if ([self.currentQuestion drawImageView].image)
+        if ([self.currentQuestion drawImage])
         {
             return 408.0;
         }
@@ -123,7 +135,7 @@
     
     if (indexPath.section == 1) {
         Answer *answer = [self.arrayAnswers objectAtIndex:indexPath.row];
-        if ([answer drawImageView].image) {
+        if ([answer drawImage]) {
             return 408.0;
         }
     }
@@ -132,9 +144,26 @@
 
 - (void)changeQuestionDetail : (Question*) question
 {
-    
+    self.currentQuestion = question;
     self.arrayAnswers = [question answersArray];
     [self.tableView reloadData];
 
 }
+
+- (void)answerQuestion: (UIButton *)sender
+{
+    NewQuestionViewController *newQuestionVCRef = (NewQuestionViewController *)[[self.tabBarController viewControllers] objectAtIndex:2];
+    [newQuestionVCRef setCurrentQuestion:self.currentQuestion];
+    [newQuestionVCRef setIsAnswer:YES];
+    [self.tabBarController setSelectedIndex:2];
+    
+}
+- (void) zoomImage: (UITapGestureRecognizer *)sender
+{
+    UIImageView *imageClicked = (UIImageView *)sender.view;
+    ImageDetailViewController *detailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"imageDetail"];
+    [detailVC setImage:imageClicked.image];
+    [self presentViewController:detailVC animated:YES completion:nil];
+}
+
 @end

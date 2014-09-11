@@ -1,5 +1,5 @@
 //
-//  UnanwsredDetailViewController.m
+//  UnansweredDetailViewController.m
 //  Sttudia
 //
 //  Created by Ricardo Nagaishi on 01/09/14.
@@ -28,13 +28,27 @@
     [super viewDidLoad];
 
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    self.currentQuestion = [[repository answeredQuestionsArray]objectAtIndex:0];
-    self.arrayAnswers = [self.currentQuestion answersArray];
-    
+    if ([[repository unansweredQuestionsArray]count] > 0) {
+        self.currentQuestion = [[repository unansweredQuestionsArray]objectAtIndex:0];
+        self.arrayAnswers = [self.currentQuestion answersArray];
+    }
+    else {
+        self.currentQuestion = nil;
+    }
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    if ([[repository unansweredQuestionsArray]count] > 0) {
+        self.currentQuestion = [[repository unansweredQuestionsArray]objectAtIndex:0];
+        self.arrayAnswers = [self.currentQuestion answersArray];
+    }
+    else {
+        self.currentQuestion = nil;
+    }
+
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,29 +59,20 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
-
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
+    if (self.currentQuestion) {
         return 1;
     }
-    else {
-        return [self.arrayAnswers count];
-    }
+    return 0;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString *sectionName;
+    NSString *sectionName = @"Pergunta";
     
-    if (section == 0) {
-        sectionName = @"Pergunta";
-    }
-    else {
-        sectionName = @"Respostas";
-    }
     return sectionName;
 }
 
@@ -76,66 +81,53 @@
     QuestionsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detailCell" forIndexPath:indexPath];
     
     if (cell) {
-        if (indexPath.section == 0) {
             [cell questionTitleLabel].text = [self.currentQuestion title];
             [cell questionSubjectTextView].text = [self.currentQuestion subject];
             [cell questionTextTextView].text = [self.currentQuestion text];
             [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%d", [self.currentQuestion upVotes]];
             [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%d", [self.currentQuestion downVotes]];
+            [[cell answerQuestionButton]setHidden:NO];
+            [[cell answerQuestionButton] addTarget:self action:@selector(answerQuestion:) forControlEvents:UIControlEventTouchUpInside];
             
-            if ([self.currentQuestion drawImageView].image) {
-                UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0, 186.0, 362.0, 204.0)];
-                [imageView setBackgroundColor:[UIColor greenColor]];
-                imageView.image = [self.currentQuestion drawImageView].image;
-                [cell addSubview:imageView];
-                
+            if ([self.currentQuestion drawImage]) {
+                [cell drawImageView].image = [self.currentQuestion drawImage];
+                [[cell drawImageView]setHidden:NO];
             }
-            
-        }
-        else if (indexPath.section == 1) {
-            Answer *answer = [self.arrayAnswers objectAtIndex:indexPath.row];
-            [cell questionTitleLabel].text = [answer title];
-            [cell questionSubjectTextView].text = [answer subject];
-            [cell questionTextTextView].text = [answer text];
-            [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%d", [answer upVotes]];
-            [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%d", [answer downVotes]];
-            
-            if ([answer drawImageView].image) {
-                UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0, 186.0, 362.0, 204.0)];
-                [imageView setBackgroundColor:[UIColor greenColor]];
-                imageView.image = [answer drawImageView].image;
-                [cell addSubview:imageView];
+            else {
+                [[cell drawImageView]setHidden:YES];
             }
-        }
     }
-    
     return cell;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        if ([self.currentQuestion drawImageView].image)
-        {
-            return 408.0;
-        }
+    if ([self.currentQuestion drawImage])
+    {
+        return 408.0;
     }
     
-    if (indexPath.section == 1) {
-        Answer *answer = [self.arrayAnswers objectAtIndex:indexPath.row];
-        if ([answer drawImageView].image) {
-            return 408.0;
-        }
-    }
     return 220.0;
 }
 
 - (void)changeQuestionDetail : (Question*) question
 {
-    
+    self.currentQuestion = question;
     self.arrayAnswers = [question answersArray];
     [self.tableView reloadData];
     
 }
+
+- (void)answerQuestion: (UIButton *)sender
+{
+    NewQuestionViewController *newQuestionVCRef = (NewQuestionViewController *)[[self.tabBarController viewControllers] objectAtIndex:2];
+    [newQuestionVCRef setCurrentQuestion:self.currentQuestion];
+    [newQuestionVCRef setIsAnswer:YES];
+    [self.tabBarController setSelectedIndex:2];
+
+}
+
+
+
 
 @end

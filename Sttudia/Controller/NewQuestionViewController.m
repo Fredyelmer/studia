@@ -18,6 +18,9 @@
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) IBOutlet UITextField *titleTextField;
 @property (strong, nonatomic) IBOutlet UITextField *subjectTextField;
+@property (strong, nonatomic) IBOutlet UIButton *sendToEveryoneButton;
+@property (strong, nonatomic) IBOutlet UIButton *sendToTeacherButton;
+@property (strong, nonatomic) IBOutlet UIButton *sendAnswerButton;
 
 @end
 
@@ -47,8 +50,37 @@
     self.subjectTextField.delegate = self;
     isEraser = NO;
     
-    [self.titleTextField becomeFirstResponder];
+    if (!self.isAnswer) {
+        [self.sendAnswerButton setHidden:YES];
+        [self.sendToEveryoneButton setHidden:NO];
+        [self.sendToTeacherButton setHidden:NO];
+    }
+    else {
+        [self.sendToEveryoneButton setHidden:YES];
+        [self.sendToTeacherButton setHidden:YES];
+        [self.sendAnswerButton setHidden:NO];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
+    if (!self.isAnswer) {
+        [self.sendAnswerButton setHidden:YES];
+        [self.sendToEveryoneButton setHidden:NO];
+        [self.sendToTeacherButton setHidden:NO];
+    }
+    else {
+        [self.sendToEveryoneButton setHidden:YES];
+        [self.sendToTeacherButton setHidden:YES];
+        [self.sendAnswerButton setHidden:NO];
+    }
+    
+    self.titleTextField.text = nil;
+    self.subjectTextField.text = nil;
+    self.textView.text = nil;
+    self.imageView.image = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -124,6 +156,41 @@
     return YES;
 }
 
+- (IBAction)dismissScreen:(id)sender {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
+- (IBAction)sendQuestionToEveryone:(id)sender {
+    Question * question = [[Question alloc]initWithTitle:self.titleTextField.text subject:self.subjectTextField.text text:self.textView.text image:self.imageView.image];
+    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    [repository addUnansweredQuestion:question];
+    
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua pergunta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [message show];
+    [self.tabBarController setSelectedIndex:0];
+}
+- (IBAction)sendQuestionToTeacher:(id)sender {
+    
+}
+
+- (IBAction)sendAnswer:(id)sender {
+    
+    Answer *answer = [[Answer alloc]initWithTitle:self.titleTextField.text subject:self.subjectTextField.text text:self.textView.text image:self.imageView.image];
+    
+    [[self.currentQuestion answersArray]addObject:answer];
+    
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua resposta foi enviada com sucesso!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [message show];
+    
+    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    
+    if ([[repository unansweredQuestionsArray] containsObject:self.currentQuestion]) {
+        [[repository unansweredQuestionsArray]removeObject:self.currentQuestion];
+        [[repository answeredQuestionsArray]addObject:self.currentQuestion];
+    }
+    self.isAnswer = NO;
+    [self.tabBarController setSelectedIndex:1];
+}
 
 @end

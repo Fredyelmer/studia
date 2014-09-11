@@ -27,27 +27,22 @@ static QuestionsRepository *questionsRepository= nil;
         UIImage *image = [UIImage imageNamed:@"placeholder.png"];
         UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0, 186.0, 362.0, 204.0)];
         imageView.image = image;
-        Question *question = [[Question alloc]initWithTitle:@"titulo" subject:@"Ola sou o david" text:@"batatinha Quando Nasce Se esparrama pelo chão menininha quando dorme poes amão no coração" image: imageView];
-        
-        Answer *answer = [[Answer alloc]initWithTitle: [question title] subject:[question subject] text:[question text] image:imageView];
-        
-        for (int i = 0; i < 3; i++) {
-            [[question answersArray] addObject:answer];
-        }
-        
-        for (int i = 0; i < 10; i++) {
-            [self.answeredQuestionsArray addObject:question];
-
-            [self.unansweredQuestionsArray addObject:question];
-        }
+        Question *question = [[Question alloc]initWithTitle:@"titulo" subject:@"Ola sou o david" text:@"batatinha Quando Nasce Se esparrama pelo chão menininha quando dorme poes amão no coração" image: imageView.image];
+        Question *question2 = [[Question alloc]initWithTitle:@"titulo2" subject:@"Ola mundo" text:@"batatinha feliz" image: imageView.image];
+        Question *question3 = [[Question alloc]initWithTitle:@"titulo" subject:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
         
         
-        question = [[Question alloc]initWithTitle:@"titulo3" subject:@"Ola sou o davids" text:@"batatinha Quando Nasce Se esparrama pelo chão menininha quando dorme poes amão no coração" image: imageView];
+        Answer *answer = [[Answer alloc]initWithTitle: [question title] subject:[question subject] text:[question text] image:imageView.image];
         
-        Answer *answer2 = [[Answer alloc]initWithTitle: @"teste" subject:@"testeSubject" text:@"Esse é o teste de troca de contexto" image:nil];
-        [[question answersArray] addObject:answer2];
+        
+        [[question answersArray] addObject:answer];
         
         [self.answeredQuestionsArray addObject:question];
+
+        [self.unansweredQuestionsArray addObject:question2];
+        [self.unansweredQuestionsArray addObject:question3];
+        
+        
     }
     return self;
 }

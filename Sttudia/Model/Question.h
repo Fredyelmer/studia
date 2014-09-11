@@ -19,10 +19,10 @@
 @property (nonatomic) int upVotes;
 @property (nonatomic) int downVotes;
 @property (nonatomic) NSInteger spamCounter; // Conta quantos avisos de spam a resposta levou, inicialmente não será utilizados, apenas uma preparação de terreno
-@property (strong, nonatomic) UIImageView* drawImageView;
+@property (strong, nonatomic) UIImage* drawImage;
 
 // Cria a pergunta com o texto especificado
-- (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImageView *)image;
+- (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImage *)image;
 - (void)sortAnswersBy:(NSInteger)type;
 
 @end

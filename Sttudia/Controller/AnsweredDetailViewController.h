@@ -10,7 +10,9 @@
 #import "QuestionsRepository.h"
 #import "QuestionsTableViewCell.h"
 #import "Question.h"
-#import "AnsweredTableViewController.h"
+#import "AnsweredDetailViewController.h"
+#import "NewQuestionViewController.h"
+#import "ImageDetailViewController.h"
 
 @interface AnsweredDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 

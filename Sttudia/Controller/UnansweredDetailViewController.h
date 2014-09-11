@@ -11,8 +11,9 @@
 #import "QuestionsTableViewCell.h"
 #import "Question.h"
 #import "UnansweredTableViewController.h"
+#import "NewQuestionViewController.h"
 
-@interface UnansweredDetailViewController : UIViewController
+@interface UnansweredDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSMutableArray* arrayQuestions;
 @property (strong, nonatomic) NSMutableArray* arrayAnswers;

@@ -22,7 +22,5 @@
 
 - (IBAction)positiveQuestion:(id)sender;
 - (IBAction)negativeQuestion:(id)sender;
-- (IBAction)answerQuestion:(id)sender;
-
 
 @end

@@ -11,14 +11,14 @@
 @interface Answer : NSObject
 
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, weak) NSString *text;
+@property (nonatomic, strong) NSString *text;
 @property (nonatomic) NSInteger time; // Tempo de envio da resposta
 @property (nonatomic, strong) NSString *subject;
 @property (nonatomic) int upVotes;
 @property (nonatomic) int downVotes;
 @property (nonatomic) NSInteger spamCounter; // Conta quantos avisos de spam a resposta levou, inicialmente não será utilizados, apenas uma preparação de terreno
-@property (strong, nonatomic) UIImageView* drawImageView;
+@property (strong, nonatomic) UIImage* drawImage;
 
-- (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImageView *)image;
+- (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImage *)image;
 
 @end

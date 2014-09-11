@@ -35,11 +35,14 @@
     self.arrayUnansweredQuestion = [repository unansweredQuestionsArray];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
     self.arrayUnansweredQuestion = [repository unansweredQuestionsArray];
+    [self.tableView reloadData];
 }
+
 
 - (void)didReceiveMemoryWarning
 {

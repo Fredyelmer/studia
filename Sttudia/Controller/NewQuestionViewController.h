@@ -9,8 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "QuestionsRepository.h"
 #import "Question.h"
+#import "Answer.h"
 
 
 @interface NewQuestionViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>
+
+@property (strong, nonatomic) Question *currentQuestion;
+@property (strong, nonatomic) Answer *currentAnswer;
+@property (assign, nonatomic) BOOL isAnswer;
 
 @end
