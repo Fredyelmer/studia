@@ -18,11 +18,12 @@
 @property (nonatomic) float time; // Tempo de envio da pergunta
 @property (nonatomic) int upVotes;
 @property (nonatomic) int downVotes;
+@property (nonatomic) int upDownDifference;
 @property (nonatomic) NSInteger spamCounter; // Conta quantos avisos de spam a resposta levou, inicialmente não será utilizados, apenas uma preparação de terreno
 @property (strong, nonatomic) UIImage* drawImage;
 
 // Cria a pergunta com o texto especificado
 - (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImage *)image;
-- (void)sortAnswersBy:(NSInteger)type;
+- (void) setVotesDifference;
 
 @end

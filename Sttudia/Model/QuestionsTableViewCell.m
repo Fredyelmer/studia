@@ -31,15 +31,5 @@
     // Configure the view for the selected state
 }
 
-- (IBAction)positiveQuestion:(id)sender {
-}
-
-- (IBAction)negativeQuestion:(id)sender {
-}
-
-- (IBAction)answerQuestion:(id)sender {
-
-}
-
 
 @end

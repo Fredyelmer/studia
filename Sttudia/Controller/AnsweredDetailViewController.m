@@ -26,18 +26,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    self.currentQuestion = [[repository answeredQuestionsArray]objectAtIndex:0];
-    self.arrayAnswers = [self.currentQuestion answersArray];
+    //QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    //self.currentQuestion = [[repository answeredQuestionsArray]objectAtIndex:0];
+    //self.arrayAnswers = [self.currentQuestion answersArray];
     
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    self.currentQuestion = [[repository answeredQuestionsArray]objectAtIndex:0];
+    //QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    //self.currentQuestion = [[repository answeredQuestionsArray]objectAtIndex:0];
     self.arrayAnswers = [self.currentQuestion answersArray];
-    
+    [self sortAnswers];
     [self.tableView reloadData];
 }
 
@@ -81,6 +81,7 @@
     
     if (cell) {
         if (indexPath.section == 0) {
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             [cell questionTitleLabel].text = [self.currentQuestion title];
             [cell questionSubjectTextView].text = [self.currentQuestion subject];
             [cell questionTextTextView].text = [self.currentQuestion text];
@@ -88,6 +89,8 @@
             [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%d", [self.currentQuestion downVotes]];
             [[cell answerQuestionButton]setHidden:NO];
             [[cell answerQuestionButton] addTarget:self action:@selector(answerQuestion:) forControlEvents:UIControlEventTouchUpInside];
+            [[cell positiveButton] addTarget:self action:@selector(positiveQuestion:) forControlEvents:UIControlEventTouchUpInside];
+            [[cell negativeButton] addTarget:self action:@selector(negativeQuestion:) forControlEvents:UIControlEventTouchUpInside];
             if ([self.currentQuestion drawImage]) {
                 [cell drawImageView].image = [self.currentQuestion drawImage];
                 [[cell drawImageView]setHidden:NO];
@@ -102,11 +105,16 @@
         }
         else if (indexPath.section == 1) {
             Answer *answer = [self.arrayAnswers objectAtIndex:indexPath.row];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             [cell questionTitleLabel].text = [answer title];
             [cell questionSubjectTextView].text = [answer subject];
             [cell questionTextTextView].text = [answer text];
             [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%d", [answer upVotes]];
             [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%d", [answer downVotes]];
+            [cell positiveButton].tag = indexPath.row;
+            [[cell positiveButton] addTarget:self action:@selector(positiveAnswer:) forControlEvents:UIControlEventTouchUpInside];
+            [cell negativeButton].tag = indexPath.row;
+            [[cell negativeButton] addTarget:self action:@selector(negativeAnswer:) forControlEvents:UIControlEventTouchUpInside];
             [[cell answerQuestionButton]setHidden:YES];
             if ([answer drawImage]) {
                 [cell drawImageView].image = [answer drawImage];
@@ -145,6 +153,7 @@
 - (void)changeQuestionDetail : (Question*) question
 {
     self.currentQuestion = question;
+    //[question sortAnswers];
     self.arrayAnswers = [question answersArray];
     [self.tableView reloadData];
 
@@ -164,6 +173,48 @@
     ImageDetailViewController *detailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"imageDetail"];
     [detailVC setImage:imageClicked.image];
     [self presentViewController:detailVC animated:YES completion:nil];
+}
+
+- (void) positiveQuestion: (UIButton *)sender
+{
+    [self.currentQuestion setUpVotes:[self.currentQuestion upVotes]+1];
+    [self.currentQuestion setVotesDifference];
+    [self.tableView reloadData];
+    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
+    NSArray *viewControllers = VCRef.viewControllers;
+    AnsweredTableViewController *VC = [viewControllers objectAtIndex:0];
+    [[VC tableView] reloadData];
+}
+- (void) negativeQuestion: (UIButton *)sender
+{
+    [self.currentQuestion setDownVotes:[self.currentQuestion downVotes]+1];
+    [self.currentQuestion setVotesDifference];
+    [self.tableView reloadData];
+    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
+    NSArray *viewControllers = VCRef.viewControllers;
+    AnsweredTableViewController *VC = [viewControllers objectAtIndex:0];
+    [[VC tableView] reloadData];
+}
+
+- (void) positiveAnswer: (UIButton *)sender
+{
+    Answer *currentAnswer = [self.arrayAnswers objectAtIndex:sender.tag];
+    [currentAnswer setUpVotes:[currentAnswer upVotes]+1];
+    [currentAnswer setVotesDifference];
+    [self.tableView reloadData];
+}
+- (void) negativeAnswer: (UIButton *)sender
+{
+    Answer *currentAnswer = [self.arrayAnswers objectAtIndex:sender.tag];
+    [currentAnswer setDownVotes:[currentAnswer downVotes]+1];
+    [currentAnswer setVotesDifference];
+    [self.tableView reloadData];
+}
+
+- (void)sortAnswers
+{
+    NSSortDescriptor *sDescriptor = [[NSSortDescriptor alloc]initWithKey:@"upDownDifference" ascending:NO];
+    self.arrayAnswers = (NSMutableArray *)[self.arrayAnswers sortedArrayUsingDescriptors:@[sDescriptor]];
 }
 
 @end

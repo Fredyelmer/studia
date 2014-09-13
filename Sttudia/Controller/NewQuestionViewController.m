@@ -178,7 +178,8 @@
     
     Answer *answer = [[Answer alloc]initWithTitle:self.titleTextField.text subject:self.subjectTextField.text text:self.textView.text image:self.imageView.image];
     
-    [[self.currentQuestion answersArray]addObject:answer];
+    
+    [self.currentQuestion.answersArray addObject:answer];
     
     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua resposta foi enviada com sucesso!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [message show];

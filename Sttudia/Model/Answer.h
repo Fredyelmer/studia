@@ -18,7 +18,8 @@
 @property (nonatomic) int downVotes;
 @property (nonatomic) NSInteger spamCounter; // Conta quantos avisos de spam a resposta levou, inicialmente não será utilizados, apenas uma preparação de terreno
 @property (strong, nonatomic) UIImage* drawImage;
+@property (nonatomic) int upDownDifference;
 
 - (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImage *)image;
-
+- (void) setVotesDifference;
 @end

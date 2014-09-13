@@ -28,4 +28,10 @@
     return self;
 }
 
+- (void) setVotesDifference
+{
+    self.upDownDifference = self.upVotes - self.downVotes;
+    
+}
+
 @end

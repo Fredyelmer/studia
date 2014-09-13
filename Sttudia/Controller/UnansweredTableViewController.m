@@ -39,8 +39,17 @@
 {
     [super viewWillAppear:animated];
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    //[repository sortUnansweredQuestionsArray];
     self.arrayUnansweredQuestion = [repository unansweredQuestionsArray];
+    [self sortUnansweredQuestionsArray];
     [self.tableView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection: 0];
+    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    self.detail = [self.splitViewController.viewControllers lastObject];
+    [self.detail changeQuestionDetail:[self.arrayUnansweredQuestion objectAtIndex:indexPath.row]];
+
+    //[self sortUnansweredQuestionsArray];
+    //[self.tableView reloadData];
 }
 
 
@@ -71,6 +80,8 @@
     
     [cell questionTitleLabel].text = [question title];
     [cell questionSubjectLabel].text = [question subject];
+    [cell numPositiveLabel].text = [NSString stringWithFormat:@"%d",[question upVotes]];
+    [cell numNegativeLabel].text = [NSString stringWithFormat:@"%d",[question downVotes]];
     
     return cell;
 }
@@ -91,6 +102,12 @@
 - (IBAction)dismiss:(id)sender {
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) sortUnansweredQuestionsArray
+{
+    NSSortDescriptor *sDescriptor = [[NSSortDescriptor alloc]initWithKey:@"upDownDifference" ascending:NO];
+    self.arrayUnansweredQuestion = (NSMutableArray *)[self.arrayUnansweredQuestion sortedArrayUsingDescriptors:@[sDescriptor]];
 }
 
 @end

@@ -27,21 +27,21 @@
 {
     [super viewDidLoad];
 
-    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    if ([[repository unansweredQuestionsArray]count] > 0) {
-        self.currentQuestion = [[repository unansweredQuestionsArray]objectAtIndex:0];
-        self.arrayAnswers = [self.currentQuestion answersArray];
-    }
-    else {
-        self.currentQuestion = nil;
-    }
+//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+//    if ([[repository unansweredQuestionsArray]count] > 0) {
+//        self.currentQuestion = [[repository unansweredQuestionsArray]objectAtIndex:0];
+//        self.arrayAnswers = [self.currentQuestion answersArray];
+//    }
+//    else {
+//        self.currentQuestion = nil;
+//    }
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
     if ([[repository unansweredQuestionsArray]count] > 0) {
-        self.currentQuestion = [[repository unansweredQuestionsArray]objectAtIndex:0];
+        //self.currentQuestion = [[repository unansweredQuestionsArray]objectAtIndex:0];
         self.arrayAnswers = [self.currentQuestion answersArray];
     }
     else {
@@ -81,21 +81,26 @@
     QuestionsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"detailCell" forIndexPath:indexPath];
     
     if (cell) {
-            [cell questionTitleLabel].text = [self.currentQuestion title];
-            [cell questionSubjectTextView].text = [self.currentQuestion subject];
-            [cell questionTextTextView].text = [self.currentQuestion text];
-            [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%d", [self.currentQuestion upVotes]];
-            [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%d", [self.currentQuestion downVotes]];
-            [[cell answerQuestionButton]setHidden:NO];
-            [[cell answerQuestionButton] addTarget:self action:@selector(answerQuestion:) forControlEvents:UIControlEventTouchUpInside];
-            
-            if ([self.currentQuestion drawImage]) {
-                [cell drawImageView].image = [self.currentQuestion drawImage];
-                [[cell drawImageView]setHidden:NO];
-            }
-            else {
-                [[cell drawImageView]setHidden:YES];
-            }
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell questionTitleLabel].text = [self.currentQuestion title];
+        [cell questionSubjectTextView].text = [self.currentQuestion subject];
+        [cell questionTextTextView].text = [self.currentQuestion text];
+        [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%d", [self.currentQuestion upVotes]];
+        [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%d", [self.currentQuestion downVotes]];
+        [[cell answerQuestionButton]setHidden:NO];
+        [[cell answerQuestionButton] addTarget:self action:@selector(answerQuestion:) forControlEvents:UIControlEventTouchUpInside];
+        [[cell positiveButton] addTarget:self action:@selector(positiveQuestion:) forControlEvents:UIControlEventTouchUpInside];
+        [[cell negativeButton] addTarget:self action:@selector(negativeQuestion:) forControlEvents:UIControlEventTouchUpInside];
+        if ([self.currentQuestion drawImage]) {
+            [cell drawImageView].image = [self.currentQuestion drawImage];
+            [[cell drawImageView]setHidden:NO];
+            [[cell drawImageView] setUserInteractionEnabled:YES];
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomImage:)];
+            [[cell drawImageView]addGestureRecognizer:tapGesture];
+        }
+        else {
+            [[cell drawImageView]setHidden:YES];
+        }
     }
     return cell;
 }
@@ -113,6 +118,7 @@
 - (void)changeQuestionDetail : (Question*) question
 {
     self.currentQuestion = question;
+    //[self.currentQuestion sortAnswers];
     self.arrayAnswers = [question answersArray];
     [self.tableView reloadData];
     
@@ -125,6 +131,37 @@
     [newQuestionVCRef setIsAnswer:YES];
     [self.tabBarController setSelectedIndex:2];
 
+}
+
+- (void) zoomImage: (UITapGestureRecognizer *)sender
+{
+    UIImageView *imageClicked = (UIImageView *)sender.view;
+    ImageDetailViewController *detailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"imageDetail"];
+    [detailVC setImage:imageClicked.image];
+    [self presentViewController:detailVC animated:YES completion:nil];
+}
+
+- (void) positiveQuestion: (UIButton *)sender
+{
+    [self.currentQuestion setUpVotes:[self.currentQuestion upVotes]+1];
+    [self.currentQuestion setVotesDifference];
+    [self.tableView reloadData];
+    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
+    NSArray *viewControllers = VCRef.viewControllers;
+    UnansweredTableViewController *VC = [viewControllers objectAtIndex:0];
+    [[VC tableView] reloadData];
+    
+    
+}
+- (void) negativeQuestion: (UIButton *)sender
+{
+    [self.currentQuestion setDownVotes:[self.currentQuestion downVotes]+1];
+    [self.currentQuestion setVotesDifference];
+    [self.tableView reloadData];
+    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
+    NSArray *viewControllers = VCRef.viewControllers;
+    UnansweredTableViewController *VC = [viewControllers objectAtIndex:0];
+    [[VC tableView] reloadData];
 }
 
 

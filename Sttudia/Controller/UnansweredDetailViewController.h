@@ -12,6 +12,7 @@
 #import "Question.h"
 #import "UnansweredTableViewController.h"
 #import "NewQuestionViewController.h"
+#import "ImageDetailViewController.h"
 
 @interface UnansweredDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 

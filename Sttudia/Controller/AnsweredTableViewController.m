@@ -31,6 +31,7 @@
     self.arrayAnsweredQuestion = [[NSMutableArray alloc]init];
     
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    //[repository sortAnsweredQuestionsArray];
     self.arrayAnsweredQuestion = [repository answeredQuestionsArray];
 }
 
@@ -38,8 +39,18 @@
 {
     [super viewWillAppear:animated];
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    //[repository sortAnsweredQuestionsArray];
     self.arrayAnsweredQuestion = [repository answeredQuestionsArray];
+    //[self.tableView reloadData];
+    
+    
+    [self sortAnsweredQuestionsArray];
     [self.tableView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection: 0];
+    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    self.detail = [self.splitViewController.viewControllers lastObject];
+    [self.detail changeQuestionDetail:[self.arrayAnsweredQuestion objectAtIndex:indexPath.row]];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,6 +80,8 @@
     
     [cell questionTitleLabel].text = [question title];
     [cell questionSubjectLabel].text = [question subject];
+    [cell numPositiveLabel].text = [NSString stringWithFormat:@"%d",[question upVotes]];
+    [cell numNegativeLabel].text = [NSString stringWithFormat:@"%d",[question downVotes]];
     
     return cell;
 }
@@ -90,4 +103,12 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (void) sortAnsweredQuestionsArray
+{
+    NSSortDescriptor *sDescriptor = [[NSSortDescriptor alloc]initWithKey:@"upDownDifference" ascending:NO];
+    self.arrayAnsweredQuestion = (NSMutableArray *)[self.arrayAnsweredQuestion sortedArrayUsingDescriptors:@[sDescriptor]];
+}
+
+
 @end

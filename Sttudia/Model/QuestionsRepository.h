@@ -20,13 +20,7 @@
 +(QuestionsRepository *)sharedRepository;
 
 - (void) addAnsweredQuestion : (Question *)question;
-
 - (void) addUnansweredQuestion : (Question *)question;
-
 - (void) changeQuestionCategory : (Question *)question;
-
-- (NSMutableArray *) getAnsweredQuestionsArray;
-
-- (NSMutableArray *) getUnansweredQuestionsArray;
 
 @end

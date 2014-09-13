@@ -29,19 +29,34 @@ static QuestionsRepository *questionsRepository= nil;
         imageView.image = image;
         Question *question = [[Question alloc]initWithTitle:@"titulo" subject:@"Ola sou o david" text:@"batatinha Quando Nasce Se esparrama pelo chão menininha quando dorme poes amão no coração" image: imageView.image];
         Question *question2 = [[Question alloc]initWithTitle:@"titulo2" subject:@"Ola mundo" text:@"batatinha feliz" image: imageView.image];
+        [question setUpVotes:17];
+        [question2 setUpVotes:10];
         Question *question3 = [[Question alloc]initWithTitle:@"titulo" subject:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
+        [question3 setUpVotes:13];
         
+        Question *question4 = [[Question alloc]initWithTitle:@"titulo2" subject:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
+        [question4 setUpVotes:1];
+        Question *question5 = [[Question alloc]initWithTitle:@"titulo3" subject:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
         
+        [question5 setUpVotes:3];
+
         Answer *answer = [[Answer alloc]initWithTitle: [question title] subject:[question subject] text:[question text] image:imageView.image];
         
         
         [[question answersArray] addObject:answer];
         
+        [question setVotesDifference];
+        [question2 setVotesDifference];
+        [question3 setVotesDifference];
+        [question4 setVotesDifference];
+        [question5 setVotesDifference];
+        
         [self.answeredQuestionsArray addObject:question];
 
         [self.unansweredQuestionsArray addObject:question2];
         [self.unansweredQuestionsArray addObject:question3];
-        
+        [self.unansweredQuestionsArray addObject:question4];
+        [self.unansweredQuestionsArray addObject:question5];
         
     }
     return self;
@@ -74,23 +89,4 @@ static QuestionsRepository *questionsRepository= nil;
 
 }
 
-- (void) sortByVotes : (NSMutableArray *)array : (Question *)question
-{
-    NSSortDescriptor *sortDescriptor;
-    sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"upVotes"
-                                                 ascending:NO];
-    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    NSArray *sortedArray;
-    sortedArray = [self.answeredQuestionsArray sortedArrayUsingDescriptors:sortDescriptors];
-}
-
-- (NSMutableArray *)getAnsweredQuestionsArray
-{
-    return self.answeredQuestionsArray;
-}
-
-- (NSMutableArray *)getUnansweredQuestionsArray
-{
-    return self.unansweredQuestionsArray;
-}
 @end

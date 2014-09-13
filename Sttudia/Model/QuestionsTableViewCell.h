@@ -20,7 +20,6 @@
 @property (strong, nonatomic) IBOutlet UIButton *answerQuestionButton;
 @property (strong, nonatomic) IBOutlet UIImageView *drawImageView;
 
-- (IBAction)positiveQuestion:(id)sender;
-- (IBAction)negativeQuestion:(id)sender;
+
 
 @end
