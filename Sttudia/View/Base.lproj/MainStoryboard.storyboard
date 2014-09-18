@@ -940,27 +940,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="308" sectionHeaderHeight="22" sectionFooterHeight="22" id="3jO-VJ-Orv">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="365" sectionHeaderHeight="22" sectionFooterHeight="22" id="3jO-VJ-Orv">
                                 <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailCell" rowHeight="408" id="X1p-eO-pgm" customClass="QuestionsTableViewCell">
-                                        <rect key="frame" x="0.0" y="22" width="703" height="408"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailCell" rowHeight="365" id="X1p-eO-pgm" customClass="QuestionsTableViewCell">
+                                        <rect key="frame" x="0.0" y="22" width="703" height="365"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X1p-eO-pgm" id="cI2-f1-SRl">
-                                            <rect key="frame" x="0.0" y="0.0" width="703" height="407"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="703" height="364"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" selectable="NO" id="rM8-ZL-VYE">
-                                                    <rect key="frame" x="20" y="82" width="663" height="32"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                </textView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="LOh-ZW-wMr">
-                                                    <rect key="frame" x="20" y="198" width="362" height="204"/>
+                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="LOh-ZW-wMr" customClass="PFImageView">
+                                                    <rect key="frame" x="20" y="152" width="362" height="204"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zXP-mQ-oUL">
@@ -971,7 +964,7 @@
                                                     </state>
                                                 </button>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" selectable="NO" id="zdK-4D-4J2">
-                                                    <rect key="frame" x="20" y="122" width="663" height="68"/>
+                                                    <rect key="frame" x="20" y="76" width="663" height="68"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -985,7 +978,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ZvW-86-DfV">
-                                                    <rect key="frame" x="518" y="186" width="75" height="30"/>
+                                                    <rect key="frame" x="608" y="152" width="75" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Responder">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1005,7 +998,7 @@
                                                     </state>
                                                 </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Titulo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qkc-fi-5dl">
-                                                    <rect key="frame" x="20" y="44" width="329" height="30"/>
+                                                    <rect key="frame" x="20" y="44" width="663" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="highlightedColor"/>
@@ -1026,7 +1019,6 @@
                                             <outlet property="negativeNumberLabel" destination="YVv-tu-gIx" id="aZI-ol-24S"/>
                                             <outlet property="positiveButton" destination="BS9-7f-90U" id="Nyy-g5-MZz"/>
                                             <outlet property="positiveNumberLabel" destination="HeM-DV-cIK" id="ho2-Vc-QJK"/>
-                                            <outlet property="questionSubjectTextView" destination="rM8-ZL-VYE" id="sVp-II-Dgz"/>
                                             <outlet property="questionTextTextView" destination="zdK-4D-4J2" id="v8O-jd-29f"/>
                                             <outlet property="questionTitleLabel" destination="qkc-fi-5dl" id="wc9-cN-nzT"/>
                                             <outlet property="userNameLabel" destination="F0i-CC-fdu" id="hGv-5R-Gu6"/>
@@ -1049,7 +1041,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0kR-4Y-HpU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6301" y="-1844"/>
+            <point key="canvasLocation" x="6301" y="-1840"/>
         </scene>
         <!--Image Detail View Controller-->
         <scene sceneID="DME-Kl-YdC">
@@ -1091,7 +1083,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eKK-bu-7Uh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9266" y="-1972"/>
+            <point key="canvasLocation" x="4898" y="2532"/>
         </scene>
         <!--Answered Table View Controller - Respondidas-->
         <scene sceneID="P7n-VE-N8Z">
@@ -1103,7 +1095,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="140" id="Qp8-rE-2qD" customClass="QuestionListTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="2" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="140" id="Qp8-rE-2qD" customClass="QuestionListTableViewCell">
                                 <rect key="frame" x="0.0" y="86" width="320" height="140"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qp8-rE-2qD" id="Tfd-ij-6AY">
@@ -1124,15 +1116,15 @@
                                             <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="M3B-BJ-PEW">
-                                            <rect key="frame" x="20" y="15" width="280" height="30"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="M3B-BJ-PEW">
+                                            <rect key="frame" x="20" y="15" width="280" height="29"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UIr-42-g8F">
-                                            <rect key="frame" x="20" y="49" width="280" height="56"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UIr-42-g8F">
+                                            <rect key="frame" x="20" y="29" width="280" height="84"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="highlightedColor"/>
@@ -1142,8 +1134,8 @@
                                 <connections>
                                     <outlet property="numNegativeLabel" destination="Wx7-96-m4L" id="vRQ-5I-IZr"/>
                                     <outlet property="numPositiveLabel" destination="2QR-hl-KdU" id="30m-sP-x1f"/>
-                                    <outlet property="questionSubjectLabel" destination="UIr-42-g8F" id="41X-ly-wGv"/>
                                     <outlet property="questionTitleLabel" destination="M3B-BJ-PEW" id="waG-Hb-NmV"/>
+                                    <outlet property="userNameLabel" destination="UIr-42-g8F" id="1Ny-G0-w2l"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1355,6 +1347,7 @@
                         <outlet property="sendToTeacherButton" destination="bLn-uD-1Pi" id="XBQ-nJ-RWd"/>
                         <outlet property="subjectTextField" destination="aQM-Zh-3PW" id="5q0-zf-ch1"/>
                         <outlet property="textView" destination="nZx-bL-AeU" id="b7p-0B-BeM"/>
+                        <outlet property="titleLabel" destination="Eqa-aW-15n" id="zBU-qf-kHI"/>
                         <outlet property="titleTextField" destination="iDs-wi-krw" id="id3-ET-k35"/>
                     </connections>
                 </viewController>
@@ -1370,30 +1363,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="408" sectionHeaderHeight="22" sectionFooterHeight="22" id="Khh-uI-QhA">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="365" sectionHeaderHeight="22" sectionFooterHeight="22" id="Khh-uI-QhA">
                                 <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailCell" rowHeight="408" id="hcb-4W-g8R" customClass="UnanswerQuestionTableViewCell">
-                                        <rect key="frame" x="0.0" y="22" width="703" height="408"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailCell" rowHeight="365" id="hcb-4W-g8R" customClass="UnanswerQuestionTableViewCell">
+                                        <rect key="frame" x="0.0" y="22" width="703" height="365"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hcb-4W-g8R" id="vxA-28-hfl">
-                                            <rect key="frame" x="0.0" y="0.0" width="703" height="407"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="703" height="364"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" selectable="NO" id="5ht-MV-H3I">
-                                                    <rect key="frame" x="20" y="122" width="663" height="68"/>
+                                                    <rect key="frame" x="20" y="76" width="663" height="68"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.70196080207824707" green="0.70196080207824707" blue="0.70196080207824707" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                </textView>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" selectable="NO" id="cgB-aa-OB1">
-                                                    <rect key="frame" x="20" y="82" width="663" height="32"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nome" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7MJ-MT-Xst">
@@ -1431,20 +1417,20 @@
                                                     </state>
                                                 </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Titulo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qKi-IT-Dfc">
-                                                    <rect key="frame" x="20" y="44" width="329" height="30"/>
+                                                    <rect key="frame" x="20" y="44" width="663" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="PQ9-rl-m2Z">
-                                                    <rect key="frame" x="518" y="186" width="75" height="30"/>
+                                                    <rect key="frame" x="608" y="152" width="75" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Responder">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="JAl-a0-jbv">
-                                                    <rect key="frame" x="20" y="198" width="362" height="204"/>
+                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="JAl-a0-jbv" customClass="PFImageView">
+                                                    <rect key="frame" x="20" y="152" width="362" height="204"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                             </subviews>
@@ -1456,7 +1442,6 @@
                                             <outlet property="negativeNumberLabel" destination="OXB-W1-CHd" id="1YP-cb-nCZ"/>
                                             <outlet property="positiveButton" destination="hlP-RM-QD6" id="G40-gH-OOR"/>
                                             <outlet property="positiveNumberLabel" destination="xhJ-kW-De0" id="3Zq-9j-9t0"/>
-                                            <outlet property="questionSubjectTextView" destination="cgB-aa-OB1" id="eXo-XX-5Wc"/>
                                             <outlet property="questionTextTextView" destination="5ht-MV-H3I" id="eaw-m5-xD4"/>
                                             <outlet property="questionTitleLabel" destination="qKi-IT-Dfc" id="11t-Y6-bce"/>
                                             <outlet property="userNameLabel" destination="7MJ-MT-Xst" id="KfY-u1-2im"/>
@@ -1513,14 +1498,14 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tob-OI-Oov">
-                                            <rect key="frame" x="20" y="15" width="280" height="30"/>
+                                            <rect key="frame" x="20" y="15" width="280" height="29"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="euG-gK-HP9">
-                                            <rect key="frame" x="20" y="49" width="280" height="56"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="euG-gK-HP9">
+                                            <rect key="frame" x="20" y="29" width="280" height="84"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="highlightedColor"/>
@@ -1530,8 +1515,8 @@
                                 <connections>
                                     <outlet property="numNegativeLabel" destination="HFz-JS-H2m" id="OgP-kR-cf5"/>
                                     <outlet property="numPositiveLabel" destination="AmG-dE-TB3" id="Hpp-Qx-1vc"/>
-                                    <outlet property="questionSubjectLabel" destination="euG-gK-HP9" id="eig-Ga-CG6"/>
                                     <outlet property="questionTitleLabel" destination="Tob-OI-Oov" id="mUK-hL-Tu1"/>
+                                    <outlet property="userNameLabel" destination="euG-gK-HP9" id="oru-RJ-wrM"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

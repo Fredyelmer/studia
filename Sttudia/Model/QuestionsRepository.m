@@ -22,25 +22,35 @@ static QuestionsRepository *questionsRepository= nil;
     self = [super init];
     
     if (self) {
+        
+        //requisição do repositório ja criado. No caso devemos criar um novo ou usar um existente dependendo da utilização
+        PFQuery *repositoryQuery = [PFQuery queryWithClassName:@"QuestionsRepository"];
+        //[repositoryQuery whereKey:@"objectId" equalTo:@"cfOU0YHATN"];
+        self.objectID = @"cfOU0YHATN";
+        
+        self.qRepository = [repositoryQuery getObjectWithId:self.objectID];
+        
         self.answeredQuestionsArray = [[NSMutableArray alloc]init];
         self.unansweredQuestionsArray = [[NSMutableArray alloc]init];
         UIImage *image = [UIImage imageNamed:@"placeholder.png"];
         UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0, 186.0, 362.0, 204.0)];
         imageView.image = image;
-        Question *question = [[Question alloc]initWithTitle:@"titulo" subject:@"Ola sou o david" text:@"batatinha Quando Nasce Se esparrama pelo chão menininha quando dorme poes amão no coração" image: imageView.image];
-        Question *question2 = [[Question alloc]initWithTitle:@"titulo2" subject:@"Ola mundo" text:@"batatinha feliz" image: imageView.image];
+        
+        
+        Question *question = [[Question alloc]initWithAuthor:@"David" title:@"titulo" text:@"ola sou o david" image:imageView.image];
+        Question *question2 = [[Question alloc]initWithAuthor:@"titulo2" title:@"Ola mundo" text:@"batatinha feliz" image: imageView.image];
         [question setUpVotes:17];
         [question2 setUpVotes:10];
-        Question *question3 = [[Question alloc]initWithTitle:@"titulo" subject:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
+        Question *question3 = [[Question alloc]initWithAuthor:@"titulo" title:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
         [question3 setUpVotes:13];
         
-        Question *question4 = [[Question alloc]initWithTitle:@"titulo2" subject:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
+        Question *question4 = [[Question alloc]initWithAuthor:@"titulo2" title:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
         [question4 setUpVotes:1];
-        Question *question5 = [[Question alloc]initWithTitle:@"titulo3" subject:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
+        Question *question5 = [[Question alloc]initWithAuthor:@"titulo3" title:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
         
         [question5 setUpVotes:3];
 
-        Answer *answer = [[Answer alloc]initWithTitle: [question title] subject:[question subject] text:[question text] image:imageView.image];
+        Answer *answer = [[Answer alloc]initWithAuthor: [question author] text:[question text] image:imageView.image];
         
         
         [[question answersArray] addObject:answer];

@@ -11,8 +11,13 @@
 #import "Question.h"
 #import "UnanswerQuestionListTableViewCell.h"
 #import "UnansweredDetailViewController.h"
+#import <Parse/Parse.h>
 
-@interface UnansweredTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface UnansweredTableViewController : PFQueryTableViewController//UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSMutableArray *arrayUnansweredQuestion;
+
+@property (strong, nonatomic) PFQuery *currentUQuestions;
+
+@property (strong, nonatomic) PFObject *currentUQuestionsList;
 @end

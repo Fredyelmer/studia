@@ -12,7 +12,7 @@
 @interface Question : NSObject
 
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *subject;
+@property (nonatomic, strong) NSString *author;
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSMutableArray *answersArray;
 @property (nonatomic) float time; // Tempo de envio da pergunta
@@ -23,7 +23,7 @@
 @property (strong, nonatomic) UIImage* drawImage;
 
 // Cria a pergunta com o texto especificado
-- (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImage *)image;
+- (id)initWithAuthor:(NSString *)author title: (NSString*)title text: (NSString*)text image: (UIImage*)image;
 - (void) setVotesDifference;
 
 @end

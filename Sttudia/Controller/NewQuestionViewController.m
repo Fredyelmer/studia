@@ -21,6 +21,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *sendToEveryoneButton;
 @property (strong, nonatomic) IBOutlet UIButton *sendToTeacherButton;
 @property (strong, nonatomic) IBOutlet UIButton *sendAnswerButton;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
@@ -70,11 +71,15 @@
         [self.sendAnswerButton setHidden:YES];
         [self.sendToEveryoneButton setHidden:NO];
         [self.sendToTeacherButton setHidden:NO];
+        [self.titleTextField setHidden:NO];
+        [self.titleLabel setHidden:NO];
     }
     else {
         [self.sendToEveryoneButton setHidden:YES];
         [self.sendToTeacherButton setHidden:YES];
         [self.sendAnswerButton setHidden:NO];
+        [self.titleTextField setHidden:YES];
+        [self.titleLabel setHidden:YES];
     }
     
     self.titleTextField.text = nil;
@@ -162,13 +167,53 @@
 }
 
 - (IBAction)sendQuestionToEveryone:(id)sender {
-    Question * question = [[Question alloc]initWithTitle:self.titleTextField.text subject:self.subjectTextField.text text:self.textView.text image:self.imageView.image];
-    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    [repository addUnansweredQuestion:question];
+//    Question * question = [[Question alloc]initWithAuthor:@"Autor generico" title:self.titleTextField.text text:self.textView.text image:self.imageView.image];
+//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+//    [repository addUnansweredQuestion:question];
+//    
+//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua pergunta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [message show];
+//    [self.tabBarController setSelectedIndex:0];
     
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua pergunta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [message show];
-    [self.tabBarController setSelectedIndex:0];
+    PFObject *question = [PFObject objectWithClassName:@"Question"];
+    [question setObject:@"Autor Generico" forKey:@"name"];
+    [question setObject:self.titleTextField.text forKey:@"title"];
+    [question setObject:self.textView.text forKey:@"text"];
+    [question setObject:[NSNumber numberWithInt:0] forKey:@"upVotes"];
+    [question setObject:[NSNumber numberWithInt:0] forKey:@"downVotes"];
+    [question setObject:[NSNumber numberWithInt:0] forKey:@"upDownDifference"];
+    
+    NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 0.8);
+    NSString *filename = [NSString stringWithFormat:@"%@.png", self.titleTextField.text];
+    PFFile *imageFile = [PFFile fileWithName:filename data:imageData];
+    [question setObject:imageFile forKey:@"imageFile"];
+    
+    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    PFObject *uQuestion = [[repository unansweredQuestionsQuery] getFirstObject];
+    [question setObject: uQuestion forKey:@"uQuestions"];
+    
+    [question saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        
+        if (!error) {
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua pergunta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [message show];
+                [self.tabBarController setSelectedIndex:0];
+            
+            
+            //Notify table view to reload the recipes from Parse cloud
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+            
+        
+            
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+        }
+        
+    }];
+
+    
 }
 - (IBAction)sendQuestionToTeacher:(id)sender {
     
@@ -176,7 +221,7 @@
 
 - (IBAction)sendAnswer:(id)sender {
     
-    Answer *answer = [[Answer alloc]initWithTitle:self.titleTextField.text subject:self.subjectTextField.text text:self.textView.text image:self.imageView.image];
+    Answer *answer = [[Answer alloc]initWithAuthor:@"AutorGenerico" text:self.titleTextField.text image:self.imageView.image];
     
     
     [self.currentQuestion.answersArray addObject:answer];
