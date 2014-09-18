@@ -90,6 +90,11 @@
 		71305E6419B0F57400C94CF6 /* MCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 71305E6319B0F57400C94CF6 /* MCManager.m */; };
 		714CEDD9198ACFA50092C98D /* ColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714CEDD8198ACFA50092C98D /* ColorPickerViewController.m */; };
 		714CEDE0198C1D6B0092C98D /* Brush.m in Sources */ = {isa = PBXBuildFile; fileRef = 714CEDDF198C1D6B0092C98D /* Brush.m */; };
+		71529F8A19C8AA5900D87FF9 /* MessageBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 71529F8919C8AA5900D87FF9 /* MessageBoard.m */; };
+		71529F8D19C8AB9D00D87FF9 /* MessagePoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 71529F8C19C8AB9D00D87FF9 /* MessagePoint.m */; };
+		71529F9019CB56B900D87FF9 /* MessageBrush.m in Sources */ = {isa = PBXBuildFile; fileRef = 71529F8F19CB56B900D87FF9 /* MessageBrush.m */; };
+		71529F9319CB755800D87FF9 /* MessageImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 71529F9219CB755800D87FF9 /* MessageImage.m */; };
+		71529F9619CB758500D87FF9 /* MessageTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 71529F9519CB758500D87FF9 /* MessageTextField.m */; };
 		7156213D19B4F0B500C17233 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7156213C19B4F0B500C17233 /* MessageViewController.m */; };
 		7156214019B7A08000C17233 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7156213E19B7A07F00C17233 /* Model.xcdatamodeld */; };
 		7156214319BA26FA00C17233 /* AnsweredTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7156214219BA26FA00C17233 /* AnsweredTableViewController.m */; };
@@ -246,6 +251,16 @@
 		714CEDD8198ACFA50092C98D /* ColorPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPickerViewController.m; sourceTree = "<group>"; };
 		714CEDDE198C1D6B0092C98D /* Brush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Brush.h; sourceTree = "<group>"; };
 		714CEDDF198C1D6B0092C98D /* Brush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Brush.m; sourceTree = "<group>"; };
+		71529F8819C8AA5900D87FF9 /* MessageBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoard.h; sourceTree = "<group>"; };
+		71529F8919C8AA5900D87FF9 /* MessageBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBoard.m; sourceTree = "<group>"; };
+		71529F8B19C8AB9D00D87FF9 /* MessagePoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePoint.h; sourceTree = "<group>"; };
+		71529F8C19C8AB9D00D87FF9 /* MessagePoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagePoint.m; sourceTree = "<group>"; };
+		71529F8E19CB56B900D87FF9 /* MessageBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBrush.h; sourceTree = "<group>"; };
+		71529F8F19CB56B900D87FF9 /* MessageBrush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBrush.m; sourceTree = "<group>"; };
+		71529F9119CB755800D87FF9 /* MessageImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageImage.h; sourceTree = "<group>"; };
+		71529F9219CB755800D87FF9 /* MessageImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageImage.m; sourceTree = "<group>"; };
+		71529F9419CB758500D87FF9 /* MessageTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTextField.h; sourceTree = "<group>"; };
+		71529F9519CB758500D87FF9 /* MessageTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTextField.m; sourceTree = "<group>"; };
 		7156213B19B4F0B500C17233 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		7156213C19B4F0B500C17233 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		7156213F19B7A08000C17233 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -396,6 +411,7 @@
 		48C52E7B1965E52D00AD013F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				71529F8719C8AA2D00D87FF9 /* message */,
 				71305E5F19AFBBEC00C94CF6 /* ConnectionsViewController.h */,
 				71305E6019AFBBEC00C94CF6 /* ConnectionsViewController.m */,
 				0DAB2FBE19915794002E3EBB /* AddImageViewController.h */,
@@ -525,6 +541,23 @@
 				71E1B79A1990127C007C8425 /* ThicknessViewController.m */,
 			);
 			name = Tool;
+			sourceTree = "<group>";
+		};
+		71529F8719C8AA2D00D87FF9 /* message */ = {
+			isa = PBXGroup;
+			children = (
+				71529F8819C8AA5900D87FF9 /* MessageBoard.h */,
+				71529F8919C8AA5900D87FF9 /* MessageBoard.m */,
+				71529F8B19C8AB9D00D87FF9 /* MessagePoint.h */,
+				71529F8C19C8AB9D00D87FF9 /* MessagePoint.m */,
+				71529F8E19CB56B900D87FF9 /* MessageBrush.h */,
+				71529F8F19CB56B900D87FF9 /* MessageBrush.m */,
+				71529F9119CB755800D87FF9 /* MessageImage.h */,
+				71529F9219CB755800D87FF9 /* MessageImage.m */,
+				71529F9419CB758500D87FF9 /* MessageTextField.h */,
+				71529F9519CB758500D87FF9 /* MessageTextField.m */,
+			);
+			name = message;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -658,6 +691,7 @@
 				710DE25319801FA00095E34E /* SourceColorView.m in Sources */,
 				0DA9D71419BDEF39006BE0C1 /* UnanswerQuestionListTableViewCell.m in Sources */,
 				48C52EA01965EC6B00AD013F /* Forum.m in Sources */,
+				71529F9619CB758500D87FF9 /* MessageTextField.m in Sources */,
 				0D081747196ED95A0007399B /* VideoParameter.m in Sources */,
 				0DA7189519AFB77400B8B08E /* QuestionsRepository.m in Sources */,
 				0D9ECF5A1961867300882007 /* Sttudia.xcdatamodeld in Sources */,
@@ -671,6 +705,7 @@
 				48C52E9D1965E67000AD013F /* Answer.m in Sources */,
 				7156214319BA26FA00C17233 /* AnsweredTableViewController.m in Sources */,
 				0DAB2FC019915794002E3EBB /* AddImageViewController.m in Sources */,
+				71529F8A19C8AA5900D87FF9 /* MessageBoard.m in Sources */,
 				0D9ECF571961867300882007 /* AppDelegate.m in Sources */,
 				48C52E8F1965E52D00AD013F /* SpecificViewController.m in Sources */,
 				0DA8EFA41976F772006A5589 /* Image.m in Sources */,
@@ -679,6 +714,7 @@
 				71305E6419B0F57400C94CF6 /* MCManager.m in Sources */,
 				710DE25219801FA00095E34E /* ColorBarPicker.m in Sources */,
 				0DA7031919B4B7F500139082 /* UnansweredDetailViewController.m in Sources */,
+				71529F9319CB755800D87FF9 /* MessageImage.m in Sources */,
 				0DA7B591198ABACE00D268E1 /* Photo.m in Sources */,
 				0DDF9CAF19B8FF390025AB0F /* TabViewController.m in Sources */,
 				0DA2FFA4197EA2E000C4ADA3 /* Page.m in Sources */,
@@ -687,6 +723,7 @@
 				7156214019B7A08000C17233 /* Model.xcdatamodeld in Sources */,
 				0DA267C8199515AD00AE00FF /* FontTypeViewController.m in Sources */,
 				710DE24D19801FA00095E34E /* ColorSquareView.m in Sources */,
+				71529F8D19C8AB9D00D87FF9 /* MessagePoint.m in Sources */,
 				0DDDC47019C1FEEC008B0D93 /* ImageDetailViewController.m in Sources */,
 				7156213D19B4F0B500C17233 /* MessageViewController.m in Sources */,
 				714CEDD9198ACFA50092C98D /* ColorPickerViewController.m in Sources */,
@@ -699,6 +736,7 @@
 				0DA9D71719BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.m in Sources */,
 				0DA7189219AFAAF200B8B08E /* NewQuestionViewController.m in Sources */,
 				0DA5A29F19A7831F0031C6F9 /* TextRef.m in Sources */,
+				71529F9019CB56B900D87FF9 /* MessageBrush.m in Sources */,
 				710DE25119801FA00095E34E /* ColorIndicatorView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

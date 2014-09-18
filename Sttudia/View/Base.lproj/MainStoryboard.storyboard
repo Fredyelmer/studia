@@ -849,6 +849,18 @@
                                     <action selector="redo:" destination="cOT-VF-1aa" eventType="touchUpInside" id="Xfv-Bm-HSF"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="l3f-5B-Eum">
+                                <rect key="frame" x="846" y="14" width="59" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Connect">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Tux-Cx-bAL" kind="popover" popoverAnchorView="l3f-5B-Eum" id="sWo-WE-nK7">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -896,7 +908,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OGK-po-Ra9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2880" y="-2554"/>
+            <point key="canvasLocation" x="2399" y="790"/>
         </scene>
         <!--Tab View Controller-->
         <scene sceneID="lQW-p6-vtV">
@@ -1944,7 +1956,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Al2-2i-w8J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3670" y="703"/>
+            <point key="canvasLocation" x="3982" y="775"/>
         </scene>
         <!--Color Font View Controller-->
         <scene sceneID="waq-Ko-jmh">
@@ -2084,7 +2096,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZAh-Fg-eme" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3586" y="1565"/>
+            <point key="canvasLocation" x="4314" y="1965"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wrT-1X-NBr">
@@ -2129,5 +2141,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="ssF-Ly-s5b"/>
         <segue reference="t4G-d6-iGz"/>
+        <segue reference="sWo-WE-nK7"/>
     </inferredMetricsTieBreakers>
 </document>
