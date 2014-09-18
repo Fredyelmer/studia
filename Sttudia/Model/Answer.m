@@ -11,13 +11,12 @@
 @implementation Answer
 
 // Inicia uma pergunta com texto proposto contadores de rank zerados
-- (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImage *)image
+- (id)initWithAuthor:(NSString *)author text: (NSString*)text image: (UIImage *)image
 {
     self = [super init];
     if(self){
         
-        self.title = title;
-        self.subject = subject;
+        self.author = author;
         self.text = text;
         self.upVotes = 0;
         self.downVotes = 0;

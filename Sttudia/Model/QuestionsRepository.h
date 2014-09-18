@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Parse/Parse.h>
 #import "Question.h"
 
 @interface QuestionsRepository : NSObject
@@ -14,6 +15,12 @@
 @property (strong ,nonatomic) NSMutableArray *answeredQuestionsArray;
 
 @property (strong ,nonatomic) NSMutableArray *unansweredQuestionsArray;
+
+@property (strong, nonatomic) NSString *objectID;
+
+@property (strong, nonatomic) PFObject *qRepository;
+@property (strong, nonatomic) PFQuery *answeredQuestionsQuery;
+@property (strong, nonatomic) PFQuery *unansweredQuestionsQuery;
 
 +(id)allocWithZone:(struct _NSZone *)zone;
 

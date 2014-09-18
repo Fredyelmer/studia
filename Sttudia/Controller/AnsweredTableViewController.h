@@ -11,10 +11,11 @@
 #import "Question.h"
 #import "QuestionListTableViewCell.h"
 #import "AnsweredDetailViewController.h"
+#import <Parse/Parse.h>
 
-@interface AnsweredTableViewController : UITableViewController
+@interface AnsweredTableViewController : PFQueryTableViewController
 
 @property (strong, nonatomic) NSMutableArray *arrayAnsweredQuestion;
 
-
+@property (strong, nonatomic) PFObject *currentAQuestionsList;
 @end

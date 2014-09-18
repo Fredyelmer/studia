@@ -10,12 +10,12 @@
 
 @implementation Question
 
-- (id)initWithTitle:(NSString *)title subject: (NSString*)subject text: (NSString*)text image: (UIImage*)image
+- (id)initWithAuthor:(NSString *)author title: (NSString*)title text: (NSString*)text image: (UIImage*)image
 {
     self = [super init];
     if(self){
         self.title = title;
-        self.subject = subject;
+        self.author = author;
         self.text = text;
         self.answersArray = [[NSMutableArray alloc] init];
         self.upVotes = 0;

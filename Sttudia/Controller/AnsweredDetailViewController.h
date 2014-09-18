@@ -15,14 +15,17 @@
 #import "ImageDetailViewController.h"
 #import "AnsweredTableViewController.h"
 #import "Answer.h"
+#import <Parse/Parse.h>
 
 @interface AnsweredDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSMutableArray* arrayQuestions;
-@property (strong, nonatomic) NSMutableArray* arrayAnswers;
+@property (strong, nonatomic) NSArray* arrayAnswers;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) Question *currentQuestion;
 @property (strong, nonatomic) Answer *currentAnswer;
+@property (strong, nonatomic) PFObject *selectedQuestion;
+@property (strong, nonatomic) PFObject *answeredQuestionList;
 
-- (void)changeQuestionDetail : (Question*) question;
+- (void)changeQuestionDetail : (PFObject*) selectedQuestion;
 @end

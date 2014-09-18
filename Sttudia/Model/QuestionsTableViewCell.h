@@ -7,18 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
 
 @interface QuestionsTableViewCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *questionTitleLabel;
-@property (strong, nonatomic) IBOutlet UITextView *questionSubjectTextView;
 @property (strong, nonatomic) IBOutlet UITextView *questionTextTextView;
 @property (strong, nonatomic) IBOutlet UIButton *positiveButton;
 @property (strong, nonatomic) IBOutlet UIButton *negativeButton;
 @property (strong, nonatomic) IBOutlet UILabel *positiveNumberLabel;
 @property (strong, nonatomic) IBOutlet UILabel *negativeNumberLabel;
 @property (strong, nonatomic) IBOutlet UIButton *answerQuestionButton;
-@property (strong, nonatomic) IBOutlet UIImageView *drawImageView;
+@property (strong, nonatomic) IBOutlet PFImageView *drawImageView;
 
 
 

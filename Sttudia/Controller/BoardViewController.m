@@ -69,13 +69,17 @@
     
     [super viewDidLoad];
     
-    [self.scrollView setContentSize:self.mainImageView.bounds.size];
-    self.scrollView.delegate = self;
-    self.scrollView.minimumZoomScale = 0.5;
-    self.scrollView.maximumZoomScale = 8.0;
-
-    [self.scrollView setCanCancelContentTouches:YES];
+//    [self.scrollView setContentSize:self.mainImageView.bounds.size];
+//    self.scrollView.delegate = self;
+//    self.scrollView.minimumZoomScale = 0.5;
+//    self.scrollView.maximumZoomScale = 8.0;
+//
+//    [self.scrollView setCanCancelContentTouches:YES];
     
+    
+    //será substituido pelo método que cria o novo repositório
+    QuestionsRepository *qRepository = [QuestionsRepository sharedRepository];
+
     self.scribbleView.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES];

@@ -16,40 +16,66 @@
 
 @implementation UnansweredTableViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+//- (id)initWithStyle:(UITableViewStyle)style
+//{
+//    self = [super initWithStyle:style];
+//    if (self) {
+//        // Custom initialization
+//    }
+//    return self;
+//}
+
+- (id)initWithCoder:(NSCoder *)aCoder
 {
-    self = [super initWithStyle:style];
+    self = [super initWithCoder:aCoder];
     if (self) {
-        // Custom initialization
+        // Custom the table
+        
+        // The className to query on
+        self.parseClassName = @"Question";
+        
+        // The key of the PFObject to display in the label of the default cell style
+        self.textKey = @"name";
+        
+        // Whether the built-in pull-to-refresh is enabled
+        self.pullToRefreshEnabled = YES;
+        
+        // Whether the built-in pagination is enabled
+        self.paginationEnabled = NO;
+        
+        // The number of objects to show per page
+        //self.objectsPerPage = 10;
+        
+        QuestionsRepository *questionRepository = [QuestionsRepository sharedRepository];
+        PFQuery *uQuestionsQuery = [PFQuery queryWithClassName:@"UnansweredQuestions"];
+        PFObject *currentRepository = [questionRepository qRepository];
+        [uQuestionsQuery whereKey:@"repository" equalTo: currentRepository];
+        self.currentUQuestionsList = [uQuestionsQuery getFirstObject];
+        [questionRepository setUnansweredQuestionsQuery:uQuestionsQuery];
+
     }
     return self;
 }
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     self.arrayUnansweredQuestion = [[NSMutableArray alloc]init];
-    
-    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    self.arrayUnansweredQuestion = [repository unansweredQuestionsArray];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    //[repository sortUnansweredQuestionsArray];
-    self.arrayUnansweredQuestion = [repository unansweredQuestionsArray];
-    [self sortUnansweredQuestionsArray];
+//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+//    self.arrayUnansweredQuestion = [repository unansweredQuestionsArray];
+    //[self sortUnansweredQuestionsArray];
     [self.tableView reloadData];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection: 0];
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    self.detail = [self.splitViewController.viewControllers lastObject];
-    [self.detail changeQuestionDetail:[self.arrayUnansweredQuestion objectAtIndex:indexPath.row]];
-
-    //[self sortUnansweredQuestionsArray];
-    //[self.tableView reloadData];
+    //self.detail = [self.splitViewController.viewControllers lastObject];
+    //[self.detail changeQuestionDetail:[self.arrayUnansweredQuestion objectAtIndex:indexPath.row]];
 }
 
 
@@ -66,37 +92,27 @@
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [self.arrayUnansweredQuestion count];
-}
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object
 {
     UnanswerQuestionListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
-    Question *question = [self.arrayUnansweredQuestion objectAtIndex:indexPath.row];
-    
-    [cell questionTitleLabel].text = [question title];
-    [cell questionSubjectLabel].text = [question subject];
-    [cell numPositiveLabel].text = [NSString stringWithFormat:@"%d",[question upVotes]];
-    [cell numNegativeLabel].text = [NSString stringWithFormat:@"%d",[question downVotes]];
+    [cell questionTitleLabel].text = [object objectForKey:@"title"];
+    [cell userNameLabel].text = [object objectForKey:@"text"];
+    [cell numPositiveLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"upVotes"]];
+    [cell numNegativeLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"downVotes"]];
     
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 140.0;
-}
-
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Question *question = [self.arrayUnansweredQuestion objectAtIndex:indexPath.row];
+    //Question *question = [self.arrayUnansweredQuestion objectAtIndex:indexPath.row];
     
+    PFObject *questionSelected = [self.objects objectAtIndex:indexPath.row];
     self.detail = [self.splitViewController.viewControllers lastObject];
-    [self.detail changeQuestionDetail:question];
+
+    [self.detail changeQuestionDetail:questionSelected];
     //[self.delegate changeQuestionDetail : question];
 }
 - (IBAction)dismiss:(id)sender {
@@ -110,4 +126,16 @@
     self.arrayUnansweredQuestion = (NSMutableArray *)[self.arrayUnansweredQuestion sortedArrayUsingDescriptors:@[sDescriptor]];
 }
 
+- (PFQuery *)queryForTable
+{
+    
+//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+//    self.arrayUnansweredQuestion = [repository unansweredQuestionsArray];
+    
+    PFQuery *questionsQuery = [PFQuery queryWithClassName:self.parseClassName];
+    [questionsQuery whereKey:@"uQuestions" equalTo:self.currentUQuestionsList];
+    
+    [questionsQuery orderByDescending:@"upDownDifference"];
+    return questionsQuery;
+}
 @end
