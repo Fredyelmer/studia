@@ -78,7 +78,7 @@
     
     
     //será substituido pelo método que cria o novo repositório
-    QuestionsRepository *qRepository = [QuestionsRepository sharedRepository];
+    //QuestionsRepository *qRepository = [QuestionsRepository sharedRepository];
 
     self.scribbleView.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     
