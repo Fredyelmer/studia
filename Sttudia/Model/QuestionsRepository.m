@@ -32,41 +32,41 @@ static QuestionsRepository *questionsRepository= nil;
         
         self.answeredQuestionsArray = [[NSMutableArray alloc]init];
         self.unansweredQuestionsArray = [[NSMutableArray alloc]init];
-        UIImage *image = [UIImage imageNamed:@"placeholder.png"];
-        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0, 186.0, 362.0, 204.0)];
-        imageView.image = image;
-        
-        
-        Question *question = [[Question alloc]initWithAuthor:@"David" title:@"titulo" text:@"ola sou o david" image:imageView.image];
-        Question *question2 = [[Question alloc]initWithAuthor:@"titulo2" title:@"Ola mundo" text:@"batatinha feliz" image: imageView.image];
-        [question setUpVotes:17];
-        [question2 setUpVotes:10];
-        Question *question3 = [[Question alloc]initWithAuthor:@"titulo" title:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
-        [question3 setUpVotes:13];
-        
-        Question *question4 = [[Question alloc]initWithAuthor:@"titulo2" title:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
-        [question4 setUpVotes:1];
-        Question *question5 = [[Question alloc]initWithAuthor:@"titulo3" title:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
-        
-        [question5 setUpVotes:3];
-
-        Answer *answer = [[Answer alloc]initWithAuthor: [question author] text:[question text] image:imageView.image];
-        
-        
-        [[question answersArray] addObject:answer];
-        
-        [question setVotesDifference];
-        [question2 setVotesDifference];
-        [question3 setVotesDifference];
-        [question4 setVotesDifference];
-        [question5 setVotesDifference];
-        
-        [self.answeredQuestionsArray addObject:question];
-
-        [self.unansweredQuestionsArray addObject:question2];
-        [self.unansweredQuestionsArray addObject:question3];
-        [self.unansweredQuestionsArray addObject:question4];
-        [self.unansweredQuestionsArray addObject:question5];
+//        UIImage *image = [UIImage imageNamed:@"placeholder.png"];
+//        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0, 186.0, 362.0, 204.0)];
+//        imageView.image = image;
+//        
+//        
+//        Question *question = [[Question alloc]initWithAuthor:@"David" title:@"titulo" text:@"ola sou o david" image:imageView.image];
+//        Question *question2 = [[Question alloc]initWithAuthor:@"titulo2" title:@"Ola mundo" text:@"batatinha feliz" image: imageView.image];
+//        [question setUpVotes:17];
+//        [question2 setUpVotes:10];
+//        Question *question3 = [[Question alloc]initWithAuthor:@"titulo" title:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
+//        [question3 setUpVotes:13];
+//        
+//        Question *question4 = [[Question alloc]initWithAuthor:@"titulo2" title:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
+//        [question4 setUpVotes:1];
+//        Question *question5 = [[Question alloc]initWithAuthor:@"titulo3" title:@"Ola sou o david" text:@"menininha quando dorme poe mamao" image: imageView.image];
+//        
+//        [question5 setUpVotes:3];
+//
+//        Answer *answer = [[Answer alloc]initWithAuthor: [question author] text:[question text] image:imageView.image];
+//        
+//        
+//        [[question answersArray] addObject:answer];
+//        
+//        [question setVotesDifference];
+//        [question2 setVotesDifference];
+//        [question3 setVotesDifference];
+//        [question4 setVotesDifference];
+//        [question5 setVotesDifference];
+//        
+//        [self.answeredQuestionsArray addObject:question];
+//
+//        [self.unansweredQuestionsArray addObject:question2];
+//        [self.unansweredQuestionsArray addObject:question3];
+//        [self.unansweredQuestionsArray addObject:question4];
+//        [self.unansweredQuestionsArray addObject:question5];
         
     }
     return self;

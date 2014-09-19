@@ -75,6 +75,8 @@
     self.arrayAnsweredQuestion = [repository answeredQuestionsArray];
     //[self.tableView reloadData];
     
+    [self loadObjects];
+
     
 //    [self sortAnsweredQuestionsArray];
 //    [self.tableView reloadData];
@@ -82,7 +84,7 @@
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 //    self.detail = [self.splitViewController.viewControllers lastObject];
 //    [self.detail changeQuestionDetail:[self.arrayAnsweredQuestion objectAtIndex:indexPath.row]];
-
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
