@@ -10,8 +10,8 @@
 
 @interface Brush : NSObject
 
-@property (nonatomic, weak) UIColor* color;
+@property (nonatomic, strong) UIColor* color;
 @property (nonatomic) CGFloat thickness;
-@property (nonatomic) CGFloat opacity;
+@property (nonatomic) BOOL isEraser;
 
 @end

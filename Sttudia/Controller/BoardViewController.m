@@ -46,9 +46,17 @@
     
 }
 
+//variaveis usadas para oespelhamento das telas
+@property (nonatomic, strong) AppDelegate *appDelegate;
+@property (nonatomic, strong) Brush *receivedBrush;
+
+
 @property (assign, nonatomic) BOOL isRecording;
 @property float scaleX;
 @property float scaleY;
+
+-(void)sendActionMessage:(MessageBoard*) message;
+-(void)didReceiveDataWithNotification:(NSNotification *)notification;
 
 @end
 
@@ -85,7 +93,7 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     //inicializa o brush
-    [self setBrushColor:[UIColor blackColor]];
+    //[self setBrushColor:[UIColor blackColor]];
     self.currentColorText = [UIColor blackColor];
     brush = 5.0;
     eraser = 20.0;
@@ -94,6 +102,12 @@
     backGroundRed = 255.0/255.0;
     backGroundGreen = 255.0/255.0;
     backGroundBlue = 255.0/255.0;
+    
+    self.receivedBrush = [[Brush alloc] init];
+    self.currentBrush = [[Brush alloc] init];
+    self.currentBrush.thickness = 5.0;
+    self.currentBrush.color = [UIColor blackColor];
+    self.currentBrush.isEraser = NO;
     
     
     [self.view setBackgroundColor:[UIColor colorWithRed:backGroundRed green:backGroundGreen blue:backGroundBlue alpha:1]];
@@ -186,11 +200,137 @@
     
     undoMade = NO;
     numEraserButtonTap = 0;
+    
     textFont = 20;
     nameOfFont = @"Helvetica";
     allowImageEdition = NO;
     lastScale = 1.0;
     
+    
+    _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveDataWithNotification:)
+                                                 name:@"MCDidReceiveDataNotification"
+                                               object:nil];
+}
+
+-(void)didReceiveDataWithNotification:(NSNotification *)notification{
+    MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
+    NSString *peerDisplayName = peerID.displayName;
+    
+    NSData *receivedData = [[notification userInfo] objectForKey:@"data"];
+    
+    MessageBoard *message = [NSKeyedUnarchiver unarchiveObjectWithData:receivedData];
+    
+    NSLog(@"device %@", peerDisplayName);
+    
+    if ([message isKindOfClass:[MessageBrush class]]) {
+        MessageBrush *messageBrush = (MessageBrush *)message;
+        
+        CGPoint point = [messageBrush.point CGPointValue];
+        self.receivedBrush.color = messageBrush.color;
+        self.receivedBrush.thickness = messageBrush.thickness;
+        self.receivedBrush.isEraser = messageBrush.isEraser;
+        
+        NSLog(@"received point %@", NSStringFromCGPoint(point));
+        NSLog(@"nome %@", messageBrush.actionName);
+        
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        
+        [operation addExecutionBlock:^{
+
+        if ([messageBrush.actionName isEqualToString:@"toucheBegan"])
+        {
+            lastPoint = point;
+        }
+        
+        if ([messageBrush.actionName isEqualToString:@"toucheMoved"])
+        {
+                            [self drawScribble:point with:self.receivedBrush];
+            
+        }
+        
+        if ([messageBrush.actionName isEqualToString:@"toucheEnded"])
+        {
+            lastPoint = point;
+        }
+            
+        }];
+        
+        [opque addOperation:operation];
+    }
+    
+    if ([message isKindOfClass:[MessageTextField class]]) {
+        MessageTextField *messageText = (MessageTextField* )message;
+        
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        
+        [operation addExecutionBlock:^{
+            [self.scribbleView addSubview:messageText.textField];
+            self.currentTextField = messageText.textField;
+        }];
+        
+        [opque addOperation:operation];
+
+        
+    }
+   // NSString *receivedText = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
+    
+    
+    //[_tvChat performSelectorOnMainThread:@selector(setText:) withObject:[_tvChat.text stringByAppendingString:[NSString stringWithFormat:@"%@ wrote:\n%@\n\n", peerDisplayName, receivedText]] waitUntilDone:NO];
+}
+
+-(void)sendActionMessage:(MessageBrush*) message
+{
+    NSLog(@"nome: %@", message.actionName);
+    
+    
+    message.color = self.currentBrush.color;
+    message.thickness = self.currentBrush.thickness;
+    message.isEraser = self.currentBrush.isEraser;
+    
+    //NSLog(@"sended point %@", NSStringFromCGPoint(message.point));
+    
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    
+    //NSData *dataToSend = [NSData dataWithBytes:&actualPoint length:sizeof(CGPoint)];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+    
+    //NSLog(@"send point %@", NSStringFromCGPoint(actualPoint1));
+    
+//    [_tvChat setText:[_tvChat.text stringByAppendingString:[NSString stringWithFormat:@"I wrote:\n%@\n\n", _txtMessage.text]]];
+//    [_txtMessage setText:@""];
+//    [_txtMessage resignFirstResponder];
+}
+
+-(void)sendTextMessage:(MessageTextField*) message
+{
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
 }
 
 -(void) handlePinch:(UIPinchGestureRecognizer*)sender
@@ -244,6 +384,7 @@
 - (void) setBrushColor:(UIColor *) color
 {
     [color getRed:&red green:&green blue:&blue alpha:&opacity];
+    self.currentBrush.color = color;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -385,7 +526,8 @@
 - (IBAction)erasePressed:(CorUIButton*)sender{
 
     if (numEraserButtonTap == 0) {
-        isEraser = YES;
+        self.currentBrush.isEraser = isEraser = YES;
+        self.currentBrush.thickness = eraser;
         [self selectedButton:sender];
         numEraserButtonTap += 1;
         [self updateThicknessButton];
@@ -711,6 +853,13 @@ bool moveScribble = NO;
         lastPoint = [touch locationInView:self.mainImageView];
 
 
+        MessageBrush *message = [[MessageBrush alloc] init];
+        message.actionName = @"toucheBegan";
+        message.point = [NSValue valueWithCGPoint:lastPoint];
+        
+        [self sendActionMessage:message];
+        
+        
         if (!isScreenTouched)
         {
             self.lastTouch = [event timestamp];
@@ -746,6 +895,32 @@ bool moveScribble = NO;
     [self.currentTextField.layer setBorderWidth:0.0];
 }
 
+-(void) drawScribble:(CGPoint) currentPoint with: (Brush *) drawBrush
+{
+    UIGraphicsBeginImageContext(self.mainImageView.frame.size);
+    [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
+    
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    //CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
+    CGContextSetStrokeColorWithColor(UIGraphicsGetCurrentContext(), [drawBrush.color CGColor]);
+    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), drawBrush.thickness );
+    
+    if (drawBrush.isEraser) {
+        CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeClear);
+    }
+    else{
+        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+    }
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
+    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    [self.tempImageView setAlpha:opacity];
+    UIGraphicsEndImageContext();
+    
+    lastPoint = currentPoint;
+}
+
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
@@ -757,27 +932,13 @@ bool moveScribble = NO;
             
             CGPoint currentPoint = [touch locationInView:self.mainImageView];
             
-            UIGraphicsBeginImageContext(self.mainImageView.frame.size);
-            [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
+            MessageBrush *message = [[MessageBrush alloc] init];
+            message.actionName = @"toucheMoved";
+            message.point = [NSValue valueWithCGPoint:currentPoint];
             
-            CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
-            CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
-            CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-            CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
+            [self sendActionMessage:message];
             
-            if (isEraser) {
-                CGContextSetLineWidth(UIGraphicsGetCurrentContext(), eraser );
-                CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeClear);
-                
-            }
-            else{
-                CGContextSetLineWidth(UIGraphicsGetCurrentContext(), brush );
-                CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
-            }
-            CGContextStrokePath(UIGraphicsGetCurrentContext());
-            self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-            [self.tempImageView setAlpha:opacity];
-            UIGraphicsEndImageContext();
+            [self drawScribble:currentPoint with:self.currentBrush];
             
             NSTimeInterval interval = [event timestamp] - self.lastTouch;
             VideoParameter *parameter;
@@ -789,9 +950,6 @@ bool moveScribble = NO;
             }
             
             [self.arrayPoints addObject:parameter];
-            
-            lastPoint = currentPoint;
-            
         }
 
     }
@@ -892,6 +1050,12 @@ bool moveScribble = NO;
         totalInterval = [event timestamp]-self.lastTouch;
     
         lastPoint = currentPoint;
+        
+        MessageBrush *message = [[MessageBrush alloc] init];
+        message.actionName = @"toucheEnded";
+        message.point = [NSValue valueWithCGPoint:lastPoint];
+        
+        [self sendActionMessage:message];
         
         UIImage *newImage = self.tempImageView.image;
         
@@ -1346,7 +1510,8 @@ bool moveScribble = NO;
 #pragma mark - ColorMethods
 - (IBAction)ColorPressed:(CorUIButton *)sender
 {
-    isEraser = NO;
+    self.currentBrush.isEraser = isEraser = NO;
+    self.currentBrush.thickness = brush;
     if (sender.state)
     {
         //ativa acao de cor customizado
@@ -1504,6 +1669,10 @@ bool moveScribble = NO;
     textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     textField.textColor = [UIColor blackColor];
     textField.delegate = self;
+    
+    MessageTextField *message = [[MessageTextField alloc] init];
+    message.textField = textField;
+    [self sendTextMessage:message];
     
     [self.scribbleView addSubview:textField];
     self.currentTextField = textField;
@@ -2120,11 +2289,11 @@ bool moveScribble = NO;
 -(void)newThicknessBrush:(CGFloat)thickness
 {
     if (isEraser) {
-        eraser = thickness;
+        self.currentBrush.thickness = eraser = thickness;
     }
     else
     {
-        brush = thickness;
+        self.currentBrush.thickness = brush = thickness;
     }
     
     [self updateThicknessButton];

@@ -28,6 +28,14 @@
 #import "TextRef.h"
 #import "BackGroundImage.h"
 #import "TabViewController.h"
+
+#import "AppDelegate.h"
+#import "MessagePoint.h"
+#import "MessageBrush.h"
+#import "MessageBoard.h"
+#import "MessageTextField.h"
+#import "Brush.h"
+
 #import <Parse/Parse.h>
 #import "QuestionsRepository.h"
 
@@ -51,6 +59,8 @@
     int currentPageIndex;
     BOOL undoMade;
 }
+
+@property (nonatomic, strong) Brush *currentBrush;
 
 @property (nonatomic,strong) UIPopoverController *popoverColorPicker;
 @property (nonatomic,strong) UIPopoverController *popoverThickness;
