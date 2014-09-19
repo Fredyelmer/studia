@@ -76,6 +76,7 @@
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     //self.detail = [self.splitViewController.viewControllers lastObject];
     //[self.detail changeQuestionDetail:[self.arrayUnansweredQuestion objectAtIndex:indexPath.row]];
+    [self loadObjects];
 }
 
 

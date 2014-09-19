@@ -62,7 +62,7 @@
 
     //self.currentQuestion = [[repository answeredQuestionsArray]objectAtIndex:0];
 //    self.arrayAnswers = [self.currentQuestion answersArray];
-//    [self sortAnswers];
+    [self sortAnswers];
     [self.tableView reloadData];
 }
 
@@ -159,6 +159,7 @@
                 [thumbnailImageView loadInBackground];
                 UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomImage:)];
                 [[cell drawImageView]addGestureRecognizer:tapGesture];
+                [[cell drawImageView]setHidden:NO];
             }
             else {
                 [[cell drawImageView]setHidden:YES];
@@ -205,7 +206,7 @@
 - (void)answerQuestion: (UIButton *)sender
 {
     NewQuestionViewController *newQuestionVCRef = (NewQuestionViewController *)[[self.tabBarController viewControllers] objectAtIndex:2];
-    [newQuestionVCRef setCurrentQuestion:self.currentQuestion];
+    [newQuestionVCRef setCurrentQuestion:self.selectedQuestion];
     [newQuestionVCRef setIsAnswer:YES];
     [self.tabBarController setSelectedIndex:2];
     

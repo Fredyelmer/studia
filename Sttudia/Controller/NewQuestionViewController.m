@@ -183,10 +183,12 @@
     [question setObject:[NSNumber numberWithInt:0] forKey:@"downVotes"];
     [question setObject:[NSNumber numberWithInt:0] forKey:@"upDownDifference"];
     
-    NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 0.8);
-    NSString *filename = [NSString stringWithFormat:@"%@.png", self.titleTextField.text];
-    PFFile *imageFile = [PFFile fileWithName:filename data:imageData];
-    [question setObject:imageFile forKey:@"imageFile"];
+    if (self.imageView.image) {
+        NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 0.8);
+        NSString *filename = [NSString stringWithFormat:@"%@.png", self.titleTextField.text];
+        PFFile *imageFile = [PFFile fileWithName:filename data:imageData];
+        [question setObject:imageFile forKey:@"imageFile"];
+    }
     
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
     PFObject *uQuestion = [[repository unansweredQuestionsQuery] getFirstObject];
@@ -221,22 +223,75 @@
 
 - (IBAction)sendAnswer:(id)sender {
     
-    Answer *answer = [[Answer alloc]initWithAuthor:@"AutorGenerico" text:self.titleTextField.text image:self.imageView.image];
+//    Answer *answer = [[Answer alloc]initWithAuthor:@"AutorGenerico" text:self.titleTextField.text image:self.imageView.image];
+//    
+//    
+//    [self.currentQuestion.answersArray addObject:answer];
+//    
+//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua resposta foi enviada com sucesso!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [message show];
+//    
+//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+//    
+//    if ([[repository unansweredQuestionsArray] containsObject:self.currentQuestion]) {
+//        [[repository unansweredQuestionsArray]removeObject:self.currentQuestion];
+//        [[repository answeredQuestionsArray]addObject:self.currentQuestion];
+//    }
+//    self.isAnswer = NO;
+//    [self.tabBarController setSelectedIndex:1];
     
     
-    [self.currentQuestion.answersArray addObject:answer];
     
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua resposta foi enviada com sucesso!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [message show];
+    PFObject *answer = [PFObject objectWithClassName:@"Answer"];
+    [answer setObject:@"Autor Generico" forKey:@"name"];
+    [answer setObject:self.textView.text forKey:@"text"];
+    [answer setObject:[NSNumber numberWithInt:0] forKey:@"upVotes"];
+    [answer setObject:[NSNumber numberWithInt:0] forKey:@"downVotes"];
+    [answer setObject:[NSNumber numberWithInt:0] forKey:@"upDownDifference"];
     
-    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    
-    if ([[repository unansweredQuestionsArray] containsObject:self.currentQuestion]) {
-        [[repository unansweredQuestionsArray]removeObject:self.currentQuestion];
-        [[repository answeredQuestionsArray]addObject:self.currentQuestion];
+    if (self.imageView.image) {
+        NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 0.8);
+        
+        NSString *filename = [NSString stringWithFormat:@"photo.png" ];
+        //[self.tabBarController setSelectedIndex:1];
+        PFFile *imageFile = [PFFile fileWithName:filename data:imageData];
+        [answer setObject:imageFile forKey:@"ImageFile"];
+
     }
-    self.isAnswer = NO;
-    [self.tabBarController setSelectedIndex:1];
+
+//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+//    PFObject *aQuestion = [[repository answeredQuestionsQuery] getFirstObject];
+    [answer setObject: self.currentQuestion forKey:@"question"];
+    
+    [answer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        
+        if (!error) {
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua resposta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [message show];
+            self.isAnswer = NO;
+            [self.tabBarController setSelectedIndex:1];
+            
+            if ([self.currentQuestion objectForKey:@"uQuestions"]) {
+                QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+                PFObject *aQuestions = [[repository answeredQuestionsQuery]getFirstObject];
+                [self.currentQuestion setObject:aQuestions forKey:@"aQuestions"];
+                [self.currentQuestion removeObjectForKey:@"uQuestions"];
+                [self.currentQuestion save];
+            }
+            
+            //Notify table view to reload the recipes from Parse cloud
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+            
+            
+            
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+        }
+        
+    }];
+    
 }
 
 @end
