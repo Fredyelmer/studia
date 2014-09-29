@@ -77,16 +77,33 @@
     
     [super viewDidLoad];
     
-//    [self.scrollView setContentSize:self.mainImageView.bounds.size];
-//    self.scrollView.delegate = self;
-//    self.scrollView.minimumZoomScale = 0.5;
-//    self.scrollView.maximumZoomScale = 8.0;
-//
-//    [self.scrollView setCanCancelContentTouches:YES];
-    
+    [self.view setBackgroundColor:[UIColor blackColor]];
     
     //será substituido pelo método que cria o novo repositório
-    //QuestionsRepository *qRepository = [QuestionsRepository sharedRepository];
+    QuestionsRepository *qRepository = [QuestionsRepository sharedRepository];
+    self.questionsButton.enabled = NO;
+    
+    qRepository.delegate = self;
+    
+//    UIActivityIndicatorView *loadingScreenIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+//    
+//    loadingScreenIndicator.frame = CGRectMake(500, 350, 300.0, 300.0);
+//    
+//    
+//    
+//    //loadingScreenIndicator.center = CGPointMake(500, 350);
+//    [self.view addSubview: loadingScreenIndicator];
+//    
+//    [loadingScreenIndicator startAnimating];
+    
+    UIActivityIndicatorView *activityIndicator= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(500, 300, 50, 50)];
+    activityIndicator.layer.cornerRadius = 05;
+    activityIndicator.opaque = NO;
+    activityIndicator.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6f];
+    activityIndicator.center = self.view.center;
+    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    [activityIndicator setColor:[UIColor colorWithRed:0.6 green:0.8 blue:1.0 alpha:1.0]];
+    [self.view addSubview: activityIndicator];
 
     self.scribbleView.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     
@@ -212,6 +229,12 @@
                                              selector:@selector(didReceiveDataWithNotification:)
                                                  name:@"MCDidReceiveDataNotification"
                                                object:nil];
+}
+
+- (void) didFinishedLoadRepository
+{
+    self.questionsButton.enabled = YES;
+
 }
 
 -(void)didReceiveDataWithNotification:(NSNotification *)notification{

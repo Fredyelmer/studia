@@ -16,14 +16,6 @@
 
 @implementation AnsweredTableViewController
 
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:style];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
 
 - (id)initWithCoder:(NSCoder *)aCoder
 {
@@ -47,12 +39,7 @@
         //self.objectsPerPage = 10;
         
         QuestionsRepository *questionRepository = [QuestionsRepository sharedRepository];
-        PFQuery *aQuestionsQuery = [PFQuery queryWithClassName:@"AnsweredQuestions"];
-        PFObject *currentRepository = [questionRepository qRepository];
-        [aQuestionsQuery whereKey:@"repository" equalTo: currentRepository];
-        self.currentAQuestionsList = [aQuestionsQuery getFirstObject];
-        [questionRepository setAnsweredQuestionsQuery:aQuestionsQuery];
-        
+        self.currentAQuestionsList = [questionRepository answeredQuestionsList];
     }
     return self;
 }
@@ -62,28 +49,15 @@
     [super viewDidLoad];
     self.arrayAnsweredQuestion = [[NSMutableArray alloc]init];
     
-    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    //[repository sortAnsweredQuestionsArray];
-    self.arrayAnsweredQuestion = [repository answeredQuestionsArray];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    //[repository sortAnsweredQuestionsArray];
-    self.arrayAnsweredQuestion = [repository answeredQuestionsArray];
-    //[self.tableView reloadData];
-    
     [self loadObjects];
 
-    
-//    [self sortAnsweredQuestionsArray];
-//    [self.tableView reloadData];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection: 0];
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-//    self.detail = [self.splitViewController.viewControllers lastObject];
-//    [self.detail changeQuestionDetail:[self.arrayAnsweredQuestion objectAtIndex:indexPath.row]];
     [self.tableView reloadData];
 }
 
@@ -100,27 +74,30 @@
     return 1;
 }
 
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-//{
-//    return [self.arrayAnsweredQuestion count];
-//}
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object
 {
     QuestionListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
-    //Question *question = [self.arrayAnsweredQuestion objectAtIndex:indexPath.row];
+    if (!self.selectedQuestion && indexPath.row == 0) {
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+        self.detail = [self.splitViewController.viewControllers lastObject];
+        [self.detail changeQuestionDetail:self.selectedQuestion];
+        
+    }
+    
+    if ([[object objectForKey:@"title"]isEqual:[self.selectedQuestion objectForKey:@"title"]]) {
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+        self.detail = [self.splitViewController.viewControllers lastObject];
+        [self.detail changeQuestionDetail:self.selectedQuestion];
+    }
     
     [cell questionTitleLabel].text = [object objectForKey:@"title"];
     [cell userNameLabel].text = [object objectForKey:@"text"];
     [cell numPositiveLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"upVotes"]];
     [cell numNegativeLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"downVotes"]];
-    
-//    [cell questionTitleLabel].text = [question title];
-//    [cell userNameLabel].text = [question author];
-//    [cell numPositiveLabel].text = [NSString stringWithFormat:@"%d",[question upVotes]];
-//    [cell numNegativeLabel].text = [NSString stringWithFormat:@"%d",[question downVotes]];
     
     return cell;
 }
@@ -132,16 +109,10 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    Question *question = [self.arrayAnsweredQuestion objectAtIndex:indexPath.row];
-//    
-//    self.detail = [self.splitViewController.viewControllers lastObject];
-//    [self.detail changeQuestionDetail:question];
-    //[self.delegate changeQuestionDetail : question];
-    
-    PFObject *questionSelected = [self.objects objectAtIndex:indexPath.row];
+    self.selectedQuestion = [self.objects objectAtIndex:indexPath.row];
     self.detail = [self.splitViewController.viewControllers lastObject];
     
-    [self.detail changeQuestionDetail:questionSelected];
+    [self.detail changeQuestionDetail:self.selectedQuestion];
 
 }
 - (IBAction)dismiss:(id)sender {
@@ -156,9 +127,6 @@
 }
 - (PFQuery *)queryForTable
 {
-    //QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    //self.arrayUnansweredQuestion = [repository unansweredQuestionsArray];
-    
     PFQuery *questionsQuery = [PFQuery queryWithClassName:self.parseClassName];
     [questionsQuery whereKey:@"aQuestions" equalTo:self.currentAQuestionsList];
     

@@ -26,9 +26,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    //self.currentQuestion = [[repository answeredQuestionsArray]objectAtIndex:0];
-    //self.arrayAnswers = [self.currentQuestion answersArray];
     
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -39,22 +36,42 @@
     PFQuery *answeredQuestionsQuery = [repository answeredQuestionsQuery];
     if ([answeredQuestionsQuery countObjects] > 0) {
         PFQuery *questionsQuery = [PFQuery queryWithClassName:@"Question"];
-        PFObject *questionList = [answeredQuestionsQuery getFirstObject];
+        
+        //PFObject *questionList = [answeredQuestionsQuery getFirstObject];
+        PFObject *questionList = [repository answeredQuestionsList];
         [questionsQuery whereKey:@"aQuestions" equalTo:questionList];
         self.selectedQuestion = [questionsQuery getFirstObject];
         
-        PFQuery *answersQuery = [PFQuery queryWithClassName:@"Answer"];
-        [answersQuery whereKey:@"question" equalTo:self.selectedQuestion];
-//        [answersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//        [questionsQuery getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
 //            if (!error) {
-//                self.arrayAnswers = objects;
+//                self.selectedQuestion = object;
+//                PFQuery *answersQuery = [PFQuery queryWithClassName:@"Answer"];
+//                [answersQuery whereKey:@"question" equalTo:self.selectedQuestion];
+//                
+//                //self.arrayAnswers = [answersQuery findObjects];
+//                
+//                [answersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+//                    
+//                    if (!error) {
+//                        self.arrayAnswers = objects;
+//                    }
+//                }];
+//
 //            }
-//            else {
-//                NSLog(@"Error: %@ %@", error, [error userInfo]);
-//            }
+//        
 //        }];
         
-        self.arrayAnswers = [answersQuery findObjects];
+        PFQuery *answersQuery = [PFQuery queryWithClassName:@"Answer"];
+        [answersQuery whereKey:@"question" equalTo:self.selectedQuestion];
+        
+        //self.arrayAnswers = [answersQuery findObjects];
+        
+        [answersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+        
+            if (!error) {
+                self.arrayAnswers = objects;
+            }
+        }];
     }
     else {
         self.selectedQuestion = nil;
@@ -124,6 +141,7 @@
                 [thumbnailImageView loadInBackground];
                 UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomImage:)];
                 [[cell drawImageView]addGestureRecognizer:tapGesture];
+                [[cell drawImageView]setHidden:NO];
 
             }
             else {
@@ -141,11 +159,6 @@
             [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%@", [answer objectForKey:@"upVotes"]];
             [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%@", [answer objectForKey:@"downVotes"]];
             
-//            [cell questionTitleLabel].text = nil;
-//            [cell userNameLabel].text = [answer author];
-//            [cell questionTextTextView].text = [answer text];
-//            [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%d", [answer upVotes]];
-//            [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%d", [answer downVotes]];
             [cell positiveButton].tag = indexPath.row;
             [[cell positiveButton] addTarget:self action:@selector(positiveAnswer:) forControlEvents:UIControlEventTouchUpInside];
             [cell negativeButton].tag = indexPath.row;
@@ -198,8 +211,16 @@
     
     PFQuery *answersQuery = [PFQuery queryWithClassName:@"Answer"];
     [answersQuery whereKey:@"question" equalTo:self.selectedQuestion];
-    self.arrayAnswers = [answersQuery findObjects];
-    [self.tableView reloadData];
+    //self.arrayAnswers = [answersQuery findObjects];
+    
+    [answersQuery findObjectsInBackgroundWithBlock:^(NSArray *answers, NSError *error){
+        if (!error) {
+            self.arrayAnswers = answers;
+            [self sortAnswers];
+            [self.tableView reloadData];
+        }
+    }];
+    //[self.tableView reloadData];
 
 }
 
@@ -270,7 +291,8 @@
 - (void)sortAnswers
 {
     NSSortDescriptor *sDescriptor = [[NSSortDescriptor alloc]initWithKey:@"upDownDifference" ascending:NO];
-    self.arrayAnswers = (NSMutableArray *)[self.arrayAnswers sortedArrayUsingDescriptors:@[sDescriptor]];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sDescriptor];
+    self.arrayAnswers = (NSMutableArray *)[self.arrayAnswers sortedArrayUsingDescriptors:sortDescriptors];
 }
 
 

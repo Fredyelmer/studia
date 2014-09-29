@@ -157,7 +157,6 @@
 
 - (BOOL) textViewShouldEndEditing:(UITextView *)textView
 {
-    //[self resignFirstResponder];
     return YES;
 }
 
@@ -183,6 +182,13 @@
     [question setObject:[NSNumber numberWithInt:0] forKey:@"downVotes"];
     [question setObject:[NSNumber numberWithInt:0] forKey:@"upDownDifference"];
     
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.center = self.view.center;
+    activityIndicator.hidesWhenStopped = YES;
+    [self.view addSubview:activityIndicator];
+    [activityIndicator startAnimating];
+
+    
     if (self.imageView.image) {
         NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 0.8);
         NSString *filename = [NSString stringWithFormat:@"%@.png", self.titleTextField.text];
@@ -191,56 +197,48 @@
     }
     
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    PFObject *uQuestion = [[repository unansweredQuestionsQuery] getFirstObject];
-    [question setObject: uQuestion forKey:@"uQuestions"];
+    PFQuery *uQuestionQuery = [repository unansweredQuestionsQuery];
+    //PFObject *uQuestion = [[repository unansweredQuestionsQuery] getFirstObject];
     
-    [question saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        
-        if (!error) {
-            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua pergunta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [message show];
-                [self.tabBarController setSelectedIndex:0];
+    [uQuestionQuery getFirstObjectInBackgroundWithBlock:^(PFObject *uQuestion, NSError *error){
+        if (!error)
+        {
+            [question setObject: uQuestion forKey:@"uQuestions"];
             
+            [question saveInBackgroundWithBlock:^(BOOL succeeded, NSError *errorSave) {
+                
+                if (!errorSave) {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua pergunta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [message show];
+                    [self.tabBarController setSelectedIndex:0];
+                    
+                    
+                    //Notify table view to reload the recipes from Parse cloud
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                    
+                    [activityIndicator stopAnimating];
+                    
+                } else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [activityIndicator stopAnimating];
+                }
+                
+            }];
             
-            //Notify table view to reload the recipes from Parse cloud
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
-            
-        
-            
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-            
-        }
-        
-    }];
+//            [question save];
+//            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua pergunta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//            [message show];
+//            [self.tabBarController setSelectedIndex:0];
 
-    
+        }
+    }];
 }
 - (IBAction)sendQuestionToTeacher:(id)sender {
     
 }
 
 - (IBAction)sendAnswer:(id)sender {
-    
-//    Answer *answer = [[Answer alloc]initWithAuthor:@"AutorGenerico" text:self.titleTextField.text image:self.imageView.image];
-//    
-//    
-//    [self.currentQuestion.answersArray addObject:answer];
-//    
-//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua resposta foi enviada com sucesso!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//    [message show];
-//    
-//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-//    
-//    if ([[repository unansweredQuestionsArray] containsObject:self.currentQuestion]) {
-//        [[repository unansweredQuestionsArray]removeObject:self.currentQuestion];
-//        [[repository answeredQuestionsArray]addObject:self.currentQuestion];
-//    }
-//    self.isAnswer = NO;
-//    [self.tabBarController setSelectedIndex:1];
-    
-    
     
     PFObject *answer = [PFObject objectWithClassName:@"Answer"];
     [answer setObject:@"Autor Generico" forKey:@"name"];
@@ -259,9 +257,13 @@
 
     }
 
-//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-//    PFObject *aQuestion = [[repository answeredQuestionsQuery] getFirstObject];
     [answer setObject: self.currentQuestion forKey:@"question"];
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.center = self.view.center;
+    activityIndicator.hidesWhenStopped = YES;
+    [self.view addSubview:activityIndicator];
+    [activityIndicator startAnimating];
     
     [answer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         
@@ -276,22 +278,20 @@
                 PFObject *aQuestions = [[repository answeredQuestionsQuery]getFirstObject];
                 [self.currentQuestion setObject:aQuestions forKey:@"aQuestions"];
                 [self.currentQuestion removeObjectForKey:@"uQuestions"];
-                [self.currentQuestion save];
+                [self.currentQuestion saveInBackground];
             }
             
             //Notify table view to reload the recipes from Parse cloud
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
             
-            
+            [activityIndicator stopAnimating];
             
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
-            
+            [activityIndicator stopAnimating];
         }
-        
     }];
-    
 }
 
 @end

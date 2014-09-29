@@ -28,19 +28,17 @@
 #import "TextRef.h"
 #import "BackGroundImage.h"
 #import "TabViewController.h"
-
 #import "AppDelegate.h"
 #import "MessagePoint.h"
 #import "MessageBrush.h"
 #import "MessageBoard.h"
 #import "MessageTextField.h"
 #import "Brush.h"
-
 #import <Parse/Parse.h>
 #import "QuestionsRepository.h"
 
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate, QuestionRepositoryDelegate>
 {
     CGPoint lastPoint;
     CGFloat red;

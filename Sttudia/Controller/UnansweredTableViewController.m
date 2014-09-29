@@ -16,15 +16,6 @@
 
 @implementation UnansweredTableViewController
 
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:style];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
-
 - (id)initWithCoder:(NSCoder *)aCoder
 {
     self = [super initWithCoder:aCoder];
@@ -47,12 +38,7 @@
         //self.objectsPerPage = 10;
         
         QuestionsRepository *questionRepository = [QuestionsRepository sharedRepository];
-        PFQuery *uQuestionsQuery = [PFQuery queryWithClassName:@"UnansweredQuestions"];
-        PFObject *currentRepository = [questionRepository qRepository];
-        [uQuestionsQuery whereKey:@"repository" equalTo: currentRepository];
-        self.currentUQuestionsList = [uQuestionsQuery getFirstObject];
-        [questionRepository setUnansweredQuestionsQuery:uQuestionsQuery];
-
+        self.currentUQuestionsList = [questionRepository unansweredQuestionsList];
     }
     return self;
 }
@@ -68,14 +54,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-//    self.arrayUnansweredQuestion = [repository unansweredQuestionsArray];
-    //[self sortUnansweredQuestionsArray];
-    [self.tableView reloadData];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection: 0];
-    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    //self.detail = [self.splitViewController.viewControllers lastObject];
-    //[self.detail changeQuestionDetail:[self.arrayUnansweredQuestion objectAtIndex:indexPath.row]];
+    //NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection: 0];
+    //[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     [self loadObjects];
 }
 
@@ -98,6 +78,22 @@
 {
     UnanswerQuestionListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
+    if (!self.selectedQuestion && indexPath.row == 0) {
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+        self.detail = [self.splitViewController.viewControllers lastObject];
+        [self.detail changeQuestionDetail:self.selectedQuestion];
+
+    }
+    
+    
+    if ([[object objectForKey:@"title"]isEqual:[self.selectedQuestion objectForKey:@"title"]]) {
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+        self.detail = [self.splitViewController.viewControllers lastObject];
+        [self.detail changeQuestionDetail:self.selectedQuestion];
+    }
+    
     [cell questionTitleLabel].text = [object objectForKey:@"title"];
     [cell userNameLabel].text = [object objectForKey:@"text"];
     [cell numPositiveLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"upVotes"]];
@@ -108,13 +104,10 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //Question *question = [self.arrayUnansweredQuestion objectAtIndex:indexPath.row];
-    
-    PFObject *questionSelected = [self.objects objectAtIndex:indexPath.row];
+    self.selectedQuestion = [self.objects objectAtIndex:indexPath.row];
     self.detail = [self.splitViewController.viewControllers lastObject];
 
-    [self.detail changeQuestionDetail:questionSelected];
-    //[self.delegate changeQuestionDetail : question];
+    [self.detail changeQuestionDetail: self.selectedQuestion];
 }
 - (IBAction)dismiss:(id)sender {
     
@@ -129,10 +122,6 @@
 
 - (PFQuery *)queryForTable
 {
-    
-//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-//    self.arrayUnansweredQuestion = [repository unansweredQuestionsArray];
-    
     PFQuery *questionsQuery = [PFQuery queryWithClassName:self.parseClassName];
     [questionsQuery whereKey:@"uQuestions" equalTo:self.currentUQuestionsList];
     

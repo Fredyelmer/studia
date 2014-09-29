@@ -16,6 +16,7 @@
 @interface AnsweredTableViewController : PFQueryTableViewController
 
 @property (strong, nonatomic) NSMutableArray *arrayAnsweredQuestion;
-
 @property (strong, nonatomic) PFObject *currentAQuestionsList;
+@property (strong, nonatomic) PFObject *selectedQuestion;
+
 @end

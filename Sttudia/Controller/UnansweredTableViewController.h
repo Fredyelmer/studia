@@ -20,4 +20,6 @@
 @property (strong, nonatomic) PFQuery *currentUQuestions;
 
 @property (strong, nonatomic) PFObject *currentUQuestionsList;
+
+@property (strong, nonatomic) PFObject *selectedQuestion;
 @end

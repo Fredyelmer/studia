@@ -35,9 +35,10 @@
     PFQuery *unansweredQuestionsQuery = [repository unansweredQuestionsQuery];
     if ([unansweredQuestionsQuery countObjects] > 0) {
         PFQuery *questionsQuery = [PFQuery queryWithClassName:@"Question"];
-        PFObject *questionList = [unansweredQuestionsQuery getFirstObject];
+        //PFObject *questionList = [unansweredQuestionsQuery getFirstObject];
+        PFObject *questionList = [repository unansweredQuestionsList];
         [questionsQuery whereKey:@"uQuestions" equalTo:questionList];
-        self.selectedQuestion = [questionsQuery getFirstObject];
+        //self.selectedQuestion = [questionsQuery getFirstObject];
         
     }
     else {

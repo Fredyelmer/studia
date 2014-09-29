@@ -496,6 +496,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" id="LDX-Gq-gWs">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="769"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" id="EYt-Vr-BRU">
                                 <rect key="frame" x="5" y="54" width="1014" height="660"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -514,7 +519,7 @@
                                         <gestureRecognizers/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <imageView userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="jci-4u-whL" userLabel="action Image View">
                                 <rect key="frame" x="0.0" y="722" width="1024" height="50"/>
@@ -862,7 +867,6 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" id="y5k-vw-c9v"/>
@@ -1083,7 +1087,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eKK-bu-7Uh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4898" y="2532"/>
+            <point key="canvasLocation" x="6250" y="2564"/>
         </scene>
         <!--Answered Table View Controller - Respondidas-->
         <scene sceneID="P7n-VE-N8Z">
@@ -2124,8 +2128,8 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="sWo-WE-nK7"/>
         <segue reference="ssF-Ly-s5b"/>
         <segue reference="t4G-d6-iGz"/>
-        <segue reference="sWo-WE-nK7"/>
     </inferredMetricsTieBreakers>
 </document>
