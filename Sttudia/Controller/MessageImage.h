@@ -10,4 +10,6 @@
 
 @interface MessageImage : MessageBoard
 
+@property (nonatomic, strong) UIImage* image;
+
 @end
