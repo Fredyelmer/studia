@@ -2,7 +2,7 @@
 //  LoginViewController.m
 //  Sttudia
 //
-//  Created by Helder Lima da Rocha on 7/3/14.
+//  Created by Ricardo Nagaishi on 29/09/14.
 //  Copyright (c) 2014 Ricardo Nagaishi. All rights reserved.
 //
 
@@ -45,10 +45,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-
-- (IBAction)loginButtonAction:(id)sender
-{
-    [self performSegueWithIdentifier:@"classes2Segue" sender:self];
-}
 
 @end

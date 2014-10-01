@@ -1,18 +1,18 @@
 //
-//  ClassesViewController.m
+//  SignUpViewController.m
 //  Sttudia
 //
-//  Created by Helder Lima da Rocha on 7/3/14.
+//  Created by Ricardo Nagaishi on 29/09/14.
 //  Copyright (c) 2014 Ricardo Nagaishi. All rights reserved.
 //
 
-#import "ClassesViewController.h"
+#import "SignUpViewController.h"
 
-@interface ClassesViewController ()
+@interface SignUpViewController ()
 
 @end
 
-@implementation ClassesViewController
+@implementation SignUpViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,12 +35,15 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidAppear:(BOOL)animated
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    //[self performSegueWithIdentifier:@"specificClassSegue" sender:self];
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
 }
-- (IBAction)login:(id)sender {
-    [self performSegueWithIdentifier:@"login" sender:nil];
-}
+*/
 
 @end

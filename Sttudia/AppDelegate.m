@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 @implementation AppDelegate
 
@@ -17,8 +18,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Parse setApplicationId:@"Te2WUBThcDNHfFEaQd3ebchM0B2dgSSsaspKIvcF"
-                  clientKey:@"u2zo0eBBHzjCPuR7bj6SXJ09uPD5Ui7RPcayYgYG"];
+    [Parse setApplicationId:@"Te2WUBThcDNHfFEaQd3ebchM0B2dgSSsaspKIvcF" clientKey:@"u2zo0eBBHzjCPuR7bj6SXJ09uPD5Ui7RPcayYgYG"];
+    [PFFacebookUtils initializeFacebook];
+    [PFTwitterUtils initializeWithConsumerKey:@"ZoySPlqhXdE13sUyFvWKEXl3Y" consumerSecret:@"mmB31kOR9gH3hhL7wSiXxWlGDfFDxSuiHpRUuomMqAthkpwlJp"];
+    
+    // Set default ACLs
+    PFACL *defaultACL = [PFACL ACL];
+    [defaultACL setPublicReadAccess:YES];
+    [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
     
     _mcManager = [[MCManager alloc] init];
     
@@ -150,4 +157,12 @@
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
+////teste facebook login app
+//- (BOOL)application:(UIApplication *)application
+//            openURL:(NSURL *)url
+//  sourceApplication:(NSString *)sourceApplication
+//         annotation:(id)annotation {
+//    // attempt to extract a token from the url
+//    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+//}
 @end

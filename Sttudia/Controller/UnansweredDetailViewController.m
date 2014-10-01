@@ -68,7 +68,7 @@
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString *sectionName = @"Pergunta";
+    NSString *sectionName = @"Question";
     
     return sectionName;
 }

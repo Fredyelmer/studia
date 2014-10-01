@@ -109,10 +109,10 @@
     NSString *sectionName;
     
     if (section == 0) {
-        sectionName = @"Pergunta";
+        sectionName = @"Question";
     }
     else {
-        sectionName = @"Respostas";
+        sectionName = @"Answers";
     }
     return sectionName;
 }

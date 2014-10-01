@@ -1986,20 +1986,20 @@ bool moveScribble = NO;
     BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
     [self.arrayUndo addObject:bgImage];
     
-    if ([sender.titleLabel.text  isEqual: @"branco"]) {
+    if ([sender.titleLabel.text  isEqual: @"White"]) {
         image = [[UIImage alloc] init];
     }
-    if ([sender.titleLabel.text  isEqual: @"quadrado"]) {
+    if ([sender.titleLabel.text  isEqual: @"Square"]) {
         image = [UIImage imageNamed:@"squared.png"];
     }
-    if ([sender.titleLabel.text  isEqual: @"forrado"]) {
+    if ([sender.titleLabel.text  isEqual: @"Line"]) {
         image = [UIImage imageNamed:@"notebookPaper.png"];
     }
-    if ([sender.titleLabel.text  isEqual: @"agenda"]) {
+    if ([sender.titleLabel.text  isEqual: @"Note"]) {
         image = [UIImage imageNamed:@"agenda.png"];
     }
     
-    if ([sender.titleLabel.text  isEqual: @"usar imagem"]) {
+    if ([sender.titleLabel.text  isEqual: @"Custon Image"]) {
         UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
         pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         pickerLibrary.delegate = self;
