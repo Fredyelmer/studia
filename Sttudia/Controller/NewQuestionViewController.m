@@ -271,7 +271,7 @@
             UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua resposta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [message show];
             self.isAnswer = NO;
-            [self.tabBarController setSelectedIndex:1];
+            //[self.tabBarController setSelectedIndex:1];
             
             if ([self.currentQuestion objectForKey:@"uQuestions"]) {
                 QuestionsRepository *repository = [QuestionsRepository sharedRepository];
