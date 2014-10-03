@@ -118,6 +118,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *backGroundButton;
 @property (strong, nonatomic) IBOutlet UIButton *maskToolBarButton;
 @property (strong, nonatomic) IBOutlet UIButton *maskActionBarButton;
+@property (strong, nonatomic) IBOutlet UIButton *connectDevice;
 
 
 - (IBAction)startVideoRecord:(id)sender;

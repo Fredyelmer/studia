@@ -76,6 +76,7 @@
 {
     
     [super viewDidLoad];
+
     
     [self.view setBackgroundColor:[UIColor blackColor]];
     
@@ -1230,22 +1231,21 @@ bool moveScribble = NO;
     
     self.popoverAddImage = [[UIPopoverController alloc] initWithContentViewController:addImageViewController];
     [self.popoverAddImage presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    
 }
 
 -(void)addImageFromLibrary
 {
+    [self.popoverAddImage dismissPopoverAnimated:YES];
     NSLog(@"delele");
     UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
     pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     pickerLibrary.delegate = self;
     [self presentViewController:pickerLibrary animated:YES completion:nil];
-    [self.popoverAddImage dismissPopoverAnimated:YES];
-    
 }
 
 - (void)addPhoto
 {
+    [self.popoverAddImage dismissPopoverAnimated:YES];
     
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
@@ -1253,20 +1253,18 @@ bool moveScribble = NO;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     
     [self presentViewController:picker animated:YES completion:nil];
-    [self.popoverAddImage dismissPopoverAnimated:YES];
-    
     
 }
 
 - (void)getPhotoFromInternet
 {
+    [self.popoverAddImage dismissPopoverAnimated:YES];
     CollectionViewController *collectionVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"collectionVC"];
     
     collectionVC.delegate = self;
     
     //[self performSegueWithIdentifier:@"collectionView" sender:nil];
     [self presentViewController:collectionVC animated:YES completion:nil];
-    [self.popoverAddImage dismissPopoverAnimated:YES];
 }
 
 -(void)resizingImage:(UIPinchGestureRecognizer *)recognizer
@@ -1644,7 +1642,7 @@ bool moveScribble = NO;
     }
     toolBar.translucent = NO;
     toolBar.items =   @[ [[UIBarButtonItem alloc] initWithTitle:@"T+"
-                                                          style:UIBarButtonItemStyleBordered
+                                                          style:UIBarButtonItemStylePlain
                                                          target:self
                                                          action:@selector(barButtonPressed:)],
                          [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -1652,7 +1650,7 @@ bool moveScribble = NO;
                                                                        action:nil],
                          
                          [[UIBarButtonItem alloc] initWithTitle:@"T-"
-                                                          style:UIBarButtonItemStyleBordered
+                                                          style:UIBarButtonItemStylePlain
                                                          target:self
                                                          action:@selector(barButtonPressed:)],
                          [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -1660,7 +1658,7 @@ bool moveScribble = NO;
                                                                        action:nil],
                          
                          [[UIBarButtonItem alloc] initWithTitle:@"Fonte"
-                                                          style:UIBarButtonItemStyleBordered
+                                                          style:UIBarButtonItemStylePlain
                                                          target:self
                                                          action:@selector(barButtonPressed:)],
                          [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -1668,7 +1666,7 @@ bool moveScribble = NO;
                                                                        action:nil],
                                                   
                          [[UIBarButtonItem alloc] initWithTitle:@"Cor"
-                                                          style:UIBarButtonItemStyleBordered
+                                                          style:UIBarButtonItemStylePlain
                                                          target:self
                                                          action:@selector(barButtonPressed:)],
                          [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -2001,6 +1999,7 @@ bool moveScribble = NO;
     
     if ([sender.titleLabel.text  isEqual: @"Custon Image"]) {
         UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
+        //UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc]init];
         pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         pickerLibrary.delegate = self;
         [self presentViewController:pickerLibrary animated:YES completion:nil];
@@ -2381,6 +2380,7 @@ bool moveScribble = NO;
     [self.view bringSubviewToFront: self.undoButton];
     [self.view bringSubviewToFront: self.redoButton];
     [self.view bringSubviewToFront: self.addImageButton];
+    [self.view bringSubviewToFront: self.connectDevice];
 
 
 }
