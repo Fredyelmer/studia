@@ -1748,9 +1748,9 @@ bool moveScribble = NO;
     textField.textColor = [UIColor blackColor];
     textField.delegate = self;
     
-    MessageTextField *message = [[MessageTextField alloc] init];
-    message.textField = textField.text;
-    [self sendTextMessage:message];
+//    MessageTextField *message = [[MessageTextField alloc] init];
+//    message.textField = textField.text;
+//    [self sendTextMessage:message];
     
     [self.scribbleView addSubview:textField];
     self.currentTextField = textField;
@@ -2006,6 +2006,11 @@ bool moveScribble = NO;
     textField.transform = currentTextTransform;
     self.addTextButton.enabled = YES;
     [self bringToolBarToFront];
+    
+    MessageTextField *message = [[MessageTextField alloc] init];
+    message.textField = textField.text;
+    [self sendTextMessage:message];
+    
     return YES;
 }
 
