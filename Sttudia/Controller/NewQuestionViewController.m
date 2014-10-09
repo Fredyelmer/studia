@@ -205,6 +205,13 @@
         {
             [question setObject: uQuestion forKey:@"uQuestions"];
             
+            PFACL *acl = [PFACL ACL];
+            
+            [acl setPublicReadAccess:YES];
+            [acl setPublicWriteAccess:YES];
+            
+            [question setObject:acl forKey:@"ACL"];
+                        
             [question saveInBackgroundWithBlock:^(BOOL succeeded, NSError *errorSave) {
                 
                 if (!errorSave) {
@@ -247,6 +254,13 @@
     [answer setObject:[NSNumber numberWithInt:0] forKey:@"downVotes"];
     [answer setObject:[NSNumber numberWithInt:0] forKey:@"upDownDifference"];
     
+    PFACL *acl = [PFACL ACL];
+    
+    [acl setPublicReadAccess:YES];
+    [acl setPublicWriteAccess:YES];
+    
+    [answer setObject:acl forKey:@"ACL"];
+    
     if (self.imageView.image) {
         NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 0.8);
         
@@ -271,7 +285,6 @@
             UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua resposta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [message show];
             self.isAnswer = NO;
-            //[self.tabBarController setSelectedIndex:1];
             
             if ([self.currentQuestion objectForKey:@"uQuestions"]) {
                 QuestionsRepository *repository = [QuestionsRepository sharedRepository];
@@ -286,10 +299,13 @@
             
             [activityIndicator stopAnimating];
             
+            [self.tabBarController setSelectedIndex:1];
+            
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [activityIndicator stopAnimating];
+            [self.tabBarController setSelectedIndex:1];
         }
     }];
 }

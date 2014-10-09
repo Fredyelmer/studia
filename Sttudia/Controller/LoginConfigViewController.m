@@ -122,6 +122,7 @@
 
 // Sent to the delegate when a PFUser is signed up.
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
+    
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -145,7 +146,7 @@
         loginViewController.delegate = self;
         
         loginViewController.facebookPermissions = @[@"public_profile"];
-        loginViewController.fields = PFLogInFieldsUsernameAndPassword | PFLogInFieldsTwitter | PFLogInFieldsFacebook | PFLogInFieldsSignUpButton | PFLogInFieldsDismissButton;
+        loginViewController.fields = PFLogInFieldsUsernameAndPassword | PFLogInFieldsTwitter | PFLogInFieldsFacebook | PFLogInFieldsSignUpButton | PFLogInFieldsDismissButton | PFLogInFieldsPasswordForgotten;
         
         // Customize the Sign Up View Controller
         //SignUpViewController *signUpViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"signUpVC"];

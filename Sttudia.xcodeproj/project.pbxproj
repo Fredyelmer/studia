@@ -75,6 +75,8 @@
 		0DB11FD819C5E5D100BEFFAF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DB11FD719C5E5D100BEFFAF /* StoreKit.framework */; };
 		0DB11FDA19C5E5DE00BEFFAF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DB11FD919C5E5DE00BEFFAF /* SystemConfiguration.framework */; };
 		0DB96CDA19DB407F00D0B86F /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA8C89419D99D7E000CF43C /* FacebookSDK.framework */; };
+		0DC0376919E6B63300E00123 /* BBBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DC0376819E6B63300E00123 /* BBBG.png */; };
+		0DC0376B19E6B8D000E00123 /* SttudiaLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DC0376A19E6B8D000E00123 /* SttudiaLogo.png */; };
 		0DDDC47019C1FEEC008B0D93 /* ImageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DDDC46F19C1FEEC008B0D93 /* ImageDetailViewController.m */; };
 		0DDF9CAF19B8FF390025AB0F /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DDF9CAE19B8FF390025AB0F /* TabViewController.m */; };
 		0DE062E619B638D600CFDF07 /* QuestionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DE062E519B638D600CFDF07 /* QuestionsTableViewCell.m */; };
@@ -229,6 +231,8 @@
 		0DB11FD519C5E5C500BEFFAF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0DB11FD719C5E5D100BEFFAF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0DB11FD919C5E5DE00BEFFAF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0DC0376819E6B63300E00123 /* BBBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BBBG.png; sourceTree = "<group>"; };
+		0DC0376A19E6B8D000E00123 /* SttudiaLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SttudiaLogo.png; sourceTree = "<group>"; };
 		0DC7DBCD19CB5C9300635871 /* AnsweredTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnsweredTableViewController.h; sourceTree = "<group>"; };
 		0DDDC46E19C1FEEC008B0D93 /* ImageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDetailViewController.h; sourceTree = "<group>"; };
 		0DDDC46F19C1FEEC008B0D93 /* ImageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDetailViewController.m; sourceTree = "<group>"; };
@@ -448,6 +452,8 @@
 		0D9ECF7F1961911100882007 /* AppImages */ = {
 			isa = PBXGroup;
 			children = (
+				0DC0376A19E6B8D000E00123 /* SttudiaLogo.png */,
+				0DC0376819E6B63300E00123 /* BBBG.png */,
 				71C3DE9619D9DC9E0078E7F2 /* frame.png */,
 				71C3DE9419D9DA010078E7F2 /* Network-Virtual-Machine-icon.png */,
 				48C52E671965CED200AD013F /* Video tutorial icon.jpg */,
@@ -712,6 +718,7 @@
 				0D63B589197833B20099797F /* MainStoryboard.storyboard in Resources */,
 				710DE25819802ED70095E34E /* agenda.png in Resources */,
 				0DA6C91D1982C71E006AB299 /* Text.png in Resources */,
+				0DC0376B19E6B8D000E00123 /* SttudiaLogo.png in Resources */,
 				710DE25C198032CD0095E34E /* quadrado.jpg in Resources */,
 				719FE17A1961D86200938952 /* rec.png in Resources */,
 				0DAA8ED419A3D11800F65CC9 /* notebookPaper.png in Resources */,
@@ -721,6 +728,7 @@
 				0DA9B429199A7FE500A86418 /* delete.png in Resources */,
 				0DA75FE81981738D00BAE5E1 /* Record-Pressed-icon.png in Resources */,
 				0DA6C91C1982C71E006AB299 /* question.png in Resources */,
+				0DC0376919E6B63300E00123 /* BBBG.png in Resources */,
 				0DAA8ED219A3CE9E00F65CC9 /* squared.png in Resources */,
 				0D9ECF5C1961867300882007 /* Images.xcassets in Resources */,
 				71C3DE9519D9DA010078E7F2 /* Network-Virtual-Machine-icon.png in Resources */,
