@@ -56,9 +56,10 @@
     [super viewWillAppear:animated];
     [self loadObjects];
 
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection: 0];
-    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    [self.tableView reloadData];
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection: 0];
+//    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+//    [self.tableView reloadData];
+    
 }
 
 - (void)didReceiveMemoryWarning
