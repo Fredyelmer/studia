@@ -678,7 +678,7 @@
 				ORGANIZATIONNAME = "Ricardo Nagaishi";
 				TargetAttributes = {
 					0D9ECF401961867300882007 = {
-						DevelopmentTeam = 2P6ZLVHDMJ;
+						DevelopmentTeam = 8VVUD96VR6;
 					};
 					0D9ECF601961867300882007 = {
 						TestTargetID = 0D9ECF401961867300882007;

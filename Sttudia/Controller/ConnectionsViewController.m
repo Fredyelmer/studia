@@ -34,7 +34,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [[_appDelegate mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
+    
     [[_appDelegate mcManager] advertiseSelf:_swVisible.isOn];
     
     [_txtName setDelegate:self];
@@ -45,6 +45,7 @@
                                                object:nil];
     
     _arrConnectedDevices = [[NSMutableArray alloc] init];
+    
     
     [_tblConnectedDevices setDelegate:self];
     [_tblConnectedDevices setDataSource:self];
@@ -118,6 +119,7 @@
 }
 
 -(void)peerDidChangeStateWithNotification:(NSNotification *)notification{
+    NSLog(@"peerID");
     MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
     NSString *peerDisplayName = peerID.displayName;
     MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
