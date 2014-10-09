@@ -10,6 +10,6 @@
 
 @interface MessageTextField : MessageBoard
 
-@property (nonatomic, strong) UITextField* textField;
+@property (nonatomic, strong) NSString* textField;
 
 @end

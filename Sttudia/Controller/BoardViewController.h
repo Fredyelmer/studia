@@ -25,6 +25,7 @@
 #import "ColorFontViewController.h"
 #import "ThicknessViewController.h"
 #import "Image.h"
+
 #import "TextRef.h"
 #import "BackGroundImage.h"
 #import "TabViewController.h"
@@ -48,6 +49,7 @@
     CGFloat eraser;
     CGFloat opacity;
     BOOL mouseSwiped;
+    
     
     CGFloat backGroundRed;
     CGFloat backGroundGreen;

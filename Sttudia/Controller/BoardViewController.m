@@ -331,8 +331,26 @@
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            [self.scribbleView addSubview:messageText.textField];
-            self.currentTextField = messageText.textField;
+            UITextField *textField = [[UITextField alloc] init];
+            
+            textField.borderStyle = UITextBorderStyleRoundedRect;
+            [textField.layer setBorderWidth:1];
+            [textField.layer setBorderColor:[[UIColor blueColor] CGColor]];
+            textField.font = [UIFont systemFontOfSize:textFont];
+            //textField.placeholder = @"enter text";
+            textField.autocorrectionType = UITextAutocorrectionTypeNo;
+            textField.keyboardType = UIKeyboardTypeDefault;
+            textField.returnKeyType = UIReturnKeyDone;
+            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+            textField.textAlignment = NSTextAlignmentCenter;
+            textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+            textField.textColor = [UIColor blackColor];
+            textField.delegate = self;
+
+            textField.text = messageText.textField;
+            [self.scribbleView addSubview:textField];
+            self.currentTextField = textField;
         }];
         
         [opque addOperation:operation];
@@ -1679,10 +1697,12 @@ bool moveScribble = NO;
     }
     toolBar.translucent = NO;
     toolBar.items =   @[ [[UIBarButtonItem alloc] initWithTitle:@"T+"
+                          
                                                           style:UIBarButtonItemStylePlain
                                                          target:self
                                                          action:@selector(barButtonPressed:)],
                          [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                          
                                                                        target:nil
                                                                        action:nil],
                          
@@ -1729,7 +1749,7 @@ bool moveScribble = NO;
     textField.delegate = self;
     
     MessageTextField *message = [[MessageTextField alloc] init];
-    message.textField = textField;
+    message.textField = textField.text;
     [self sendTextMessage:message];
     
     [self.scribbleView addSubview:textField];
