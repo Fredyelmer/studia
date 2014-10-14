@@ -187,7 +187,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tlO-AO-Q5t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1015" y="-1724"/>
+            <point key="canvasLocation" x="2139" y="-2560"/>
         </scene>
         <!--Initial View Controller-->
         <scene sceneID="Qh7-ma-8vr">
@@ -997,6 +997,16 @@
                                     </segue>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eO7-ch-rOC">
+                                <rect key="frame" x="19" y="731" width="56" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Log Out">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="logOut:" destination="cOT-VF-1aa" eventType="touchUpInside" id="DgO-Kj-auD"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <navigationItem key="navigationItem" id="y5k-vw-c9v"/>
@@ -1039,11 +1049,12 @@
                         <outletCollection property="ColorButton" destination="r6M-bk-o8H" id="1je-Xa-wTR"/>
                         <outletCollection property="ColorButton" destination="xkq-10-0iF" id="ey7-xb-RrO"/>
                         <outletCollection property="ColorButton" destination="bNY-DR-d0F" id="b6e-sQ-mEQ"/>
+                        <segue destination="dOp-Z9-jzu" kind="modal" identifier="classLogOutSender" id="3bR-2s-hb5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OGK-po-Ra9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1911" y="566"/>
+            <point key="canvasLocation" x="1747" y="-1054"/>
         </scene>
         <!--Tab View Controller-->
         <scene sceneID="lQW-p6-vtV">
@@ -1473,6 +1484,7 @@
                     <tabBarItem key="tabBarItem" title="Add Question" id="1Bv-1Y-B1Y"/>
                     <connections>
                         <outlet property="imageView" destination="XuK-Ak-ieM" id="N99-Uc-iTU"/>
+                        <outlet property="isAnonymSwitch" destination="ujf-sI-ibx" id="EF0-hZ-oc2"/>
                         <outlet property="sendAnswerButton" destination="FkU-b6-l1E" id="I2V-ut-nb0"/>
                         <outlet property="sendToEveryoneButton" destination="aBB-WF-gXM" id="cQK-wl-KA0"/>
                         <outlet property="sendToTeacherButton" destination="bLn-uD-1Pi" id="XBQ-nJ-RWd"/>
@@ -2221,7 +2233,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="LLr-cY-ENr"/>
-        <segue reference="bRf-zV-hZt"/>
+        <segue reference="3bR-2s-hb5"/>
         <segue reference="t4G-d6-iGz"/>
     </inferredMetricsTieBreakers>
 </document>

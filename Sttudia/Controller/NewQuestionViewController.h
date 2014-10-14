@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
+#import <ParseFacebookUtils/PFFacebookUtils.h>
 #import "QuestionsRepository.h"
 #import "Question.h"
 #import "Answer.h"
@@ -19,5 +20,6 @@
 @property (strong, nonatomic) Answer *currentAnswer;
 @property (assign, nonatomic) BOOL isAnswer;
 @property (strong, nonatomic) PFObject *currentQuestion;
+@property (strong, nonatomic) IBOutlet UISwitch *isAnonymSwitch;
 
 @end
