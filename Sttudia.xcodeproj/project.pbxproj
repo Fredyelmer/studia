@@ -77,6 +77,10 @@
 		0DB96CDA19DB407F00D0B86F /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA8C89419D99D7E000CF43C /* FacebookSDK.framework */; };
 		0DC0376919E6B63300E00123 /* BBBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DC0376819E6B63300E00123 /* BBBG.png */; };
 		0DC0376B19E6B8D000E00123 /* SttudiaLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DC0376A19E6B8D000E00123 /* SttudiaLogo.png */; };
+		0DC0F96619EC040A00E1D66D /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0F96519EC040A00E1D66D /* HomeViewController.m */; };
+		0DC0F96C19EC046B00E1D66D /* LoggedInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0F96B19EC046B00E1D66D /* LoggedInViewController.m */; };
+		0DC0F96F19EC087700E1D66D /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0F96E19EC087700E1D66D /* SignupViewController.m */; };
+		0DC0F97219EC31D200E1D66D /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0F97119EC31D200E1D66D /* InitialViewController.m */; };
 		0DDDC47019C1FEEC008B0D93 /* ImageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DDDC46F19C1FEEC008B0D93 /* ImageDetailViewController.m */; };
 		0DDF9CAF19B8FF390025AB0F /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DDF9CAE19B8FF390025AB0F /* TabViewController.m */; };
 		0DE062E619B638D600CFDF07 /* QuestionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DE062E519B638D600CFDF07 /* QuestionsTableViewCell.m */; };
@@ -233,6 +237,14 @@
 		0DB11FD919C5E5DE00BEFFAF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0DC0376819E6B63300E00123 /* BBBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BBBG.png; sourceTree = "<group>"; };
 		0DC0376A19E6B8D000E00123 /* SttudiaLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SttudiaLogo.png; sourceTree = "<group>"; };
+		0DC0F96419EC040A00E1D66D /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		0DC0F96519EC040A00E1D66D /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		0DC0F96A19EC046B00E1D66D /* LoggedInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggedInViewController.h; sourceTree = "<group>"; };
+		0DC0F96B19EC046B00E1D66D /* LoggedInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggedInViewController.m; sourceTree = "<group>"; };
+		0DC0F96D19EC087700E1D66D /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
+		0DC0F96E19EC087700E1D66D /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
+		0DC0F97019EC31D200E1D66D /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
+		0DC0F97119EC31D200E1D66D /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
 		0DC7DBCD19CB5C9300635871 /* AnsweredTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnsweredTableViewController.h; sourceTree = "<group>"; };
 		0DDDC46E19C1FEEC008B0D93 /* ImageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDetailViewController.h; sourceTree = "<group>"; };
 		0DDDC46F19C1FEEC008B0D93 /* ImageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDetailViewController.m; sourceTree = "<group>"; };
@@ -533,6 +545,14 @@
 				0DA7031819B4B7F500139082 /* UnansweredDetailViewController.m */,
 				0DDF9CAD19B8FF390025AB0F /* TabViewController.h */,
 				0DDF9CAE19B8FF390025AB0F /* TabViewController.m */,
+				0DC0F96419EC040A00E1D66D /* HomeViewController.h */,
+				0DC0F96519EC040A00E1D66D /* HomeViewController.m */,
+				0DC0F96A19EC046B00E1D66D /* LoggedInViewController.h */,
+				0DC0F96B19EC046B00E1D66D /* LoggedInViewController.m */,
+				0DC0F96D19EC087700E1D66D /* SignupViewController.h */,
+				0DC0F96E19EC087700E1D66D /* SignupViewController.m */,
+				0DC0F97019EC31D200E1D66D /* InitialViewController.h */,
+				0DC0F97119EC31D200E1D66D /* InitialViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -764,6 +784,7 @@
 				0DAB2FBD19912234002E3EBB /* CustomCell.m in Sources */,
 				48C52E901965E52D00AD013F /* TutorialViewController.m in Sources */,
 				0DA267C51993DBAF00AE00FF /* ResetViewController.m in Sources */,
+				0DC0F96F19EC087700E1D66D /* SignupViewController.m in Sources */,
 				0DA7031319B4B78300139082 /* UnansweredTableViewController.m in Sources */,
 				0DA8C89D19D9A448000CF43C /* SignUpViewController.m in Sources */,
 				0DA75FEB198175A700BAE5E1 /* VideoPlayer.m in Sources */,
@@ -795,8 +816,10 @@
 				0DA8C89A19D9A416000CF43C /* LoginViewController.m in Sources */,
 				0DA8EFA41976F772006A5589 /* Image.m in Sources */,
 				0DAACA1A19897974003B262D /* PhotoRequest.m in Sources */,
+				0DC0F96C19EC046B00E1D66D /* LoggedInViewController.m in Sources */,
 				0DA267C21992A26B00AE00FF /* ImagePickerViewController.m in Sources */,
 				71305E6419B0F57400C94CF6 /* MCManager.m in Sources */,
+				0DC0F96619EC040A00E1D66D /* HomeViewController.m in Sources */,
 				710DE25219801FA00095E34E /* ColorBarPicker.m in Sources */,
 				0DA7031919B4B7F500139082 /* UnansweredDetailViewController.m in Sources */,
 				71529F9319CB755800D87FF9 /* MessageImage.m in Sources */,
@@ -819,6 +842,7 @@
 				48C52E8D1965E52D00AD013F /* RegisterViewController.m in Sources */,
 				0DA267CB19953B0F00AE00FF /* ColorFontViewController.m in Sources */,
 				0DA9D71719BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.m in Sources */,
+				0DC0F97219EC31D200E1D66D /* InitialViewController.m in Sources */,
 				0DA7189219AFAAF200B8B08E /* NewQuestionViewController.m in Sources */,
 				0DA5A29F19A7831F0031C6F9 /* TextRef.m in Sources */,
 				71529F9019CB56B900D87FF9 /* MessageBrush.m in Sources */,
