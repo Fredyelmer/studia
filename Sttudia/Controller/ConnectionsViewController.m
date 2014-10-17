@@ -35,7 +35,16 @@
     // Do any additional setup after loading the view.
     _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    [[_appDelegate mcManager] advertiseSelf:_swVisible.isOn];
+    if (self.appDelegate.mcManager.session == nil) {
+        [[_appDelegate mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
+        [[_appDelegate mcManager] advertiseSelf:_swVisible.isOn];
+    }
+    else
+    {
+        _txtName.text = self.appDelegate.mcManager.session.myPeerID.displayName;
+        [_btnDisconnect setEnabled:!YES];
+        [_txtName setEnabled:NO];
+    }
     
     [_txtName setDelegate:self];
     
@@ -46,9 +55,21 @@
     
     _arrConnectedDevices = [[NSMutableArray alloc] init];
     
+    for (MCPeerID *peer in self.appDelegate.mcManager.session.connectedPeers) {
+        [_arrConnectedDevices addObject:peer.displayName];
+    }
     
     [_tblConnectedDevices setDelegate:self];
     [_tblConnectedDevices setDataSource:self];
+    
+    [_tblConnectedDevices reloadData];
+    
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    NSLog(@"teste");
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,9 +90,12 @@
 */
 
 - (IBAction)browseForDevices:(id)sender {
-    [[_appDelegate mcManager] setupMCBrowser];
-    [[[_appDelegate mcManager] browser] setDelegate:self];
-    [self presentViewController:[[_appDelegate mcManager] browser] animated:YES completion:nil];
+    if (self.appDelegate.mcManager.session != nil) {
+        [[_appDelegate mcManager] setupMCBrowser];
+        [[[_appDelegate mcManager] browser] setDelegate:self];
+        [self presentViewController:[[_appDelegate mcManager] browser] animated:YES completion:nil];
+    }
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 - (IBAction)toggleVisibility:(id)sender {
@@ -118,8 +142,8 @@
     return YES;
 }
 
--(void)peerDidChangeStateWithNotification:(NSNotification *)notification{
-    NSLog(@"peerID");
+-(void)peerDidChangeStateWithNotification:(NSNotification *)notification
+{
     MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
     NSString *peerDisplayName = peerID.displayName;
     MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
@@ -127,6 +151,7 @@
     
     if (state != MCSessionStateConnecting) {
         if (state == MCSessionStateConnected) {
+            
             [_arrConnectedDevices addObject:peerDisplayName];
         }
         else if (state == MCSessionStateNotConnected){
@@ -142,6 +167,8 @@
         [_btnDisconnect setEnabled:!peersExist];
         [_txtName setEnabled:peersExist];
     }
+    
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -164,6 +191,7 @@
     cell.textLabel.text = [_arrConnectedDevices objectAtIndex:indexPath.row];
     
     return cell;
+    
 }
 
 

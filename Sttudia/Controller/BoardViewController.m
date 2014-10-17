@@ -231,8 +231,8 @@
     
     _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    [[_appDelegate mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
-    [[_appDelegate mcManager] advertiseSelf:YES];
+//    [[_appDelegate mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
+//    [[_appDelegate mcManager] advertiseSelf:YES];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveDataWithNotification:)
@@ -304,18 +304,18 @@
 
         if ([messageBrush.actionName isEqualToString:@"toucheBegan"])
         {
-            lastPoint = point;
+            receivedLastPoint = point;
         }
         
         if ([messageBrush.actionName isEqualToString:@"toucheMoved"])
         {
-                            [self drawScribble:point with:self.receivedBrush];
+                            [self drawScribble:point with:self.receivedBrush received:YES];
             
         }
         
         if ([messageBrush.actionName isEqualToString:@"toucheEnded"])
         {
-            lastPoint = point;
+            receivedLastPoint = point;
         }
             
         }];
@@ -331,7 +331,7 @@
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            UITextField *textField = [[UITextField alloc] init];
+            UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, 80, 100, 30)];
             
             textField.borderStyle = UITextBorderStyleRoundedRect;
             [textField.layer setBorderWidth:1];
@@ -346,6 +346,22 @@
             textField.textAlignment = NSTextAlignmentCenter;
             textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
             textField.textColor = [UIColor blackColor];
+            textField.userInteractionEnabled = YES;
+            UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingText:)];
+            UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveText:)];
+            UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateText:)];
+            
+            
+            [textField addGestureRecognizer:pinchGesture];
+            [textField addGestureRecognizer:panGesture];
+            [textField addGestureRecognizer:rotationGesture];
+            
+            [textField setBorderStyle:UITextBorderStyleNone];
+                
+            textField.center = currentTextCenter;
+            textField.transform = currentTextTransform;
+            self.addTextButton.enabled = YES;
+            [self bringToolBarToFront];
             textField.delegate = self;
 
             textField.text = messageText.textField;
@@ -357,6 +373,98 @@
 
         
     }
+    
+    if ([message isKindOfClass:[MessageImage class]]) {
+        MessageImage *msgImage = (MessageImage*) message;
+        
+        
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        
+        [operation addExecutionBlock:^{
+            [self putImageInScreen:msgImage.image];
+        }];
+         
+        [opque addOperation:operation];
+    }
+    
+    if ([message isKindOfClass:[MessageMove class]]) {
+        MessageMove *msgImage = (MessageMove*) message;
+        
+        CGPoint point = [msgImage.point CGPointValue];
+        
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        
+        [operation addExecutionBlock:^{
+            if (msgImage.isImage) {
+                [currentImage setCenter:point];
+            }else{
+                [self.currentTextField setCenter:point];
+            }
+            
+        }];
+        
+        [opque addOperation:operation];
+        
+    }
+
+    if ([message isKindOfClass:[MessageResize class]]) {
+        MessageResize *msgImage = (MessageResize*) message;
+        
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        
+        [operation addExecutionBlock:^{
+            if (msgImage.isImage) {
+                CGAffineTransform currentTransform = currentImage.transform;
+                CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, msgImage.scale, msgImage.scale);
+                
+                [currentImage setTransform:newTransform];
+
+            }else{
+                CGAffineTransform currentTransform = self.currentTextField.transform;
+                CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, msgImage.scale, msgImage.scale);
+                
+                [self.currentTextField setTransform:newTransform];
+            }
+            
+        }];
+        
+        [opque addOperation:operation];
+        
+    }
+
+    if ([message isKindOfClass:[MessageRotate class]]) {
+        MessageRotate *msgImage = (MessageRotate*) message;
+        
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        
+        [operation addExecutionBlock:^{
+            if (msgImage.isImage) {
+                CGAffineTransform currentTransform = currentImage.transform;
+                CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msgImage.rotation);
+                
+                [currentImage setTransform:newTransform];
+                
+            }else{
+                CGAffineTransform currentTransform = self.currentTextField.transform;
+                CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msgImage.rotation);
+                
+                [self.currentTextField setTransform:newTransform];
+            }
+            
+        }];
+        
+        [opque addOperation:operation];
+        
+    }
+
    // NSString *receivedText = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
     
     
@@ -365,9 +473,6 @@
 
 -(void)sendActionMessage:(MessageBrush*) message
 {
-    NSLog(@"nome: %@", message.actionName);
-    
-    
     message.color = self.currentBrush.color;
     message.thickness = self.currentBrush.thickness;
     message.isEraser = self.currentBrush.isEraser;
@@ -388,15 +493,88 @@
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
-    
-    //NSLog(@"send point %@", NSStringFromCGPoint(actualPoint1));
-    
-//    [_tvChat setText:[_tvChat.text stringByAppendingString:[NSString stringWithFormat:@"I wrote:\n%@\n\n", _txtMessage.text]]];
-//    [_txtMessage setText:@""];
-//    [_txtMessage resignFirstResponder];
 }
 
+-(void)sendMove: (CGPoint) point item: (BOOL) isImage
+{
+    MessageMove* message = [[MessageMove alloc] init];
+    message.point = [NSValue valueWithCGPoint:point];
+    message.isImage = isImage;
+    
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+}
+
+-(void)sendResize: (CGFloat) scale isImage: (BOOL) isImage
+{
+    MessageResize* message = [[MessageResize alloc] init];
+    message.scale = scale;
+    message.isImage = isImage;
+    
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+
+}
+
+-(void)sendRotation: (CGFloat) rotation isImage: (BOOL) isImage
+{
+    MessageRotate* message = [[MessageRotate alloc] init];
+    message.rotation = rotation;
+    message.isImage = isImage;
+    
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+    
+}
+
+
 -(void)sendTextMessage:(MessageTextField*) message
+{
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+}
+
+-(void)sendImageMessage:(MessageImage*) message
 {
     NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
     NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
@@ -974,12 +1152,17 @@ bool moveScribble = NO;
     [self.currentTextField.layer setBorderWidth:0.0];
 }
 
--(void) drawScribble:(CGPoint) currentPoint with: (Brush *) drawBrush
+-(void) drawScribble:(CGPoint) currentPoint with: (Brush *) drawBrush received: (BOOL) isReceived
 {
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
     [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
     
-    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
+    if (isReceived) {
+        CGContextMoveToPoint(UIGraphicsGetCurrentContext(), receivedLastPoint.x, receivedLastPoint.y);
+    }else{
+        CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
+    }
+    
     CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
     CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
     //CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
@@ -997,7 +1180,13 @@ bool moveScribble = NO;
     [self.tempImageView setAlpha:opacity];
     UIGraphicsEndImageContext();
     
-    lastPoint = currentPoint;
+    if (isReceived) {
+        receivedLastPoint = currentPoint;
+    }
+    else{
+        lastPoint = currentPoint;
+    }
+    
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -1017,7 +1206,7 @@ bool moveScribble = NO;
             
             [self sendActionMessage:message];
             
-            [self drawScribble:currentPoint with:self.currentBrush];
+            [self drawScribble:currentPoint with:self.currentBrush received:NO];
             
             NSTimeInterval interval = [event timestamp] - self.lastTouch;
             VideoParameter *parameter;
@@ -1341,6 +1530,8 @@ bool moveScribble = NO;
         
         [recognizer.view setTransform:newTransform];
         
+        [self sendResize:scale isImage:YES];
+        
         lastScale = recognizer.scale;
         NSLog(@"Resizing frame: (%f, %f)", recognizer.view.frame.size.width, recognizer.view.frame.size.height);
     }
@@ -1418,8 +1609,14 @@ bool moveScribble = NO;
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:.35];
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [[recognizer view] setCenter:CGPointMake(finalX, finalY)];
+            CGPoint final = CGPointMake(finalX, finalY);
+            [[recognizer view] setCenter:final];
+            
+            [self sendMove:final item:YES];
+        
+            
             [UIView commitAnimations];
+            
         }
 
     }
@@ -1435,6 +1632,8 @@ bool moveScribble = NO;
         CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
         
         [[recognizer view] setTransform:newTransform];
+        
+        [self sendRotation:rotation isImage:YES];
         
         lastRotation = [recognizer rotation];
          NSLog(@"Rotate frame: (%f, %f)", recognizer.view.frame.size.width, recognizer.view.frame.size.height);
@@ -1485,6 +1684,11 @@ bool moveScribble = NO;
     
     if(!isForBackGround){
         [self putImageInScreen:choseImage];
+        
+        MessageImage *message =[[MessageImage alloc] init];
+        message.image = choseImage;
+        [self sendImageMessage:message];
+        
     }
     else{
         [self.layoutImageView setImage:choseImage];
@@ -1496,6 +1700,7 @@ bool moveScribble = NO;
 
 - (void) putImageInScreen : (UIImage *)image
 {
+    
     UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2-150, self.tempImageView.frame.size.height/2-150, 300, 300)];
     customImage.image = image;
     customImage.contentMode = UIViewContentModeScaleAspectFill;
@@ -1819,7 +2024,9 @@ bool moveScribble = NO;
         CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
         
         [recognizer.view setTransform:newTransform];
-        
+    
+    [self sendResize:scale isImage:NO];
+    
         lastScale = recognizer.scale;
 
     isTextEditing = YES;
@@ -1903,7 +2110,12 @@ bool moveScribble = NO;
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:.35];
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [[recognizer view] setCenter:CGPointMake(finalX, finalY)];
+            
+            CGPoint final = CGPointMake(finalX, finalY);
+            [[recognizer view] setCenter:final];
+            
+            [self sendMove:final item:NO];
+            
             [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
             [recognizer.view.layer setBorderWidth:1];
 
@@ -1938,7 +2150,9 @@ bool moveScribble = NO;
         CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
         
         [[recognizer view] setTransform:newTransform];
-        
+    
+    [self sendRotation:rotation isImage:NO];
+    
         lastRotation = [recognizer rotation];
 
     isTextEditing = YES;
@@ -2347,6 +2561,10 @@ bool moveScribble = NO;
 - (void)setInternetImageChose : (UIImage *)image{
     
     [self putImageInScreen:image];
+    
+    MessageImage *message =[[MessageImage alloc] init];
+    message.image = image;
+    [self sendImageMessage:message];
 }
 
 #pragma mark - ResetViewControllerDelegateMethods

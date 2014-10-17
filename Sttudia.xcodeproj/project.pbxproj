@@ -121,6 +121,9 @@
 		71B9CB8019630EF200DC3697 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B9CB7F19630EF200DC3697 /* QuartzCore.framework */; };
 		71C3DE9519D9DA010078E7F2 /* Network-Virtual-Machine-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C3DE9419D9DA010078E7F2 /* Network-Virtual-Machine-icon.png */; };
 		71C3DE9719D9DC9E0078E7F2 /* frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C3DE9619D9DC9E0078E7F2 /* frame.png */; };
+		71C43F5E19EEFEBF0002CF01 /* MessageMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C43F5D19EEFEBF0002CF01 /* MessageMove.m */; };
+		71C43F6119EF08EF0002CF01 /* MessageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C43F6019EF08EF0002CF01 /* MessageResize.m */; };
+		71C43F6419F042560002CF01 /* MessageRotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C43F6319F042560002CF01 /* MessageRotate.m */; };
 		71E1B79B1990127C007C8425 /* ThicknessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1B79A1990127C007C8425 /* ThicknessViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -311,6 +314,12 @@
 		71B9CB7F19630EF200DC3697 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		71C3DE9419D9DA010078E7F2 /* Network-Virtual-Machine-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Network-Virtual-Machine-icon.png"; sourceTree = "<group>"; };
 		71C3DE9619D9DC9E0078E7F2 /* frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame.png; sourceTree = "<group>"; };
+		71C43F5C19EEFEBF0002CF01 /* MessageMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageMove.h; sourceTree = "<group>"; };
+		71C43F5D19EEFEBF0002CF01 /* MessageMove.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageMove.m; sourceTree = "<group>"; };
+		71C43F5F19EF08EF0002CF01 /* MessageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageResize.h; sourceTree = "<group>"; };
+		71C43F6019EF08EF0002CF01 /* MessageResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageResize.m; sourceTree = "<group>"; };
+		71C43F6219F042560002CF01 /* MessageRotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageRotate.h; sourceTree = "<group>"; };
+		71C43F6319F042560002CF01 /* MessageRotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageRotate.m; sourceTree = "<group>"; };
 		71E1B7991990127C007C8425 /* ThicknessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThicknessViewController.h; sourceTree = "<group>"; };
 		71E1B79A1990127C007C8425 /* ThicknessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThicknessViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -632,6 +641,12 @@
 				71529F9219CB755800D87FF9 /* MessageImage.m */,
 				71529F9419CB758500D87FF9 /* MessageTextField.h */,
 				71529F9519CB758500D87FF9 /* MessageTextField.m */,
+				71C43F5C19EEFEBF0002CF01 /* MessageMove.h */,
+				71C43F5D19EEFEBF0002CF01 /* MessageMove.m */,
+				71C43F5F19EF08EF0002CF01 /* MessageResize.h */,
+				71C43F6019EF08EF0002CF01 /* MessageResize.m */,
+				71C43F6219F042560002CF01 /* MessageRotate.h */,
+				71C43F6319F042560002CF01 /* MessageRotate.m */,
 			);
 			name = message;
 			sourceTree = "<group>";
@@ -684,7 +699,7 @@
 				ORGANIZATIONNAME = "Ricardo Nagaishi";
 				TargetAttributes = {
 					0D9ECF401961867300882007 = {
-						DevelopmentTeam = 2P6ZLVHDMJ;
+						DevelopmentTeam = 8VVUD96VR6;
 					};
 					0D9ECF601961867300882007 = {
 						TestTargetID = 0D9ECF401961867300882007;
@@ -778,6 +793,7 @@
 				71529F9619CB758500D87FF9 /* MessageTextField.m in Sources */,
 				0D081747196ED95A0007399B /* VideoParameter.m in Sources */,
 				0DA7189519AFB77400B8B08E /* QuestionsRepository.m in Sources */,
+				71C43F6119EF08EF0002CF01 /* MessageResize.m in Sources */,
 				0D9ECF5A1961867300882007 /* Sttudia.xcdatamodeld in Sources */,
 				0DE062E919B6456A00CFDF07 /* QuestionListTableViewCell.m in Sources */,
 				714CEDE0198C1D6B0092C98D /* Brush.m in Sources */,
@@ -795,6 +811,7 @@
 				0DA8C89A19D9A416000CF43C /* LoginViewController.m in Sources */,
 				0DA8EFA41976F772006A5589 /* Image.m in Sources */,
 				0DAACA1A19897974003B262D /* PhotoRequest.m in Sources */,
+				71C43F5E19EEFEBF0002CF01 /* MessageMove.m in Sources */,
 				0DA267C21992A26B00AE00FF /* ImagePickerViewController.m in Sources */,
 				71305E6419B0F57400C94CF6 /* MCManager.m in Sources */,
 				710DE25219801FA00095E34E /* ColorBarPicker.m in Sources */,
@@ -817,6 +834,7 @@
 				0DA7B58E198ABA7500D268E1 /* PhotoRepository.m in Sources */,
 				0D9ECF531961867300882007 /* main.m in Sources */,
 				48C52E8D1965E52D00AD013F /* RegisterViewController.m in Sources */,
+				71C43F6419F042560002CF01 /* MessageRotate.m in Sources */,
 				0DA267CB19953B0F00AE00FF /* ColorFontViewController.m in Sources */,
 				0DA9D71719BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.m in Sources */,
 				0DA7189219AFAAF200B8B08E /* NewQuestionViewController.m in Sources */,

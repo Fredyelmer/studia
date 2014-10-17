@@ -33,13 +33,13 @@
 }
 
 -(void)setupMCBrowser{
-    _browser = [[MCBrowserViewController alloc] initWithServiceType:@"chat-files" session:_session];
+    _browser = [[MCBrowserViewController alloc] initWithServiceType:@"sttudia" session:_session];
 }
 
 -(void)advertiseSelf:(BOOL)shouldAdvertise
 {
     if (shouldAdvertise) {
-        _advertiser = [[MCAdvertiserAssistant alloc] initWithServiceType:@"chat-files"
+        _advertiser = [[MCAdvertiserAssistant alloc] initWithServiceType:@"sttudia"
                                                            discoveryInfo:nil
                                                                  session:_session];
         [_advertiser start];

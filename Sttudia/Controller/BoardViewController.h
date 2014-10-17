@@ -33,6 +33,10 @@
 #import "MessagePoint.h"
 #import "MessageBrush.h"
 #import "MessageBoard.h"
+#import "MessageImage.h"
+#import "MessageMove.h"
+#import "MessageResize.h"
+#import "MessageRotate.h"
 #import "MessageTextField.h"
 #import "Brush.h"
 #import <Parse/Parse.h>
@@ -42,6 +46,7 @@
 @interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate, QuestionRepositoryDelegate>
 {
     CGPoint lastPoint;
+    CGPoint receivedLastPoint;
     CGFloat red;
     CGFloat green;
     CGFloat blue;
