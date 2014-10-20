@@ -609,7 +609,21 @@
     }
     
 }
-
+-(void)sendImageMessage:(MessageImage*) message
+{
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+}
 
 -(void)sendTextMessage:(MessageTextField*) message
 {
@@ -626,6 +640,7 @@
         NSLog(@"%@", [error localizedDescription]);
     }
 }
+
 
 - (void)sendUndoMessage: (MessageUndo*) message{
     
