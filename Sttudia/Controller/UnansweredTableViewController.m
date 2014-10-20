@@ -54,8 +54,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection: 0];
-    //[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    
+    self.currentUser = [PFUser currentUser];
     [self loadObjects];
 }
 
@@ -78,26 +78,50 @@
 {
     UnanswerQuestionListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
-    if (!self.selectedQuestion && indexPath.row == 0) {
-        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
-        self.detail = [self.splitViewController.viewControllers lastObject];
-        [self.detail changeQuestionDetail:self.selectedQuestion];
-
+    if (([[self.currentUser objectForKey:@"category"]isEqualToString:@"Student"] && [object objectForKey:@"isPublic"])||([[self.currentUser objectForKey:@"category"]isEqualToString:@"Teacher"])) {
+        if (!self.selectedQuestion && indexPath.row == 0) {
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+            self.detail = [self.splitViewController.viewControllers lastObject];
+            [self.detail changeQuestionDetail:self.selectedQuestion];
+            
+        }
+        
+        
+        if ([[object objectForKey:@"title"]isEqual:[self.selectedQuestion objectForKey:@"title"]]) {
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+            self.detail = [self.splitViewController.viewControllers lastObject];
+            [self.detail changeQuestionDetail:self.selectedQuestion];
+        }
+        
+        [cell questionTitleLabel].text = [object objectForKey:@"title"];
+        [cell userNameLabel].text = [object objectForKey:@"text"];
+        [cell numPositiveLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"upVotes"]];
+        [cell numNegativeLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"downVotes"]];
     }
-    
-    
-    if ([[object objectForKey:@"title"]isEqual:[self.selectedQuestion objectForKey:@"title"]]) {
-        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
-        self.detail = [self.splitViewController.viewControllers lastObject];
-        [self.detail changeQuestionDetail:self.selectedQuestion];
-    }
-    
-    [cell questionTitleLabel].text = [object objectForKey:@"title"];
-    [cell userNameLabel].text = [object objectForKey:@"text"];
-    [cell numPositiveLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"upVotes"]];
-    [cell numNegativeLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"downVotes"]];
+//    
+//    
+//    if (!self.selectedQuestion && indexPath.row == 0) {
+//        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+//        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+//        self.detail = [self.splitViewController.viewControllers lastObject];
+//        [self.detail changeQuestionDetail:self.selectedQuestion];
+//
+//    }
+//    
+//    
+//    if ([[object objectForKey:@"title"]isEqual:[self.selectedQuestion objectForKey:@"title"]]) {
+//        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+//        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+//        self.detail = [self.splitViewController.viewControllers lastObject];
+//        [self.detail changeQuestionDetail:self.selectedQuestion];
+//    }
+//    
+//    [cell questionTitleLabel].text = [object objectForKey:@"title"];
+//    [cell userNameLabel].text = [object objectForKey:@"text"];
+//    [cell numPositiveLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"upVotes"]];
+//    [cell numNegativeLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"downVotes"]];
     
     return cell;
 }

@@ -40,7 +40,10 @@
 #import "Brush.h"
 #import <Parse/Parse.h>
 #import "QuestionsRepository.h"
-
+#import "MessageUndo.h"
+#import "MessageRedo.h"
+#import "MessageNextPage.h"
+#import "MessagePreviewPage.h"
 
 @interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate, QuestionRepositoryDelegate>
 {

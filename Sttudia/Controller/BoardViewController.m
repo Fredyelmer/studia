@@ -313,12 +313,25 @@
         if ([messageBrush.actionName isEqualToString:@"toucheMoved"])
         {
                             [self drawScribble:point with:self.receivedBrush received:YES];
-            
         }
         
         if ([messageBrush.actionName isEqualToString:@"toucheEnded"])
         {
             receivedLastPoint = point;
+            lastPoint = point;
+            UIImage *newImage = self.tempImageView.image;
+            
+            if (newImage) {
+                [self.arrayUndo addObject:newImage];
+                self.undoButton.enabled = YES;
+            }
+            
+            if (undoMade) {
+                self.arrayRedo = [[NSMutableArray alloc]init];
+                self.redoButton.enabled = NO;
+                undoMade = NO;
+            }
+
         }
             
         }];
@@ -326,7 +339,7 @@
         [opque addOperation:operation];
     }
     
-    if ([message isKindOfClass:[MessageTextField class]]) {
+    else if ([message isKindOfClass:[MessageTextField class]]) {
         MessageTextField *messageText = (MessageTextField* )message;
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
@@ -468,6 +481,43 @@
         
     }
 
+    else if ([message isKindOfClass:[MessageUndo class]]) {
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            [self realizeUndo];
+            }];
+        
+        [opque addOperation:operation];
+    }
+    else if ([message isKindOfClass:[MessageRedo class]]) {
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            [self realizeRedo];
+        }];
+        
+        [opque addOperation:operation];
+    }
+    else if ([message isKindOfClass:[MessageNextPage class]]) {
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            [self realizeNextPage];
+        }];
+        
+        [opque addOperation:operation];
+    }
+    else if ([message isKindOfClass:[MessagePreviewPage class]]) {
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            [self realizePreviewPage];
+        }];
+        
+        [opque addOperation:operation];
+    }
    // NSString *receivedText = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
     
     
@@ -577,8 +627,53 @@
     }
 }
 
--(void)sendImageMessage:(MessageImage*) message
-{
+- (void)sendUndoMessage: (MessageUndo*) message{
+    
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+
+}
+- (void)sendRedoMessage: (MessageRedo*) message{
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+
+}
+- (void)sendNextPageMessage: (MessageNextPage*) message{
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+
+}
+- (void)sendPreviewPageMessage: (MessagePreviewPage*) message{
     NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
     NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
     NSError *error;
@@ -812,7 +907,7 @@
     }
 }
 
-- (IBAction)nextPage:(id)sender {
+- (void) realizeNextPage {
     
     //retira as imagens e textos da tela
     for (UIImageView *image in self.arrayImages) {
@@ -879,7 +974,7 @@
         Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
         
         [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:page];
-
+        
         
         //apaga a tela de desenho
         self.tempImageView.image = [[UIImage alloc] init];
@@ -919,7 +1014,7 @@
                         } completion:^(BOOL finished) {
                             /* hide/show the required cells*/
                         }];
-
+        
     }
     
     self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
@@ -944,9 +1039,142 @@
 
 
 }
-
-- (IBAction)previewsPage:(id)sender {
+- (IBAction)nextPage:(id)sender {
     
+//    //retira as imagens e textos da tela
+//    for (UIImageView *image in self.arrayImages) {
+//        [image removeFromSuperview];
+//    }
+//    for (UITextField *text in self.arrayTexts) {
+//        [text removeFromSuperview];
+//    }
+//    indexImage = 0;
+//    
+//    //se a página é a última
+//    if (maxPageIndex == currentPageIndex) {
+//        
+//        if ([self.arrayPages count]-1 != currentPageIndex) {
+//            //salva as infomações da página em uma lista
+//            UIImage *drawImageView = self.tempImageView.image;
+//            NSMutableArray *arrayImage = self.arrayImages;
+//            NSMutableArray *arrayText = self.arrayTexts;
+//            NSMutableArray *arrayUndo = self.arrayUndo;
+//            NSMutableArray *arrayRedo = self.arrayRedo;
+//            
+//            Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
+//            
+//            [self.arrayPages addObject:page];
+//        }
+//        
+//        //reseta as imagens e textos
+//        self.arrayImages = [[NSMutableArray alloc]init];
+//        self.arrayTexts = [[NSMutableArray alloc]init];
+//        self.arrayUndo = [[NSMutableArray alloc]init];
+//        self.arrayRedo = [[NSMutableArray alloc]init];
+//        self.layoutImageView.image = nil;
+//        
+//        
+//        //aumenta o numero de paginas total e avanca uma pagina
+//        maxPageIndex += 1;
+//        currentPageIndex +=1;
+//        
+//        //apaga o desenho
+//        self.tempImageView.image = [[UIImage alloc] init] ;
+//        
+//        [UIView transitionWithView:self.view
+//                          duration:0.3
+//                           options:UIViewAnimationOptionTransitionCrossDissolve
+//                        animations:^{
+//                            /* any other animation you want */
+//                        } completion:^(BOOL finished) {
+//                            /* hide/show the required cells*/
+//                        }];
+//        
+//    }
+//    
+//    //se a pagina atual não é a ultima
+//    else {
+//        
+//        
+//        //substitui as infomações da página atual na lista
+//        UIImage *drawImageView = self.tempImageView.image;
+//        NSMutableArray *arrayImage = self.arrayImages;
+//        NSMutableArray *arrayText = self.arrayTexts;
+//        NSMutableArray *arrayUndo = self.arrayUndo;
+//        NSMutableArray *arrayRedo = self.arrayRedo;
+//        
+//        Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
+//        
+//        [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:page];
+//
+//        
+//        //apaga a tela de desenho
+//        self.tempImageView.image = [[UIImage alloc] init];
+//        
+//        
+//        //resgata a pagina posterior
+//        currentPageIndex +=1;
+//        
+//        Page *nextPage = [self.arrayPages objectAtIndex:currentPageIndex];
+//        
+//        self.tempImageView.image = [nextPage drawView];
+//        self.arrayImages = [nextPage arrayImage];
+//        self.arrayTexts = [nextPage arrayText];
+//        self.arrayUndo = [nextPage arrayUndo];
+//        self.arrayRedo = [nextPage arrayRedo];
+//        self.layoutImageView.image = [nextPage backGroundImage];
+//        
+//        
+//        //adiciona imagens e textos
+//        for (UIImageView *image in self.arrayImages) {
+//            [self.scribbleView addSubview:image];
+//            [self bringToolBarToFront];
+//            [self.scribbleView sendSubviewToBack:self.layoutImageView];
+//        }
+//        
+//        for (UITextField *text in self.arrayTexts) {
+//            [self.scribbleView addSubview:text];
+//            [self bringToolBarToFront];
+//            
+//        }
+//        
+//        [UIView transitionWithView:self.view
+//                          duration:0.3
+//                           options:UIViewAnimationOptionTransitionCrossDissolve
+//                        animations:^{
+//                            /* any other animation you want */
+//                        } completion:^(BOOL finished) {
+//                            /* hide/show the required cells*/
+//                        }];
+//
+//    }
+//    
+//    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
+//    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :YES];
+//    
+//    [self.arrayPoints addObject:parameter];
+//    
+//    self.backButton.enabled = YES;
+//    
+//    if ([self.arrayUndo count] == 0) {
+//        self.undoButton.enabled = NO;
+//    }
+//    else {
+//        self.undoButton.enabled = YES;
+//    }
+//    if ([self.arrayRedo count] == 0) {
+//        self.redoButton.enabled = NO;
+//    }
+//    else {
+//        self.redoButton.enabled = YES;
+//    }
+    
+    MessageNextPage * message = [[MessageNextPage alloc]init];
+    [self realizeNextPage];
+    [self sendNextPageMessage:message];
+}
+
+- (void) realizePreviewPage {
     if (currentPageIndex >= 1) {
         
         //Salva a infomação da tela
@@ -1012,7 +1240,7 @@
                         } completion:^(BOOL finished) {
                             /* hide/show the required cells*/
                         }];
-
+        
     }
     self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
     if ([self.arrayUndo count] == 0) {
@@ -1027,11 +1255,105 @@
     else {
         self.redoButton.enabled = YES;
     }
-
+    
     
     VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :NO];
     
     [self.arrayPoints addObject:parameter];
+
+}
+- (IBAction)previewsPage:(id)sender {
+    
+//    if (currentPageIndex >= 1) {
+//        
+//        //Salva a infomação da tela
+//        UIImage *drawImageView = self.tempImageView.image;
+//        NSMutableArray *arrayImage = self.arrayImages;
+//        NSMutableArray *arrayText = self.arrayTexts;
+//        NSMutableArray *arrayUndo = self.arrayUndo;
+//        NSMutableArray *arrayRedo = self.arrayRedo;
+//        
+//        Page *newPage = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
+//        
+//        
+//        if ([self.arrayPages count]-1 >= currentPageIndex)
+//        {
+//            [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:newPage];
+//        }
+//        else
+//        {
+//            [self.arrayPages addObject:newPage];
+//        }
+//        
+//        //esvazia a página atual
+//        for (UIImageView *image in self.arrayImages) {
+//            [image removeFromSuperview];
+//        }
+//        for (UITextField *text in self.arrayTexts) {
+//            [text removeFromSuperview];
+//        }
+//        
+//        indexImage = 0;
+//        
+//        
+//        currentPageIndex -= 1;
+//        
+//        //desabilita o botão de voltar
+//        if (currentPageIndex == 0) {
+//            self.backButton.enabled = NO;
+//        }
+//        //preenche a pagina com a informaçao anterior
+//        Page *currentPage = [self.arrayPages objectAtIndex:currentPageIndex];
+//        
+//        self.tempImageView.image = [currentPage drawView];
+//        self.arrayImages = [currentPage arrayImage];
+//        self.arrayTexts = [currentPage arrayText];
+//        self.arrayUndo = [currentPage arrayUndo];
+//        self.arrayRedo = [currentPage arrayRedo];
+//        self.layoutImageView.image = [currentPage backGroundImage];
+//        
+//        for (UIImageView *image in self.arrayImages) {
+//            [self.scribbleView addSubview:image];
+//            [self bringToolBarToFront];
+//        }
+//        
+//        for (UITextField *text in self.arrayTexts) {
+//            [self.scribbleView addSubview:text];
+//            [self bringToolBarToFront];
+//        }
+//        [UIView transitionWithView:self.view
+//                          duration:0.3
+//                           options:UIViewAnimationOptionTransitionCrossDissolve
+//                        animations:^{
+//                            /* any other animation you want */
+//                        } completion:^(BOOL finished) {
+//                            /* hide/show the required cells*/
+//                        }];
+//
+//    }
+//    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
+//    if ([self.arrayUndo count] == 0) {
+//        self.undoButton.enabled = NO;
+//    }
+//    else {
+//        self.undoButton.enabled = YES;
+//    }
+//    if ([self.arrayRedo count] == 0) {
+//        self.redoButton.enabled = NO;
+//    }
+//    else {
+//        self.redoButton.enabled = YES;
+//    }
+//
+//    
+//    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :NO];
+//    
+//    [self.arrayPoints addObject:parameter];
+    
+    MessagePreviewPage * message = [[MessagePreviewPage alloc]init];
+    
+    [self sendPreviewPageMessage:message];
+    [self realizePreviewPage];
 }
 
 
@@ -2330,8 +2652,7 @@ bool moveScribble = NO;
 
 #pragma mark - UNDO/REDO Methods
 
-- (IBAction)undo:(id)sender {
-    
+- (void)realizeUndo{
     if ([[self.arrayUndo lastObject] isKindOfClass:[UIImage class]]) {
         UIImage *image = [self.arrayUndo lastObject];
         if (image) {
@@ -2376,7 +2697,7 @@ bool moveScribble = NO;
             [currentImage removeFromSuperview];
             
             int flag = 0;
-
+            
             for (int i = ([self.arrayUndo count] - 1.0); i >= 0 && flag == 0; i--) {
                 if ([self.arrayUndo[i] isKindOfClass:[Image class]]) {
                     if ([[self.arrayUndo[i] imageView] isEqual:currentImage]) {
@@ -2402,7 +2723,7 @@ bool moveScribble = NO;
         UIButton *deleteButton = [[imageView subviews] objectAtIndex:0];
         deleteButton.hidden = YES;
         deleteButton.enabled = NO;
-
+        
     }
     else if ([[self.arrayUndo lastObject] isKindOfClass:[TextRef class]]) {
         TextRef *text = [self.arrayUndo lastObject];
@@ -2442,7 +2763,7 @@ bool moveScribble = NO;
         }
         
     }
-
+    
     if ([self.arrayUndo count] == 0) {
         self.undoButton.enabled = NO;
         self.tempImageView.image = nil;
@@ -2451,11 +2772,138 @@ bool moveScribble = NO;
     self.redoButton.enabled = YES;
     undoMade = YES;
     NSLog(@"undo");
+
+
 }
 
-- (IBAction)redo:(id)sender {
+- (IBAction)undo:(id)sender {
     
+//    if ([[self.arrayUndo lastObject] isKindOfClass:[UIImage class]]) {
+//        UIImage *image = [self.arrayUndo lastObject];
+//        if (image) {
+//            [self.arrayRedo addObject:image];
+//            [self.arrayUndo removeObject:image];
+//            
+//            if ([[self.arrayUndo lastObject] isKindOfClass:[UIImage class]]) {
+//                self.tempImageView.image = [self.arrayUndo lastObject];
+//            }
+//            else if ([[self.arrayUndo lastObject] isKindOfClass:[Image class]]) {
+//                Image *photo = [self.arrayUndo lastObject];
+//                self.tempImageView.image = [photo canvasImage];
+//            }
+//            else if ([[self.arrayUndo lastObject] isKindOfClass:[UIImageView class]] || [[self.arrayUndo lastObject] isKindOfClass:[BackGroundImage class]]) {
+//                int flag = 0;
+//                
+//                for (int i = ([self.arrayUndo count] - 1.0); i >= 0 && flag == 0; i--) {
+//                    if ([self.arrayUndo[i] isKindOfClass:[UIImage class]]) {
+//                        self.tempImageView.image = self.arrayUndo[i];
+//                        flag = 1;
+//                    }
+//                }
+//                
+//                if (flag == 0) {
+//                    self.tempImageView.image = nil;
+//                }
+//            }
+//            else if ([[self.arrayUndo lastObject] isKindOfClass:[TextRef class]]) {
+//                TextRef *textRef = [self.arrayUndo lastObject];
+//                self.tempImageView.image = [textRef canvasImage];
+//            }
+//        }
+//        
+//    }
+//    else if ([[self.arrayUndo lastObject] isKindOfClass:[Image class]]) {
+//        Image *photo = [self.arrayUndo lastObject];
+//        
+//        if (photo) {
+//            currentImage = [photo imageView];
+//            [self.arrayRedo addObject:photo];
+//            [self.arrayUndo removeObject:photo];
+//            [currentImage removeFromSuperview];
+//            
+//            int flag = 0;
+//
+//            for (int i = ([self.arrayUndo count] - 1.0); i >= 0 && flag == 0; i--) {
+//                if ([self.arrayUndo[i] isKindOfClass:[Image class]]) {
+//                    if ([[self.arrayUndo[i] imageView] isEqual:currentImage]) {
+//                        Image *photo = self.arrayUndo[i];
+//                        currentImage.center = [photo imageCenter];
+//                        currentImage.transform = [photo imageTransform];
+//                        [self.scribbleView addSubview:currentImage];
+//                        [self.scribbleView bringSubviewToFront:self.tempImageView];
+//                        [self bringToolBarToFront];
+//                        flag = 1;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    
+//    else if ([[self.arrayUndo lastObject] isKindOfClass:[UIImageView class]]) {
+//        UIImageView *imageView = [self.arrayUndo lastObject];
+//        [self.arrayRedo addObject:imageView];
+//        [self.arrayUndo removeObject:imageView];
+//        [self.scribbleView addSubview:imageView];
+//        [imageView.layer setBorderWidth:0.0];
+//        UIButton *deleteButton = [[imageView subviews] objectAtIndex:0];
+//        deleteButton.hidden = YES;
+//        deleteButton.enabled = NO;
+//
+//    }
+//    else if ([[self.arrayUndo lastObject] isKindOfClass:[TextRef class]]) {
+//        TextRef *text = [self.arrayUndo lastObject];
+//        self.currentTextField = [text textField];
+//        [self.arrayRedo addObject:text];
+//        [self.arrayUndo removeObject:text];
+//        [self.currentTextField removeFromSuperview];
+//        
+//        int flag = 0;
+//        
+//        for (int i = ([self.arrayUndo count] - 1.0); i >= 0 && flag == 0; i--) {
+//            if ([self.arrayUndo[i] isKindOfClass:[TextRef class]]) {
+//                if ([[self.arrayUndo[i] textField] isEqual:self.currentTextField]) {
+//                    text = self.arrayUndo[i];
+//                    self.currentTextField.text = [text textString];
+//                    self.currentTextField.font = [UIFont fontWithName:[text textFontName] size:[text textFontSize]];
+//                    self.currentTextField.textColor = [text textColor];
+//                    self.currentTextField.center = [text textCenter];
+//                    self.currentTextField.transform = [text textTransform];
+//                    [self.scribbleView addSubview:self.currentTextField];
+//                    //[self.view bringSubviewToFront:self.tempImageView];
+//                    [self bringToolBarToFront];
+//                    flag = 1;
+//                }
+//            }
+//        }
+//    }
+//    else if ([[self.arrayUndo lastObject] isKindOfClass:[BackGroundImage class]]) {
+//        BackGroundImage *bgImage = [self.arrayUndo lastObject];
+//        [self.arrayRedo addObject:bgImage];
+//        [self.arrayUndo removeObject:bgImage];
+//        if ([[self.arrayUndo lastObject] isKindOfClass:[BackGroundImage class]]) {
+//            bgImage = [self.arrayUndo lastObject];
+//            self.layoutImageView.image = [bgImage image];
+//            [self.arrayRedo addObject:bgImage];
+//            [self.arrayUndo removeObject:bgImage];
+//        }
+//        
+//    }
+//
+//    if ([self.arrayUndo count] == 0) {
+//        self.undoButton.enabled = NO;
+//        self.tempImageView.image = nil;
+//    }
+//    
+//    self.redoButton.enabled = YES;
+//    undoMade = YES;
+//    NSLog(@"undo");
     
+    MessageUndo * message = [[MessageUndo alloc]init];
+    [self sendUndoMessage:message];
+    [self realizeUndo];
+}
+
+- (void) realizeRedo {
     if ([[self.arrayRedo lastObject] isKindOfClass:[UIImage class]]) {
         UIImage *image = [self.arrayRedo lastObject];
         
@@ -2511,7 +2959,7 @@ bool moveScribble = NO;
         UIButton *deleteButton = [[imageView subviews] objectAtIndex:0];
         deleteButton.hidden = YES;
         deleteButton.enabled = NO;
-
+        
     }
     else if ([[self.arrayRedo lastObject] isKindOfClass:[TextRef class]]) {
         TextRef *text = [self.arrayRedo lastObject];
@@ -2539,7 +2987,7 @@ bool moveScribble = NO;
             //[self.view bringSubviewToFront:self.tempImageView];
             [self bringToolBarToFront];
         }
-
+        
     }
     
     else if ([[self.arrayRedo lastObject] isKindOfClass:[BackGroundImage class]]) {
@@ -2554,8 +3002,8 @@ bool moveScribble = NO;
         }
         
     }
-
-
+    
+    
     
     if ([self.arrayRedo count] == 0) {
         self.redoButton.enabled = NO;
@@ -2565,6 +3013,123 @@ bool moveScribble = NO;
     
     self.undoButton.enabled = YES;
 
+}
+
+- (IBAction)redo:(id)sender {
+    
+    
+//    if ([[self.arrayRedo lastObject] isKindOfClass:[UIImage class]]) {
+//        UIImage *image = [self.arrayRedo lastObject];
+//        
+//        if (image) {
+//            [self.arrayUndo addObject:image];
+//            [self.arrayRedo removeObject:image];
+//            if ([[self.arrayRedo lastObject] isKindOfClass:[UIImage class]] || [[self.arrayRedo lastObject] isKindOfClass:[UIImageView class]]|| [[self.arrayRedo lastObject] isKindOfClass:[BackGroundImage class]]) {
+//                self.tempImageView.image = image;
+//            }
+//            else if ([[self.arrayRedo lastObject] isKindOfClass:[Image class]]) {
+//                Image *photo = [self.arrayRedo lastObject];
+//                self.tempImageView.image = [photo canvasImage];
+//                
+//            }
+//            else if ([[self.arrayRedo lastObject] isKindOfClass:[TextRef class]]){
+//                TextRef *textRef = [self.arrayRedo lastObject];
+//                self.tempImageView.image = [textRef canvasImage];
+//            }
+//        }
+//        if ([self.arrayRedo count] == 0) {
+//            self.tempImageView.image = image;
+//        }
+//    }
+//    else if ([[self.arrayRedo lastObject] isKindOfClass:[Image class]]) {
+//        Image *photo = [self.arrayRedo lastObject];
+//        if (photo) {
+//            currentImage = [photo imageView];
+//            [self.arrayUndo addObject:photo];
+//            [self.arrayRedo removeObject:photo];
+//            [currentImage removeFromSuperview];
+//            currentImage.center = [photo imageCenter];
+//            currentImage.transform = [photo imageTransform];
+//            self.tempImageView.image = [photo canvasImage];
+//            [self.scribbleView addSubview:currentImage];
+//            [self.scribbleView bringSubviewToFront:self.tempImageView];
+//            [self bringToolBarToFront];
+//            
+//            if ([self.arrayRedo count] == 0) {
+//                currentImage.center = [photo imageCenter];
+//                currentImage.transform = [photo imageTransform];
+//                [self.scribbleView addSubview:currentImage];
+//                [self.scribbleView bringSubviewToFront:self.tempImageView];
+//                [self bringToolBarToFront];
+//            }
+//        }
+//    }
+//    else if ([[self.arrayRedo lastObject] isKindOfClass:[UIImageView class]]) {
+//        UIImageView *imageView = [self.arrayRedo lastObject];
+//        [self.arrayUndo addObject:imageView];
+//        [self.arrayRedo removeObject:imageView];
+//        [imageView removeFromSuperview];
+//        [imageView.layer setBorderWidth:0.0];
+//        UIButton *deleteButton = [[imageView subviews] objectAtIndex:0];
+//        deleteButton.hidden = YES;
+//        deleteButton.enabled = NO;
+//
+//    }
+//    else if ([[self.arrayRedo lastObject] isKindOfClass:[TextRef class]]) {
+//        TextRef *text = [self.arrayRedo lastObject];
+//        self.currentTextField = [text textField];
+//        [self.arrayUndo addObject:text];
+//        [self.arrayRedo removeObject:text];
+//        [self.currentTextField removeFromSuperview];
+//        self.currentTextField.text = [text textString];
+//        self.currentTextField.font = [UIFont fontWithName:[text textFontName] size:[text textFontSize]];
+//        self.currentTextField.textColor = [text textColor];
+//        self.currentTextField.center = [text textCenter];
+//        self.currentTextField.transform = [text textTransform];
+//        self.tempImageView.image = [text canvasImage];
+//        
+//        [self.scribbleView addSubview:self.currentTextField];
+//        [self bringToolBarToFront];
+//        
+//        if ([self.arrayRedo count] == 0) {
+//            self.currentTextField.text = [text textString];
+//            self.currentTextField.font = [UIFont fontWithName:[text textFontName] size:[text textFontSize]];
+//            self.currentTextField.textColor = [text textColor];
+//            self.currentTextField.center = [text textCenter];
+//            self.currentTextField.transform = [text textTransform];
+//            [self.scribbleView addSubview:self.currentTextField];
+//            //[self.view bringSubviewToFront:self.tempImageView];
+//            [self bringToolBarToFront];
+//        }
+//
+//    }
+//    
+//    else if ([[self.arrayRedo lastObject] isKindOfClass:[BackGroundImage class]]) {
+//        BackGroundImage *bgImage = [self.arrayRedo lastObject];
+//        [self.arrayUndo addObject:bgImage];
+//        [self.arrayRedo removeObject:bgImage];
+//        if ([[self.arrayRedo lastObject] isKindOfClass:[BackGroundImage class]]) {
+//            bgImage = [self.arrayRedo lastObject];
+//            self.layoutImageView.image = [bgImage image];
+//            [self.arrayUndo addObject:bgImage];
+//            [self.arrayRedo removeObject:bgImage];
+//        }
+//        
+//    }
+//
+//
+//    
+//    if ([self.arrayRedo count] == 0) {
+//        self.redoButton.enabled = NO;
+//        undoMade = NO;
+//    }
+//    
+//    
+//    self.undoButton.enabled = YES;
+    MessageRedo * message = [[MessageRedo alloc]init];
+    [self sendRedoMessage:message];
+    
+    [self realizeRedo];
 }
 
 #pragma mark - CollectionViewControllerDelegateMethod

@@ -195,13 +195,12 @@
         [question setObject:@"Anonym" forKey:@"name"];
     }
 
-    
-    //[question setObject:[currentUser objectForKey:@"userName"] forKey:@"name"];
     [question setObject:self.titleTextField.text forKey:@"title"];
     [question setObject:self.textView.text forKey:@"text"];
     [question setObject:[NSNumber numberWithInt:0] forKey:@"upVotes"];
     [question setObject:[NSNumber numberWithInt:0] forKey:@"downVotes"];
     [question setObject:[NSNumber numberWithInt:0] forKey:@"upDownDifference"];
+    [question setObject:[NSNumber numberWithBool:YES] forKey:@"isPublic"];
     
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activityIndicator.center = self.view.center;
@@ -253,17 +252,99 @@
                 }
                 
             }];
-            
-//            [question save];
-//            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua pergunta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//            [message show];
-//            [self.tabBarController setSelectedIndex:0];
-
         }
     }];
 }
 - (IBAction)sendQuestionToTeacher:(id)sender {
     
+    PFUser *currentUser = [PFUser currentUser];
+    
+    BOOL linkedWithFacebook = [PFFacebookUtils isLinkedWithUser:currentUser];
+    BOOL linkedWithTwitter = [PFTwitterUtils isLinkedWithUser:currentUser];
+    
+    PFObject *question = [PFObject objectWithClassName:@"Question"];
+    
+    if (!linkedWithFacebook && !linkedWithTwitter && ![self.isAnonymSwitch isOn]) {
+        NSString *name = [currentUser objectForKey:@"username"];
+        [question setObject:name forKey:@"name"];
+    }
+    else if (linkedWithFacebook && ![self.isAnonymSwitch isOn]) {
+        FBRequest *request = [FBRequest requestForMe];
+        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (!error) {
+                NSDictionary *userData = (NSDictionary *)result;
+                NSString *userName = userData[@"name"];
+                [question setObject:userName forKey:@"name"];
+            }}];
+    }
+    else if (linkedWithTwitter && ![self.isAnonymSwitch isOn]) {
+        NSString *twitterUsername = [[PFTwitterUtils twitter] screenName];
+        [question setObject:twitterUsername forKey:@"name"];
+    }
+    else {
+        [question setObject:@"Anonym" forKey:@"name"];
+    }
+    
+    [question setObject:self.titleTextField.text forKey:@"title"];
+    [question setObject:self.textView.text forKey:@"text"];
+    [question setObject:[NSNumber numberWithInt:0] forKey:@"upVotes"];
+    [question setObject:[NSNumber numberWithInt:0] forKey:@"downVotes"];
+    [question setObject:[NSNumber numberWithInt:0] forKey:@"upDownDifference"];
+    [question setObject:[NSNumber numberWithBool:NO] forKey:@"isPublic"];
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.center = self.view.center;
+    activityIndicator.hidesWhenStopped = YES;
+    [self.view addSubview:activityIndicator];
+    [activityIndicator startAnimating];
+    
+    
+    if (self.imageView.image) {
+        NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 0.8);
+        NSString *filename = [NSString stringWithFormat:@"%@.png", self.titleTextField.text];
+        PFFile *imageFile = [PFFile fileWithName:filename data:imageData];
+        [question setObject:imageFile forKey:@"imageFile"];
+    }
+    
+    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
+    PFQuery *uQuestionQuery = [repository unansweredQuestionsQuery];
+    //PFObject *uQuestion = [[repository unansweredQuestionsQuery] getFirstObject];
+    
+    [uQuestionQuery getFirstObjectInBackgroundWithBlock:^(PFObject *uQuestion, NSError *error){
+        if (!error)
+        {
+            [question setObject: uQuestion forKey:@"uQuestions"];
+            
+            PFACL *acl = [PFACL ACL];
+            
+            [acl setPublicReadAccess:YES];
+            [acl setPublicWriteAccess:YES];
+            
+            [question setObject:acl forKey:@"ACL"];
+            
+            [question saveInBackgroundWithBlock:^(BOOL succeeded, NSError *errorSave) {
+                
+                if (!errorSave) {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua pergunta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [message show];
+                    [self.tabBarController setSelectedIndex:0];
+                    
+                    
+                    //Notify table view to reload the recipes from Parse cloud
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
+                    
+                    [activityIndicator stopAnimating];
+                    
+                } else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [activityIndicator stopAnimating];
+                }
+                
+            }];
+        }
+    }];
+
 }
 
 - (IBAction)sendAnswer:(id)sender {
