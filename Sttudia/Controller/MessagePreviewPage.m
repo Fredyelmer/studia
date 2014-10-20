@@ -9,5 +9,15 @@
 #import "MessagePreviewPage.h"
 
 @implementation MessagePreviewPage
+-(id)initWithCoder:(NSCoder *)decoder
+{
+    if (self = [super init]) {
+    }
+    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)encoder
+{
+}
 
 @end

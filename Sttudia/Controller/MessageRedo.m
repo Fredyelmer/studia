@@ -9,5 +9,15 @@
 #import "MessageRedo.h"
 
 @implementation MessageRedo
+-(id)initWithCoder:(NSCoder *)decoder
+{
+    if (self = [super init]) {
+    }
+    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)encoder
+{
+}
 
 @end
