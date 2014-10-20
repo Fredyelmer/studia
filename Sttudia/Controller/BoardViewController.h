@@ -25,7 +25,6 @@
 #import "ColorFontViewController.h"
 #import "ThicknessViewController.h"
 #import "Image.h"
-
 #import "TextRef.h"
 #import "BackGroundImage.h"
 #import "TabViewController.h"
@@ -127,6 +126,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *maskActionBarButton;
 @property (strong, nonatomic) IBOutlet UIButton *connectDevice;
 
+
+- (IBAction)logOut:(id)sender;
 
 - (IBAction)startVideoRecord:(id)sender;
 - (IBAction)reproduzirGravacao:(id)sender;

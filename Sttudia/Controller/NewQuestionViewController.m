@@ -166,16 +166,37 @@
 }
 
 - (IBAction)sendQuestionToEveryone:(id)sender {
-//    Question * question = [[Question alloc]initWithAuthor:@"Autor generico" title:self.titleTextField.text text:self.textView.text image:self.imageView.image];
-//    QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-//    [repository addUnansweredQuestion:question];
-//    
-//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Enviado!" message:@"Sua pergunta foi enviada para todos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//    [message show];
-//    [self.tabBarController setSelectedIndex:0];
+    
+    PFUser *currentUser = [PFUser currentUser];
+    
+    BOOL linkedWithFacebook = [PFFacebookUtils isLinkedWithUser:currentUser];
+    BOOL linkedWithTwitter = [PFTwitterUtils isLinkedWithUser:currentUser];
     
     PFObject *question = [PFObject objectWithClassName:@"Question"];
-    [question setObject:@"Autor Generico" forKey:@"name"];
+    
+    if (!linkedWithFacebook && !linkedWithTwitter && ![self.isAnonymSwitch isOn]) {
+        NSString *name = [currentUser objectForKey:@"username"];
+        [question setObject:name forKey:@"name"];
+    }
+    else if (linkedWithFacebook && ![self.isAnonymSwitch isOn]) {
+        FBRequest *request = [FBRequest requestForMe];
+        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (!error) {
+                NSDictionary *userData = (NSDictionary *)result;
+                NSString *userName = userData[@"name"];
+                [question setObject:userName forKey:@"name"];
+            }}];
+    }
+    else if (linkedWithTwitter && ![self.isAnonymSwitch isOn]) {
+        NSString *twitterUsername = [[PFTwitterUtils twitter] screenName];
+        [question setObject:twitterUsername forKey:@"name"];
+    }
+    else {
+        [question setObject:@"Anonym" forKey:@"name"];
+    }
+
+    
+    //[question setObject:[currentUser objectForKey:@"userName"] forKey:@"name"];
     [question setObject:self.titleTextField.text forKey:@"title"];
     [question setObject:self.textView.text forKey:@"text"];
     [question setObject:[NSNumber numberWithInt:0] forKey:@"upVotes"];
@@ -248,7 +269,35 @@
 - (IBAction)sendAnswer:(id)sender {
     
     PFObject *answer = [PFObject objectWithClassName:@"Answer"];
-    [answer setObject:@"Autor Generico" forKey:@"name"];
+    
+    PFUser *currentUser = [PFUser currentUser];
+    
+    BOOL linkedWithFacebook = [PFFacebookUtils isLinkedWithUser:currentUser];
+    BOOL linkedWithTwitter = [PFTwitterUtils isLinkedWithUser:currentUser];
+    
+    if (!linkedWithFacebook && !linkedWithTwitter && ![self.isAnonymSwitch isOn]) {
+        NSString *name = [currentUser objectForKey:@"username"];
+        [answer setObject:name forKey:@"name"];
+    }
+    else if (linkedWithFacebook && ![self.isAnonymSwitch isOn]) {
+        FBRequest *request = [FBRequest requestForMe];
+        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (!error) {
+                NSDictionary *userData = (NSDictionary *)result;
+                NSString *userName = userData[@"name"];
+                [answer setObject:userName forKey:@"name"];
+            }}];
+    }
+    else if (linkedWithTwitter && ![self.isAnonymSwitch isOn]) {
+        NSString *twitterUsername = [[PFTwitterUtils twitter] screenName];
+        [answer setObject:twitterUsername forKey:@"name"];
+    }
+    else {
+        [answer setObject:@"Anonym" forKey:@"name"];
+    }
+    
+    
+    //[answer setObject:@"Autor Generico" forKey:@"name"];
     [answer setObject:self.textView.text forKey:@"text"];
     [answer setObject:[NSNumber numberWithInt:0] forKey:@"upVotes"];
     [answer setObject:[NSNumber numberWithInt:0] forKey:@"downVotes"];

@@ -86,7 +86,10 @@
     
     //será substituido pelo método que cria o novo repositório
     QuestionsRepository *qRepository = [QuestionsRepository sharedRepository];
-    self.questionsButton.enabled = NO;
+    
+    if (![qRepository answeredQuestionsList]) {
+        self.questionsButton.enabled = NO;
+    }
     
     qRepository.delegate = self;
     
@@ -656,6 +659,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)logOut:(id)sender {
+    
+    [PFUser logOut];
+    
+    [self performSegueWithIdentifier:@"classLogOutSender" sender:nil];
+    
 }
 
 - (IBAction)startVideoRecord:(id)sender {
