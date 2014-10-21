@@ -518,6 +518,43 @@
         
         [opque addOperation:operation];
     }
+    else if ([message isMemberOfClass:[MessageChangeBackGround class]]) {
+        
+        MessageChangeBackGround *msgBackGround = (MessageChangeBackGround*) message;
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            
+            if (msgBackGround.nameImage) {
+                [self performChangeBackground:msgBackGround.nameImage];
+            }
+            else
+            {
+                [self putImageAsBackground:msgBackGround.image];
+            }
+        }];
+        
+        [opque addOperation:operation];
+    }
+    else if ([message isMemberOfClass:[MessageResetAll class]]) {
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            [self performResetAll];
+        }];
+        
+        [opque addOperation:operation];
+    }
+    else if ([message isMemberOfClass:[MessageResetTint class]]) {
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            [self performResetTint];
+        }];
+        
+        [opque addOperation:operation];
+    }
+
    // NSString *receivedText = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
     
     
@@ -701,6 +738,57 @@
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
+}
+
+- (void)sendChangeBackgroundMessage: (MessageChangeBackGround*)message {
+    
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+
+
+}
+
+- (void)sendResetAllMessage: (MessageResetAll*)message {
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+
+    
+}
+- (void)sendResetTintMessage: (MessageResetTint*)message {
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+
+    
 }
 
 -(void) handlePinch:(UIPinchGestureRecognizer*)sender
@@ -2024,6 +2112,21 @@ bool moveScribble = NO;
 }
 
 #pragma mark - ImagePickerControllerDelegateMethod
+- (void) putImageAsBackground : (UIImage*)choseImage{
+    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:choseImage];
+    [self.arrayUndo addObject:bgImage];
+    [self.layoutImageView setImage:choseImage];
+    [self.view sendSubviewToBack:self.layoutImageView];
+    [self.layoutView setHidden:YES];
+    isForBackGround = NO;
+    
+    if (undoMade) {
+        self.arrayRedo = [[NSMutableArray alloc]init];
+        self.redoButton.enabled = NO;
+        undoMade = NO;
+    }
+
+}
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	
@@ -2039,10 +2142,25 @@ bool moveScribble = NO;
         
     }
     else{
-        [self.layoutImageView setImage:choseImage];
-        [self.view sendSubviewToBack:self.layoutImageView];
-        [self.layoutView setHidden:YES];
-        isForBackGround = NO;
+//        BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:choseImage];
+//        [self.arrayUndo addObject:bgImage];
+//        [self.layoutImageView setImage:choseImage];
+//        [self.view sendSubviewToBack:self.layoutImageView];
+//        [self.layoutView setHidden:YES];
+//        isForBackGround = NO;
+//        
+//        if (undoMade) {
+//            self.arrayRedo = [[NSMutableArray alloc]init];
+//            self.redoButton.enabled = NO;
+//            undoMade = NO;
+//        }
+        [self putImageAsBackground:choseImage];
+        
+        MessageChangeBackGround* message = [[MessageChangeBackGround alloc]init];
+        message.image = choseImage;
+        [self sendChangeBackgroundMessage:message];
+        
+
     }
 }
 
@@ -2600,49 +2718,95 @@ bool moveScribble = NO;
     [self.view bringSubviewToFront:self.layoutView];
 }
 
+- (void)performChangeBackground: (NSString*)imageName
+{
+    NSLog(@"button %@", imageName);
+    UIImage *image;
+    
+    if ([imageName  isEqualToString: @"White"]) {
+        image = [[UIImage alloc] init];
+    }
+    else if ([imageName  isEqualToString: @"Square"]) {
+        image = [UIImage imageNamed:@"squared.png"];
+    }
+    else if ([imageName  isEqualToString: @"Line"]) {
+        image = [UIImage imageNamed:@"notebookPaper.png"];
+    }
+    else if ([imageName  isEqualToString: @"Note"]) {
+        image = [UIImage imageNamed:@"agenda.png"];
+    }
+    
+    if (image){
+        [self.layoutImageView setImage:image];
+        BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
+        [self.arrayUndo addObject:bgImage];
+
+        bgImage = [[BackGroundImage alloc]initWithImage:image];
+        [self.view sendSubviewToBack:self.layoutImageView];
+        [self.layoutView setHidden:YES];
+        [self.arrayUndo addObject:bgImage];
+    
+        if (undoMade) {
+            self.arrayRedo = [[NSMutableArray alloc]init];
+            self.redoButton.enabled = NO;
+            undoMade = NO;
+        }
+    }
+
+}
 
 - (IBAction)changeLayout:(UIButton *)sender
 {
-    NSLog(@"button %@", sender.titleLabel.text);
-    UIImage *image;
-    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
-    [self.arrayUndo addObject:bgImage];
-    
-    if ([sender.titleLabel.text  isEqual: @"White"]) {
-        image = [[UIImage alloc] init];
-    }
-    if ([sender.titleLabel.text  isEqual: @"Square"]) {
-        image = [UIImage imageNamed:@"squared.png"];
-    }
-    if ([sender.titleLabel.text  isEqual: @"Line"]) {
-        image = [UIImage imageNamed:@"notebookPaper.png"];
-    }
-    if ([sender.titleLabel.text  isEqual: @"Note"]) {
-        image = [UIImage imageNamed:@"agenda.png"];
-    }
+//    NSLog(@"button %@", sender.titleLabel.text);
+//    UIImage *image;
+//    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
+//    [self.arrayUndo addObject:bgImage];
+//    
+//    if ([sender.titleLabel.text  isEqual: @"White"]) {
+//        image = [[UIImage alloc] init];
+//    }
+//    if ([sender.titleLabel.text  isEqual: @"Square"]) {
+//        image = [UIImage imageNamed:@"squared.png"];
+//    }
+//    if ([sender.titleLabel.text  isEqual: @"Line"]) {
+//        image = [UIImage imageNamed:@"notebookPaper.png"];
+//    }
+//    if ([sender.titleLabel.text  isEqual: @"Note"]) {
+//        image = [UIImage imageNamed:@"agenda.png"];
+//    }
+    [self performChangeBackground:sender.titleLabel.text];
     
     if ([sender.titleLabel.text  isEqual: @"Custon Image"]) {
         UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
         //UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc]init];
         pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         pickerLibrary.delegate = self;
-        [self presentViewController:pickerLibrary animated:YES completion:nil];
         isForBackGround = YES;
+        [self presentViewController:pickerLibrary animated:YES completion:nil];
         
+        if (undoMade) {
+            self.arrayRedo = [[NSMutableArray alloc]init];
+            self.redoButton.enabled = NO;
+            undoMade = NO;
+        }
     }
-    [self.layoutImageView setImage:image];
     
-    bgImage = [[BackGroundImage alloc]initWithImage:image];
-    [self.view sendSubviewToBack:self.layoutImageView];
-    [self.layoutView setHidden:YES];
-    [self.arrayUndo addObject:bgImage];
-    
-    if (undoMade) {
-        self.arrayRedo = [[NSMutableArray alloc]init];
-        self.redoButton.enabled = NO;
-        undoMade = NO;
+    else {
+        MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
+        message.nameImage = sender.titleLabel.text;
+        [self sendChangeBackgroundMessage:message];
     }
-
+//    [self.layoutImageView setImage:image];
+//    
+//    bgImage = [[BackGroundImage alloc]initWithImage:image];
+//    [self.view sendSubviewToBack:self.layoutImageView];
+//    [self.layoutView setHidden:YES];
+//    [self.arrayUndo addObject:bgImage];
+    
+//    MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
+//    message.nameImage = sender.titleLabel.text;
+//    [self sendChangeBackgroundMessage:message];
+    
 }
 
 - (IBAction)acessQuestions:(id)sender {
@@ -3158,25 +3322,37 @@ bool moveScribble = NO;
     [self sendImageMessage:message];
 }
 
-#pragma mark - ResetViewControllerDelegateMethods
+#pragma mark - ResetViewControllerMethods
+- (void)performResetTint {
+    self.tempImageView.image = nil;
+}
+
 - (void) resetTint
 {
-    self.tempImageView.image = nil;
+    MessageResetTint * message = [[MessageResetTint alloc]init];
+    [self performResetTint];
+    [self sendResetTintMessage:message];
 }
 
 - (void) resetAll
 {
+    MessageResetAll * message = [[MessageResetAll alloc]init];
+    [self performResetAll];
+    [self sendResetAllMessage:message];
+}
+
+- (void)performResetAll {
     for (UIImageView* imageView in self.arrayImages) {
         [imageView removeFromSuperview];
     }
     for (UITextField* textField in self.arrayTexts) {
         [textField removeFromSuperview];
     }
-    [self resetTint];
+    [self performResetTint];
     self.arrayImages = [[NSMutableArray alloc]init];
     self.arrayTexts = [[NSMutableArray alloc]init];
     indexImage = 0;
-    
+
 }
 
 -(void)newThicknessBrush:(CGFloat)thickness

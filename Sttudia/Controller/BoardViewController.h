@@ -44,6 +44,9 @@
 #import "MessageRedo.h"
 #import "MessageNextPage.h"
 #import "MessagePreviewPage.h"
+#import "MessageChangeBackGround.h"
+#import "MessageResetAll.h"
+#import "MessageResetTint.h"
 
 @interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate, QuestionRepositoryDelegate>
 {
