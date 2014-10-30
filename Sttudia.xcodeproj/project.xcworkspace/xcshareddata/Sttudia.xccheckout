@@ -14,7 +14,7 @@
 		<string>https://github.com/Fredyelmer/studia.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Sttudia.xcodeproj/project.xcworkspace</string>
+	<string>Sttudia.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>B117BCED2EE81886CF17F941FD26A9EB6B9EAE68</key>

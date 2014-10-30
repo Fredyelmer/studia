@@ -47,11 +47,14 @@
 #import "MessageChangeBackGround.h"
 #import "MessageResetAll.h"
 #import "MessageResetTint.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate, QuestionRepositoryDelegate>
 {
     CGPoint lastPoint;
+    CGPoint receivedCurrentPoint;
     CGPoint receivedLastPoint;
+    CGPoint receivedLastPoint2;
     CGFloat red;
     CGFloat green;
     CGFloat blue;
@@ -91,7 +94,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *snapShotButtom;
 @property (strong, nonatomic) IBOutlet UIButton *recAudio;
 @property (strong, nonatomic) IBOutlet UIButton *pauseRecAudio;
-@property (strong, nonatomic) IBOutlet UIButton *confirmImageButton;
+//@property (strong, nonatomic) IBOutlet UIButton *confirmImageButton;
 @property (strong, nonatomic) IBOutlet UIButton *addImageButton;
 
 
@@ -135,8 +138,8 @@
 
 - (IBAction)logOut:(id)sender;
 
-- (IBAction)startVideoRecord:(id)sender;
-- (IBAction)reproduzirGravacao:(id)sender;
+//- (IBAction)startVideoRecord:(id)sender;
+//- (IBAction)reproduzirGravacao:(id)sender;
 - (IBAction)confirmImageEdition:(id)sender;
 
 - (IBAction)addImage:(id)sender;

@@ -37,6 +37,11 @@
                BlueprintName = "SttudiaTests"
                ReferencedContainer = "container:Sttudia.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "SttudiaTests/testExample">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

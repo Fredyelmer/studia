@@ -83,6 +83,6 @@
 
 - (IBAction)beginClass:(id)sender {
     
-    [self performSegueWithIdentifier:@"classSegue" sender:nil];
+    [self performSegueWithIdentifier:@"classSegue1" sender:nil];
 }
 @end

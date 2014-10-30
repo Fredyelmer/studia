@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface InitialViewController : UIViewController
-- (IBAction)continuar:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end

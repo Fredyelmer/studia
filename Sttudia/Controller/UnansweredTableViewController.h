@@ -24,4 +24,5 @@
 @property (strong, nonatomic) PFObject *selectedQuestion;
 
 @property (strong, nonatomic) PFUser *currentUser;
+
 @end
