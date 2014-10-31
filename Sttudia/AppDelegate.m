@@ -72,7 +72,8 @@
     // Handle an interruption during the authorization flow, such as the user clicking the home button.
     //[FBSession.activeSession handleDidBecomeActive];
     
-    [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
+    //[FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
+    [FBAppEvents activateApp];
 
 }
 

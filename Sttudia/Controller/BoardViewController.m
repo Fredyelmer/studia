@@ -43,11 +43,8 @@
     //CGFloat currentTextRotation;
     CGPoint currentTextCenter;
     CGAffineTransform currentTextTransform;
-    
     CGPoint lastPoint2;
     CGPoint currentPoint;
-    CGMutablePathRef mPath;
-    
 }
 
 //variaveis usadas para oespelhamento das telas
@@ -125,7 +122,6 @@
 //    [self.view addSubview: activityIndicator];
 
     self.scribbleView.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-    
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     //inicializa o brush
@@ -259,8 +255,6 @@
 //                                               object:nil];
 
 
-    
-    mPath = CGPathCreateMutable();
 }
 
 //-(void)peerDidChangeStateWithNotification:(NSNotification *)notification{
@@ -988,9 +982,12 @@
         isImageEditing = YES;
         gesture.view.alpha = 1.5;
         
-        for (UIImageView* image in self.arrayImages) {
-            if ([image isEqual:(UIImageView*)gesture.view]) {
-                currentImage = image;
+        BOOL objectFound = NO;
+        for (int i = 0; i < [self.arrayImages count] && !objectFound; i++) {
+            if ([self.arrayImages[i] isEqual:(UIImageView*)gesture.view]) {
+                currentImage = self.arrayImages[i];
+                [self.arrayImages removeObjectAtIndex:i];
+                objectFound = YES;
                 //currentImageRotation = 0;
             }
         }
@@ -1120,13 +1117,13 @@
         //adiciona imagens e textos
         for (UIImageView *image in self.arrayImages) {
             [self.scribbleView addSubview:image];
-            [self bringToolBarToFront];
+            //[self bringToolBarToFront];
             [self.scribbleView sendSubviewToBack:self.layoutImageView];
         }
         
         for (UITextField *text in self.arrayTexts) {
             [self.scribbleView addSubview:text];
-            [self bringToolBarToFront];
+            //[self bringToolBarToFront];
             
         }
         
@@ -1160,139 +1157,11 @@
     else {
         self.redoButton.enabled = YES;
     }
-
-
+    [self.scribbleView bringSubviewToFront: self.tempImageView];
+    [self bringToolBarToFront];
 }
 - (IBAction)nextPage:(id)sender {
-    
-//    //retira as imagens e textos da tela
-//    for (UIImageView *image in self.arrayImages) {
-//        [image removeFromSuperview];
-//    }
-//    for (UITextField *text in self.arrayTexts) {
-//        [text removeFromSuperview];
-//    }
-//    indexImage = 0;
-//    
-//    //se a página é a última
-//    if (maxPageIndex == currentPageIndex) {
-//        
-//        if ([self.arrayPages count]-1 != currentPageIndex) {
-//            //salva as infomações da página em uma lista
-//            UIImage *drawImageView = self.tempImageView.image;
-//            NSMutableArray *arrayImage = self.arrayImages;
-//            NSMutableArray *arrayText = self.arrayTexts;
-//            NSMutableArray *arrayUndo = self.arrayUndo;
-//            NSMutableArray *arrayRedo = self.arrayRedo;
-//            
-//            Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
-//            
-//            [self.arrayPages addObject:page];
-//        }
-//        
-//        //reseta as imagens e textos
-//        self.arrayImages = [[NSMutableArray alloc]init];
-//        self.arrayTexts = [[NSMutableArray alloc]init];
-//        self.arrayUndo = [[NSMutableArray alloc]init];
-//        self.arrayRedo = [[NSMutableArray alloc]init];
-//        self.layoutImageView.image = nil;
-//        
-//        
-//        //aumenta o numero de paginas total e avanca uma pagina
-//        maxPageIndex += 1;
-//        currentPageIndex +=1;
-//        
-//        //apaga o desenho
-//        self.tempImageView.image = [[UIImage alloc] init] ;
-//        
-//        [UIView transitionWithView:self.view
-//                          duration:0.3
-//                           options:UIViewAnimationOptionTransitionCrossDissolve
-//                        animations:^{
-//                            /* any other animation you want */
-//                        } completion:^(BOOL finished) {
-//                            /* hide/show the required cells*/
-//                        }];
-//        
-//    }
-//    
-//    //se a pagina atual não é a ultima
-//    else {
-//        
-//        
-//        //substitui as infomações da página atual na lista
-//        UIImage *drawImageView = self.tempImageView.image;
-//        NSMutableArray *arrayImage = self.arrayImages;
-//        NSMutableArray *arrayText = self.arrayTexts;
-//        NSMutableArray *arrayUndo = self.arrayUndo;
-//        NSMutableArray *arrayRedo = self.arrayRedo;
-//        
-//        Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
-//        
-//        [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:page];
-//
-//        
-//        //apaga a tela de desenho
-//        self.tempImageView.image = [[UIImage alloc] init];
-//        
-//        
-//        //resgata a pagina posterior
-//        currentPageIndex +=1;
-//        
-//        Page *nextPage = [self.arrayPages objectAtIndex:currentPageIndex];
-//        
-//        self.tempImageView.image = [nextPage drawView];
-//        self.arrayImages = [nextPage arrayImage];
-//        self.arrayTexts = [nextPage arrayText];
-//        self.arrayUndo = [nextPage arrayUndo];
-//        self.arrayRedo = [nextPage arrayRedo];
-//        self.layoutImageView.image = [nextPage backGroundImage];
-//        
-//        
-//        //adiciona imagens e textos
-//        for (UIImageView *image in self.arrayImages) {
-//            [self.scribbleView addSubview:image];
-//            [self bringToolBarToFront];
-//            [self.scribbleView sendSubviewToBack:self.layoutImageView];
-//        }
-//        
-//        for (UITextField *text in self.arrayTexts) {
-//            [self.scribbleView addSubview:text];
-//            [self bringToolBarToFront];
-//            
-//        }
-//        
-//        [UIView transitionWithView:self.view
-//                          duration:0.3
-//                           options:UIViewAnimationOptionTransitionCrossDissolve
-//                        animations:^{
-//                            /* any other animation you want */
-//                        } completion:^(BOOL finished) {
-//                            /* hide/show the required cells*/
-//                        }];
-//
-//    }
-//    
-//    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
-//    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :YES];
-//    
-//    [self.arrayPoints addObject:parameter];
-//    
-//    self.backButton.enabled = YES;
-//    
-//    if ([self.arrayUndo count] == 0) {
-//        self.undoButton.enabled = NO;
-//    }
-//    else {
-//        self.undoButton.enabled = YES;
-//    }
-//    if ([self.arrayRedo count] == 0) {
-//        self.redoButton.enabled = NO;
-//    }
-//    else {
-//        self.redoButton.enabled = YES;
-//    }
-    
+        
     MessageNextPage * message = [[MessageNextPage alloc]init];
     [self realizeNextPage];
     [self sendNextPageMessage:message];
@@ -1349,12 +1218,12 @@
         
         for (UIImageView *image in self.arrayImages) {
             [self.scribbleView addSubview:image];
-            [self bringToolBarToFront];
+            //[self bringToolBarToFront];
         }
         
         for (UITextField *text in self.arrayTexts) {
             [self.scribbleView addSubview:text];
-            [self bringToolBarToFront];
+            //[self bringToolBarToFront];
         }
         [UIView transitionWithView:self.view
                           duration:0.3
@@ -1380,99 +1249,15 @@
         self.redoButton.enabled = YES;
     }
     
-    
-    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :NO];
-    
-    [self.arrayPoints addObject:parameter];
-
-}
-- (IBAction)previewsPage:(id)sender {
-    
-//    if (currentPageIndex >= 1) {
-//        
-//        //Salva a infomação da tela
-//        UIImage *drawImageView = self.tempImageView.image;
-//        NSMutableArray *arrayImage = self.arrayImages;
-//        NSMutableArray *arrayText = self.arrayTexts;
-//        NSMutableArray *arrayUndo = self.arrayUndo;
-//        NSMutableArray *arrayRedo = self.arrayRedo;
-//        
-//        Page *newPage = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
-//        
-//        
-//        if ([self.arrayPages count]-1 >= currentPageIndex)
-//        {
-//            [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:newPage];
-//        }
-//        else
-//        {
-//            [self.arrayPages addObject:newPage];
-//        }
-//        
-//        //esvazia a página atual
-//        for (UIImageView *image in self.arrayImages) {
-//            [image removeFromSuperview];
-//        }
-//        for (UITextField *text in self.arrayTexts) {
-//            [text removeFromSuperview];
-//        }
-//        
-//        indexImage = 0;
-//        
-//        
-//        currentPageIndex -= 1;
-//        
-//        //desabilita o botão de voltar
-//        if (currentPageIndex == 0) {
-//            self.backButton.enabled = NO;
-//        }
-//        //preenche a pagina com a informaçao anterior
-//        Page *currentPage = [self.arrayPages objectAtIndex:currentPageIndex];
-//        
-//        self.tempImageView.image = [currentPage drawView];
-//        self.arrayImages = [currentPage arrayImage];
-//        self.arrayTexts = [currentPage arrayText];
-//        self.arrayUndo = [currentPage arrayUndo];
-//        self.arrayRedo = [currentPage arrayRedo];
-//        self.layoutImageView.image = [currentPage backGroundImage];
-//        
-//        for (UIImageView *image in self.arrayImages) {
-//            [self.scribbleView addSubview:image];
-//            [self bringToolBarToFront];
-//        }
-//        
-//        for (UITextField *text in self.arrayTexts) {
-//            [self.scribbleView addSubview:text];
-//            [self bringToolBarToFront];
-//        }
-//        [UIView transitionWithView:self.view
-//                          duration:0.3
-//                           options:UIViewAnimationOptionTransitionCrossDissolve
-//                        animations:^{
-//                            /* any other animation you want */
-//                        } completion:^(BOOL finished) {
-//                            /* hide/show the required cells*/
-//                        }];
-//
-//    }
-//    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
-//    if ([self.arrayUndo count] == 0) {
-//        self.undoButton.enabled = NO;
-//    }
-//    else {
-//        self.undoButton.enabled = YES;
-//    }
-//    if ([self.arrayRedo count] == 0) {
-//        self.redoButton.enabled = NO;
-//    }
-//    else {
-//        self.redoButton.enabled = YES;
-//    }
-//
 //    
 //    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :NO];
 //    
 //    [self.arrayPoints addObject:parameter];
+    [self.scribbleView bringSubviewToFront: self.tempImageView];
+    [self bringToolBarToFront];
+}
+- (IBAction)previewsPage:(id)sender {
+    
     
     MessagePreviewPage * message = [[MessagePreviewPage alloc]init];
     
@@ -1526,6 +1311,8 @@ bool moveScribble = NO;
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    
+    //fixação da imagem
     if (currentImage && ![event touchesForView:currentImage]&& isImageEditing) {
         allowImageEdition = NO;
         isImageEditing = NO;
@@ -1539,11 +1326,9 @@ bool moveScribble = NO;
         
         CGFloat angle = atan2(actualImage.transform.b, actualImage.transform.a);
         
-        //[currentImage setTransform : CGAffineTransformRotate(currentImage.transform, 0.0)];
         
+        [self.arrayImages addObject:currentImage];
         Image *imgRef = [[Image alloc]initWithImage: actualImage :currentImage.center :currentImage.frame :angle : self.tempImageView.image : currentImage.transform];
-        //[currentImage setTransform : CGAffineTransformRotate(currentImage.transform, angle)];
-        //currentImage.transform = CGAffineTransformMakeRotation(angle);
         [self.arrayUndo addObject:imgRef];
         self.undoButton.enabled = YES;
         isFixTouch = YES;
@@ -1569,23 +1354,10 @@ bool moveScribble = NO;
     if(!isImageEditing || !isTextEditing)
     {
         UITouch *touch = [touches anyObject];
-        
-        /*CODIGO ORIGINAL*/
-        //lastPoint = [touch locationInView:self.mainImageView];
-        
-        /*TESTE*/
+    
         currentPoint = [touch locationInView:self.mainImageView];
         lastPoint = [touch previousLocationInView:self.mainImageView];
         
-        /*CÖDIGO ORIGINAL
-        MessageBrush *message = [[MessageBrush alloc] init];
-        message.actionName = @"toucheBegan";
-        message.point = [NSValue valueWithCGPoint:lastPoint];
-        
-        [self sendActionMessage:message];
-        */
-        
-        /*TESTE*/
         MessageBrush *message = [[MessageBrush alloc] init];
         message.actionName = @"toucheBegan";
         message.point = [NSValue valueWithCGPoint:currentPoint];
@@ -1634,21 +1406,11 @@ bool moveScribble = NO;
 -(void) drawScribble:(CGPoint) currentPoint234 with: (Brush *) drawBrush received: (BOOL) isReceived
 {
     
-    /*NOVO CODIGO*/
     CGPoint mid1,mid2;
-    
-//    CGMutablePathRef subpath = CGPathCreateMutable();
-//    CGPathMoveToPoint(subpath, NULL, mid1.x, mid1.y);
-//    CGPathAddQuadCurveToPoint(subpath, NULL, lastPoint.x, lastPoint.y, mid2.x, mid2.y);
-//    CGRect bounds = CGPathGetBoundingBox(subpath);
-//    
-//    CGPathAddPath(mPath, NULL, subpath);
-//    CGPathRelease(subpath);
     
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
-    //CGContextAddPath(context, mPath);
     
     
     if (isReceived) {
@@ -1664,10 +1426,7 @@ bool moveScribble = NO;
         
         CGContextAddQuadCurveToPoint(context, lastPoint.x, lastPoint.y, mid2.x, mid2.y);
     }
-    
-//    CGContextMoveToPoint(context, mid1.x, mid1.y);
-//    
-//    CGContextAddQuadCurveToPoint(context, lastPoint.x, lastPoint.y, mid2.x, mid2.y);
+
     CGContextSetLineCap(context, kCGLineCapRound);
     CGContextSetLineWidth(context, drawBrush.thickness);
     CGContextSetStrokeColorWithColor(context, [drawBrush.color CGColor]);
@@ -1686,47 +1445,6 @@ bool moveScribble = NO;
     [self.tempImageView setAlpha:opacity];
     UIGraphicsEndImageContext();
     
-    
-    /*Código original
-     
-    CGPoint mid = midPoint(lastPoint, currentPoint);
-    UIGraphicsBeginImageContext(self.mainImageView.frame.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
-    
-    if (isReceived) {
-        CGContextMoveToPoint(context, receivedLastPoint.x, receivedLastPoint.y);
-    }else{
-        CGContextMoveToPoint(context, lastPoint.x, lastPoint.y);
-    }
-    
-    
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
-    
-    CGContextSetLineCap(context, kCGLineCapRound);
-    //CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
-    CGContextSetStrokeColorWithColor(context, [drawBrush.color CGColor]);
-    CGContextSetLineWidth(context, drawBrush.thickness );
-    
-    if (drawBrush.isEraser) {
-        CGContextSetBlendMode(context, kCGBlendModeClear);
-    }
-    else{
-        CGContextSetBlendMode(context,kCGBlendModeNormal);
-    }
-    CGContextStrokePath(context);
-    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    [self.tempImageView setAlpha:opacity];
-    UIGraphicsEndImageContext();
-    
-    if (isReceived) {
-        receivedLastPoint = currentPoint;
-    }
-    else{
-        lastPoint = currentPoint;
-    }
-     */
 }
 
 CGPoint midPoint(CGPoint p1, CGPoint p2)
@@ -1743,26 +1461,10 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         
         if(!isImageEditing){
             
-//            CGPoint currentPoint = [touch locationInView:self.mainImageView];
-            
-            /*ORIGINAL*/
-            //currentPoint = [touch locationInView:self.mainImageView];
-            
-            /*TESTE*/
             lastPoint2 = lastPoint;
             lastPoint = [touch previousLocationInView:self.mainImageView];
             currentPoint = [touch locationInView:self.mainImageView];
             
-            
-            /*Original
-            MessageBrush *message = [[MessageBrush alloc] init];
-            message.actionName = @"toucheMoved";
-            message.point = [NSValue valueWithCGPoint:currentPoint];
-            
-            [self sendActionMessage:message];
-             */
-            
-            /*TESTE*/
             MessageBrush *message = [[MessageBrush alloc] init];
             message.actionName = @"toucheMoved";
             message.point = [NSValue valueWithCGPoint:currentPoint];
@@ -1817,9 +1519,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //            self.scribbleView.backgroundColor = [UIColor redColor];
 
             //self.scribbleView.center = centerPoint;
-
-           self.scribbleView.transform=CGAffineTransformScale(self.scribbleView.transform, scale,scale);
-
+            self.scribbleView.transform=CGAffineTransformScale(self.scribbleView.transform, scale,scale);
             NSLog(@"center %f %f",self.scribbleView.center.x,self.scribbleView.center.y);
             //self.scribbleView.layer.anchorPoint = CGPointMake(0.5, 0.5);
             //self.scribbleView.transform = CGAffineTransformTranslate(self.scribbleView.transform, point2.x - point1.x, point2.y - point1.y);
@@ -2323,7 +2023,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [customImage addGestureRecognizer:rotationGesture];
     [customImage addGestureRecognizer:longPressGesture];
     
-    [self.arrayImages addObject:customImage];
+    //[self.arrayImages addObject:customImage];
     
     [self.scribbleView addSubview:customImage];
     
