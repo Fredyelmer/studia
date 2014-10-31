@@ -16,6 +16,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.titleLabel.alpha = 0.0;
+    
+    [UIView animateWithDuration:5.0 delay:0.5 options:UIViewAnimationOptionTransitionNone animations:^{
+        self.titleLabel.alpha += 1;
+    } completion:^(BOOL finished){
+        if (finished) {
+            [self performSegueWithIdentifier:@"continueSegue" sender:nil];
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,8 +43,4 @@
 }
 */
 
-- (IBAction)continuar:(id)sender {
-    [self performSegueWithIdentifier:@"loginScreenSegue" sender:nil];
-    
-}
 @end

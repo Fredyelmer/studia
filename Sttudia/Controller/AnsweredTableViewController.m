@@ -131,7 +131,7 @@
     PFQuery *questionsQuery = [PFQuery queryWithClassName:self.parseClassName];
     [questionsQuery whereKey:@"aQuestions" equalTo:self.currentAQuestionsList];
     
-    [questionsQuery orderByDescending:@"upDownDifference"];
+    [questionsQuery orderByDescending:@"updatedAt"];
     return questionsQuery;
 }
 

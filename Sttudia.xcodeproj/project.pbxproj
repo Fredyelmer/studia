@@ -83,6 +83,9 @@
 		0DC0F96C19EC046B00E1D66D /* LoggedInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0F96B19EC046B00E1D66D /* LoggedInViewController.m */; };
 		0DC0F96F19EC087700E1D66D /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0F96E19EC087700E1D66D /* SignupViewController.m */; };
 		0DC0F97219EC31D200E1D66D /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0F97119EC31D200E1D66D /* InitialViewController.m */; };
+		0DC8533B19F6C51000AAB7FE /* MessageChangeBackGround.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC8533A19F6C51000AAB7FE /* MessageChangeBackGround.m */; };
+		0DC8533E19F6C53200AAB7FE /* MessageResetAll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC8533D19F6C53200AAB7FE /* MessageResetAll.m */; };
+		0DC8534119F6C54600AAB7FE /* MessageResetTint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC8534019F6C54600AAB7FE /* MessageResetTint.m */; };
 		0DDDC47019C1FEEC008B0D93 /* ImageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DDDC46F19C1FEEC008B0D93 /* ImageDetailViewController.m */; };
 		0DDF9CAF19B8FF390025AB0F /* TabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DDF9CAE19B8FF390025AB0F /* TabViewController.m */; };
 		0DE062E619B638D600CFDF07 /* QuestionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DE062E519B638D600CFDF07 /* QuestionsTableViewCell.m */; };
@@ -256,6 +259,12 @@
 		0DC0F97019EC31D200E1D66D /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
 		0DC0F97119EC31D200E1D66D /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
 		0DC7DBCD19CB5C9300635871 /* AnsweredTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnsweredTableViewController.h; sourceTree = "<group>"; };
+		0DC8533919F6C51000AAB7FE /* MessageChangeBackGround.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageChangeBackGround.h; sourceTree = "<group>"; };
+		0DC8533A19F6C51000AAB7FE /* MessageChangeBackGround.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageChangeBackGround.m; sourceTree = "<group>"; };
+		0DC8533C19F6C53200AAB7FE /* MessageResetAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageResetAll.h; sourceTree = "<group>"; };
+		0DC8533D19F6C53200AAB7FE /* MessageResetAll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageResetAll.m; sourceTree = "<group>"; };
+		0DC8533F19F6C54600AAB7FE /* MessageResetTint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageResetTint.h; sourceTree = "<group>"; };
+		0DC8534019F6C54600AAB7FE /* MessageResetTint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageResetTint.m; sourceTree = "<group>"; };
 		0DDDC46E19C1FEEC008B0D93 /* ImageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDetailViewController.h; sourceTree = "<group>"; };
 		0DDDC46F19C1FEEC008B0D93 /* ImageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDetailViewController.m; sourceTree = "<group>"; };
 		0DDF9CAD19B8FF390025AB0F /* TabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewController.h; sourceTree = "<group>"; };
@@ -682,6 +691,12 @@
 				719C9EFE19F9647F0075C615 /* MessageTag.m */,
 				719C9F001A0170310075C615 /* MessageDelete.h */,
 				719C9F011A0170310075C615 /* MessageDelete.m */,
+				0DC8533919F6C51000AAB7FE /* MessageChangeBackGround.h */,
+				0DC8533A19F6C51000AAB7FE /* MessageChangeBackGround.m */,
+				0DC8533C19F6C53200AAB7FE /* MessageResetAll.h */,
+				0DC8533D19F6C53200AAB7FE /* MessageResetAll.m */,
+				0DC8533F19F6C54600AAB7FE /* MessageResetTint.h */,
+				0DC8534019F6C54600AAB7FE /* MessageResetTint.m */,
 			);
 			name = message;
 			sourceTree = "<group>";
@@ -734,7 +749,7 @@
 				ORGANIZATIONNAME = "Ricardo Nagaishi";
 				TargetAttributes = {
 					0D9ECF401961867300882007 = {
-						DevelopmentTeam = 8VVUD96VR6;
+						DevelopmentTeam = 2P6ZLVHDMJ;
 					};
 					0D9ECF601961867300882007 = {
 						TestTargetID = 0D9ECF401961867300882007;
@@ -849,6 +864,7 @@
 				0DA8EFA41976F772006A5589 /* Image.m in Sources */,
 				0DAACA1A19897974003B262D /* PhotoRequest.m in Sources */,
 				71C43F5E19EEFEBF0002CF01 /* MessageMove.m in Sources */,
+				0DC8533B19F6C51000AAB7FE /* MessageChangeBackGround.m in Sources */,
 				0DC0F96C19EC046B00E1D66D /* LoggedInViewController.m in Sources */,
 				0DA267C21992A26B00AE00FF /* ImagePickerViewController.m in Sources */,
 				71305E6419B0F57400C94CF6 /* MCManager.m in Sources */,
@@ -876,7 +892,9 @@
 				0D9ECF531961867300882007 /* main.m in Sources */,
 				48C52E8D1965E52D00AD013F /* RegisterViewController.m in Sources */,
 				71C43F6419F042560002CF01 /* MessageRotate.m in Sources */,
+				0DC8534119F6C54600AAB7FE /* MessageResetTint.m in Sources */,
 				0DA267CB19953B0F00AE00FF /* ColorFontViewController.m in Sources */,
+				0DC8533E19F6C53200AAB7FE /* MessageResetAll.m in Sources */,
 				0DA9D71719BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.m in Sources */,
 				0DC0F97219EC31D200E1D66D /* InitialViewController.m in Sources */,
 				0DA7189219AFAAF200B8B08E /* NewQuestionViewController.m in Sources */,
@@ -964,7 +982,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -997,7 +1015,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;

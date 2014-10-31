@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>CodeWarriors.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>CodeWarriors.$(PRODUCT_NAME:rfc1034identifier)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -23,8 +23,6 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleURLName</key>
-			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb1532128093688459</string>

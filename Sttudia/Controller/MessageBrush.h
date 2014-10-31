@@ -13,6 +13,8 @@
 
 @property (nonatomic, strong) NSString *actionName;
 @property (nonatomic, strong) NSValue *point;
+@property (nonatomic, strong) NSValue *previousPoint;
+@property (nonatomic, strong) NSValue *previousPreviousPoint;
 @property (nonatomic, strong) UIColor* color;
 @property (nonatomic) CGFloat thickness;
 @property (nonatomic) BOOL isEraser;

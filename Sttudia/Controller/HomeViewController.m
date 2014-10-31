@@ -26,10 +26,22 @@
     //[PFUser logOut];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+//- (void)viewDidAppear:(BOOL)animated {
+//    
+//    [super viewDidAppear:animated];
+//    
+//    PFUser *currentUser = [PFUser currentUser];
+//    if (currentUser) {
+//        // do stuff with the user
+//        [self performSegueWithIdentifier:@"loggedInSegue" sender:self];
+//    } else {
+//        // show the signup or login screen
+//    }
+//}
+
+- (void) viewWillAppear:(BOOL)animated {
     
-    [super viewDidAppear:animated];
-    
+    [super viewWillAppear:animated];
     PFUser *currentUser = [PFUser currentUser];
     if (currentUser) {
         // do stuff with the user
@@ -37,6 +49,7 @@
     } else {
         // show the signup or login screen
     }
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

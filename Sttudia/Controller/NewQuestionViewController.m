@@ -22,6 +22,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *sendToTeacherButton;
 @property (strong, nonatomic) IBOutlet UIButton *sendAnswerButton;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -202,12 +203,13 @@
     [question setObject:[NSNumber numberWithInt:0] forKey:@"upDownDifference"];
     [question setObject:[NSNumber numberWithBool:YES] forKey:@"isPublic"];
     
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    activityIndicator.center = self.view.center;
-    activityIndicator.hidesWhenStopped = YES;
-    [self.view addSubview:activityIndicator];
-    [activityIndicator startAnimating];
+//    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//    activityIndicator.center = self.view.center;
+//    activityIndicator.hidesWhenStopped = YES;
+//    [self.view addSubview:activityIndicator];
+//    [activityIndicator startAnimating];
 
+    [self.activityIndicator startAnimating];
     
     if (self.imageView.image) {
         NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 0.8);
@@ -243,12 +245,15 @@
                     //Notify table view to reload the recipes from Parse cloud
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                     
-                    [activityIndicator stopAnimating];
+                    //[activityIndicator stopAnimating];
+                    
+                    [self.activityIndicator stopAnimating];
                     
                 } else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert show];
-                    [activityIndicator stopAnimating];
+                    //[activityIndicator stopAnimating];
+                    [self.activityIndicator stopAnimating];
                 }
                 
             }];
@@ -291,13 +296,8 @@
     [question setObject:[NSNumber numberWithInt:0] forKey:@"downVotes"];
     [question setObject:[NSNumber numberWithInt:0] forKey:@"upDownDifference"];
     [question setObject:[NSNumber numberWithBool:NO] forKey:@"isPublic"];
-    
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    activityIndicator.center = self.view.center;
-    activityIndicator.hidesWhenStopped = YES;
-    [self.view addSubview:activityIndicator];
-    [activityIndicator startAnimating];
-    
+        
+    [self.activityIndicator startAnimating];
     
     if (self.imageView.image) {
         NSData *imageData = UIImageJPEGRepresentation(self.imageView.image, 0.8);
@@ -333,12 +333,12 @@
                     //Notify table view to reload the recipes from Parse cloud
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
                     
-                    [activityIndicator stopAnimating];
+                    [self.activityIndicator stopAnimating];
                     
                 } else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert show];
-                    [activityIndicator stopAnimating];
+                    [self.activityIndicator stopAnimating];
                 }
                 
             }];
@@ -403,11 +403,13 @@
 
     [answer setObject: self.currentQuestion forKey:@"question"];
     
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    activityIndicator.center = self.view.center;
-    activityIndicator.hidesWhenStopped = YES;
-    [self.view addSubview:activityIndicator];
-    [activityIndicator startAnimating];
+//    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//    activityIndicator.center = self.view.center;
+//    activityIndicator.hidesWhenStopped = YES;
+//    [self.view addSubview:activityIndicator];
+//    [activityIndicator startAnimating];
+    
+    [self.activityIndicator startAnimating];
     
     [answer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         
@@ -427,14 +429,14 @@
             //Notify table view to reload the recipes from Parse cloud
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshTable" object:self];
             
-            [activityIndicator stopAnimating];
+            [self.activityIndicator stopAnimating];
             
             [self.tabBarController setSelectedIndex:1];
             
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Upload Failure" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
-            [activityIndicator stopAnimating];
+            [self.activityIndicator stopAnimating];
             [self.tabBarController setSelectedIndex:1];
         }
     }];

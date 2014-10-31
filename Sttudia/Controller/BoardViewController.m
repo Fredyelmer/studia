@@ -45,7 +45,8 @@
     //CGFloat currentTextRotation;
     CGPoint currentTextCenter;
     CGAffineTransform currentTextTransform;
-    
+    CGPoint lastPoint2;
+    CGPoint currentPoint;
 }
 
 //variaveis usadas para oespelhamento das telas
@@ -71,6 +72,13 @@
         // Custom initialization
     }
     return self;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    
+    self.arrayRedo = [[NSMutableArray alloc]init];
+    self.arrayUndo = [[NSMutableArray alloc]init];
 }
 
 
@@ -104,17 +112,16 @@
 //    
 //    [loadingScreenIndicator startAnimating];
     
-    UIActivityIndicatorView *activityIndicator= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(500, 300, 50, 50)];
-    activityIndicator.layer.cornerRadius = 05;
-    activityIndicator.opaque = NO;
-    activityIndicator.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6f];
-    activityIndicator.center = self.view.center;
-    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    [activityIndicator setColor:[UIColor colorWithRed:0.6 green:0.8 blue:1.0 alpha:1.0]];
-    [self.view addSubview: activityIndicator];
+//    UIActivityIndicatorView *activityIndicator= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(500, 300, 50, 50)];
+//    activityIndicator.layer.cornerRadius = 05;
+//    activityIndicator.opaque = NO;
+//    activityIndicator.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6f];
+//    activityIndicator.center = self.view.center;
+//    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+//    [activityIndicator setColor:[UIColor colorWithRed:0.6 green:0.8 blue:1.0 alpha:1.0]];
+//    [self.view addSubview: activityIndicator];
 
     self.scribbleView.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
-    
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     //inicializa o brush
@@ -137,39 +144,39 @@
     [self.view setBackgroundColor:[UIColor colorWithRed:backGroundRed green:backGroundGreen blue:backGroundBlue alpha:1]];
     [self selectedButton:[self.ColorButton objectAtIndex:0 ]];
     
-    self.arraySnapshots = [[NSMutableArray alloc]init];
-    self.arrayPoints = [[NSMutableArray alloc]init];
-    self.isRecording = NO;
+    //self.arraySnapshots = [[NSMutableArray alloc]init];
+    //self.arrayPoints = [[NSMutableArray alloc]init];
+    //self.isRecording = NO;
     
-    [self.recAudio setEnabled:YES];
-    [self.pauseRecAudio setHidden:YES];
-    [self.pauseRecAudio setEnabled:YES];
+//    [self.recAudio setEnabled:YES];
+//    [self.pauseRecAudio setHidden:YES];
+//    [self.pauseRecAudio setEnabled:YES];
     
     //long press gesture
     [self.layoutView setHidden:YES];
     
     [self updateThicknessButton];
     
-    // Set the audio file
-    NSArray *pathComponents = [NSArray arrayWithObjects:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],@"MyAudioMemo.m4a",nil];
-    NSURL *outputFileURL = [NSURL fileURLWithPathComponents:pathComponents];
+//    // Set the audio file
+//    NSArray *pathComponents = [NSArray arrayWithObjects:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],@"MyAudioMemo.m4a",nil];
+//    NSURL *outputFileURL = [NSURL fileURLWithPathComponents:pathComponents];
+//    
+//    // Setup audio session
+//    AVAudioSession *session = [AVAudioSession sharedInstance];
+//    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+//    
+//    // Define the recorder setting
+//    NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc] init];
+//    
+//    [recordSetting setValue:[NSNumber numberWithInt:kAudioFormatMPEG4AAC] forKey:AVFormatIDKey];
+//    [recordSetting setValue:[NSNumber numberWithFloat:44100.0] forKey:AVSampleRateKey];
+//    [recordSetting setValue:[NSNumber numberWithInt: 2] forKey:AVNumberOfChannelsKey];
     
-    // Setup audio session
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-    
-    // Define the recorder setting
-    NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc] init];
-    
-    [recordSetting setValue:[NSNumber numberWithInt:kAudioFormatMPEG4AAC] forKey:AVFormatIDKey];
-    [recordSetting setValue:[NSNumber numberWithFloat:44100.0] forKey:AVSampleRateKey];
-    [recordSetting setValue:[NSNumber numberWithInt: 2] forKey:AVNumberOfChannelsKey];
-    
-    // Initiate and prepare the recorder
-    recorder = [[AVAudioRecorder alloc] initWithURL:outputFileURL settings:recordSetting error:NULL];
-    recorder.delegate = self;
-    recorder.meteringEnabled = YES;
-    [recorder prepareToRecord];
+//    // Initiate and prepare the recorder
+//    recorder = [[AVAudioRecorder alloc] initWithURL:outputFileURL settings:recordSetting error:NULL];
+//    recorder.delegate = self;
+//    recorder.meteringEnabled = YES;
+//    [recorder prepareToRecord];
     
     isScreenTouched = NO;
     isEraser = NO;
@@ -187,8 +194,8 @@
     
     self.addImageButton.enabled = YES;
     self.addImageButton.hidden = NO;
-    self.confirmImageButton.enabled = NO;
-    self.confirmImageButton.hidden = YES;
+//    self.confirmImageButton.enabled = NO;
+//    self.confirmImageButton.hidden = YES;
     
     finishTextEdit = YES;
     
@@ -260,6 +267,7 @@
 
 }
 
+#pragma mark - MultPeerMethods
 -(void)didReceiveDataWithNotification:(NSNotification *)notification{
     MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
     NSString *peerDisplayName = peerID.displayName;
@@ -274,6 +282,8 @@
         MessageBrush *messageBrush = (MessageBrush *)message;
         
         CGPoint point = [messageBrush.point CGPointValue];
+        CGPoint pPoint = [messageBrush.previousPoint CGPointValue];
+        CGPoint ppPoint = [messageBrush.previousPreviousPoint CGPointValue];
         self.receivedBrush.color = messageBrush.color;
         self.receivedBrush.thickness = messageBrush.thickness;
         self.receivedBrush.isEraser = messageBrush.isEraser;
@@ -289,18 +299,22 @@
 
         if ([messageBrush.actionName isEqualToString:@"toucheBegan"])
         {
-            receivedLastPoint = point;
+            receivedCurrentPoint = point;
+            receivedLastPoint = pPoint;
         }
         
         if ([messageBrush.actionName isEqualToString:@"toucheMoved"])
         {
-                            [self drawScribble:point with:self.receivedBrush received:YES];
+            receivedCurrentPoint = point;
+            receivedLastPoint = pPoint;
+            receivedLastPoint2 = ppPoint;
+            [self drawScribble:point with:self.receivedBrush received:YES];
         }
         
         if ([messageBrush.actionName isEqualToString:@"toucheEnded"])
         {
-            receivedLastPoint = point;
-            lastPoint = point;
+//            receivedLastPoint = point;
+//            lastPoint = point;
             UIImage *newImage = self.tempImageView.image;
             
             if (newImage) {
@@ -476,6 +490,7 @@
         
         [opque addOperation:operation];
     }
+
     else if ([message isKindOfClass:[MessageTag class]]) {
         MessageTag *msgTag = (MessageTag*) message;
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
@@ -486,18 +501,46 @@
         
         [opque addOperation:operation];
     }
-    else if ([message isKindOfClass:[NSString class]]) {
+    else if ([message isMemberOfClass:[MessageChangeBackGround class]]) {
+        
+        MessageChangeBackGround *msgBackGround = (MessageChangeBackGround*) message;
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            
+            if (msgBackGround.nameImage) {
+                [self performChangeBackground:msgBackGround.nameImage];
+            }
+            else
+            {
+                [self putImageAsBackground:msgBackGround.image];
+            }
+        }];
         
-        if ([message isEqual:@"tag"]) {
-            [operation addExecutionBlock:^{
-                [self sendTagMessage];
-            }];
-        }
-    
         [opque addOperation:operation];
     }
+    else if ([message isMemberOfClass:[MessageResetAll class]]) {
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            [self performResetAll];
+
+        }];
+        
+        [opque addOperation:operation];
+    }
+
+    else if ([message isMemberOfClass:[MessageResetTint class]]) {
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            [self performResetTint];
+        }];
+        
+        [opque addOperation:operation];
+    }
+
+   // NSString *receivedText = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
    
 }
 
@@ -609,6 +652,57 @@
     [self sendMessage:message];
 }
 
+- (void)sendChangeBackgroundMessage: (MessageChangeBackGround*)message {
+    
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+
+
+}
+
+- (void)sendResetAllMessage: (MessageResetAll*)message {
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+
+    
+}
+- (void)sendResetTintMessage: (MessageResetTint*)message {
+    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
+    
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+
+    
+}
+
 -(void) handlePinch:(UIPinchGestureRecognizer*)sender
 {
     NSLog(@"pinch");
@@ -671,11 +765,6 @@
 -(BOOL)prefersStatusBarHidden { return YES; }
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 - (IBAction)logOut:(id)sender {
     
@@ -685,97 +774,97 @@
     
 }
 
-- (IBAction)startVideoRecord:(id)sender {
-    
-    
-    if (!self.isRecording) {
-        self.isRecording = YES;
-        
-        //inicia a gravação de aúdio
-        if(player.playing) {
-            [player stop];
-        }
-        
-        if(!recorder.recording){
-            AVAudioSession *session = [AVAudioSession sharedInstance];
-            [session setActive:YES error:nil];
-            
-            // Start recording
-            [recorder record];
-            //[recordPauseButton setTitle:@"Pause" forStateUIControlStateNormal];
-        }
-
-    }
-    else{
-        
-        //termina a gravação de aúdio
-        [recorder stop];
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession setActive:NO error:nil];
-        
-        
-        self.isRecording = NO;
-    }
-}
-
-- (IBAction)reproduzirGravacao:(id)sender {
-    
-    self.tempImageView.image = nil;
-    
-    if (!recorder.recording){
-        player = [[AVAudioPlayer alloc] initWithContentsOfURL:recorder.url error:nil];
-        [player setDelegate:self];
-        [player play];
-    }
-    
-    for (int i = 0; i < [self.arrayPoints count]; i++) {
-        
-        VideoParameter *parameter = self.arrayPoints[i];
-        if ([parameter isDrawing]){
-            [self performSelector:@selector(draw:) withObject:parameter afterDelay:[parameter interval]];
-        }
-//        else if ([self.arrayPoints[i] imageAdded]){
-//            while (![self.arrayPoints[i] isTaskTerminated]) {
-//                NSLog(@"não terminado");
-//                if ([self.arrayPoints[i-1] isTaskTerminated]) {
-//                    
-//                     NSLog(@"terminado");
-//                    [self.view addSubview:[self.arrayPoints[i] imageView]];
-//                    [self.view sendSubviewToBack:[self.arrayPoints[i] imageView]];
-//                }
-//            }
+//- (IBAction)startVideoRecord:(id)sender {
+//    
+//    
+//    if (!self.isRecording) {
+//        self.isRecording = YES;
+//        
+//        //inicia a gravação de aúdio
+//        if(player.playing) {
+//            [player stop];
 //        }
-//        else if ([parameter pageChanged]){
-//            if ([parameter isForward]) {
-//                if ([parameter pageNumber] == [parameter maxPageNumber]) {
-//                    self.tempImageView.image = nil;
-//                }
-//                else{
-//                    
-//                }
-//            }
+//        
+//        if(!recorder.recording){
+//            AVAudioSession *session = [AVAudioSession sharedInstance];
+//            [session setActive:YES error:nil];
+//            
+//            // Start recording
+//            [recorder record];
+//            //[recordPauseButton setTitle:@"Pause" forStateUIControlStateNormal];
 //        }
-    }
-}
+//
+//    }
+//    else{
+//        
+//        //termina a gravação de aúdio
+//        [recorder stop];
+//        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//        [audioSession setActive:NO error:nil];
+//        
+//        
+//        self.isRecording = NO;
+//    }
+//}
 
--(void)chamada{
-    
-    UIImage *image = [self snapshot:self.tempImageView];
-    [self.arraySnapshots addObject:image];
-    NSLog(@"tirou foto");
-}
+//- (IBAction)reproduzirGravacao:(id)sender {
+//    
+//    self.tempImageView.image = nil;
+//    
+//    if (!recorder.recording){
+//        player = [[AVAudioPlayer alloc] initWithContentsOfURL:recorder.url error:nil];
+//        [player setDelegate:self];
+//        [player play];
+//    }
+//    
+//    for (int i = 0; i < [self.arrayPoints count]; i++) {
+//        
+//        VideoParameter *parameter = self.arrayPoints[i];
+//        if ([parameter isDrawing]){
+//            [self performSelector:@selector(draw:) withObject:parameter afterDelay:[parameter interval]];
+//        }
+////        else if ([self.arrayPoints[i] imageAdded]){
+////            while (![self.arrayPoints[i] isTaskTerminated]) {
+////                NSLog(@"não terminado");
+////                if ([self.arrayPoints[i-1] isTaskTerminated]) {
+////                    
+////                     NSLog(@"terminado");
+////                    [self.view addSubview:[self.arrayPoints[i] imageView]];
+////                    [self.view sendSubviewToBack:[self.arrayPoints[i] imageView]];
+////                }
+////            }
+////        }
+////        else if ([parameter pageChanged]){
+////            if ([parameter isForward]) {
+////                if ([parameter pageNumber] == [parameter maxPageNumber]) {
+////                    self.tempImageView.image = nil;
+////                }
+////                else{
+////                    
+////                }
+////            }
+////        }
+//    }
+//}
 
-- (void) longPressedText:(UIGestureRecognizer *)gesture
-{
-    if (gesture.state==UIGestureRecognizerStateBegan)
-    {
-        isTextEditing = YES;
-        allowImageEdition = YES;
-        [self.currentTextField.layer setBorderWidth:1];
-        [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
-        NSLog(@"long press text");
-    }
-}
+//-(void)chamada{
+//    
+//    UIImage *image = [self snapshot:self.tempImageView];
+//    [self.arraySnapshots addObject:image];
+//    NSLog(@"tirou foto");
+//}
+
+//- (void) longPressedText:(UIGestureRecognizer *)gesture
+//{
+//    if (gesture.state==UIGestureRecognizerStateBegan)
+//    {
+//        isTextEditing = YES;
+//        allowImageEdition = YES;
+//        [self.currentTextField.layer setBorderWidth:1];
+//        [self.currentTextField.layer setBorderColor:[[UIColor blueColor] CGColor]];
+//        NSLog(@"long press text");
+//    }
+//}
 
 - (void) longPressedButton:(UIGestureRecognizer *)gesture
 {
@@ -787,9 +876,12 @@
         isImageEditing = YES;
         gesture.view.alpha = 1.5;
         
-        for (UIImageView* image in self.arrayImages) {
-            if ([image isEqual:(UIImageView*)gesture.view]) {
-                currentImage = image;
+        BOOL objectFound = NO;
+        for (int i = 0; i < [self.arrayImages count] && !objectFound; i++) {
+            if ([self.arrayImages[i] isEqual:(UIImageView*)gesture.view]) {
+                currentImage = self.arrayImages[i];
+                [self.arrayImages removeObjectAtIndex:i];
+                objectFound = YES;
                 //currentImageRotation = 0;
             }
         }
@@ -827,6 +919,8 @@
         numEraserButtonTap = 0;
     }
 }
+
+#pragma mark - ChangePageMethods
 
 - (void) realizeNextPage {
     
@@ -917,13 +1011,13 @@
         //adiciona imagens e textos
         for (UIImageView *image in self.arrayImages) {
             [self.scribbleView addSubview:image];
-            [self bringToolBarToFront];
+            //[self bringToolBarToFront];
             [self.scribbleView sendSubviewToBack:self.layoutImageView];
         }
         
         for (UITextField *text in self.arrayTexts) {
             [self.scribbleView addSubview:text];
-            [self bringToolBarToFront];
+            //[self bringToolBarToFront];
             
         }
         
@@ -957,139 +1051,11 @@
     else {
         self.redoButton.enabled = YES;
     }
-
-
+    [self.scribbleView bringSubviewToFront: self.tempImageView];
+    [self bringToolBarToFront];
 }
 - (IBAction)nextPage:(id)sender {
-    
-//    //retira as imagens e textos da tela
-//    for (UIImageView *image in self.arrayImages) {
-//        [image removeFromSuperview];
-//    }
-//    for (UITextField *text in self.arrayTexts) {
-//        [text removeFromSuperview];
-//    }
-//    indexImage = 0;
-//    
-//    //se a página é a última
-//    if (maxPageIndex == currentPageIndex) {
-//        
-//        if ([self.arrayPages count]-1 != currentPageIndex) {
-//            //salva as infomações da página em uma lista
-//            UIImage *drawImageView = self.tempImageView.image;
-//            NSMutableArray *arrayImage = self.arrayImages;
-//            NSMutableArray *arrayText = self.arrayTexts;
-//            NSMutableArray *arrayUndo = self.arrayUndo;
-//            NSMutableArray *arrayRedo = self.arrayRedo;
-//            
-//            Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
-//            
-//            [self.arrayPages addObject:page];
-//        }
-//        
-//        //reseta as imagens e textos
-//        self.arrayImages = [[NSMutableArray alloc]init];
-//        self.arrayTexts = [[NSMutableArray alloc]init];
-//        self.arrayUndo = [[NSMutableArray alloc]init];
-//        self.arrayRedo = [[NSMutableArray alloc]init];
-//        self.layoutImageView.image = nil;
-//        
-//        
-//        //aumenta o numero de paginas total e avanca uma pagina
-//        maxPageIndex += 1;
-//        currentPageIndex +=1;
-//        
-//        //apaga o desenho
-//        self.tempImageView.image = [[UIImage alloc] init] ;
-//        
-//        [UIView transitionWithView:self.view
-//                          duration:0.3
-//                           options:UIViewAnimationOptionTransitionCrossDissolve
-//                        animations:^{
-//                            /* any other animation you want */
-//                        } completion:^(BOOL finished) {
-//                            /* hide/show the required cells*/
-//                        }];
-//        
-//    }
-//    
-//    //se a pagina atual não é a ultima
-//    else {
-//        
-//        
-//        //substitui as infomações da página atual na lista
-//        UIImage *drawImageView = self.tempImageView.image;
-//        NSMutableArray *arrayImage = self.arrayImages;
-//        NSMutableArray *arrayText = self.arrayTexts;
-//        NSMutableArray *arrayUndo = self.arrayUndo;
-//        NSMutableArray *arrayRedo = self.arrayRedo;
-//        
-//        Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
-//        
-//        [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:page];
-//
-//        
-//        //apaga a tela de desenho
-//        self.tempImageView.image = [[UIImage alloc] init];
-//        
-//        
-//        //resgata a pagina posterior
-//        currentPageIndex +=1;
-//        
-//        Page *nextPage = [self.arrayPages objectAtIndex:currentPageIndex];
-//        
-//        self.tempImageView.image = [nextPage drawView];
-//        self.arrayImages = [nextPage arrayImage];
-//        self.arrayTexts = [nextPage arrayText];
-//        self.arrayUndo = [nextPage arrayUndo];
-//        self.arrayRedo = [nextPage arrayRedo];
-//        self.layoutImageView.image = [nextPage backGroundImage];
-//        
-//        
-//        //adiciona imagens e textos
-//        for (UIImageView *image in self.arrayImages) {
-//            [self.scribbleView addSubview:image];
-//            [self bringToolBarToFront];
-//            [self.scribbleView sendSubviewToBack:self.layoutImageView];
-//        }
-//        
-//        for (UITextField *text in self.arrayTexts) {
-//            [self.scribbleView addSubview:text];
-//            [self bringToolBarToFront];
-//            
-//        }
-//        
-//        [UIView transitionWithView:self.view
-//                          duration:0.3
-//                           options:UIViewAnimationOptionTransitionCrossDissolve
-//                        animations:^{
-//                            /* any other animation you want */
-//                        } completion:^(BOOL finished) {
-//                            /* hide/show the required cells*/
-//                        }];
-//
-//    }
-//    
-//    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
-//    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :YES];
-//    
-//    [self.arrayPoints addObject:parameter];
-//    
-//    self.backButton.enabled = YES;
-//    
-//    if ([self.arrayUndo count] == 0) {
-//        self.undoButton.enabled = NO;
-//    }
-//    else {
-//        self.undoButton.enabled = YES;
-//    }
-//    if ([self.arrayRedo count] == 0) {
-//        self.redoButton.enabled = NO;
-//    }
-//    else {
-//        self.redoButton.enabled = YES;
-//    }
-    
+        
     MessageNextPage * message = [[MessageNextPage alloc]init];
     [self realizeNextPage];
     [self sendNextPageMessage:message];
@@ -1146,12 +1112,12 @@
         
         for (UIImageView *image in self.arrayImages) {
             [self.scribbleView addSubview:image];
-            [self bringToolBarToFront];
+            //[self bringToolBarToFront];
         }
         
         for (UITextField *text in self.arrayTexts) {
             [self.scribbleView addSubview:text];
-            [self bringToolBarToFront];
+            //[self bringToolBarToFront];
         }
         [UIView transitionWithView:self.view
                           duration:0.3
@@ -1177,99 +1143,15 @@
         self.redoButton.enabled = YES;
     }
     
-    
-    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :NO];
-    
-    [self.arrayPoints addObject:parameter];
-
-}
-- (IBAction)previewsPage:(id)sender {
-    
-//    if (currentPageIndex >= 1) {
-//        
-//        //Salva a infomação da tela
-//        UIImage *drawImageView = self.tempImageView.image;
-//        NSMutableArray *arrayImage = self.arrayImages;
-//        NSMutableArray *arrayText = self.arrayTexts;
-//        NSMutableArray *arrayUndo = self.arrayUndo;
-//        NSMutableArray *arrayRedo = self.arrayRedo;
-//        
-//        Page *newPage = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
-//        
-//        
-//        if ([self.arrayPages count]-1 >= currentPageIndex)
-//        {
-//            [self.arrayPages replaceObjectAtIndex:currentPageIndex withObject:newPage];
-//        }
-//        else
-//        {
-//            [self.arrayPages addObject:newPage];
-//        }
-//        
-//        //esvazia a página atual
-//        for (UIImageView *image in self.arrayImages) {
-//            [image removeFromSuperview];
-//        }
-//        for (UITextField *text in self.arrayTexts) {
-//            [text removeFromSuperview];
-//        }
-//        
-//        indexImage = 0;
-//        
-//        
-//        currentPageIndex -= 1;
-//        
-//        //desabilita o botão de voltar
-//        if (currentPageIndex == 0) {
-//            self.backButton.enabled = NO;
-//        }
-//        //preenche a pagina com a informaçao anterior
-//        Page *currentPage = [self.arrayPages objectAtIndex:currentPageIndex];
-//        
-//        self.tempImageView.image = [currentPage drawView];
-//        self.arrayImages = [currentPage arrayImage];
-//        self.arrayTexts = [currentPage arrayText];
-//        self.arrayUndo = [currentPage arrayUndo];
-//        self.arrayRedo = [currentPage arrayRedo];
-//        self.layoutImageView.image = [currentPage backGroundImage];
-//        
-//        for (UIImageView *image in self.arrayImages) {
-//            [self.scribbleView addSubview:image];
-//            [self bringToolBarToFront];
-//        }
-//        
-//        for (UITextField *text in self.arrayTexts) {
-//            [self.scribbleView addSubview:text];
-//            [self bringToolBarToFront];
-//        }
-//        [UIView transitionWithView:self.view
-//                          duration:0.3
-//                           options:UIViewAnimationOptionTransitionCrossDissolve
-//                        animations:^{
-//                            /* any other animation you want */
-//                        } completion:^(BOOL finished) {
-//                            /* hide/show the required cells*/
-//                        }];
-//
-//    }
-//    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
-//    if ([self.arrayUndo count] == 0) {
-//        self.undoButton.enabled = NO;
-//    }
-//    else {
-//        self.undoButton.enabled = YES;
-//    }
-//    if ([self.arrayRedo count] == 0) {
-//        self.redoButton.enabled = NO;
-//    }
-//    else {
-//        self.redoButton.enabled = YES;
-//    }
-//
 //    
 //    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :NO];
 //    
 //    [self.arrayPoints addObject:parameter];
+    [self.scribbleView bringSubviewToFront: self.tempImageView];
+    [self bringToolBarToFront];
+}
+- (IBAction)previewsPage:(id)sender {
+    
     
     MessagePreviewPage * message = [[MessagePreviewPage alloc]init];
     
@@ -1277,6 +1159,7 @@
     [self realizePreviewPage];
 }
 
+#pragma  mark - LandscapeScreenMethods
 
 //metodos para forçar em landscape mode
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -1298,6 +1181,8 @@
     return UIInterfaceOrientationLandscapeLeft;
 }
 
+
+#pragma mark - SelectButtonMethod
 //inisializ e marca o botao seleccionado
 - (void) selectedButton:(CorUIButton*) button
 {
@@ -1316,8 +1201,12 @@
 
 bool moveScribble = NO;
 
+#pragma mark - TouchMethods
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    
+    //fixação da imagem
     if (currentImage && ![event touchesForView:currentImage]&& isImageEditing) {
         allowImageEdition = NO;
         isImageEditing = NO;
@@ -1331,11 +1220,9 @@ bool moveScribble = NO;
         
         CGFloat angle = atan2(actualImage.transform.b, actualImage.transform.a);
         
-        //[currentImage setTransform : CGAffineTransformRotate(currentImage.transform, 0.0)];
         
+        [self.arrayImages addObject:currentImage];
         Image *imgRef = [[Image alloc]initWithImage: actualImage :currentImage.center :currentImage.frame :angle : self.tempImageView.image : currentImage.transform];
-        //[currentImage setTransform : CGAffineTransformRotate(currentImage.transform, angle)];
-        //currentImage.transform = CGAffineTransformMakeRotation(angle);
         [self.arrayUndo addObject:imgRef];
         self.undoButton.enabled = YES;
         isFixTouch = YES;
@@ -1361,29 +1248,33 @@ bool moveScribble = NO;
     if(!isImageEditing || !isTextEditing)
     {
         UITouch *touch = [touches anyObject];
-        lastPoint = [touch locationInView:self.mainImageView];
-
-
+    
+        currentPoint = [touch locationInView:self.mainImageView];
+        lastPoint = [touch previousLocationInView:self.mainImageView];
+        
         MessageBrush *message = [[MessageBrush alloc] init];
         message.actionName = @"toucheBegan";
-        message.point = [NSValue valueWithCGPoint:lastPoint];
+        message.point = [NSValue valueWithCGPoint:currentPoint];
+        message.previousPoint = [NSValue valueWithCGPoint:lastPoint];
         
         [self sendActionMessage:message];
+
         
         
-        if (!isScreenTouched)
-        {
-            self.lastTouch = [event timestamp];
-        }
-        else
-        {
-            self.lastTouch =[event timestamp]-totalInterval;
-        }
+//        if (!isScreenTouched)
+//        {
+//            self.lastTouch = [event timestamp];
+//        }
+//        else
+//        {
+//            self.lastTouch =[event timestamp]-totalInterval;
+//        }
 
     
         isScreenTouched = YES;
         //NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
         //[[self.ColorButton objectAtIndex:selectedButton] setState:NO];
+        
         
         if ([[event allTouches] count] == 2)
         {
@@ -1408,41 +1299,53 @@ bool moveScribble = NO;
     NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
--(void) drawScribble:(CGPoint) currentPoint with: (Brush *) drawBrush received: (BOOL) isReceived
+-(void) drawScribble:(CGPoint) currentPoint234 with: (Brush *) drawBrush received: (BOOL) isReceived
 {
+    
+    CGPoint mid1,mid2;
+    
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
     [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
     
-    if (isReceived) {
-        CGContextMoveToPoint(UIGraphicsGetCurrentContext(), receivedLastPoint.x, receivedLastPoint.y);
-    }else{
-        CGContextMoveToPoint(UIGraphicsGetCurrentContext(), lastPoint.x, lastPoint.y);
-    }
     
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), currentPoint.x, currentPoint.y);
-    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-    //CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), red, green, blue, 1.0);
-    CGContextSetStrokeColorWithColor(UIGraphicsGetCurrentContext(), [drawBrush.color CGColor]);
-    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), drawBrush.thickness );
+    if (isReceived) {
+        mid1 = midPoint(receivedLastPoint, receivedLastPoint2);
+        mid2 = midPoint(receivedCurrentPoint, receivedLastPoint);
+        CGContextMoveToPoint(context, mid1.x, mid1.y);
+        
+        CGContextAddQuadCurveToPoint(context, receivedLastPoint.x, receivedLastPoint.y, mid2.x, mid2.y);
+    }else{
+        mid1 = midPoint(lastPoint, lastPoint2);
+        mid2 = midPoint(currentPoint, lastPoint);
+        CGContextMoveToPoint(context, mid1.x, mid1.y);
+        
+        CGContextAddQuadCurveToPoint(context, lastPoint.x, lastPoint.y, mid2.x, mid2.y);
+    }
+
+    CGContextSetLineCap(context, kCGLineCapRound);
+    CGContextSetLineWidth(context, drawBrush.thickness);
+    CGContextSetStrokeColorWithColor(context, [drawBrush.color CGColor]);
+    CGContextSetBlendMode(context, kCGBlendModeNormal);
     
     if (drawBrush.isEraser) {
-        CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeClear);
+        CGContextSetBlendMode(context, kCGBlendModeClear);
     }
     else{
-        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+        CGContextSetBlendMode(context,kCGBlendModeNormal);
     }
-    CGContextStrokePath(UIGraphicsGetCurrentContext());
+
+    
+    CGContextStrokePath(context);
     self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
     [self.tempImageView setAlpha:opacity];
     UIGraphicsEndImageContext();
     
-    if (isReceived) {
-        receivedLastPoint = currentPoint;
-    }
-    else{
-        lastPoint = currentPoint;
-    }
-    
+}
+
+CGPoint midPoint(CGPoint p1, CGPoint p2)
+{
+    return CGPointMake((p1.x + p2.x) * 0.5, (p1.y + p2.y) * 0.5);
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -1454,26 +1357,29 @@ bool moveScribble = NO;
         
         if(!isImageEditing){
             
-            CGPoint currentPoint = [touch locationInView:self.mainImageView];
+            lastPoint2 = lastPoint;
+            lastPoint = [touch previousLocationInView:self.mainImageView];
+            currentPoint = [touch locationInView:self.mainImageView];
             
             MessageBrush *message = [[MessageBrush alloc] init];
             message.actionName = @"toucheMoved";
             message.point = [NSValue valueWithCGPoint:currentPoint];
-            
+            message.previousPoint = [NSValue valueWithCGPoint:lastPoint];
+            message.previousPreviousPoint = [NSValue valueWithCGPoint:lastPoint2];
             [self sendActionMessage:message];
             
             [self drawScribble:currentPoint with:self.currentBrush received:NO];
             
-            NSTimeInterval interval = [event timestamp] - self.lastTouch;
-            VideoParameter *parameter;
-            if (isEraser) {
-                parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :-1 : -1: -1: 20];
-            }
-            else{
-                parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :red : green: blue : 5];
-            }
-            
-            [self.arrayPoints addObject:parameter];
+//            NSTimeInterval interval = [event timestamp] - self.lastTouch;
+//            VideoParameter *parameter;
+//            if (isEraser) {
+//                parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :-1 : -1: -1: 20];
+//            }
+//            else{
+//                parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :red : green: blue : 5];
+//            }
+//            
+//            [self.arrayPoints addObject:parameter];
         }
 
     }
@@ -1509,9 +1415,7 @@ bool moveScribble = NO;
 //            self.scribbleView.backgroundColor = [UIColor redColor];
 
             //self.scribbleView.center = centerPoint;
-
-           self.scribbleView.transform=CGAffineTransformScale(self.scribbleView.transform, scale,scale);
-
+            self.scribbleView.transform=CGAffineTransformScale(self.scribbleView.transform, scale,scale);
             NSLog(@"center %f %f",self.scribbleView.center.x,self.scribbleView.center.y);
             //self.scribbleView.layer.anchorPoint = CGPointMake(0.5, 0.5);
             //self.scribbleView.transform = CGAffineTransformTranslate(self.scribbleView.transform, point2.x - point1.x, point2.y - point1.y);
@@ -1568,16 +1472,16 @@ bool moveScribble = NO;
 {
     if((!isImageEditing || !isTextEditing) && !isFixTouch){
         
-        UITouch *touch = [touches anyObject];
-        CGPoint currentPoint = [touch locationInView:self.mainImageView];
-    
-        totalInterval = [event timestamp]-self.lastTouch;
-    
-        lastPoint = currentPoint;
+//        UITouch *touch = [touches anyObject];
+//        //CGPoint currentPoint = [touch locationInView:self.mainImageView];
+//        currentPoint = [touch locationInView:self.mainImageView];
+//        totalInterval = [event timestamp]-self.lastTouch;
+//    
+//        lastPoint = currentPoint;
         
         MessageBrush *message = [[MessageBrush alloc] init];
         message.actionName = @"toucheEnded";
-        message.point = [NSValue valueWithCGPoint:lastPoint];
+        //message.point = [NSValue valueWithCGPoint:lastPoint];
         
         [self sendActionMessage:message];
         
@@ -1606,121 +1510,121 @@ bool moveScribble = NO;
 }
 
 
-//metodos para tirar snapshots da tela
-- (IBAction)takeSnapshot:(id)sender
-{
-    UIImage *snapShot = [self snapshot:self.tempImageView];
-    [self.arraySnapshots addObject:snapShot];
-
-}
-
-- (UIImage *)snapshot:(UIView *)view
-{
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 0);
-    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
-
-- (void)takePrintScreen
-{
-    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
-    [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
-    UIImage *printScreen = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    [self.arraySnapshots addObject:printScreen];
-
-}
-
-//métodos para gravar o audio e reproduzí-los
-- (IBAction)gravarAudio:(id)sender {
-    
-    if(player.playing) {
-        [player stop];
-    }
-    
-    if(!recorder.recording){
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setActive:YES error:nil];
-        
-        // Start recording
-        [recorder record];
-        //[recordPauseButton setTitle:@"Pause" forStateUIControlStateNormal];
-    }
-//    else {
-//        
-//        // Pause recording
-//        [recorder pause];
-//        [recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
+////metodos para tirar snapshots da tela
+//- (IBAction)takeSnapshot:(id)sender
+//{
+//    UIImage *snapShot = [self snapshot:self.tempImageView];
+//    [self.arraySnapshots addObject:snapShot];
+//
+//}
+//
+//- (UIImage *)snapshot:(UIView *)view
+//{
+//    UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 0);
+//    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
+//    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    
+//    return image;
+//}
+//
+//- (void)takePrintScreen
+//{
+//    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
+//    [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
+//    UIImage *printScreen = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    
+//    [self.arraySnapshots addObject:printScreen];
+//
+//}
+//
+////métodos para gravar o audio e reproduzí-los
+//- (IBAction)gravarAudio:(id)sender {
+//    
+//    if(player.playing) {
+//        [player stop];
 //    }
-    
-    [self.pauseRecAudio setEnabled:YES];
-    [self.pauseRecAudio setHidden:NO];
-    [self.recAudio setEnabled:NO];
-    [self.recAudio setHidden:YES];
-}
-- (IBAction)stopAudioRecorder:(id)sender {
-    
-    [recorder stop];
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession setActive:NO error:nil];
-}
-- (IBAction)playAudio:(id)sender {
-    if (!recorder.recording){
-        player = [[AVAudioPlayer alloc] initWithContentsOfURL:recorder.url error:nil];
-        [player setDelegate:self];
-        [player play];
-    }
-}
-
-- (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)avrecorder successfully:(BOOL)flag{
-    //[recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
-    
-    [self.pauseRecAudio setEnabled:NO];
-    [self.recAudio setEnabled:YES];
-    [self.pauseRecAudio setHidden:YES];
-    [self.recAudio setHidden:NO];
-}
-
-- (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Done"
-                                                    message: @"Finish playing the recording!"
-                                                   delegate: nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
-}
-
-//método chamado quando o vídeo precisa desenhar na tela
-- (void)draw : (VideoParameter *)parameter
-{
-    UIGraphicsBeginImageContext(self.mainImageView.frame.size);
-    [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
-    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), [parameter initialPoint].x, [parameter initialPoint].y);
-    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), [parameter finalPoint].x, [parameter finalPoint].y);
-    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
-    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), [parameter currentBrush] );
-    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), [parameter currentRed], [parameter currentGreen], [parameter currentBlue], 1.0);
-    
-    if ([parameter currentRed] == -1 && [parameter currentGreen] == -1 &&[parameter currentBlue] == -1) {
-        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeClear);
-    }
-    else{
-        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
-    }
-    
-    CGContextStrokePath(UIGraphicsGetCurrentContext());
-    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    [self.tempImageView setAlpha:opacity];
-    UIGraphicsEndImageContext();
-    
-    [parameter setIsTaskTerminated: YES];
-    NSLog(@"Terminou task");
-    
-}
+//    
+//    if(!recorder.recording){
+//        AVAudioSession *session = [AVAudioSession sharedInstance];
+//        [session setActive:YES error:nil];
+//        
+//        // Start recording
+//        [recorder record];
+//        //[recordPauseButton setTitle:@"Pause" forStateUIControlStateNormal];
+//    }
+////    else {
+////        
+////        // Pause recording
+////        [recorder pause];
+////        [recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
+////    }
+//    
+//    [self.pauseRecAudio setEnabled:YES];
+//    [self.pauseRecAudio setHidden:NO];
+//    [self.recAudio setEnabled:NO];
+//    [self.recAudio setHidden:YES];
+//}
+//- (IBAction)stopAudioRecorder:(id)sender {
+//    
+//    [recorder stop];
+//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//    [audioSession setActive:NO error:nil];
+//}
+//- (IBAction)playAudio:(id)sender {
+//    if (!recorder.recording){
+//        player = [[AVAudioPlayer alloc] initWithContentsOfURL:recorder.url error:nil];
+//        [player setDelegate:self];
+//        [player play];
+//    }
+//}
+//
+//- (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)avrecorder successfully:(BOOL)flag{
+//    //[recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
+//    
+//    [self.pauseRecAudio setEnabled:NO];
+//    [self.recAudio setEnabled:YES];
+//    [self.pauseRecAudio setHidden:YES];
+//    [self.recAudio setHidden:NO];
+//}
+//
+//- (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Done"
+//                                                    message: @"Finish playing the recording!"
+//                                                   delegate: nil
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
+//}
+//
+////método chamado quando o vídeo precisa desenhar na tela
+//- (void)draw : (VideoParameter *)parameter
+//{
+//    UIGraphicsBeginImageContext(self.mainImageView.frame.size);
+//    [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
+//    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), [parameter initialPoint].x, [parameter initialPoint].y);
+//    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), [parameter finalPoint].x, [parameter finalPoint].y);
+//    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+//    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), [parameter currentBrush] );
+//    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), [parameter currentRed], [parameter currentGreen], [parameter currentBlue], 1.0);
+//    
+//    if ([parameter currentRed] == -1 && [parameter currentGreen] == -1 &&[parameter currentBlue] == -1) {
+//        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeClear);
+//    }
+//    else{
+//        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
+//    }
+//    
+//    CGContextStrokePath(UIGraphicsGetCurrentContext());
+//    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+//    [self.tempImageView setAlpha:opacity];
+//    UIGraphicsEndImageContext();
+//    
+//    [parameter setIsTaskTerminated: YES];
+//    NSLog(@"Terminou task");
+//    
+//}
 
 #pragma mark - AddImageMethods
 
@@ -1917,8 +1821,8 @@ bool moveScribble = NO;
     
     self.addImageButton.enabled = YES;
     self.addImageButton.hidden = NO;
-    self.confirmImageButton.enabled = NO;
-    self.confirmImageButton.hidden = YES;
+//    self.confirmImageButton.enabled = NO;
+//    self.confirmImageButton.hidden = YES;
     
     
     isImageEditing = NO;
@@ -1934,6 +1838,21 @@ bool moveScribble = NO;
 }
 
 #pragma mark - ImagePickerControllerDelegateMethod
+- (void) putImageAsBackground : (UIImage*)choseImage{
+    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:choseImage];
+    [self.arrayUndo addObject:bgImage];
+    [self.layoutImageView setImage:choseImage];
+    [self.view sendSubviewToBack:self.layoutImageView];
+    [self.layoutView setHidden:YES];
+    isForBackGround = NO;
+    
+    if (undoMade) {
+        self.arrayRedo = [[NSMutableArray alloc]init];
+        self.redoButton.enabled = NO;
+        undoMade = NO;
+    }
+
+}
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	
@@ -1949,10 +1868,25 @@ bool moveScribble = NO;
         
     }
     else{
-        [self.layoutImageView setImage:choseImage];
-        [self.view sendSubviewToBack:self.layoutImageView];
-        [self.layoutView setHidden:YES];
-        isForBackGround = NO;
+//        BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:choseImage];
+//        [self.arrayUndo addObject:bgImage];
+//        [self.layoutImageView setImage:choseImage];
+//        [self.view sendSubviewToBack:self.layoutImageView];
+//        [self.layoutView setHidden:YES];
+//        isForBackGround = NO;
+//        
+//        if (undoMade) {
+//            self.arrayRedo = [[NSMutableArray alloc]init];
+//            self.redoButton.enabled = NO;
+//            undoMade = NO;
+//        }
+        [self putImageAsBackground:choseImage];
+        
+        MessageChangeBackGround* message = [[MessageChangeBackGround alloc]init];
+        message.image = choseImage;
+        [self sendChangeBackgroundMessage:message];
+        
+
     }
 }
 
@@ -2081,8 +2015,7 @@ bool moveScribble = NO;
     
     customImage.tag = imageTag;
     imageTag++;
-    
-    [self.arrayImages addObject:customImage];
+    //[self.arrayImages addObject:customImage];
     
     [self.scribbleView addSubview:customImage];
     
@@ -2600,49 +2533,95 @@ bool moveScribble = NO;
     [self.view bringSubviewToFront:self.layoutView];
 }
 
+- (void)performChangeBackground: (NSString*)imageName
+{
+    NSLog(@"button %@", imageName);
+    UIImage *image;
+    
+    if ([imageName  isEqualToString: @"White"]) {
+        image = [[UIImage alloc] init];
+    }
+    else if ([imageName  isEqualToString: @"Square"]) {
+        image = [UIImage imageNamed:@"squared.png"];
+    }
+    else if ([imageName  isEqualToString: @"Line"]) {
+        image = [UIImage imageNamed:@"notebookPaper.png"];
+    }
+    else if ([imageName  isEqualToString: @"Note"]) {
+        image = [UIImage imageNamed:@"agenda.png"];
+    }
+    
+    if (image){
+        [self.layoutImageView setImage:image];
+        BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
+        [self.arrayUndo addObject:bgImage];
+
+        bgImage = [[BackGroundImage alloc]initWithImage:image];
+        [self.view sendSubviewToBack:self.layoutImageView];
+        [self.layoutView setHidden:YES];
+        [self.arrayUndo addObject:bgImage];
+    
+        if (undoMade) {
+            self.arrayRedo = [[NSMutableArray alloc]init];
+            self.redoButton.enabled = NO;
+            undoMade = NO;
+        }
+    }
+
+}
 
 - (IBAction)changeLayout:(UIButton *)sender
 {
-    NSLog(@"button %@", sender.titleLabel.text);
-    UIImage *image;
-    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
-    [self.arrayUndo addObject:bgImage];
-    
-    if ([sender.titleLabel.text  isEqual: @"White"]) {
-        image = [[UIImage alloc] init];
-    }
-    if ([sender.titleLabel.text  isEqual: @"Square"]) {
-        image = [UIImage imageNamed:@"squared.png"];
-    }
-    if ([sender.titleLabel.text  isEqual: @"Line"]) {
-        image = [UIImage imageNamed:@"notebookPaper.png"];
-    }
-    if ([sender.titleLabel.text  isEqual: @"Note"]) {
-        image = [UIImage imageNamed:@"agenda.png"];
-    }
+//    NSLog(@"button %@", sender.titleLabel.text);
+//    UIImage *image;
+//    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
+//    [self.arrayUndo addObject:bgImage];
+//    
+//    if ([sender.titleLabel.text  isEqual: @"White"]) {
+//        image = [[UIImage alloc] init];
+//    }
+//    if ([sender.titleLabel.text  isEqual: @"Square"]) {
+//        image = [UIImage imageNamed:@"squared.png"];
+//    }
+//    if ([sender.titleLabel.text  isEqual: @"Line"]) {
+//        image = [UIImage imageNamed:@"notebookPaper.png"];
+//    }
+//    if ([sender.titleLabel.text  isEqual: @"Note"]) {
+//        image = [UIImage imageNamed:@"agenda.png"];
+//    }
+    [self performChangeBackground:sender.titleLabel.text];
     
     if ([sender.titleLabel.text  isEqual: @"Custon Image"]) {
         UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
         //UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc]init];
         pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         pickerLibrary.delegate = self;
-        [self presentViewController:pickerLibrary animated:YES completion:nil];
         isForBackGround = YES;
+        [self presentViewController:pickerLibrary animated:YES completion:nil];
         
+        if (undoMade) {
+            self.arrayRedo = [[NSMutableArray alloc]init];
+            self.redoButton.enabled = NO;
+            undoMade = NO;
+        }
     }
-    [self.layoutImageView setImage:image];
     
-    bgImage = [[BackGroundImage alloc]initWithImage:image];
-    [self.view sendSubviewToBack:self.layoutImageView];
-    [self.layoutView setHidden:YES];
-    [self.arrayUndo addObject:bgImage];
-    
-    if (undoMade) {
-        self.arrayRedo = [[NSMutableArray alloc]init];
-        self.redoButton.enabled = NO;
-        undoMade = NO;
+    else {
+        MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
+        message.nameImage = sender.titleLabel.text;
+        [self sendChangeBackgroundMessage:message];
     }
-
+//    [self.layoutImageView setImage:image];
+//    
+//    bgImage = [[BackGroundImage alloc]initWithImage:image];
+//    [self.view sendSubviewToBack:self.layoutImageView];
+//    [self.layoutView setHidden:YES];
+//    [self.arrayUndo addObject:bgImage];
+    
+//    MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
+//    message.nameImage = sender.titleLabel.text;
+//    [self sendChangeBackgroundMessage:message];
+    
 }
 
 - (IBAction)acessQuestions:(id)sender {
@@ -3158,25 +3137,37 @@ bool moveScribble = NO;
     [self sendImageMessage:message];
 }
 
-#pragma mark - ResetViewControllerDelegateMethods
+#pragma mark - ResetViewControllerMethods
+- (void)performResetTint {
+    self.tempImageView.image = nil;
+}
+
 - (void) resetTint
 {
-    self.tempImageView.image = nil;
+    MessageResetTint * message = [[MessageResetTint alloc]init];
+    [self performResetTint];
+    [self sendResetTintMessage:message];
 }
 
 - (void) resetAll
 {
+    MessageResetAll * message = [[MessageResetAll alloc]init];
+    [self performResetAll];
+    [self sendResetAllMessage:message];
+}
+
+- (void)performResetAll {
     for (UIImageView* imageView in self.arrayImages) {
         [imageView removeFromSuperview];
     }
     for (UITextField* textField in self.arrayTexts) {
         [textField removeFromSuperview];
     }
-    [self resetTint];
+    [self performResetTint];
     self.arrayImages = [[NSMutableArray alloc]init];
     self.arrayTexts = [[NSMutableArray alloc]init];
     indexImage = 0;
-    
+
 }
 
 -(void)newThicknessBrush:(CGFloat)thickness
@@ -3223,7 +3214,7 @@ bool moveScribble = NO;
     [self.view bringSubviewToFront: self.maskActionBarButton];
     [self.view bringSubviewToFront: self.recAudio];
     [self.view bringSubviewToFront: self.pauseRecAudio];
-    [self.view bringSubviewToFront: self.confirmImageButton];
+    //[self.view bringSubviewToFront: self.confirmImageButton];
     [self.view bringSubviewToFront: self.pageNumberLabel];
     [self.view bringSubviewToFront: self.backButton];
     [self.view bringSubviewToFront: self.topBar];
