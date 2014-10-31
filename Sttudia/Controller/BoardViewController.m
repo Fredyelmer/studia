@@ -34,6 +34,8 @@
     CGFloat lastRotation;
     int numEraserButtonTap;
     int textFont;
+    int textTag;
+    int imageTag;
     NSString* nameOfFont;
     BOOL allowImageEdition;
     CAShapeLayer *_border;
@@ -48,18 +50,14 @@
 
 //variaveis usadas para oespelhamento das telas
 @property (nonatomic, strong) AppDelegate *appDelegate;
-@property (nonatomic) int secretNumber;
-@property (nonatomic) BOOL hasCreatedHost;
-@property (nonatomic) BOOL isHostRunning;
 
 @property (nonatomic, strong) Brush *receivedBrush;
-
 
 @property (assign, nonatomic) BOOL isRecording;
 @property float scaleX;
 @property float scaleY;
 
--(void)sendActionMessage:(MessageBoard*) message;
+//conection notifications
 -(void)didReceiveDataWithNotification:(NSNotification *)notification;
 
 @end
@@ -81,6 +79,8 @@
     
     [super viewDidLoad];
 
+    textTag = 1;
+    imageTag = 1;
     
     [self.view setBackgroundColor:[UIColor blackColor]];
     
@@ -118,7 +118,6 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     //inicializa o brush
-    //[self setBrushColor:[UIColor blackColor]];
     self.currentColorText = [UIColor blackColor];
     brush = 5.0;
     eraser = 20.0;
@@ -148,26 +147,6 @@
     
     //long press gesture
     [self.layoutView setHidden:YES];
-    
-    // self.squarePicker up
-    
-    UILongPressGestureRecognizer *longPressGesture1 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
-    UILongPressGestureRecognizer *longPressGesture2 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
-    UILongPressGestureRecognizer *longPressGesture3 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
-    UILongPressGestureRecognizer *longPressGesture4 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
-    UILongPressGestureRecognizer *longPressGesture5 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressedButton:)];
-    
-    //UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
-    //UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    
-    //[self.view addGestureRecognizer:pinchGesture];
-    //[self.view addGestureRecognizer:panGesture];
-    
-    [[self.ColorButton objectAtIndex:0] addGestureRecognizer:longPressGesture1];
-    [[self.ColorButton objectAtIndex:1] addGestureRecognizer:longPressGesture2];
-    [[self.ColorButton objectAtIndex:2] addGestureRecognizer:longPressGesture3];
-    [[self.ColorButton objectAtIndex:3] addGestureRecognizer:longPressGesture4];
-    [[self.ColorButton objectAtIndex:4] addGestureRecognizer:longPressGesture5];
     
     [self updateThicknessButton];
     
@@ -231,50 +210,53 @@
     allowImageEdition = NO;
     lastScale = 1.0;
     
-    
+    //start peer session as client
     _appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [[_appDelegate mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
+    [[_appDelegate mcManager] advertiseSelf:YES];
+    isHosting = NO;
+    isConnected = NO;
     
-//    [[_appDelegate mcManager] setupPeerAndSessionWithDisplayName:[UIDevice currentDevice].name];
-//    [[_appDelegate mcManager] advertiseSelf:YES];
-    
+    //session notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveDataWithNotification:)
                                                  name:@"MCDidReceiveDataNotification"
                                                object:nil];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(peerDidChangeStateWithNotification:)
-//                                                 name:@"MCDidChangeStateNotification"
-//                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(peerDidChangeStateWithNotification:)
+                                                 name:@"MCDidChangeStateNotification"
+                                               object:nil];
 }
 
-//-(void)peerDidChangeStateWithNotification:(NSNotification *)notification{
-//    MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
-//    NSString *peerDisplayName = peerID.displayName;
-//    MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
-//    
-//    
-//    if (state != MCSessionStateConnecting) {
-//        if (state == MCSessionStateConnected) {
-//           // [_arrConnectedDevices addObject:peerDisplayName];
-//        }
-//        else if (state == MCSessionStateNotConnected){
-////            if ([_arrConnectedDevices count] > 0) {
-////                int indexOfPeer = [_arrConnectedDevices indexOfObject:peerDisplayName];
-////                [_arrConnectedDevices removeObjectAtIndex:indexOfPeer];
-////            }
-//        }
-//        
-//        //[_tblConnectedDevices reloadData];
-//        
-//        BOOL peersExist = ([[_appDelegate.mcManager.session connectedPeers] count] == 0);
-//       // [_btnDisconnect setEnabled:!peersExist];
-//       // [_txtName setEnabled:peersExist];
-//    }
-//}
+-(void)stablishHost:(BOOL)isHost
+{
+    isHosting = isHost;
+    if (isHosting) {
+        NSLog(@"connected as host");
+    } else {
+        NSLog(@"connected as client");
+    }
+}
+
 - (void) didFinishedLoadRepository
 {
     self.questionsButton.enabled = YES;
+
+}
+
+-(void)peerDidChangeStateWithNotification:(NSNotification *)notification
+{
+    MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
+    NSString *peerDisplayName = peerID.displayName;
+    MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
+    
+    NSLog(@"device name: %@",peerDisplayName);
+    NSLog(@"state: %d",state);
+    if (state == MCSessionStateConnected) {
+        isConnected = YES;
+    } else {
+        isConnected = NO;
+    }
 
 }
 
@@ -339,55 +321,23 @@
         [opque addOperation:operation];
     }
     
-    else if ([message isKindOfClass:[MessageTextField class]]) {
-        MessageTextField *messageText = (MessageTextField* )message;
+    else if ([message isKindOfClass:[MessageText class]]) {
+        MessageText *messageText = (MessageText* )message;
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, 80, 100, 30)];
-            
-            textField.borderStyle = UITextBorderStyleRoundedRect;
-            [textField.layer setBorderWidth:1];
-            [textField.layer setBorderColor:[[UIColor blueColor] CGColor]];
-            textField.font = [UIFont systemFontOfSize:textFont];
-            //textField.placeholder = @"enter text";
-            textField.autocorrectionType = UITextAutocorrectionTypeNo;
-            textField.keyboardType = UIKeyboardTypeDefault;
-            textField.returnKeyType = UIReturnKeyDone;
-            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-            textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-            textField.textAlignment = NSTextAlignmentCenter;
-            textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-            textField.textColor = [UIColor blackColor];
-            textField.userInteractionEnabled = YES;
-            UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingText:)];
-            UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveText:)];
-            UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateText:)];
-            
-            
-            [textField addGestureRecognizer:pinchGesture];
-            [textField addGestureRecognizer:panGesture];
-            [textField addGestureRecognizer:rotationGesture];
-            
-            [textField setBorderStyle:UITextBorderStyleNone];
+            if (isHosting) {
+                [self editTextField:messageText.text font:messageText.font color:messageText.color tag:messageText.tag];
+            } else {
                 
-            textField.center = currentTextCenter;
-            textField.transform = currentTextTransform;
-            self.addTextButton.enabled = YES;
-            [self bringToolBarToFront];
-            textField.delegate = self;
-
-            textField.text = messageText.textField;
-            [self.scribbleView addSubview:textField];
-            self.currentTextField = textField;
+            }
+            
         }];
         
         [opque addOperation:operation];
-
-        
     }
     
     if ([message isKindOfClass:[MessageImage class]]) {
@@ -399,7 +349,7 @@
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            [self putImageInScreen:msgImage.image];
+            //[self putImageInScreen:msgImage.image];
         }];
          
         [opque addOperation:operation];
@@ -415,8 +365,16 @@
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            if (msgImage.isImage) {
-                [currentImage setCenter:point];
+            if (msgImage.isImage)
+            {
+                for (UITextField *text in self.scribbleView)
+                {
+//                    if ([text tag] == msgImage.tag)
+//                    {
+//                         [currentImage setCenter:point];
+//                    }
+                }
+               
             }else{
                 [self.currentTextField setCenter:point];
             }
@@ -518,10 +476,53 @@
         
         [opque addOperation:operation];
     }
-   // NSString *receivedText = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
+    else if ([message isKindOfClass:[MessageTag class]]) {
+        MessageTag *msgTag = (MessageTag*) message;
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+            receivedTag = msgTag.tag;
+        }];
+        
+        [opque addOperation:operation];
+    }
+    else if ([message isKindOfClass:[NSString class]]) {
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        
+        if ([message isEqual:@"tag"]) {
+            [operation addExecutionBlock:^{
+                [self sendTagMessage];
+            }];
+        }
     
+        [opque addOperation:operation];
+    }
+   
+}
+
+-(void)requestHostTag
+{
+    NSString* request = @"tag";
+    NSData *dataToSend = [request dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
+    NSError *error;
     
-    //[_tvChat performSelectorOnMainThread:@selector(setText:) withObject:[_tvChat.text stringByAppendingString:[NSString stringWithFormat:@"%@ wrote:\n%@\n\n", peerDisplayName, receivedText]] waitUntilDone:NO];
+    [_appDelegate.mcManager.session sendData:dataToSend
+                                     toPeers:allPeers
+                                    withMode:MCSessionSendDataReliable
+                                       error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+}
+
+-(void)sendTagMessage
+{
+    MessageTag *message = [[MessageTag alloc] init];
+    message.tag = objectTag++;
+    [self sendMessage:message];
 }
 
 -(void)sendActionMessage:(MessageBrush*) message
@@ -530,11 +531,12 @@
     message.thickness = self.currentBrush.thickness;
     message.isEraser = self.currentBrush.isEraser;
     
-    //NSLog(@"sended point %@", NSStringFromCGPoint(message.point));
-    
+    [self sendMessage:message];
+}
+
+-(void) sendMessage:(NSObject*) message
+{
     NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
-    
-    //NSData *dataToSend = [NSData dataWithBytes:&actualPoint length:sizeof(CGPoint)];
     NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
     NSError *error;
     
@@ -546,26 +548,16 @@
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
+
 }
 
--(void)sendMove: (CGPoint) point item: (BOOL) isImage
+-(void)sendMove: (CGPoint) point tag:(int) tag isImage: (BOOL) isImage
 {
     MessageMove* message = [[MessageMove alloc] init];
     message.point = [NSValue valueWithCGPoint:point];
     message.isImage = isImage;
     
-    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
-    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-    NSError *error;
-    
-    [_appDelegate.mcManager.session sendData:dataToSend
-                                     toPeers:allPeers
-                                    withMode:MCSessionSendDataReliable
-                                       error:&error];
-    
-    if (error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }
+    [self sendMessage:message];
 }
 
 -(void)sendResize: (CGFloat) scale isImage: (BOOL) isImage
@@ -574,19 +566,7 @@
     message.scale = scale;
     message.isImage = isImage;
     
-    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
-    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-    NSError *error;
-    
-    [_appDelegate.mcManager.session sendData:dataToSend
-                                     toPeers:allPeers
-                                    withMode:MCSessionSendDataReliable
-                                       error:&error];
-    
-    if (error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }
-
+    [self sendMessage:message];
 }
 
 -(void)sendRotation: (CGFloat) rotation isImage: (BOOL) isImage
@@ -595,112 +575,38 @@
     message.rotation = rotation;
     message.isImage = isImage;
     
-    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
-    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-    NSError *error;
-    
-    [_appDelegate.mcManager.session sendData:dataToSend
-                                     toPeers:allPeers
-                                    withMode:MCSessionSendDataReliable
-                                       error:&error];
-    
-    if (error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }
-    
+    [self sendMessage:message];
 }
 -(void)sendImageMessage:(MessageImage*) message
 {
-    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
-    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-    NSError *error;
-    
-    [_appDelegate.mcManager.session sendData:dataToSend
-                                     toPeers:allPeers
-                                    withMode:MCSessionSendDataReliable
-                                       error:&error];
-    
-    if (error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }
+    [self sendMessage:message];
 }
 
--(void)sendTextMessage:(MessageTextField*) message
+-(void)sendTextMessage:(NSString*) text font:(UIFont*) font color:(UIColor*) color tag:(NSInteger) tag
 {
-    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
-    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-    NSError *error;
-    
-    [_appDelegate.mcManager.session sendData:dataToSend
-                                     toPeers:allPeers
-                                    withMode:MCSessionSendDataReliable
-                                       error:&error];
-    
-    if (error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }
+    MessageText* message = [MessageText new];
+    message.isHost = isHosting;
+    message.tag = tag;
+    message.text = text;
+    message.font = font;
+    message.color = color;
+                            
+    [self sendMessage:message];
 }
 
 
-- (void)sendUndoMessage: (MessageUndo*) message{
-    
-    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
-    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-    NSError *error;
-    
-    [_appDelegate.mcManager.session sendData:dataToSend
-                                     toPeers:allPeers
-                                    withMode:MCSessionSendDataReliable
-                                       error:&error];
-    
-    if (error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }
-
+- (void)sendUndoMessage: (MessageUndo*) message
+{
+    [self sendMessage:message];
 }
 - (void)sendRedoMessage: (MessageRedo*) message{
-    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
-    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-    NSError *error;
-    
-    [_appDelegate.mcManager.session sendData:dataToSend
-                                     toPeers:allPeers
-                                    withMode:MCSessionSendDataReliable
-                                       error:&error];
-    
-    if (error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }
-
+    [self sendMessage:message];
 }
 - (void)sendNextPageMessage: (MessageNextPage*) message{
-    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
-    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-    NSError *error;
-    
-    [_appDelegate.mcManager.session sendData:dataToSend
-                                     toPeers:allPeers
-                                    withMode:MCSessionSendDataReliable
-                                       error:&error];
-    
-    if (error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }
-
+    [self sendMessage:message];
 }
 - (void)sendPreviewPageMessage: (MessagePreviewPage*) message{
-    NSData *dataToSend = [NSKeyedArchiver archivedDataWithRootObject:message];
-    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-    NSError *error;
-    
-    [_appDelegate.mcManager.session sendData:dataToSend
-                                     toPeers:allPeers
-                                    withMode:MCSessionSendDataReliable
-                                       error:&error];
-    
-    if (error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }
+    [self sendMessage:message];
 }
 
 -(void) handlePinch:(UIPinchGestureRecognizer*)sender
@@ -1498,6 +1404,8 @@ bool moveScribble = NO;
     
     [self.currentTextField resignFirstResponder];
     [self.currentTextField.layer setBorderWidth:0.0];
+    
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(void) drawScribble:(CGPoint) currentPoint with: (Brush *) drawBrush received: (BOOL) isReceived
@@ -1640,7 +1548,7 @@ bool moveScribble = NO;
         }
     }
 
-    
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 - (CGFloat) distance:(CGPoint) p1 toPoint:(CGPoint) p2
@@ -1693,6 +1601,8 @@ bool moveScribble = NO;
     }
     
     isFixTouch = NO;
+    
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 
@@ -1960,7 +1870,7 @@ bool moveScribble = NO;
             CGPoint final = CGPointMake(finalX, finalY);
             [[recognizer view] setCenter:final];
             
-            [self sendMove:final item:YES];
+            [self sendMove:final tag: [[recognizer view] tag] isImage:YES];
         
             
             [UIView commitAnimations];
@@ -2031,7 +1941,7 @@ bool moveScribble = NO;
 	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
     if(!isForBackGround){
-        [self putImageInScreen:choseImage];
+       // [self putImageInScreen:choseImage];
         
         MessageImage *message =[[MessageImage alloc] init];
         message.image = choseImage;
@@ -2046,9 +1956,101 @@ bool moveScribble = NO;
     }
 }
 
-- (void) putImageInScreen : (UIImage *)image
+-(UITextField*) makeTextField: (NSString*) text font:(UIFont*) font color:(UIColor*) color
 {
+    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, 80, 100, 50)];
     
+    //custom tool bar text
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f,
+                                                                     0.0f,
+                                                                     self.view.window.frame.size.width,
+                                                                     44.0f)];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        toolBar.tintColor = [UIColor colorWithRed:0.6f
+                                            green:0.6f
+                                             blue:0.64f
+                                            alpha:1.0f];
+    }
+    else
+    {
+        toolBar.tintColor = [UIColor colorWithRed:0.56f
+                                            green:0.59f
+                                             blue:0.63f
+                                            alpha:1.0f];
+    }
+    toolBar.translucent = NO;
+    toolBar.items =   @[ [[UIBarButtonItem alloc] initWithTitle:@"T+"
+                          
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:self
+                                                         action:@selector(barButtonPressed:)],
+                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                          
+                                                                       target:nil
+                                                                       action:nil],
+                         
+                         [[UIBarButtonItem alloc] initWithTitle:@"T-"
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:self
+                                                         action:@selector(barButtonPressed:)],
+                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                       target:nil
+                                                                       action:nil],
+                         
+                         [[UIBarButtonItem alloc] initWithTitle:@"Fonte"
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:self
+                                                         action:@selector(barButtonPressed:)],
+                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                       target:nil
+                                                                       action:nil],
+                         
+                         [[UIBarButtonItem alloc] initWithTitle:@"Cor"
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:self
+                                                         action:@selector(barButtonPressed:)],
+                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                       target:nil
+                                                                       action:nil],
+                         
+                         ];
+    textField.inputAccessoryView = toolBar;
+    
+    //default attributes
+    textField.borderStyle = UITextBorderStyleNone;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.keyboardType = UIKeyboardTypeDefault;
+    textField.returnKeyType = UIReturnKeyDone;
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    textField.placeholder = @"text";
+    textField.userInteractionEnabled = YES;
+    
+    //auxiliar attirbutes
+    self.addTextButton.enabled = YES;
+    [self bringToolBarToFront];
+    textField.delegate = self;
+    
+    //textField gestures
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingText:)];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveText:)];
+    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateText:)];
+    
+    [textField addGestureRecognizer:pinchGesture];
+    [textField addGestureRecognizer:panGesture];
+    [textField addGestureRecognizer:rotationGesture];
+    
+    //setting custom parameters
+    textField.text = text;
+    textField.font = font;
+    textField.textColor = color;
+    
+    //return textfield maked
+    return textField;
+}
+
+- (void) putImageInScreen:(UIImage *)image isEditable:(BOOL) isEditable
+{
     UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2-150, self.tempImageView.frame.size.height/2-150, 300, 300)];
     customImage.image = image;
     customImage.contentMode = UIViewContentModeScaleAspectFill;
@@ -2077,30 +2079,29 @@ bool moveScribble = NO;
     [customImage addGestureRecognizer:rotationGesture];
     [customImage addGestureRecognizer:longPressGesture];
     
+    customImage.tag = imageTag;
+    imageTag++;
+    
     [self.arrayImages addObject:customImage];
     
     [self.scribbleView addSubview:customImage];
     
     currentImage = customImage;
     
-    allowImageEdition = YES;
-    
-    [currentImage.layer setBorderWidth:5.0];
-    [currentImage.layer setBorderColor:[[UIColor blueColor] CGColor]];
-    
-    UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    deleteButton.frame = CGRectMake(customImage.bounds.origin.x, customImage.bounds.origin.y, 30, 30);
-    [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
-    [deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
-    [customImage addSubview:deleteButton];
-    
-    self.addImageButton.enabled = NO;
-    
-    //UIImage *backImage = self.mainImageView.image;
-    //self.mainImageView.image = [self mergeImage:backImage toImage:self.tempImageView.image];
-    
-    //[self createNewDrawLayer];
-    //[self.view bringSubviewToFront:self.tempImageView];
+    if (isEditable) {
+        allowImageEdition = YES;
+        
+        [currentImage.layer setBorderWidth:5.0];
+        [currentImage.layer setBorderColor:[[UIColor blueColor] CGColor]];
+        
+        UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        deleteButton.frame = CGRectMake(customImage.bounds.origin.x, customImage.bounds.origin.y, 30, 30);
+        [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
+        [deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
+        [customImage addSubview:deleteButton];
+        
+        self.addImageButton.enabled = NO;
+    }
     
     [self bringToolBarToFront];
 }
@@ -2207,6 +2208,14 @@ bool moveScribble = NO;
     [self updateThicknessButton];
 }
 
+- (IBAction)openConnectionView:(id)sender {
+    ConnectionsViewController *connectionVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"Connection"];
+    connectionVC.delegate = self;
+    
+    UIPopoverController *connectionP = [[UIPopoverController alloc] initWithContentViewController:connectionVC];
+    [connectionP presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
 //inisializa e mostra o menu de cores customizados
 - (void) initPickerColor:(CorUIButton *) sender
 {
@@ -2222,94 +2231,83 @@ bool moveScribble = NO;
 
 #pragma mark - AddTextMethods
 
-- (IBAction)addText:(id)sender {
-    
+- (IBAction)addText:(id)sender
+{
     textFont = 20;
     
-    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, 80, 100, 30)];
+    NSString* text = @"";
+    UIFont* font = [UIFont systemFontOfSize:textFont];
+    UIColor* color = [UIColor blackColor];
     
+    UITextField *textField = [self makeTextField:text font:font color:color];
+    
+    //selected textfield
+    [self toggleSelectedText:textField];
     [textField becomeFirstResponder];
-    
-    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f,
-                                                                     0.0f,
-                                                                     self.view.window.frame.size.width,
-                                                                     44.0f)];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        toolBar.tintColor = [UIColor colorWithRed:0.6f
-                                            green:0.6f
-                                             blue:0.64f
-                                            alpha:1.0f];
-    }
-    else
-    {
-        toolBar.tintColor = [UIColor colorWithRed:0.56f
-                                            green:0.59f
-                                             blue:0.63f
-                                            alpha:1.0f];
-    }
-    toolBar.translucent = NO;
-    toolBar.items =   @[ [[UIBarButtonItem alloc] initWithTitle:@"T+"
-                          
-                                                          style:UIBarButtonItemStylePlain
-                                                         target:self
-                                                         action:@selector(barButtonPressed:)],
-                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                          
-                                                                       target:nil
-                                                                       action:nil],
-                         
-                         [[UIBarButtonItem alloc] initWithTitle:@"T-"
-                                                          style:UIBarButtonItemStylePlain
-                                                         target:self
-                                                         action:@selector(barButtonPressed:)],
-                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                       target:nil
-                                                                       action:nil],
-                         
-                         [[UIBarButtonItem alloc] initWithTitle:@"Fonte"
-                                                          style:UIBarButtonItemStylePlain
-                                                         target:self
-                                                         action:@selector(barButtonPressed:)],
-                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                       target:nil
-                                                                       action:nil],
-                                                  
-                         [[UIBarButtonItem alloc] initWithTitle:@"Cor"
-                                                          style:UIBarButtonItemStylePlain
-                                                         target:self
-                                                         action:@selector(barButtonPressed:)],
-                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                       target:nil
-                                                                       action:nil],
-
-                         ];
-    textField.inputAccessoryView = toolBar;
-
-    textField.borderStyle = UITextBorderStyleRoundedRect;
-    [textField.layer setBorderWidth:1];
-    [textField.layer setBorderColor:[[UIColor blueColor] CGColor]];
-    textField.font = [UIFont systemFontOfSize:textFont];
-    textField.placeholder = @"enter text";
-    textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    textField.keyboardType = UIKeyboardTypeDefault;
-    textField.returnKeyType = UIReturnKeyDone;
-    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    textField.textAlignment = NSTextAlignmentCenter;
-    textField.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    textField.textColor = [UIColor blackColor];
-    textField.delegate = self;
-    
-//    MessageTextField *message = [[MessageTextField alloc] init];
-//    message.textField = textField.text;
-//    [self sendTextMessage:message];
     
     [self.scribbleView addSubview:textField];
     self.currentTextField = textField;
-    self.currentColorText = [UIColor blackColor];
+    self.currentColorText = color;
     [self bringToolBarToFront];
+    
+    //update tag
+    textField.tag = [self getObjectTag];
+    
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
 
+-(void)editTextField:(NSString*) text font:(UIFont*) font color:(UIColor*) color tag:(NSInteger) tag
+{
+    if (tag == 0) {
+        UITextField *textField = [self makeTextField:text font:font color:color];
+        
+        [self.scribbleView addSubview:textField];
+        self.currentTextField = textField;
+        self.currentColorText = color;
+        [self bringToolBarToFront];
+        
+        //update tag
+        textField.tag = [self getObjectTag];
+    }
+    for (UITextField* textField in self.arrayTexts) {
+        if (textField.tag == tag) {
+            textField.text = text;
+            textField.font = font;
+            textField.textColor = color;
+        }
+    }
+}
+
+//set blue frame in textfield
+-(void) toggleSelectedText:(UITextField *) textField
+{
+    textField.borderStyle = UITextBorderStyleRoundedRect;
+    [textField.layer setBorderWidth:1];
+    [textField.layer setBorderColor:[[UIColor blueColor] CGColor]];
+}
+
+-(NSInteger)getObjectTag
+{
+    if (isConnected) {
+        if (isHosting) {
+            return objectTag++;
+        } else {
+            NSOperationQueue *opque = [NSOperationQueue mainQueue];
+            NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+            [operation addExecutionBlock:^{
+                while (receivedTag == 0 && isConnected) {
+                    //waiting for host tag
+                    NSLog(@"waiting");
+                }
+            }];
+            [opque addOperation:operation];
+            return receivedTag;
+            receivedTag = 0;
+        }
+    } else {
+        return objectTag++;
+    }
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 - (void) barButtonPressed :(UIBarButtonItem*)sender
@@ -2332,7 +2330,7 @@ bool moveScribble = NO;
     else if ([sender.title isEqualToString:@"Fonte"]) {
         FontTypeViewController *fontVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"fontVC"];
         
-        fontVC. delegate = self;
+        fontVC.delegate = self;
         
         self.popoverFont = [[UIPopoverController alloc] initWithContentViewController:fontVC];
         [self.popoverFont presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -2462,7 +2460,7 @@ bool moveScribble = NO;
             CGPoint final = CGPointMake(finalX, finalY);
             [[recognizer view] setCenter:final];
             
-            [self sendMove:final item:NO];
+            [self sendMove:final tag:recognizer.view.tag isImage:NO];
             
             [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
             [recognizer.view.layer setBorderWidth:1];
@@ -2510,50 +2508,58 @@ bool moveScribble = NO;
 #pragma mark - UItextFieldDelegateMethods
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    [self autoSizeTextFieldFrame:textField];
+   
+    //send edit text to peers
+    if (isConnected) {
+        [self sendTextMessage:textField.text font:textField.font color:textField.textColor tag:textField.tag];
+    }
     
-    NSString *text = textField.text;
-    text = [text stringByReplacingCharactersInRange:range withString:string];
-    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:textField.font}];
-    CGPoint origin = self.currentTextField.frame.origin;
-    [textField setFrame:CGRectMake(origin.x, origin.y, textSize.width +30, textSize.height + 30)];
-    
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     return YES;
+}
+
+-(void)autoSizeTextFieldFrame:(UITextField*) textField
+{
+    CGSize textSize = [textField.text sizeWithAttributes:@{NSFontAttributeName:textField.font}];
+    CGPoint center = textField.center;
+    [textField setFrame:CGRectMake(self.tempImageView.frame.size.width/2, 80, textSize.width + 60, textSize.height + 30)];
+    textField.center = center;
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self endTextEditing:textField];
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [textField.layer setBorderColor:[[UIColor blueColor] CGColor]];
-    [textField.layer setBorderWidth:1];
+    [self toggleSelectedText:textField];
     currentTextCenter = textField.center;
     currentTextTransform = textField.transform;
     textField.transform = CGAffineTransformMakeRotation(0);
-    textField.center = CGPointMake(self.tempImageView.frame.size.width/2, 80);
     self.currentColorText = textField.textColor;
-    //    [textField setFrame:CGRectMake(50, 80, self.currentTextField.frame.size.width, self.currentTextField.frame.size.height)];
     
     isTextEditing = YES;
     
     self.currentTextField = textField;
     self.addTextButton.enabled = NO;
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    self.currentTextField = textField;
-    textField.userInteractionEnabled = YES;
-
-    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingText:)];
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveText:)];
-    UIRotationGestureRecognizer *rotationGesture = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotateText:)];
-
+    [self endTextEditing:textField];
     
-    [textField addGestureRecognizer:pinchGesture];
-    [textField addGestureRecognizer:panGesture];
-    [textField addGestureRecognizer:rotationGesture];
-    
+    return YES;
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+-(void) endTextEditing:(UITextField *) textField
+{
     if (![textField.text isEqualToString:@""]) {
         [textField setBorderStyle:UITextBorderStyleNone];
-        //[textField.layer setBorderWidth:0.0];
         [self.arrayTexts addObject:textField];
         
         [textField resignFirstResponder];
@@ -2568,12 +2574,6 @@ bool moveScribble = NO;
     textField.transform = currentTextTransform;
     self.addTextButton.enabled = YES;
     [self bringToolBarToFront];
-    
-    MessageTextField *message = [[MessageTextField alloc] init];
-    message.textField = textField.text;
-    [self sendTextMessage:message];
-    
-    return YES;
 }
 
 - (void) setFontType : (NSString*)fontName
@@ -3151,7 +3151,7 @@ bool moveScribble = NO;
 
 - (void)setInternetImageChose : (UIImage *)image{
     
-    [self putImageInScreen:image];
+    //[self putImageInScreen:image];
     
     MessageImage *message =[[MessageImage alloc] init];
     message.image = image;

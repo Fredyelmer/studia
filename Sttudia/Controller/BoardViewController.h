@@ -36,7 +36,8 @@
 #import "MessageMove.h"
 #import "MessageResize.h"
 #import "MessageRotate.h"
-#import "MessageTextField.h"
+#import "MessageText.h"
+#import "MessageTag.h"
 #import "Brush.h"
 #import <Parse/Parse.h>
 #import "QuestionsRepository.h"
@@ -44,8 +45,9 @@
 #import "MessageRedo.h"
 #import "MessageNextPage.h"
 #import "MessagePreviewPage.h"
+#import "ConnectionsViewController.h"
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate, QuestionRepositoryDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate, QuestionRepositoryDelegate, ConnectionsViewControllerDelegate>
 {
     CGPoint lastPoint;
     CGPoint receivedLastPoint;
@@ -56,7 +58,10 @@
     CGFloat eraser;
     CGFloat opacity;
     BOOL mouseSwiped;
-    
+    BOOL isHosting;
+    BOOL isConnected;
+    NSInteger receivedTag;
+    NSInteger objectTag;
     
     CGFloat backGroundRed;
     CGFloat backGroundGreen;
@@ -108,6 +113,7 @@
 @property (strong, nonatomic) NSMutableArray* arrayPages;
 @property (strong, nonatomic) NSMutableArray* arrayUndo;
 @property (strong, nonatomic) NSMutableArray* arrayRedo;
+@property (strong, nonatomic) NSMutableArray* arrayObjects;
 @property (strong, nonatomic) IBOutlet UILabel *pageNumberLabel;
 @property (strong, nonatomic) IBOutlet UIButton *undoButton;
 @property (strong, nonatomic) IBOutlet UIButton *redoButton;
@@ -144,6 +150,7 @@
 
 - (IBAction)ColorPressed:(CorUIButton *)sender;
 - (IBAction)changeThickness:(id)sender;
+- (IBAction)openConnectionView:(id)sender;
 
 
 - (IBAction)setBackgroundView:(id)sender;

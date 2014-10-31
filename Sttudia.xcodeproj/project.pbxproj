@@ -116,11 +116,13 @@
 		71529F8D19C8AB9D00D87FF9 /* MessagePoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 71529F8C19C8AB9D00D87FF9 /* MessagePoint.m */; };
 		71529F9019CB56B900D87FF9 /* MessageBrush.m in Sources */ = {isa = PBXBuildFile; fileRef = 71529F8F19CB56B900D87FF9 /* MessageBrush.m */; };
 		71529F9319CB755800D87FF9 /* MessageImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 71529F9219CB755800D87FF9 /* MessageImage.m */; };
-		71529F9619CB758500D87FF9 /* MessageTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 71529F9519CB758500D87FF9 /* MessageTextField.m */; };
+		71529F9619CB758500D87FF9 /* MessageText.m in Sources */ = {isa = PBXBuildFile; fileRef = 71529F9519CB758500D87FF9 /* MessageText.m */; };
 		7156213D19B4F0B500C17233 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7156213C19B4F0B500C17233 /* MessageViewController.m */; };
 		7156214019B7A08000C17233 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7156213E19B7A07F00C17233 /* Model.xcdatamodeld */; };
 		7156214319BA26FA00C17233 /* AnsweredTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7156214219BA26FA00C17233 /* AnsweredTableViewController.m */; };
 		71913C20199542720097162C /* Expand_B-512.png in Resources */ = {isa = PBXBuildFile; fileRef = 71913C1F199542720097162C /* Expand_B-512.png */; };
+		719C9EFF19F9647F0075C615 /* MessageTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 719C9EFE19F9647F0075C615 /* MessageTag.m */; };
+		719C9F021A0170310075C615 /* MessageDelete.m in Sources */ = {isa = PBXBuildFile; fileRef = 719C9F011A0170310075C615 /* MessageDelete.m */; };
 		719FE17A1961D86200938952 /* rec.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE1791961D86200938952 /* rec.png */; };
 		719FE17E1961DC4200938952 /* borracha.png in Resources */ = {isa = PBXBuildFile; fileRef = 719FE17D1961DC4200938952 /* borracha.png */; };
 		71B9CB8019630EF200DC3697 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B9CB7F19630EF200DC3697 /* QuartzCore.framework */; };
@@ -316,14 +318,18 @@
 		71529F8F19CB56B900D87FF9 /* MessageBrush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBrush.m; sourceTree = "<group>"; };
 		71529F9119CB755800D87FF9 /* MessageImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageImage.h; sourceTree = "<group>"; };
 		71529F9219CB755800D87FF9 /* MessageImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageImage.m; sourceTree = "<group>"; };
-		71529F9419CB758500D87FF9 /* MessageTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTextField.h; sourceTree = "<group>"; };
-		71529F9519CB758500D87FF9 /* MessageTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTextField.m; sourceTree = "<group>"; };
+		71529F9419CB758500D87FF9 /* MessageText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageText.h; sourceTree = "<group>"; };
+		71529F9519CB758500D87FF9 /* MessageText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageText.m; sourceTree = "<group>"; };
 		7156213B19B4F0B500C17233 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		7156213C19B4F0B500C17233 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		7156213F19B7A08000C17233 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		7156214119BA26E100C17233 /* AnsweredDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnsweredDetailViewController.h; sourceTree = "<group>"; };
 		7156214219BA26FA00C17233 /* AnsweredTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnsweredTableViewController.m; sourceTree = "<group>"; };
 		71913C1F199542720097162C /* Expand_B-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Expand_B-512.png"; sourceTree = "<group>"; };
+		719C9EFD19F9647F0075C615 /* MessageTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTag.h; sourceTree = "<group>"; };
+		719C9EFE19F9647F0075C615 /* MessageTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTag.m; sourceTree = "<group>"; };
+		719C9F001A0170310075C615 /* MessageDelete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageDelete.h; sourceTree = "<group>"; };
+		719C9F011A0170310075C615 /* MessageDelete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageDelete.m; sourceTree = "<group>"; };
 		719FE1791961D86200938952 /* rec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rec.png; sourceTree = "<group>"; };
 		719FE17D1961DC4200938952 /* borracha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = borracha.png; sourceTree = "<group>"; };
 		71B9CB7F19630EF200DC3697 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -656,8 +662,8 @@
 				71529F8F19CB56B900D87FF9 /* MessageBrush.m */,
 				71529F9119CB755800D87FF9 /* MessageImage.h */,
 				71529F9219CB755800D87FF9 /* MessageImage.m */,
-				71529F9419CB758500D87FF9 /* MessageTextField.h */,
-				71529F9519CB758500D87FF9 /* MessageTextField.m */,
+				71529F9419CB758500D87FF9 /* MessageText.h */,
+				71529F9519CB758500D87FF9 /* MessageText.m */,
 				71C43F5C19EEFEBF0002CF01 /* MessageMove.h */,
 				71C43F5D19EEFEBF0002CF01 /* MessageMove.m */,
 				71C43F5F19EF08EF0002CF01 /* MessageResize.h */,
@@ -672,7 +678,10 @@
 				0DBCCF8119F529190028269B /* MessageNextPage.m */,
 				0DBCCF8319F529310028269B /* MessagePreviewPage.h */,
 				0DBCCF8419F529310028269B /* MessagePreviewPage.m */,
-
+				719C9EFD19F9647F0075C615 /* MessageTag.h */,
+				719C9EFE19F9647F0075C615 /* MessageTag.m */,
+				719C9F001A0170310075C615 /* MessageDelete.h */,
+				719C9F011A0170310075C615 /* MessageDelete.m */,
 			);
 			name = message;
 			sourceTree = "<group>";
@@ -816,7 +825,7 @@
 				710DE25319801FA00095E34E /* SourceColorView.m in Sources */,
 				0DA9D71419BDEF39006BE0C1 /* UnanswerQuestionListTableViewCell.m in Sources */,
 				48C52EA01965EC6B00AD013F /* Forum.m in Sources */,
-				71529F9619CB758500D87FF9 /* MessageTextField.m in Sources */,
+				71529F9619CB758500D87FF9 /* MessageText.m in Sources */,
 				0D081747196ED95A0007399B /* VideoParameter.m in Sources */,
 				0DA7189519AFB77400B8B08E /* QuestionsRepository.m in Sources */,
 				71C43F6119EF08EF0002CF01 /* MessageResize.m in Sources */,
@@ -860,7 +869,9 @@
 				7156213D19B4F0B500C17233 /* MessageViewController.m in Sources */,
 				714CEDD9198ACFA50092C98D /* ColorPickerViewController.m in Sources */,
 				48C52E9A1965E65700AD013F /* Question.m in Sources */,
+				719C9F021A0170310075C615 /* MessageDelete.m in Sources */,
 				710DE24E19801FA00095E34E /* HSBSupport.m in Sources */,
+				719C9EFF19F9647F0075C615 /* MessageTag.m in Sources */,
 				0DA7B58E198ABA7500D268E1 /* PhotoRepository.m in Sources */,
 				0D9ECF531961867300882007 /* main.m in Sources */,
 				48C52E8D1965E52D00AD013F /* RegisterViewController.m in Sources */,

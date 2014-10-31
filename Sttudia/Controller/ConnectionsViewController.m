@@ -43,7 +43,7 @@
     {
         _txtName.text = self.appDelegate.mcManager.session.myPeerID.displayName;
         [_btnDisconnect setEnabled:!YES];
-        [_txtName setEnabled:NO];
+        //[_txtName setEnabled:NO];
     }
     
     [_txtName setDelegate:self];
@@ -111,14 +111,21 @@
     [_tblConnectedDevices reloadData];
 }
 
+- (IBAction)toggleHost:(id)sender {
+    [self.delegate stablishHost:self.swHost.isOn];
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
 #pragma delegate
 -(void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController{
     [_appDelegate.mcManager.browser dismissViewControllerAnimated:YES completion:nil];
+     NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 
 -(void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController{
     [_appDelegate.mcManager.browser dismissViewControllerAnimated:YES completion:nil];
+     NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="5aq-Bp-SDO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="5aq-Bp-SDO">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
         <!--Home View Controller-->
@@ -860,9 +860,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Tux-Cx-bAL" kind="popover" popoverAnchorView="uqq-Kw-7Av" id="UH9-RP-KRk">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
+                                    <action selector="openConnectionView:" destination="cOT-VF-1aa" eventType="touchUpInside" id="BBv-VQ-pY2"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eO7-ch-rOC">
@@ -1828,7 +1826,7 @@
         <!--Connections View Controller-->
         <scene sceneID="DwM-as-Q7P">
             <objects>
-                <viewController id="Tux-Cx-bAL" customClass="ConnectionsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Connection" id="Tux-Cx-bAL" customClass="ConnectionsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="89C-6u-ONh">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="575"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1853,18 +1851,8 @@
                                     <action selector="toggleVisibility:" destination="Tux-Cx-bAL" eventType="valueChanged" id="Fjy-QJ-Ryh"/>
                                 </connections>
                             </switch>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Au4-2s-CCk">
-                                <rect key="frame" x="94" y="92" width="185" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="procurar dispositivos">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="browseForDevices:" destination="Tux-Cx-bAL" eventType="touchUpInside" id="VaX-2p-IV6"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="IgS-8o-BGC">
-                                <rect key="frame" x="0.0" y="130" width="400" height="400"/>
+                                <rect key="frame" x="0.0" y="225" width="400" height="300"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
@@ -1878,6 +1866,30 @@
                                     <action selector="disconnect:" destination="Tux-Cx-bAL" eventType="touchUpInside" id="8Pu-Kx-Vyx"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Conectar como Host" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Yil-dl-8Ht">
+                                <rect key="frame" x="26" y="112" width="250" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="b8D-jy-JIr">
+                                <rect key="frame" x="318" y="107" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="toggleHost:" destination="Tux-Cx-bAL" eventType="valueChanged" id="saq-ZN-Grh"/>
+                                </connections>
+                            </switch>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Au4-2s-CCk">
+                                <rect key="frame" x="101" y="159" width="185" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="procurar dispositivos">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="browseForDevices:" destination="Tux-Cx-bAL" eventType="touchUpInside" id="VaX-2p-IV6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1886,6 +1898,7 @@
                     <size key="freeformSize" width="400" height="575"/>
                     <connections>
                         <outlet property="btnDisconnect" destination="lZI-xg-Yu1" id="JWf-Gw-WzD"/>
+                        <outlet property="swHost" destination="b8D-jy-JIr" id="KLr-3D-TXN"/>
                         <outlet property="swVisible" destination="tdL-SP-bjK" id="qqC-3u-L57"/>
                         <outlet property="tblConnectedDevices" destination="IgS-8o-BGC" id="gHA-iH-cCw"/>
                         <outlet property="txtName" destination="UAL-en-72R" id="LSM-Tq-jsL"/>
