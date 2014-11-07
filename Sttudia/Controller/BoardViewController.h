@@ -38,6 +38,9 @@
 #import "MessageRotate.h"
 #import "MessageText.h"
 #import "MessageTag.h"
+#import "MessageDelete.h"
+#import "MessageMake.h"
+#import "MessageRequestTag.h"
 #import "Brush.h"
 #import <Parse/Parse.h>
 #import "QuestionsRepository.h"
@@ -102,6 +105,7 @@
 //@property (strong, nonatomic) IBOutlet UIButton *confirmImageButton;
 @property (strong, nonatomic) IBOutlet UIButton *addImageButton;
 
+@property (nonatomic, retain) NSOperationQueue *operationWaitHostTag;
 
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;
@@ -119,7 +123,7 @@
 @property (strong, nonatomic) NSMutableArray* arrayPages;
 @property (strong, nonatomic) NSMutableArray* arrayUndo;
 @property (strong, nonatomic) NSMutableArray* arrayRedo;
-@property (strong, nonatomic) NSMutableArray* arrayObjects;
+@property (strong, nonatomic) NSMutableDictionary* arrayObjects;
 @property (strong, nonatomic) IBOutlet UILabel *pageNumberLabel;
 @property (strong, nonatomic) IBOutlet UIButton *undoButton;
 @property (strong, nonatomic) IBOutlet UIButton *redoButton;

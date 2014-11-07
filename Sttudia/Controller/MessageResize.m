@@ -13,6 +13,7 @@
 -(id)initWithCoder:(NSCoder *)decoder
 {
     if (self = [super init]) {
+        self.tag = [decoder decodeIntegerForKey:@"tag"];
         self.scale = [decoder decodeFloatForKey:@"scale"];
         self.isImage = [decoder decodeBoolForKey:@"isImage"];
     }
@@ -23,6 +24,7 @@
 {
     [encoder encodeFloat:self.scale forKey:@"scale"];
     [encoder encodeBool:self.isImage forKey:@"isImage"];
+    [encoder encodeInteger:self.tag forKey:@"tag"];
 }
 
 @end

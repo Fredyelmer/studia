@@ -10,6 +10,7 @@
 
 @interface MessageRotate : MessageBoard
 
+@property (nonatomic) NSInteger tag;
 @property (nonatomic) CGFloat rotation;
 @property (nonatomic) BOOL isImage;
 

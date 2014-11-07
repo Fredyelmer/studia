@@ -10,6 +10,7 @@
 
 @interface MessageMove : MessageBoard
 
+@property (nonatomic) NSInteger tag;
 @property (nonatomic, strong) NSValue *point;
 @property (nonatomic) BOOL isImage;
 

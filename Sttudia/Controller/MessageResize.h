@@ -10,6 +10,7 @@
 
 @interface MessageResize : MessageBoard
 
+@property (nonatomic) NSInteger tag;
 @property (nonatomic) CGFloat scale;
 @property (nonatomic) BOOL isImage;
 
