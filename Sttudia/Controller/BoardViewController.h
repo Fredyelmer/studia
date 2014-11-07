@@ -49,9 +49,10 @@
 #import "MessageChangeBackGround.h"
 #import "MessageResetAll.h"
 #import "MessageResetTint.h"
+#import "BackgroundMenuViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate, QuestionRepositoryDelegate, ConnectionsViewControllerDelegate>
+@interface BoardViewController : UIViewController <UIActionSheetDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UINavigationControllerDelegate, UIWebViewDelegate, UISearchBarDelegate, ColorPickerViewControllerDelegate, UIGestureRecognizerDelegate, AddImageViewControllerDelegate, CollectionViewControllerDelegate, ResetViewControllerDelegate, FontTypeViewControllerDelegate,ColorFontViewControllerDelegate,ThicknessViewControllerDelegate, QuestionRepositoryDelegate, ConnectionsViewControllerDelegate, BackgroundMenuViewControllerDelegate, UIPopoverControllerDelegate>
 {
     CGPoint lastPoint;
     CGPoint receivedCurrentPoint;
@@ -84,7 +85,7 @@
 @property (nonatomic,strong) UIPopoverController *popoverThickness;
 @property (nonatomic,strong) UIPopoverController *popoverAddImage;
 @property (strong, nonatomic) UIPopoverController *popoverEraser;
-
+@property (strong, nonatomic) UIPopoverController *popoverBackground;
 @property (strong, nonatomic) UIPopoverController *popoverFont;
 @property (strong, nonatomic) UIPopoverController *popoverFontColor;
 
@@ -121,6 +122,9 @@
 @property (strong, nonatomic) NSMutableArray* arrayRedo;
 @property (strong, nonatomic) NSMutableArray* arrayObjects;
 @property (strong, nonatomic) IBOutlet UILabel *pageNumberLabel;
+@property (strong, nonatomic) IBOutlet UILabel *pageNumberTotalLabel;
+@property (strong, nonatomic) IBOutlet UILabel *numberSeparatorLabel;
+
 @property (strong, nonatomic) IBOutlet UIButton *undoButton;
 @property (strong, nonatomic) IBOutlet UIButton *redoButton;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
@@ -140,6 +144,12 @@
 @property (strong, nonatomic) IBOutlet UIButton *maskToolBarButton;
 @property (strong, nonatomic) IBOutlet UIButton *maskActionBarButton;
 @property (strong, nonatomic) IBOutlet UIButton *connectDevice;
+@property (strong, nonatomic) IBOutlet UIButton *menuButton;
+
+@property (strong, nonatomic) IBOutlet UIButton *chooseColorButton;
+
+@property (strong, nonatomic) IBOutlet UIView *sideBar;
+@property (strong, nonatomic) NSMutableArray *colorArray;
 
 
 - (IBAction)logOut:(id)sender;

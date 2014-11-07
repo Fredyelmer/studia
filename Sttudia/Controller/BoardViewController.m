@@ -47,7 +47,9 @@
     CGAffineTransform currentTextTransform;
     CGPoint lastPoint2;
     CGPoint currentPoint;
+    BOOL sideBarIsVisible;
 }
+@property (strong, nonatomic) IBOutlet UIButton *colorBackgroundButton;
 
 //variaveis usadas para oespelhamento das telas
 @property (nonatomic, strong) AppDelegate *appDelegate;
@@ -101,26 +103,6 @@
     
     qRepository.delegate = self;
     
-//    UIActivityIndicatorView *loadingScreenIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-//    
-//    loadingScreenIndicator.frame = CGRectMake(500, 350, 300.0, 300.0);
-//    
-//    
-//    
-//    //loadingScreenIndicator.center = CGPointMake(500, 350);
-//    [self.view addSubview: loadingScreenIndicator];
-//    
-//    [loadingScreenIndicator startAnimating];
-    
-//    UIActivityIndicatorView *activityIndicator= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(500, 300, 50, 50)];
-//    activityIndicator.layer.cornerRadius = 05;
-//    activityIndicator.opaque = NO;
-//    activityIndicator.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.6f];
-//    activityIndicator.center = self.view.center;
-//    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-//    [activityIndicator setColor:[UIColor colorWithRed:0.6 green:0.8 blue:1.0 alpha:1.0]];
-//    [self.view addSubview: activityIndicator];
-
     self.scribbleView.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
@@ -142,7 +124,7 @@
     
     
     [self.view setBackgroundColor:[UIColor colorWithRed:backGroundRed green:backGroundGreen blue:backGroundBlue alpha:1]];
-    [self selectedButton:[self.ColorButton objectAtIndex:0 ]];
+    /*[self selectedButton:[self.ColorButton objectAtIndex:0 ]];*/
     
     //self.arraySnapshots = [[NSMutableArray alloc]init];
     //self.arrayPoints = [[NSMutableArray alloc]init];
@@ -194,15 +176,14 @@
     
     self.addImageButton.enabled = YES;
     self.addImageButton.hidden = NO;
-//    self.confirmImageButton.enabled = NO;
-//    self.confirmImageButton.hidden = YES;
     
     finishTextEdit = YES;
     
     maxPageIndex = 0;
     currentPageIndex = 0;
     
-    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
+    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d", currentPageIndex+1];
+    self.pageNumberTotalLabel.text = [NSString stringWithFormat:@"%d", maxPageIndex+1];
     
     self.undoButton.enabled = NO;
     self.redoButton.enabled = NO;
@@ -233,6 +214,38 @@
                                              selector:@selector(peerDidChangeStateWithNotification:)
                                                  name:@"MCDidChangeStateNotification"
                                                object:nil];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissSideBar:)];
+    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(bringSideBar:)];
+    UISwipeGestureRecognizer *swipeGesture2 = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(bringSideBar:)];
+    [swipeGesture setDirection:UISwipeGestureRecognizerDirectionRight];
+    [swipeGesture2 setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.sideBar setTransform:CGAffineTransformMakeTranslation(-99, 0)];
+    sideBarIsVisible = NO;
+    [self.sideBar addGestureRecognizer:tapGesture];
+    [self.sideBar addGestureRecognizer:swipeGesture];
+    [self.sideBar addGestureRecognizer:swipeGesture2];
+    
+    [self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_color_normal.png"] forState:UIControlStateNormal];
+    [self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_color_select.png"] forState:UIControlStateSelected];
+    [self.addTextButton setBackgroundImage:[UIImage imageNamed:@"ic_font_normal.png"] forState:UIControlStateNormal];
+    [self.addTextButton setBackgroundImage:[UIImage imageNamed:@"ic_font_select.png"] forState:UIControlStateSelected];
+    [self.eraseButton setBackgroundImage:[UIImage imageNamed:@"ic_eraser_normal.png"] forState:UIControlStateNormal];
+    [self.eraseButton setBackgroundImage:[UIImage imageNamed:@"ic_eraser_select.png"] forState:UIControlStateSelected];
+    [self.thicknessButton setBackgroundImage:[UIImage imageNamed:@"ic_pencil_normal.png"] forState:UIControlStateNormal];
+    [self.thicknessButton setBackgroundImage:[UIImage imageNamed:@"ic_pencil_select.png"] forState:UIControlStateSelected];
+    [self.addImageButton setBackgroundImage:[UIImage imageNamed:@"ic_image_normal.png"] forState:UIControlStateNormal];
+    [self.addImageButton setBackgroundImage:[UIImage imageNamed:@"ic_image_select.png"] forState:UIControlStateSelected];
+    [self.connectDevice setBackgroundImage:[UIImage imageNamed:@"ic_background_normal.png"] forState:UIControlStateNormal];
+    [self.connectDevice setBackgroundImage:[UIImage imageNamed:@"ic_background_select.png"] forState:UIControlStateSelected];
+    [self.undoButton setBackgroundImage:[UIImage imageNamed:@"ic_back_normal.png"] forState:UIControlStateNormal];
+    [self.undoButton setBackgroundImage:[UIImage imageNamed:@"ic_back_select.png"] forState:UIControlStateHighlighted];
+    [self.redoButton setBackgroundImage:[UIImage imageNamed:@"ic_next_normal.png"] forState:UIControlStateNormal];
+    [self.redoButton setBackgroundImage:[UIImage imageNamed:@"ic_next_select.png"] forState:UIControlStateHighlighted];
+    [self.backGroundButton setBackgroundImage:[UIImage imageNamed:@"ic_background_normal.png"] forState:UIControlStateNormal];
+    [self.backGroundButton setBackgroundImage:[UIImage imageNamed:@"ic_background_select.png"] forState:UIControlStateSelected];
+
+    self.colorArray = [[NSMutableArray alloc]initWithArray:@[[UIColor blackColor],[UIColor whiteColor],[UIColor redColor],[UIColor greenColor],[UIColor blueColor],[UIColor yellowColor],[UIColor orangeColor]]];
 }
 
 -(void)stablishHost:(BOOL)isHost
@@ -355,7 +368,7 @@
     }
     
     if ([message isKindOfClass:[MessageImage class]]) {
-        MessageImage *msgImage = (MessageImage*) message;
+        //MessageImage *msgImage = (MessageImage*) message;
         
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
@@ -381,13 +394,13 @@
         [operation addExecutionBlock:^{
             if (msgImage.isImage)
             {
-                for (UITextField *text in self.scribbleView)
-                {
-//                    if ([text tag] == msgImage.tag)
-//                    {
-//                         [currentImage setCenter:point];
-//                    }
-                }
+//                for (UITextField *text in self.scribbleView)
+//                {
+////                    if ([text tag] == msgImage.tag)
+////                    {
+////                         [currentImage setCenter:point];
+////                    }
+//                }
                
             }else{
                 [self.currentTextField setCenter:point];
@@ -904,9 +917,10 @@
     if (numEraserButtonTap == 0) {
         self.currentBrush.isEraser = isEraser = YES;
         self.currentBrush.thickness = eraser;
-        [self selectedButton:sender];
+        /*[self selectedButton:sender];*/
         numEraserButtonTap += 1;
         [self updateThicknessButton];
+        
     }
     else {
         ResetViewController *resetVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"resetVC"];
@@ -915,9 +929,13 @@
         
         self.popoverAddImage = [[UIPopoverController alloc] initWithContentViewController:resetVC];
         [self.popoverAddImage presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-
+        self.popoverAddImage.delegate = self;
         numEraserButtonTap = 0;
+        
+        //[self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_eraser_select.png"] forState:UIControlStateNormal];
     }
+    
+    [self.eraseButton setSelected:YES];
 }
 
 #pragma mark - ChangePageMethods
@@ -954,7 +972,7 @@
         self.arrayTexts = [[NSMutableArray alloc]init];
         self.arrayUndo = [[NSMutableArray alloc]init];
         self.arrayRedo = [[NSMutableArray alloc]init];
-        self.layoutImageView.image = nil;
+        self.layoutImageView.image = [UIImage imageNamed:@"mainBackGround.png"];
         
         
         //aumenta o numero de paginas total e avanca uma pagina
@@ -1032,10 +1050,11 @@
         
     }
     
-    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
-    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :YES];
-    
-    [self.arrayPoints addObject:parameter];
+    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d", currentPageIndex+1];
+    self.pageNumberTotalLabel.text = [NSString stringWithFormat:@"%d", maxPageIndex+1];
+    //    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :YES];
+//    
+//    [self.arrayPoints addObject:parameter];
     
     self.backButton.enabled = YES;
     
@@ -1129,7 +1148,9 @@
                         }];
         
     }
-    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
+    //self.pageNumberLabel.text = [NSString stringWithFormat:@"%d/%d", currentPageIndex+1, maxPageIndex+1];
+    self.pageNumberLabel.text = [NSString stringWithFormat:@"%d", currentPageIndex+1];
+    self.pageNumberTotalLabel.text = [NSString stringWithFormat:@"%d", maxPageIndex+1];
     if ([self.arrayUndo count] == 0) {
         self.undoButton.enabled = NO;
     }
@@ -1205,6 +1226,9 @@ bool moveScribble = NO;
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (sideBarIsVisible && ![event touchesForView:self.sideBar]) {
+        [self hideMenu];
+    }
     
     //fixação da imagem
     if (currentImage && ![event touchesForView:currentImage]&& isImageEditing) {
@@ -1242,6 +1266,7 @@ bool moveScribble = NO;
         self.undoButton.enabled = YES;
         isFixTouch = YES;
         self.addTextButton.enabled = YES;
+        [self.addTextButton setSelected:NO];
         //[self.currentTextField setEnabled:NO];
     }
     mouseSwiped = NO;
@@ -1352,7 +1377,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 {
     UITouch *touch = [touches anyObject];
     
-    if ([[event allTouches] count] == 1) {
+    if (([[event allTouches] count] == 1 && ![event touchesForView:self.sideBar])) {
         mouseSwiped = YES;
         
         if(!isImageEditing){
@@ -1630,19 +1655,20 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (IBAction)addImage:(id)sender {
     
-    
+    [self.addImageButton setSelected:YES];
     AddImageViewController *addImageViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"AddImageVC"];
     
     addImageViewController.delegate = self;
     
     self.popoverAddImage = [[UIPopoverController alloc] initWithContentViewController:addImageViewController];
     [self.popoverAddImage presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    self.popoverAddImage.delegate = self;
 }
 
 -(void)addImageFromLibrary
 {
     [self.popoverAddImage dismissPopoverAnimated:YES];
-    NSLog(@"delele");
+    [self.addImageButton setSelected:NO];
     UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
     pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     pickerLibrary.delegate = self;
@@ -1652,6 +1678,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 - (void)addPhoto
 {
     [self.popoverAddImage dismissPopoverAnimated:YES];
+    [self.addImageButton setSelected:NO];
     
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
@@ -1665,6 +1692,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 - (void)getPhotoFromInternet
 {
     [self.popoverAddImage dismissPopoverAnimated:YES];
+    [self.addImageButton setSelected:NO];
     CollectionViewController *collectionVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"collectionVC"];
     
     collectionVC.delegate = self;
@@ -1774,7 +1802,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
             CGPoint final = CGPointMake(finalX, finalY);
             [[recognizer view] setCenter:final];
             
-            [self sendMove:final tag: [[recognizer view] tag] isImage:YES];
+            [self sendMove:final tag: (int)[[recognizer view] tag] isImage:YES];
         
             
             [UIView commitAnimations];
@@ -2071,23 +2099,34 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 }
 
 #pragma mark - ColorMethods
-- (IBAction)ColorPressed:(CorUIButton *)sender
-{
+- (IBAction)colorButtonPressed:(id)sender {
     self.currentBrush.isEraser = isEraser = NO;
     self.currentBrush.thickness = brush;
-    if (sender.state)
-    {
-        //ativa acao de cor customizado
-        [self initPickerColor:sender];
-    }
-    else
-    {
-        [self selectedButton:sender];
-        //ativa o cor que vai se usar
-        [self setBrushColor:sender.backgroundColor];
-        [self updateThicknessButton];
-    }
+    
+    [self initPickerColor:self.colorArray];
+    
+    [sender setSelected:YES];
 }
+
+
+
+//- (IBAction)ColorPressed:(CorUIButton *)sender
+//{
+//    self.currentBrush.isEraser = isEraser = NO;
+//    self.currentBrush.thickness = brush;
+//    if (sender.state)
+//    {
+//        //ativa acao de cor customizado
+//        [self initPickerColor:sender];
+//    }
+//    else
+//    {
+//        [self selectedButton:sender];
+//        //ativa o cor que vai se usar
+//        [self setBrushColor:sender.backgroundColor];
+//        [self updateThicknessButton];
+//    }
+//}
 
 - (CAShapeLayer *) addDashedBorderWithView: (UIView*) view {
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
@@ -2114,6 +2153,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (IBAction)changeThickness:(id)sender
 {
+    [self.thicknessButton setSelected:YES];
     ThicknessViewController *thicknessViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"Thickness"];
     
     thicknessViewController.delegate = self;
@@ -2139,27 +2179,32 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self.popoverThickness presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
     [self updateThicknessButton];
+    
+    //[self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_pencil_select.png"] forState:UIControlStateNormal];
 }
 
 - (IBAction)openConnectionView:(id)sender {
+    [self.connectDevice setSelected:YES];
     ConnectionsViewController *connectionVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"Connection"];
     connectionVC.delegate = self;
     
     UIPopoverController *connectionP = [[UIPopoverController alloc] initWithContentViewController:connectionVC];
     [connectionP presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    connectionP.delegate = self;
 }
 
 //inisializa e mostra o menu de cores customizados
-- (void) initPickerColor:(CorUIButton *) sender
+- (void) initPickerColor:(NSMutableArray *) colorArray
 {
-    UIColor *color = sender.backgroundColor;
+    //UIColor *color = sender.backgroundColor;
     ColorPickerViewController *colorPickerViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"ColorPickerPopover"];
     
-    colorPickerViewController.color = color;
+    colorPickerViewController.colorArray = colorArray;
     colorPickerViewController.delegate = self;
     
     self.popoverColorPicker = [[UIPopoverController alloc] initWithContentViewController:colorPickerViewController];
-    [self.popoverColorPicker presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    [self.popoverColorPicker presentPopoverFromRect:[(UIButton *)self.chooseColorButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    self.popoverColorPicker.delegate = self;
 }
 
 #pragma mark - AddTextMethods
@@ -2185,6 +2230,10 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     //update tag
     textField.tag = [self getObjectTag];
+    
+    [sender setSelected:YES];
+    
+    //[self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_font_select.png"] forState:UIControlStateNormal];
     
     NSLog(@"%s", __PRETTY_FUNCTION__);
 }
@@ -2393,7 +2442,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
             CGPoint final = CGPointMake(finalX, finalY);
             [[recognizer view] setCenter:final];
             
-            [self sendMove:final tag:recognizer.view.tag isImage:NO];
+            [self sendMove:final tag:(int)recognizer.view.tag isImage:NO];
             
             [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
             [recognizer.view.layer setBorderWidth:1];
@@ -2527,10 +2576,19 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     self.currentColorText = textColor;
 }
 
+#pragma mark backGroundMethods
 - (IBAction)setBackgroundView:(id)sender
 {
-    [self.layoutView setHidden:NO];
-    [self.view bringSubviewToFront:self.layoutView];
+//    [self.layoutView setHidden:NO];
+//    [self.view bringSubviewToFront:self.layoutView];
+    
+    BackgroundMenuViewController *backgroundMenu = [[self storyboard] instantiateViewControllerWithIdentifier:@"backgroundID"];
+    
+    backgroundMenu.delegate = self;
+    
+    self.popoverBackground = [[UIPopoverController alloc]initWithContentViewController:backgroundMenu];
+    [self.popoverBackground presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+
 }
 
 - (void)performChangeBackground: (NSString*)imageName
@@ -2544,11 +2602,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     else if ([imageName  isEqualToString: @"Square"]) {
         image = [UIImage imageNamed:@"squared.png"];
     }
-    else if ([imageName  isEqualToString: @"Line"]) {
+    else if ([imageName  isEqualToString: @"Notebook"]) {
         image = [UIImage imageNamed:@"notebookPaper.png"];
     }
-    else if ([imageName  isEqualToString: @"Note"]) {
-        image = [UIImage imageNamed:@"agenda.png"];
+    else if ([imageName  isEqualToString: @"Original"]) {
+        image = [UIImage imageNamed:@"mainBackGround.png"];
     }
     
     if (image){
@@ -2569,9 +2627,42 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     }
 
 }
+- (void)changeBackground :(NSString*)name{
+    [self performChangeBackground:name];
+    
+    if ([name  isEqual: @"Custom Image"]) {
+        [self.popoverBackground dismissPopoverAnimated:YES];
+        UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
+        //UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc]init];
+        pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        pickerLibrary.delegate = self;
+        isForBackGround = YES;
+        [self presentViewController:pickerLibrary animated:YES completion:nil];
+        
+        if (undoMade) {
+            self.arrayRedo = [[NSMutableArray alloc]init];
+            self.redoButton.enabled = NO;
+            undoMade = NO;
+        }
+    }
+    
+    else {
+        MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
+        message.nameImage = name;
+        [self sendChangeBackgroundMessage:message];
+    }
 
+
+}
 - (IBAction)changeLayout:(UIButton *)sender
 {
+    BackgroundMenuViewController *backgroundMenu = [[self storyboard] instantiateViewControllerWithIdentifier:@"backgroundID"];
+    
+    backgroundMenu.delegate = self;
+    
+    self.popoverBackground = [[UIPopoverController alloc]initWithContentViewController:backgroundMenu];
+    [self.popoverBackground presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+
 //    NSLog(@"button %@", sender.titleLabel.text);
 //    UIImage *image;
 //    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
@@ -2589,9 +2680,12 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    if ([sender.titleLabel.text  isEqual: @"Note"]) {
 //        image = [UIImage imageNamed:@"agenda.png"];
 //    }
+    
+    
+    /*TESTE
     [self performChangeBackground:sender.titleLabel.text];
     
-    if ([sender.titleLabel.text  isEqual: @"Custon Image"]) {
+    if ([sender.titleLabel.text  isEqual: @"Custom Image"]) {
         UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
         //UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc]init];
         pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -2611,6 +2705,9 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         message.nameImage = sender.titleLabel.text;
         [self sendChangeBackgroundMessage:message];
     }
+     */
+    
+    
 //    [self.layoutImageView setImage:image];
 //    
 //    bgImage = [[BackGroundImage alloc]initWithImage:image];
@@ -2624,23 +2721,26 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
 }
 
-- (IBAction)acessQuestions:(id)sender {
-}
 
--(void)newColorBrush:(UIColor *)newColor
+#pragma mark - colorMethods
+-(void)newColorBrush:(UIColor *)newColor : (NSMutableArray *)colorArray
 {
-    for (CorUIButton *button in self.ColorButton)
-    {
-        if (button.state)
-        {
-            button.backgroundColor = newColor;
-        }
-    }
+//    for (CorUIButton *button in self.ColorButton)
+//    {
+//        if (button.state)
+//        {
+//            button.backgroundColor = newColor;
+//        }
+//    }
+//    [self setBrushColor:newColor];
+    self.colorArray = colorArray;
+    self.colorBackgroundButton.backgroundColor = newColor;
     [self setBrushColor:newColor];
 }
 
 -(void)dismissColorPicker
 {
+    [self.chooseColorButton setSelected:NO];
     [self.popoverColorPicker dismissPopoverAnimated:YES];
 }
 
@@ -3214,8 +3314,6 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self.view bringSubviewToFront: self.maskActionBarButton];
     [self.view bringSubviewToFront: self.recAudio];
     [self.view bringSubviewToFront: self.pauseRecAudio];
-    //[self.view bringSubviewToFront: self.confirmImageButton];
-    [self.view bringSubviewToFront: self.pageNumberLabel];
     [self.view bringSubviewToFront: self.backButton];
     [self.view bringSubviewToFront: self.topBar];
     [self.view bringSubviewToFront: self.bottonBar];
@@ -3237,12 +3335,16 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self.view bringSubviewToFront: self.eraseButton];
     [self.view bringSubviewToFront: self.thicknessButton];
     [self.view bringSubviewToFront: self.backGroundButton];
-    [self.view bringSubviewToFront: self.pageNumberLabel];
     [self.view bringSubviewToFront: self.snapShotButtom];
     [self.view bringSubviewToFront: self.undoButton];
     [self.view bringSubviewToFront: self.redoButton];
     [self.view bringSubviewToFront: self.addImageButton];
     [self.view bringSubviewToFront: self.connectDevice];
+    [self.view bringSubviewToFront:self.menuButton];
+    [self.view bringSubviewToFront:self.sideBar];
+    [self.view bringSubviewToFront: self.pageNumberLabel];
+    [self.view bringSubviewToFront: self.pageNumberTotalLabel];
+    [self.view bringSubviewToFront: self.numberSeparatorLabel];
 
 
 }
@@ -3272,4 +3374,80 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    return resultingImage;
 //}
 
+#pragma mark - sideBarMethods
+- (void)dismissSideBar : (UITapGestureRecognizer*)sender{
+    
+    if (sideBarIsVisible) {
+        //[self hideMenu];
+    }
+    else {
+        [self showMenu];
+    }
+}
+
+- (void)bringSideBar : (UISwipeGestureRecognizer*)sender {
+    
+    if ([sender direction]==UISwipeGestureRecognizerDirectionRight && !sideBarIsVisible) {
+        [self showMenu];
+    }
+    else if ([sender direction]==UISwipeGestureRecognizerDirectionLeft && sideBarIsVisible){
+        [self hideMenu];
+    }
+}
+
+
+- (IBAction)bringMenu:(id)sender {
+    if (sideBarIsVisible) {
+        [self hideMenu];
+    }
+    else {
+        [self showMenu];
+    }
+    
+}
+
+- (void)hideMenu{
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         [self.sideBar setTransform:CGAffineTransformMakeTranslation(-99, 0)];
+                     }
+                     completion:^(BOOL finished){
+                         NSLog(@"Done!");
+                         sideBarIsVisible = NO;
+                     }];
+
+}
+
+- (void)showMenu{
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         [self.sideBar setTransform:CGAffineTransformMakeTranslation(0, 0)];
+                     }
+                     completion:^(BOOL finished){
+                         NSLog(@"Done!");
+                         sideBarIsVisible = YES;
+                         //[self.view bringSubviewToFront:self.sideBar];
+                     }];
+
+}
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    
+    [self.chooseColorButton setSelected:NO];
+    [self.addImageButton setSelected:NO];
+    [self.eraseButton setSelected:NO];
+    [self.thicknessButton setSelected:NO];
+    [self.connectDevice setSelected:NO];
+    [self.undoButton setSelected:NO];
+    [self.redoButton setSelected:NO];
+    [self.backGroundButton setSelected:NO];
+    [self.questionsButton setSelected:NO];
+}
+
+- (void)deselectButton : (UIButton*) button{
+    [button setSelected:NO];
+}
 @end
