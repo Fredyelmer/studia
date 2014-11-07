@@ -13,6 +13,7 @@
 -(id)initWithCoder:(NSCoder *)decoder
 {
     if (self = [super init]) {
+        self.tag = [decoder decodeIntegerForKey:@"tag"];
         self.image = [decoder decodeObjectForKey:@"image"];
     }
     return self;
@@ -20,6 +21,7 @@
 
 -(void)encodeWithCoder:(NSCoder *)encoder
 {
+    [encoder encodeInteger:self.tag forKey:@"tag"];
     [encoder encodeObject:self.image forKey:@"image"];
 }
 

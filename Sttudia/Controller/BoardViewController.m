@@ -173,6 +173,7 @@
     self.arrayTexts = [[NSMutableArray alloc]init];
     self.arrayUndo = [[NSMutableArray alloc]init];
     self.arrayRedo = [[NSMutableArray alloc]init];
+    self.arrayObjects = [NSMutableDictionary new];
     
     self.addImageButton.enabled = YES;
     self.addImageButton.hidden = NO;
@@ -352,58 +353,92 @@
         MessageText *messageText = (MessageText* )message;
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
-        
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            if (isHosting) {
-                [self editTextField:messageText.text font:messageText.font color:messageText.color tag:messageText.tag];
-            } else {
-                
-            }
-            
+            [self editTextField:messageText.text font:messageText.font color:messageText.color tag:messageText.tag];
         }];
         
         [opque addOperation:operation];
     }
     
-    if ([message isKindOfClass:[MessageImage class]]) {
-        //MessageImage *msgImage = (MessageImage*) message;
-        
+    if ([message isKindOfClass:[MessageMake class]]) {
+        MessageMake *msg = (MessageMake*) message;
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
-        
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            //[self putImageInScreen:msgImage.image];
+            if (msg.isImage) {
+                //
+            } else {
+                [self putTextField:msg.tag];
+            }
+            
+        }];
+        
+        [opque addOperation:operation];
+
+    }
+    if ([message isKindOfClass:[MessageDelete class]]) {
+        MessageDelete *msg = (MessageDelete*) message;
+        
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        
+        [operation addExecutionBlock:^{
+            if (msg.isImage) {
+                [self deleteImage:msg.tag];
+            } else {
+                [self deleteTextField:msg.tag];
+            }
+            
+        }];
+        
+        [opque addOperation:operation];
+        
+    }
+
+    if ([message isKindOfClass:[MessageImage class]]) {
+        //MessageImage *msgImage = (MessageImage*) message;
+        
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        
+        [operation addExecutionBlock:^{
+            NSLog(@"received image");
+            [self putImageInScreen:msgImage.image tag:msgImage.tag isEditable:NO];
         }];
          
         [opque addOperation:operation];
     }
     
     if ([message isKindOfClass:[MessageMove class]]) {
-        MessageMove *msgImage = (MessageMove*) message;
+        MessageMove *msg = (MessageMove*) message;
         
-        CGPoint point = [msgImage.point CGPointValue];
+        CGPoint point = [msg.point CGPointValue];
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
-        
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            if (msgImage.isImage)
+            if (msg.isImage)
             {
-//                for (UITextField *text in self.scribbleView)
-//                {
-////                    if ([text tag] == msgImage.tag)
-////                    {
-////                         [currentImage setCenter:point];
-////                    }
-//                }
+                for (UIImageView *image in self.arrayImages)
+                {
+                    if (image.tag == msg.tag)
+                    {
+                         [image setCenter:point];
+                    }
+                }
                
             }else{
-                [self.currentTextField setCenter:point];
+                for (UITextField* textField in self.arrayTexts) {
+                    if (textField.tag == msg.tag) {
+                         [textField setCenter:point];
+                    }
+                }
+               
             }
             
         }];
@@ -413,24 +448,35 @@
     }
 
     if ([message isKindOfClass:[MessageResize class]]) {
-        MessageResize *msgImage = (MessageResize*) message;
+        MessageResize *msg = (MessageResize*) message;
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            if (msgImage.isImage) {
+            if (msg.isImage) {
                 CGAffineTransform currentTransform = currentImage.transform;
-                CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, msgImage.scale, msgImage.scale);
+                CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, msg.scale, msg.scale);
                 
-                [currentImage setTransform:newTransform];
+                for (UIImageView *image in self.arrayImages)
+                {
+                    if (image.tag == msg.tag)
+                    {
+                        [image setTransform:newTransform];
+                    }
+                }
+                
 
             }else{
                 CGAffineTransform currentTransform = self.currentTextField.transform;
-                CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, msgImage.scale, msgImage.scale);
+                CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, msg.scale, msg.scale);
                 
-                [self.currentTextField setTransform:newTransform];
+                for (UITextField* textField in self.arrayTexts) {
+                    if (textField.tag == msg.tag) {
+                        [textField setTransform:newTransform];
+                    }
+                }
             }
             
         }];
@@ -440,24 +486,37 @@
     }
 
     if ([message isKindOfClass:[MessageRotate class]]) {
-        MessageRotate *msgImage = (MessageRotate*) message;
+        MessageRotate *msg = (MessageRotate*) message;
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
-        
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            if (msgImage.isImage) {
+            if (msg.isImage) {
                 CGAffineTransform currentTransform = currentImage.transform;
-                CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msgImage.rotation);
+                CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msg.rotation);
                 
-                [currentImage setTransform:newTransform];
+                for (UIImageView *image in self.arrayImages)
+                {
+                    if (image.tag == msg.tag)
+                    {
+                        [image setTransform:newTransform];
+                    }
+                }
+
+                
                 
             }else{
                 CGAffineTransform currentTransform = self.currentTextField.transform;
-                CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msgImage.rotation);
+                CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msg.rotation);
                 
-                [self.currentTextField setTransform:newTransform];
+                for (UITextField* textField in self.arrayTexts) {
+                    if (textField.tag == msg.tag) {
+                        [textField setTransform:newTransform];
+                    }
+                }
+
+                
             }
             
         }];
@@ -504,15 +563,32 @@
         [opque addOperation:operation];
     }
 
-    else if ([message isKindOfClass:[MessageTag class]]) {
-        MessageTag *msgTag = (MessageTag*) message;
+    else if ([message isKindOfClass:[MessageRequestTag class]]) {
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         [operation addExecutionBlock:^{
-            receivedTag = msgTag.tag;
+            //if (isHosting) {
+                [self sendTagMessage];
+            //}
         }];
         
         [opque addOperation:operation];
+    }
+    
+    if ([message isKindOfClass:[MessageTag class]]) {
+        MessageTag *msgTag = (MessageTag*) message;
+
+        self.operationWaitHostTag.suspended = NO;
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        [operation addExecutionBlock:^{
+
+        receivedTag = msgTag.tag;
+        NSLog(@"received tag %ld",(long)receivedTag);
+        }];
+        
+        [opque addOperation:operation];
+
     }
     else if ([message isMemberOfClass:[MessageChangeBackGround class]]) {
         
@@ -552,26 +628,13 @@
         
         [opque addOperation:operation];
     }
-
-   // NSString *receivedText = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
-   
 }
 
 -(void)requestHostTag
 {
-    NSString* request = @"tag";
-    NSData *dataToSend = [request dataUsingEncoding:NSUTF8StringEncoding];
-    NSArray *allPeers = _appDelegate.mcManager.session.connectedPeers;
-    NSError *error;
-    
-    [_appDelegate.mcManager.session sendData:dataToSend
-                                     toPeers:allPeers
-                                    withMode:MCSessionSendDataReliable
-                                       error:&error];
-    
-    if (error) {
-        NSLog(@"%@", [error localizedDescription]);
-    }
+    MessageRequestTag *message = [MessageRequestTag new];
+    [self sendMessage:message];
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(void)sendTagMessage
@@ -588,6 +651,21 @@
     message.isEraser = self.currentBrush.isEraser;
     
     [self sendMessage:message];
+}
+
+-(void) sendMakeDelete:(NSInteger) tag isImage:(BOOL) isImage make:(BOOL) option
+{
+    if (option) {
+        MessageMake *message = [MessageMake new];
+        message.tag = tag;
+        message.isImage = isImage;
+        [self sendMessage:message];
+    } else {
+        MessageDelete *message = [MessageDelete new];
+        message.tag = tag;
+        message.isImage = isImage;
+        [self sendMessage:message];
+    }
 }
 
 -(void) sendMessage:(NSObject*) message
@@ -607,30 +685,30 @@
 
 }
 
--(void)sendMove: (CGPoint) point tag:(int) tag isImage: (BOOL) isImage
+-(void)sendMove: (CGPoint) point isImage: (BOOL) isImage tag:(NSInteger) tag
 {
     MessageMove* message = [[MessageMove alloc] init];
     message.point = [NSValue valueWithCGPoint:point];
     message.isImage = isImage;
-    
+    message.tag = tag;
     [self sendMessage:message];
 }
 
--(void)sendResize: (CGFloat) scale isImage: (BOOL) isImage
+-(void)sendResize: (CGFloat) scale isImage: (BOOL) isImage tag:(NSInteger) tag
 {
     MessageResize* message = [[MessageResize alloc] init];
     message.scale = scale;
     message.isImage = isImage;
-    
+    message.tag = tag;
     [self sendMessage:message];
 }
 
--(void)sendRotation: (CGFloat) rotation isImage: (BOOL) isImage
+-(void)sendRotation: (CGFloat) rotation isImage: (BOOL) isImage tag:(NSInteger) tag
 {
     MessageRotate* message = [[MessageRotate alloc] init];
     message.rotation = rotation;
     message.isImage = isImage;
-    
+    message.tag = tag;
     [self sendMessage:message];
 }
 -(void)sendImageMessage:(MessageImage*) message
@@ -1668,7 +1746,9 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 -(void)addImageFromLibrary
 {
     [self.popoverAddImage dismissPopoverAnimated:YES];
+
     [self.addImageButton setSelected:NO];
+
     UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
     pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     pickerLibrary.delegate = self;
@@ -1720,7 +1800,9 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         
         [recognizer.view setTransform:newTransform];
         
-        [self sendResize:scale isImage:YES];
+        if (isConnected) {
+            [self sendResize:scale isImage:YES tag:recognizer.view.tag];
+        }
         
         lastScale = recognizer.scale;
         NSLog(@"Resizing frame: (%f, %f)", recognizer.view.frame.size.width, recognizer.view.frame.size.height);
@@ -1732,7 +1814,6 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 {
     if (allowImageEdition) {
         [[[recognizer view] layer] removeAllAnimations];
-        //[self.view bringSubviewToFront:[recognizer view]];
         CGPoint translatedPoint = [recognizer translationInView:self.view];
         
         if([recognizer state] == UIGestureRecognizerStateBegan) {
@@ -1744,6 +1825,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
         
         [[recognizer view] setCenter:translatedPoint];
+        
+        if (isConnected) {
+            [self sendMove:translatedPoint isImage:YES tag: [[recognizer view] tag]];
+        }
+        
         
         if([recognizer state] == UIGestureRecognizerStateEnded) {
             
@@ -1802,8 +1888,9 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
             CGPoint final = CGPointMake(finalX, finalY);
             [[recognizer view] setCenter:final];
             
-            [self sendMove:final tag: (int)[[recognizer view] tag] isImage:YES];
-        
+            if (isConnected) {
+                [self sendMove:final isImage:YES tag: [[recognizer view] tag]];
+            }
             
             [UIView commitAnimations];
             
@@ -1823,7 +1910,9 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         
         [[recognizer view] setTransform:newTransform];
         
-        [self sendRotation:rotation isImage:YES];
+        if (isConnected) {
+            [self sendRotation:rotation isImage:YES tag:recognizer.view.tag];
+        }
         
         lastRotation = [recognizer rotation];
          NSLog(@"Rotate frame: (%f, %f)", recognizer.view.frame.size.width, recognizer.view.frame.size.height);
@@ -1888,7 +1977,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
     if(!isForBackGround){
-       // [self putImageInScreen:choseImage];
+        [self putImageInScreen:choseImage tag:0 isEditable:YES];
         
         MessageImage *message =[[MessageImage alloc] init];
         message.image = choseImage;
@@ -1987,11 +2076,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.placeholder = @"text";
     textField.userInteractionEnabled = YES;
-    
-    //auxiliar attirbutes
-    self.addTextButton.enabled = YES;
-    [self bringToolBarToFront];
-    textField.delegate = self;
+    textField.tag = 0;
     
     //textField gestures
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(resizingText:)];
@@ -2007,11 +2092,21 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     textField.font = font;
     textField.textColor = color;
     
+    //set delegate
+    textField.delegate = self;
+
+    //auxiliar tasks
+    [self.scribbleView addSubview:textField];
+    self.currentTextField = textField;
+    self.currentColorText = color;
+    [self bringToolBarToFront];
+    [self.arrayTexts addObject:textField];
+    
     //return textfield maked
     return textField;
 }
 
-- (void) putImageInScreen:(UIImage *)image isEditable:(BOOL) isEditable
+- (void) putImageInScreen:(UIImage *)image tag:(NSInteger) tag isEditable:(BOOL) isEditable
 {
     UIImageView *customImage = [[UIImageView alloc] initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2-150, self.tempImageView.frame.size.height/2-150, 300, 300)];
     customImage.image = image;
@@ -2041,31 +2136,34 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [customImage addGestureRecognizer:rotationGesture];
     [customImage addGestureRecognizer:longPressGesture];
     
-    customImage.tag = imageTag;
-    imageTag++;
-    //[self.arrayImages addObject:customImage];
+    [self.arrayImages addObject:customImage];
     
     [self.scribbleView addSubview:customImage];
+    customImage.tag = tag;
     
     currentImage = customImage;
     
+    UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    deleteButton.frame = CGRectMake(customImage.bounds.origin.x, customImage.bounds.origin.y, 30, 30);
+    [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
+    [deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
+    [customImage addSubview:deleteButton];
+    deleteButton.hidden = YES;
+    deleteButton.enabled = NO;
+
+    [currentImage.layer setBorderColor:[[UIColor blueColor] CGColor]];
+    
     if (isEditable) {
         allowImageEdition = YES;
-        
         [currentImage.layer setBorderWidth:5.0];
-        [currentImage.layer setBorderColor:[[UIColor blueColor] CGColor]];
-        
-        UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        deleteButton.frame = CGRectMake(customImage.bounds.origin.x, customImage.bounds.origin.y, 30, 30);
-        [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
-        [deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
-        [customImage addSubview:deleteButton];
-        
         self.addImageButton.enabled = NO;
+        deleteButton.hidden = NO;
+        deleteButton.enabled = YES;
     }
     
     [self bringToolBarToFront];
 }
+
 
 - (CGRect)getFrameSizeForImage:(UIImage *)image inImageView:(UIImageView *)imageView {
     
@@ -2088,14 +2186,27 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 - (void) delete:(id)sender
 {
     UIImageView* trashImage = (UIImageView*)[(UIButton*)sender superview];
+    NSInteger tag = trashImage.tag;
     
     [trashImage removeFromSuperview];
     [self.arrayImages removeObjectIdenticalTo:trashImage];
-    //Image *imgRef = [[Image alloc]initWithImage: trashImage :trashImage.center :trashImage.frame :currentImageRotation : self.tempImageView.image : trashImage.transform];
     [self.arrayUndo addObject:trashImage];
     
     isImageEditing = NO;
     self.addImageButton.enabled = YES;
+    if (isConnected) {
+        [self sendMakeDelete: tag isImage:YES make:NO];
+    }
+}
+
+-(void) deleteImage: (NSInteger) tag
+{
+    for (UIImageView *image in self.arrayImages) {
+        if (image.tag == tag) {
+            [self.arrayImages removeObject:image];
+            [image removeFromSuperview];
+        }
+    }
 }
 
 #pragma mark - ColorMethods
@@ -2186,6 +2297,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 - (IBAction)openConnectionView:(id)sender {
     [self.connectDevice setSelected:YES];
     ConnectionsViewController *connectionVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"Connection"];
+    [connectionVC.swHost setOn:YES];
     connectionVC.delegate = self;
     
     UIPopoverController *connectionP = [[UIPopoverController alloc] initWithContentViewController:connectionVC];
@@ -2223,11 +2335,6 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self toggleSelectedText:textField];
     [textField becomeFirstResponder];
     
-    [self.scribbleView addSubview:textField];
-    self.currentTextField = textField;
-    self.currentColorText = color;
-    [self bringToolBarToFront];
-    
     //update tag
     textField.tag = [self getObjectTag];
     
@@ -2235,27 +2342,32 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     //[self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_font_select.png"] forState:UIControlStateNormal];
     
+    if (isConnected) {
+        [self sendMakeDelete:textField.tag isImage:NO make:YES];
+    }
     NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+-(void) putTextField:(NSInteger) tag
+{
+    textFont = 20;
+    
+    NSString* text = @"";
+    UIFont* font = [UIFont systemFontOfSize:textFont];
+    UIColor* color = [UIColor blackColor];
+    
+    UITextField *textField = [self makeTextField:text font:font color:color];
+    textField.tag = tag;
 }
 
 -(void)editTextField:(NSString*) text font:(UIFont*) font color:(UIColor*) color tag:(NSInteger) tag
 {
-    if (tag == 0) {
-        UITextField *textField = [self makeTextField:text font:font color:color];
-        
-        [self.scribbleView addSubview:textField];
-        self.currentTextField = textField;
-        self.currentColorText = color;
-        [self bringToolBarToFront];
-        
-        //update tag
-        textField.tag = [self getObjectTag];
-    }
     for (UITextField* textField in self.arrayTexts) {
         if (textField.tag == tag) {
             textField.text = text;
             textField.font = font;
             textField.textColor = color;
+            [self autoSizeTextFieldFrame:textField];
         }
     }
 }
@@ -2274,24 +2386,24 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         if (isHosting) {
             return objectTag++;
         } else {
-            NSOperationQueue *opque = [NSOperationQueue mainQueue];
-            NSBlockOperation *operation = [[NSBlockOperation alloc] init];
-            [operation addExecutionBlock:^{
-                while (receivedTag == 0 && isConnected) {
-                    //waiting for host tag
-                    NSLog(@"waiting");
-                }
-            }];
-            [opque addOperation:operation];
+            [self requestHostTag];
+            [self waitForResponse];
             return receivedTag;
-            receivedTag = 0;
         }
     } else {
-        return objectTag++;
+        return 0;
     }
     NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
+-(void) waitForResponse
+{
+    self.operationWaitHostTag = [NSOperationQueue new];
+    self.operationWaitHostTag.suspended = YES;
+    [self.operationWaitHostTag addOperationWithBlock:^{}];
+    [self.operationWaitHostTag waitUntilAllOperationsAreFinished];
+}
+             
 - (void) barButtonPressed :(UIBarButtonItem*)sender
 {
     if ([sender.title isEqualToString:@"T+"]) {
@@ -2353,7 +2465,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         
         [recognizer.view setTransform:newTransform];
     
-    [self sendResize:scale isImage:NO];
+    if (isConnected) {
+        [self sendResize:scale isImage:NO tag:recognizer.view.tag];
+    }
+
+    
     
         lastScale = recognizer.scale;
 
@@ -2383,7 +2499,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
         
         [[recognizer view] setCenter:translatedPoint];
-        
+    
+    if (isConnected) {
+        [self sendMove:translatedPoint isImage:NO tag:recognizer.view.tag];
+    }
+    
         if([recognizer state] == UIGestureRecognizerStateEnded) {
             
             CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.view].x);
@@ -2442,7 +2562,10 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
             CGPoint final = CGPointMake(finalX, finalY);
             [[recognizer view] setCenter:final];
             
-            [self sendMove:final tag:(int)recognizer.view.tag isImage:NO];
+
+            if (isConnected) {
+                [self sendMove:final isImage:NO tag:recognizer.view.tag];
+            }
             
             [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
             [recognizer.view.layer setBorderWidth:1];
@@ -2479,7 +2602,9 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         
         [[recognizer view] setTransform:newTransform];
     
-    [self sendRotation:rotation isImage:NO];
+    if (isConnected) {
+        [self sendRotation:rotation isImage:NO tag:recognizer.view.tag];
+    }
     
         lastRotation = [recognizer rotation];
 
@@ -2494,7 +2619,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
    
     //send edit text to peers
     if (isConnected) {
-        [self sendTextMessage:textField.text font:textField.font color:textField.textColor tag:textField.tag];
+        [self sendTextMessage:[textField.text stringByReplacingCharactersInRange:range withString:string] font:textField.font color:textField.textColor tag:textField.tag];
     }
     
     NSLog(@"%s", __PRETTY_FUNCTION__);
@@ -2521,6 +2646,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     currentTextCenter = textField.center;
     currentTextTransform = textField.transform;
     textField.transform = CGAffineTransformMakeRotation(0);
+    textField.center = CGPointMake(self.tempImageView.frame.size.width/2, 80);
     self.currentColorText = textField.textColor;
     
     isTextEditing = YES;
@@ -2542,20 +2668,35 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 {
     if (![textField.text isEqualToString:@""]) {
         [textField setBorderStyle:UITextBorderStyleNone];
-        [self.arrayTexts addObject:textField];
-        
         [textField resignFirstResponder];
         textField.textColor = self.currentColorText;
+        //send edit text to peers
+        if (isConnected) {
+            [self sendTextMessage:textField.text font:textField.font color:textField.textColor tag:textField.tag];
+        }
     }
     else
     {
-        [textField removeFromSuperview];
+        if (isConnected) {
+            [self sendMakeDelete:textField.tag isImage:NO make:NO];
+        }
+        [self deleteTextField:textField.tag];
     }
     
     textField.center = currentTextCenter;
     textField.transform = currentTextTransform;
     self.addTextButton.enabled = YES;
     [self bringToolBarToFront];
+}
+
+-(void)deleteTextField:(NSInteger) tag
+{
+    for (UITextField *text in self.arrayTexts) {
+        if (tag == text.tag) {
+            [self.arrayTexts removeObject:text];
+        }
+        [text removeFromSuperview];
+    }
 }
 
 - (void) setFontType : (NSString*)fontName
@@ -3230,10 +3371,12 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (void)setInternetImageChose : (UIImage *)image{
     
-    //[self putImageInScreen:image];
-    
+    NSInteger tag = [self getObjectTag];
+    [self putImageInScreen:image tag: tag isEditable:YES];
+
     MessageImage *message =[[MessageImage alloc] init];
     message.image = image;
+    message.tag = tag;
     [self sendImageMessage:message];
 }
 

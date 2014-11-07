@@ -146,6 +146,8 @@
 		7156213D19B4F0B500C17233 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7156213C19B4F0B500C17233 /* MessageViewController.m */; };
 		7156214019B7A08000C17233 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7156213E19B7A07F00C17233 /* Model.xcdatamodeld */; };
 		7156214319BA26FA00C17233 /* AnsweredTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7156214219BA26FA00C17233 /* AnsweredTableViewController.m */; };
+		7161203B1A07EF0100B81B6A /* MessageMake.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161203A1A07EF0100B81B6A /* MessageMake.m */; };
+		7161203E1A08037C00B81B6A /* MessageRequestTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161203D1A08037C00B81B6A /* MessageRequestTag.m */; };
 		71913C20199542720097162C /* Expand_B-512.png in Resources */ = {isa = PBXBuildFile; fileRef = 71913C1F199542720097162C /* Expand_B-512.png */; };
 		719C9EFF19F9647F0075C615 /* MessageTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 719C9EFE19F9647F0075C615 /* MessageTag.m */; };
 		719C9F021A0170310075C615 /* MessageDelete.m in Sources */ = {isa = PBXBuildFile; fileRef = 719C9F011A0170310075C615 /* MessageDelete.m */; };
@@ -381,6 +383,10 @@
 		7156213F19B7A08000C17233 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		7156214119BA26E100C17233 /* AnsweredDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnsweredDetailViewController.h; sourceTree = "<group>"; };
 		7156214219BA26FA00C17233 /* AnsweredTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnsweredTableViewController.m; sourceTree = "<group>"; };
+		716120391A07EF0100B81B6A /* MessageMake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageMake.h; sourceTree = "<group>"; };
+		7161203A1A07EF0100B81B6A /* MessageMake.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageMake.m; sourceTree = "<group>"; };
+		7161203C1A08037C00B81B6A /* MessageRequestTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageRequestTag.h; sourceTree = "<group>"; };
+		7161203D1A08037C00B81B6A /* MessageRequestTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageRequestTag.m; sourceTree = "<group>"; };
 		71913C1F199542720097162C /* Expand_B-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Expand_B-512.png"; sourceTree = "<group>"; };
 		719C9EFD19F9647F0075C615 /* MessageTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTag.h; sourceTree = "<group>"; };
 		719C9EFE19F9647F0075C615 /* MessageTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTag.m; sourceTree = "<group>"; };
@@ -768,6 +774,10 @@
 				0DC8533D19F6C53200AAB7FE /* MessageResetAll.m */,
 				0DC8533F19F6C54600AAB7FE /* MessageResetTint.h */,
 				0DC8534019F6C54600AAB7FE /* MessageResetTint.m */,
+				716120391A07EF0100B81B6A /* MessageMake.h */,
+				7161203A1A07EF0100B81B6A /* MessageMake.m */,
+				7161203C1A08037C00B81B6A /* MessageRequestTag.h */,
+				7161203D1A08037C00B81B6A /* MessageRequestTag.m */,
 			);
 			name = message;
 			sourceTree = "<group>";
@@ -820,7 +830,7 @@
 				ORGANIZATIONNAME = "Ricardo Nagaishi";
 				TargetAttributes = {
 					0D9ECF401961867300882007 = {
-						DevelopmentTeam = 2P6ZLVHDMJ;
+						DevelopmentTeam = 8VVUD96VR6;
 					};
 					0D9ECF601961867300882007 = {
 						TestTargetID = 0D9ECF401961867300882007;
@@ -939,9 +949,11 @@
 				0DA7189519AFB77400B8B08E /* QuestionsRepository.m in Sources */,
 				71C43F6119EF08EF0002CF01 /* MessageResize.m in Sources */,
 				0D9ECF5A1961867300882007 /* Sttudia.xcdatamodeld in Sources */,
+				7161203B1A07EF0100B81B6A /* MessageMake.m in Sources */,
 				0DE062E919B6456A00CFDF07 /* QuestionListTableViewCell.m in Sources */,
 				714CEDE0198C1D6B0092C98D /* Brush.m in Sources */,
 				0DE062E619B638D600CFDF07 /* QuestionsTableViewCell.m in Sources */,
+				7161203E1A08037C00B81B6A /* MessageRequestTag.m in Sources */,
 				0DBCCF7F19F528FA0028269B /* MessageRedo.m in Sources */,
 				71E1B79B1990127C007C8425 /* ThicknessViewController.m in Sources */,
 				0DA8EFA11976C052006A5589 /* ImagePickerLandscapeController.m in Sources */,
