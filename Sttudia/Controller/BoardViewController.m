@@ -242,14 +242,14 @@
     [self.addImageButton setBackgroundImage:[UIImage imageNamed:@"ic_image_normal.png"] forState:UIControlStateNormal];
     [self.addImageButton setBackgroundImage:[UIImage imageNamed:@"ic_image_select.png"] forState:UIControlStateSelected];
     [self.addImageButton setBackgroundImage:[UIImage imageNamed:@"ic_image_select.png"] forState:UIControlStateHighlighted];
-    [self.connectDevice setBackgroundImage:[UIImage imageNamed:@"ic_background_normal.png"] forState:UIControlStateNormal];
-    [self.connectDevice setBackgroundImage:[UIImage imageNamed:@"ic_background_select.png"] forState:UIControlStateSelected];
+    [self.connectDevice setBackgroundImage:[UIImage imageNamed:@"ic_refresh_normal.png"] forState:UIControlStateNormal];
+    [self.connectDevice setBackgroundImage:[UIImage imageNamed:@"ic_refresh_selected.png"] forState:UIControlStateSelected];
     [self.undoButton setBackgroundImage:[UIImage imageNamed:@"ic_back_normal.png"] forState:UIControlStateNormal];
     [self.undoButton setBackgroundImage:[UIImage imageNamed:@"ic_back_select.png"] forState:UIControlStateHighlighted];
     [self.redoButton setBackgroundImage:[UIImage imageNamed:@"ic_next_normal.png"] forState:UIControlStateNormal];
     [self.redoButton setBackgroundImage:[UIImage imageNamed:@"ic_next_select.png"] forState:UIControlStateHighlighted];
     [self.backGroundButton setBackgroundImage:[UIImage imageNamed:@"ic_background_normal.png"] forState:UIControlStateNormal];
-    [self.backGroundButton setBackgroundImage:[UIImage imageNamed:@"ic_background_select.png"] forState:UIControlStateSelected];
+    [self.backGroundButton setBackgroundImage:[UIImage imageNamed:@"ic_background_select.png"] forState:UIControlStateHighlighted];
 
     self.colorArray = [[NSMutableArray alloc]initWithArray:@[[UIColor blackColor],[UIColor whiteColor],[UIColor redColor],[UIColor greenColor],[UIColor blueColor],[UIColor yellowColor],[UIColor orangeColor]]];
     
@@ -3671,13 +3671,20 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     [self.chooseColorButton setSelected:NO];
     [self.addImageButton setSelected:NO];
-    [self.eraseButton setSelected:NO];
-    [self.thicknessButton setSelected:NO];
+    //[self.eraseButton setSelected:NO];
+    //[self.thicknessButton setSelected:NO];
     [self.connectDevice setSelected:NO];
     [self.undoButton setSelected:NO];
     [self.redoButton setSelected:NO];
     [self.backGroundButton setSelected:NO];
     [self.questionsButton setSelected:NO];
+    
+    if (self.currentBrush.isEraser) {
+        [self.thicknessButton setSelected:NO];
+    }
+    else {
+        [self.eraseButton setSelected:NO];
+    }
 }
 
 - (void)deselectButton : (UIButton*) button{
