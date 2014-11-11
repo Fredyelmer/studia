@@ -13,7 +13,7 @@
 
 @protocol ColorPickerViewControllerDelegate
 
--(void) newColorBrush:(UIColor *) newColor : (NSMutableArray *)colorArray;
+-(void) newColorBrush: (UIColor *)newColor : (NSMutableArray *)colorArray : (CorUIButton*) selectedButton;
 -(void) dismissColorPicker;
 
 @end
@@ -32,10 +32,11 @@
 
 @property (strong, nonatomic) IBOutlet CorUIButton *resultColorButton;
 @property (strong, nonatomic) IBOutlet CorUIButton *sourceColorButton;
-@property (strong, nonatomic) IBOutlet CorUIButton *selectedButton;
+@property (strong, nonatomic) CorUIButton *selectedButton;
 @property (nonatomic) IBOutlet ColorBarPicker* barPicker;
 @property (strong, nonatomic) IBOutlet ColorSquarePicker *squarePicker;
 @property (strong, nonatomic) NSMutableArray *colorArray;
+//@property (assign, nonatomic) int tag;
 
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *colorButton;
 - (IBAction)closeColorPicker:(id)sender;

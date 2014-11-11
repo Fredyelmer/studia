@@ -69,7 +69,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    NSLog(@"teste");
+    //NSLog(@"teste");
 }
 
 - (void)didReceiveMemoryWarning

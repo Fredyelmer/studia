@@ -91,6 +91,8 @@
 @property (strong, nonatomic) UIPopoverController *popoverBackground;
 @property (strong, nonatomic) UIPopoverController *popoverFont;
 @property (strong, nonatomic) UIPopoverController *popoverFontColor;
+@property (strong, nonatomic) UIPopoverController *popoverConnection;
+
 
 @property (strong, nonatomic) IBOutlet UIView *layoutView;
 @property (strong, nonatomic) IBOutlet UIButton *thicknessButton;
@@ -142,7 +144,6 @@
 @property (strong, nonatomic) IBOutlet UIButton *pauseButton;
 @property (strong, nonatomic) IBOutlet UIButton *recAudioButton;
 @property (strong, nonatomic) IBOutlet UIButton *playAudioButton;
-@property (strong, nonatomic) IBOutlet UIButton *informationsButton;
 @property (strong, nonatomic) IBOutlet UIButton *questionsButton;
 @property (strong, nonatomic) IBOutlet UIButton *backGroundButton;
 @property (strong, nonatomic) IBOutlet UIButton *maskToolBarButton;
@@ -154,6 +155,9 @@
 
 @property (strong, nonatomic) IBOutlet UIView *sideBar;
 @property (strong, nonatomic) NSMutableArray *colorArray;
+@property (strong, nonatomic) CorUIButton * selectedButton;
+@property (strong, nonatomic) IBOutlet UIButton *loginButton;
+@property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
 
 
 - (IBAction)logOut:(id)sender;
@@ -174,7 +178,7 @@
 
 
 - (IBAction)setBackgroundView:(id)sender;
-- (IBAction)changeLayout:(UIButton *)sender;
+//- (IBAction)changeLayout:(UIButton *)sender;
 
 - (void)addImageFromLibrary;
 - (void)addPhoto;

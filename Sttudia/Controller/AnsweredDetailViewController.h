@@ -27,5 +27,6 @@
 @property (strong, nonatomic) PFObject *selectedQuestion;
 @property (strong, nonatomic) PFObject *answeredQuestionList;
 
+
 - (void)changeQuestionDetail : (PFObject*) selectedQuestion;
 @end

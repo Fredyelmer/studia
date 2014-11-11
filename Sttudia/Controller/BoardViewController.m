@@ -216,17 +216,21 @@
                                                  name:@"MCDidChangeStateNotification"
                                                object:nil];
     
+    //preparacoes do menu
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissSideBar:)];
     UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(bringSideBar:)];
     UISwipeGestureRecognizer *swipeGesture2 = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(bringSideBar:)];
     [swipeGesture setDirection:UISwipeGestureRecognizerDirectionRight];
     [swipeGesture2 setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.sideBar setTransform:CGAffineTransformMakeTranslation(-99, 0)];
+    [self.sideBar setTransform:CGAffineTransformMakeTranslation(-98, 0)];
     sideBarIsVisible = NO;
+    self.sideBar.alpha = 0.1;
     [self.sideBar addGestureRecognizer:tapGesture];
     [self.sideBar addGestureRecognizer:swipeGesture];
     [self.sideBar addGestureRecognizer:swipeGesture2];
     
+    
+    //set de imagens ds botões
     [self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_color_normal.png"] forState:UIControlStateNormal];
     [self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_color_select.png"] forState:UIControlStateSelected];
     [self.addTextButton setBackgroundImage:[UIImage imageNamed:@"ic_font_normal.png"] forState:UIControlStateNormal];
@@ -237,6 +241,7 @@
     [self.thicknessButton setBackgroundImage:[UIImage imageNamed:@"ic_pencil_select.png"] forState:UIControlStateSelected];
     [self.addImageButton setBackgroundImage:[UIImage imageNamed:@"ic_image_normal.png"] forState:UIControlStateNormal];
     [self.addImageButton setBackgroundImage:[UIImage imageNamed:@"ic_image_select.png"] forState:UIControlStateSelected];
+    [self.addImageButton setBackgroundImage:[UIImage imageNamed:@"ic_image_select.png"] forState:UIControlStateHighlighted];
     [self.connectDevice setBackgroundImage:[UIImage imageNamed:@"ic_background_normal.png"] forState:UIControlStateNormal];
     [self.connectDevice setBackgroundImage:[UIImage imageNamed:@"ic_background_select.png"] forState:UIControlStateSelected];
     [self.undoButton setBackgroundImage:[UIImage imageNamed:@"ic_back_normal.png"] forState:UIControlStateNormal];
@@ -247,6 +252,39 @@
     [self.backGroundButton setBackgroundImage:[UIImage imageNamed:@"ic_background_select.png"] forState:UIControlStateSelected];
 
     self.colorArray = [[NSMutableArray alloc]initWithArray:@[[UIColor blackColor],[UIColor whiteColor],[UIColor redColor],[UIColor greenColor],[UIColor blueColor],[UIColor yellowColor],[UIColor orangeColor]]];
+    
+    [self.thicknessButton setSelected:YES];
+    
+    //Verificacao de usuario
+    PFUser *user = [PFUser currentUser];
+    if (user) {
+        BOOL linkedWithFacebook = [PFFacebookUtils isLinkedWithUser:user];
+        BOOL linkedWithTwitter = [PFTwitterUtils isLinkedWithUser:user];
+        
+        if (!linkedWithFacebook && !linkedWithTwitter) {
+            self.userNameLabel.text = [user objectForKey:@"username"];
+        }
+        else if (linkedWithFacebook) {
+            FBRequest *request = [FBRequest requestForMe];
+            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    NSDictionary *userData = (NSDictionary *)result;
+                    NSString *userName = userData[@"name"];
+                    self.userNameLabel.text = userName;
+                }
+            }];
+        }
+        else if (linkedWithTwitter) {
+            NSString *twitterUsername = [[PFTwitterUtils twitter] screenName];
+            self.userNameLabel.text = twitterUsername;
+        }
+        
+        [self.loginButton setTitle:@"Logout" forState:UIControlStateNormal];
+    }
+    else {
+        self.userNameLabel.text = @"Anonimo";
+        [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
+    }
 }
 
 -(void)stablishHost:(BOOL)isHost
@@ -400,7 +438,7 @@
     }
 
     if ([message isKindOfClass:[MessageImage class]]) {
-        //MessageImage *msgImage = (MessageImage*) message;
+        MessageImage *msgImage = (MessageImage*) message;
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
@@ -859,9 +897,16 @@
 
 - (IBAction)logOut:(id)sender {
     
-    [PFUser logOut];
+    PFUser *currentUser = [PFUser currentUser];
     
-    [self performSegueWithIdentifier:@"classLogOutSender" sender:nil];
+    if (currentUser) {
+        [PFUser logOut];
+        
+        [self performSegueWithIdentifier:@"classLogOutSender" sender:nil];
+    }
+    else {
+        [self performSegueWithIdentifier:@"classLogOutSender" sender:nil];
+    }
     
 }
 
@@ -991,7 +1036,8 @@
 }
 
 - (IBAction)erasePressed:(CorUIButton*)sender{
-
+    
+    [self.thicknessButton setSelected:NO];
     if (numEraserButtonTap == 0) {
         self.currentBrush.isEraser = isEraser = YES;
         self.currentBrush.thickness = eraser;
@@ -1263,22 +1309,22 @@
 //metodos para forçar em landscape mode
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (UIInterfaceOrientationMaskLandscapeLeft);
+    return (UIInterfaceOrientationMaskLandscape);
 }
 
 -(NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskLandscapeLeft;
+    return UIInterfaceOrientationMaskLandscape;
 }
 
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return UIInterfaceOrientationLandscapeLeft;
-}
-
-- (NSUInteger) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    return UIInterfaceOrientationLandscapeLeft;
-}
+//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+//{
+//    return UIInterfaceOrientationLandscapeLeft;
+//}
+//
+//- (NSUInteger) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+//    return UIInterfaceOrientationLandscapeLeft;
+//}
 
 
 #pragma mark - SelectButtonMethod
@@ -1304,9 +1350,9 @@ bool moveScribble = NO;
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (sideBarIsVisible && ![event touchesForView:self.sideBar]) {
-        [self hideMenu];
-    }
+//    if (sideBarIsVisible && ![event touchesForView:self.sideBar]) {
+//        [self hideMenu];
+//    }
     
     //fixação da imagem
     if (currentImage && ![event touchesForView:currentImage]&& isImageEditing) {
@@ -2214,15 +2260,16 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     self.currentBrush.isEraser = isEraser = NO;
     self.currentBrush.thickness = brush;
     
-    [self initPickerColor:self.colorArray];
+    [self initPickerColor:self.colorArray : self.currentBrush.color];
     
+    [self.thicknessButton setSelected:YES];
     [sender setSelected:YES];
 }
 
 
 
-//- (IBAction)ColorPressed:(CorUIButton *)sender
-//{
+- (IBAction)ColorPressed:(CorUIButton *)sender
+{
 //    self.currentBrush.isEraser = isEraser = NO;
 //    self.currentBrush.thickness = brush;
 //    if (sender.state)
@@ -2237,7 +2284,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //        [self setBrushColor:sender.backgroundColor];
 //        [self updateThicknessButton];
 //    }
-//}
+}
 
 - (CAShapeLayer *) addDashedBorderWithView: (UIView*) view {
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
@@ -2264,54 +2311,86 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (IBAction)changeThickness:(id)sender
 {
-    [self.thicknessButton setSelected:YES];
-    ThicknessViewController *thicknessViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"Thickness"];
     
-    thicknessViewController.delegate = self;
-    
-    for (CorUIButton *button in self.ColorButton)
-    {
-        if (button.state)
-        {
-            thicknessViewController.color = button.backgroundColor;
-        }
+    if ([self.thicknessButton isSelected]) {
+        ThicknessViewController *thicknessViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"Thickness"];
+        
+        thicknessViewController.delegate = self;
+        
+        thicknessViewController.color = self.currentBrush.color;
+        thicknessViewController.brush = brush;
+        self.popoverThickness = [[UIPopoverController alloc] initWithContentViewController:thicknessViewController];
+        [self.popoverThickness presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
+        self.popoverThickness.delegate = self;
+        [self updateThicknessButton];
     }
     
-    if (isEraser) {
-        thicknessViewController.brush = eraser;
-        thicknessViewController.color = [UIColor blackColor];
-    }
     else
     {
-        thicknessViewController.brush = brush;
+        self.currentBrush.thickness = brush;
+        [self.eraseButton setSelected:NO];
+        [self.thicknessButton setSelected:YES];
+        self.currentBrush.isEraser = isEraser = NO;
+        [self.eraseButton setSelected:NO];
+        numEraserButtonTap = 0;
     }
+    //[self.thicknessButton setSelected:YES];
     
-    self.popoverThickness = [[UIPopoverController alloc] initWithContentViewController:thicknessViewController];
-    [self.popoverThickness presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//    
+//    for (CorUIButton *button in self.ColorButton)
+//    {
+//        if (button.state)
+//        {
+//            thicknessViewController.color = self.currentBrush.color;
+//        }
+//    }
     
-    [self updateThicknessButton];
+//    if (isEraser) {
+//        thicknessViewController.brush = eraser;
+//        thicknessViewController.color = [UIColor blackColor];
+//    }
+//    else
+//    {
+//        thicknessViewController.color = self.currentBrush.color;
+//        thicknessViewController.brush = brush;
+//    self.currentBrush.isEraser = isEraser = NO;
+//    [self.eraseButton setSelected:NO];
+//    numEraserButtonTap = 0;
+   // }
+    
+//    self.popoverThickness = [[UIPopoverController alloc] initWithContentViewController:thicknessViewController];
+//    [self.popoverThickness presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//    
+//    self.popoverThickness.delegate = self;
+//    [self updateThicknessButton];
     
     //[self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_pencil_select.png"] forState:UIControlStateNormal];
 }
 
 - (IBAction)openConnectionView:(id)sender {
     [self.connectDevice setSelected:YES];
+    
     ConnectionsViewController *connectionVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"Connection"];
     [connectionVC.swHost setOn:YES];
     connectionVC.delegate = self;
     
-    UIPopoverController *connectionP = [[UIPopoverController alloc] initWithContentViewController:connectionVC];
-    [connectionP presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    connectionP.delegate = self;
+    self.popoverConnection = [[UIPopoverController alloc] initWithContentViewController:connectionVC];
+    [self.popoverConnection presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    self.popoverConnection.delegate = self;
+    
+    
 }
 
 //inisializa e mostra o menu de cores customizados
-- (void) initPickerColor:(NSMutableArray *) colorArray
+- (void) initPickerColor:(NSMutableArray *) colorArray : (UIColor*)currentColor
 {
     //UIColor *color = sender.backgroundColor;
     ColorPickerViewController *colorPickerViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"ColorPickerPopover"];
     
+    colorPickerViewController.color = currentColor;
     colorPickerViewController.colorArray = colorArray;
+    colorPickerViewController.selectedButton = self.selectedButton;
     colorPickerViewController.delegate = self;
     
     self.popoverColorPicker = [[UIPopoverController alloc] initWithContentViewController:colorPickerViewController];
@@ -2722,13 +2801,15 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 {
 //    [self.layoutView setHidden:NO];
 //    [self.view bringSubviewToFront:self.layoutView];
-    
+    [self.backGroundButton setSelected:YES];
     BackgroundMenuViewController *backgroundMenu = [[self storyboard] instantiateViewControllerWithIdentifier:@"backgroundID"];
     
     backgroundMenu.delegate = self;
     
     self.popoverBackground = [[UIPopoverController alloc]initWithContentViewController:backgroundMenu];
     [self.popoverBackground presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    
+    self.popoverBackground.delegate = self;
 
 }
 
@@ -2772,6 +2853,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self performChangeBackground:name];
     
     if ([name  isEqual: @"Custom Image"]) {
+        [self.backGroundButton setSelected:NO];
         [self.popoverBackground dismissPopoverAnimated:YES];
         UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
         //UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc]init];
@@ -2795,76 +2877,78 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 
 }
-- (IBAction)changeLayout:(UIButton *)sender
-{
-    BackgroundMenuViewController *backgroundMenu = [[self storyboard] instantiateViewControllerWithIdentifier:@"backgroundID"];
-    
-    backgroundMenu.delegate = self;
-    
-    self.popoverBackground = [[UIPopoverController alloc]initWithContentViewController:backgroundMenu];
-    [self.popoverBackground presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-
-//    NSLog(@"button %@", sender.titleLabel.text);
-//    UIImage *image;
-//    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
-//    [self.arrayUndo addObject:bgImage];
+//- (IBAction)changeLayout:(UIButton *)sender
+//{
+//    BackgroundMenuViewController *backgroundMenu = [[self storyboard] instantiateViewControllerWithIdentifier:@"backgroundID"];
 //    
-//    if ([sender.titleLabel.text  isEqual: @"White"]) {
-//        image = [[UIImage alloc] init];
-//    }
-//    if ([sender.titleLabel.text  isEqual: @"Square"]) {
-//        image = [UIImage imageNamed:@"squared.png"];
-//    }
-//    if ([sender.titleLabel.text  isEqual: @"Line"]) {
-//        image = [UIImage imageNamed:@"notebookPaper.png"];
-//    }
-//    if ([sender.titleLabel.text  isEqual: @"Note"]) {
-//        image = [UIImage imageNamed:@"agenda.png"];
-//    }
-    
-    
-    /*TESTE
-    [self performChangeBackground:sender.titleLabel.text];
-    
-    if ([sender.titleLabel.text  isEqual: @"Custom Image"]) {
-        UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
-        //UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc]init];
-        pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        pickerLibrary.delegate = self;
-        isForBackGround = YES;
-        [self presentViewController:pickerLibrary animated:YES completion:nil];
-        
-        if (undoMade) {
-            self.arrayRedo = [[NSMutableArray alloc]init];
-            self.redoButton.enabled = NO;
-            undoMade = NO;
-        }
-    }
-    
-    else {
-        MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
-        message.nameImage = sender.titleLabel.text;
-        [self sendChangeBackgroundMessage:message];
-    }
-     */
-    
-    
-//    [self.layoutImageView setImage:image];
+//    backgroundMenu.delegate = self;
 //    
-//    bgImage = [[BackGroundImage alloc]initWithImage:image];
-//    [self.view sendSubviewToBack:self.layoutImageView];
-//    [self.layoutView setHidden:YES];
-//    [self.arrayUndo addObject:bgImage];
-    
-//    MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
-//    message.nameImage = sender.titleLabel.text;
-//    [self sendChangeBackgroundMessage:message];
-    
-}
-
+//    self.popoverBackground = [[UIPopoverController alloc]initWithContentViewController:backgroundMenu];
+//    [self.popoverBackground presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//    self.popoverBackground.delegate = self;
+//    [self.backGroundButton setSelected:YES];
+//
+////    NSLog(@"button %@", sender.titleLabel.text);
+////    UIImage *image;
+////    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
+////    [self.arrayUndo addObject:bgImage];
+////    
+////    if ([sender.titleLabel.text  isEqual: @"White"]) {
+////        image = [[UIImage alloc] init];
+////    }
+////    if ([sender.titleLabel.text  isEqual: @"Square"]) {
+////        image = [UIImage imageNamed:@"squared.png"];
+////    }
+////    if ([sender.titleLabel.text  isEqual: @"Line"]) {
+////        image = [UIImage imageNamed:@"notebookPaper.png"];
+////    }
+////    if ([sender.titleLabel.text  isEqual: @"Note"]) {
+////        image = [UIImage imageNamed:@"agenda.png"];
+////    }
+//    
+//    
+//    /*TESTE
+//    [self performChangeBackground:sender.titleLabel.text];
+//    
+//    if ([sender.titleLabel.text  isEqual: @"Custom Image"]) {
+//        UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
+//        //UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc]init];
+//        pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//        pickerLibrary.delegate = self;
+//        isForBackGround = YES;
+//        [self presentViewController:pickerLibrary animated:YES completion:nil];
+//        
+//        if (undoMade) {
+//            self.arrayRedo = [[NSMutableArray alloc]init];
+//            self.redoButton.enabled = NO;
+//            undoMade = NO;
+//        }
+//    }
+//    
+//    else {
+//        MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
+//        message.nameImage = sender.titleLabel.text;
+//        [self sendChangeBackgroundMessage:message];
+//    }
+//     */
+//    
+//    
+////    [self.layoutImageView setImage:image];
+////    
+////    bgImage = [[BackGroundImage alloc]initWithImage:image];
+////    [self.view sendSubviewToBack:self.layoutImageView];
+////    [self.layoutView setHidden:YES];
+////    [self.arrayUndo addObject:bgImage];
+//    
+////    MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
+////    message.nameImage = sender.titleLabel.text;
+////    [self sendChangeBackgroundMessage:message];
+//    
+//}
+//
 
 #pragma mark - colorMethods
--(void)newColorBrush:(UIColor *)newColor : (NSMutableArray *)colorArray
+-(void)newColorBrush:(UIColor *)newColor : (NSMutableArray *)colorArray : (CorUIButton*)selectedButton
 {
 //    for (CorUIButton *button in self.ColorButton)
 //    {
@@ -2876,6 +2960,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    [self setBrushColor:newColor];
     self.colorArray = colorArray;
     self.colorBackgroundButton.backgroundColor = newColor;
+    self.selectedButton = selectedButton;
     [self setBrushColor:newColor];
 }
 
@@ -3006,7 +3091,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     self.redoButton.enabled = YES;
     undoMade = YES;
-    NSLog(@"undo");
+    //NSLog(@"undo");
 
 
 }
@@ -3451,39 +3536,41 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (void)bringToolBarToFront
 {
-    [self.view bringSubviewToFront: self.topBar];
-    [self.view bringSubviewToFront: self.maskToolBarButton];
+    //[self.view bringSubviewToFront: self.topBar];
+    //[self.view bringSubviewToFront: self.maskToolBarButton];
     [self.view bringSubviewToFront: self.bottonBar];
     [self.view bringSubviewToFront: self.maskActionBarButton];
-    [self.view bringSubviewToFront: self.recAudio];
-    [self.view bringSubviewToFront: self.pauseRecAudio];
+//    [self.view bringSubviewToFront: self.recAudio];
+//    [self.view bringSubviewToFront: self.pauseRecAudio];
     [self.view bringSubviewToFront: self.backButton];
-    [self.view bringSubviewToFront: self.topBar];
+    //[self.view bringSubviewToFront: self.topBar];
     [self.view bringSubviewToFront: self.bottonBar];
-    [self.view bringSubviewToFront: self.addTextButton];
+    //[self.view bringSubviewToFront: self.addTextButton];
     [self.view bringSubviewToFront: self.nextButton];
     [self.view bringSubviewToFront: self.previewButton];
-    [self.view bringSubviewToFront: self.playButton];
-    [self.view bringSubviewToFront: self.recButton];
-    [self.view bringSubviewToFront: self.pauseButton];
-    [self.view bringSubviewToFront: self.recAudioButton];
-    [self.view bringSubviewToFront: self.playAudioButton];
-    [self.view bringSubviewToFront: self.informationsButton];
-    [self.view bringSubviewToFront: self.questionsButton];
-    [self.view bringSubviewToFront: self.ColorButton[0]];
-    [self.view bringSubviewToFront: self.ColorButton[1]];
-    [self.view bringSubviewToFront: self.ColorButton[2]];
-    [self.view bringSubviewToFront: self.ColorButton[3]];
-    [self.view bringSubviewToFront: self.ColorButton[4]];
-    [self.view bringSubviewToFront: self.eraseButton];
-    [self.view bringSubviewToFront: self.thicknessButton];
-    [self.view bringSubviewToFront: self.backGroundButton];
-    [self.view bringSubviewToFront: self.snapShotButtom];
-    [self.view bringSubviewToFront: self.undoButton];
-    [self.view bringSubviewToFront: self.redoButton];
-    [self.view bringSubviewToFront: self.addImageButton];
-    [self.view bringSubviewToFront: self.connectDevice];
-    [self.view bringSubviewToFront:self.menuButton];
+    [self.view bringSubviewToFront: self.menuButton];
+    [self.view bringSubviewToFront: self.userNameLabel];
+    [self.view bringSubviewToFront: self.loginButton];
+//    [self.view bringSubviewToFront: self.playButton];
+//    [self.view bringSubviewToFront: self.recButton];
+//    [self.view bringSubviewToFront: self.pauseButton];
+//    [self.view bringSubviewToFront: self.recAudioButton];
+//    [self.view bringSubviewToFront: self.playAudioButton];
+//    [self.view bringSubviewToFront: self.questionsButton];
+//    [self.view bringSubviewToFront: self.ColorButton[0]];
+//    [self.view bringSubviewToFront: self.ColorButton[1]];
+//    [self.view bringSubviewToFront: self.ColorButton[2]];
+//    [self.view bringSubviewToFront: self.ColorButton[3]];
+//    [self.view bringSubviewToFront: self.ColorButton[4]];
+//    [self.view bringSubviewToFront: self.eraseButton];
+//    [self.view bringSubviewToFront: self.thicknessButton];
+//    [self.view bringSubviewToFront: self.backGroundButton];
+//    [self.view bringSubviewToFront: self.snapShotButtom];
+//    [self.view bringSubviewToFront: self.undoButton];
+//    [self.view bringSubviewToFront: self.redoButton];
+//    [self.view bringSubviewToFront: self.addImageButton];
+//    [self.view bringSubviewToFront: self.connectDevice];
+//    [self.view bringSubviewToFront:self.menuButton];
     [self.view bringSubviewToFront:self.sideBar];
     [self.view bringSubviewToFront: self.pageNumberLabel];
     [self.view bringSubviewToFront: self.pageNumberTotalLabel];
@@ -3554,16 +3641,19 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
                           delay:0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         [self.sideBar setTransform:CGAffineTransformMakeTranslation(-99, 0)];
+                         [self.sideBar setTransform:CGAffineTransformMakeTranslation(-98, 0)];
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"Done!");
+                         //NSLog(@"Done!");
                          sideBarIsVisible = NO;
+                         self.sideBar.alpha = 0.1;
                      }];
 
 }
 
 - (void)showMenu{
+    
+    self.sideBar.alpha = 1,0;
     [UIView animateWithDuration:0.5
                           delay:0.0
                         options: UIViewAnimationOptionCurveEaseOut
@@ -3571,7 +3661,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
                          [self.sideBar setTransform:CGAffineTransformMakeTranslation(0, 0)];
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"Done!");
+                         //NSLog(@"Done!");
                          sideBarIsVisible = YES;
                          //[self.view bringSubviewToFront:self.sideBar];
                      }];
@@ -3593,4 +3683,41 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 - (void)deselectButton : (UIButton*) button{
     [button setSelected:NO];
 }
+
+- (IBAction)unwindSegueToBoard: (UIStoryboardSegue *)segue {
+    
+    //Verificacao de usuario
+    PFUser *user = [PFUser currentUser];
+    if (user) {
+        BOOL linkedWithFacebook = [PFFacebookUtils isLinkedWithUser:user];
+        BOOL linkedWithTwitter = [PFTwitterUtils isLinkedWithUser:user];
+        
+        if (!linkedWithFacebook && !linkedWithTwitter) {
+            self.userNameLabel.text = [user objectForKey:@"username"];
+        }
+        else if (linkedWithFacebook) {
+            FBRequest *request = [FBRequest requestForMe];
+            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    NSDictionary *userData = (NSDictionary *)result;
+                    NSString *userName = userData[@"name"];
+                    self.userNameLabel.text = userName;
+                }
+            }];
+        }
+        else if (linkedWithTwitter) {
+            NSString *twitterUsername = [[PFTwitterUtils twitter] screenName];
+            self.userNameLabel.text = twitterUsername;
+        }
+        
+        [self.loginButton setTitle:@"Logout" forState:UIControlStateNormal];
+    }
+    else {
+        self.userNameLabel.text = @"Anonimo";
+        [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
+    }
+
+    
+}
+
 @end
