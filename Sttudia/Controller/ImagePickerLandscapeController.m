@@ -36,18 +36,27 @@
 }
 
 
-- (NSUInteger)supportedInterfaceOrientations{
+//- (NSUInteger)supportedInterfaceOrientations{
+//    return UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight;
+//}
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (UIInterfaceOrientationMaskLandscape);
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
     return UIInterfaceOrientationMaskLandscape;
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+//{
+//    return UIInterfaceOrientationLandscapeLeft;
+//}
+//
+//- (NSUInteger) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+//    return UIInterfaceOrientationLandscapeLeft;
+//}
+
 
 @end

@@ -19,7 +19,7 @@
     
     self.titleLabel.alpha = 0.0;
     
-    [UIView animateWithDuration:5.0 delay:0.5 options:UIViewAnimationOptionTransitionNone animations:^{
+    [UIView animateWithDuration:3.0 delay:0.5 options:UIViewAnimationOptionTransitionNone animations:^{
         self.titleLabel.alpha += 1;
     } completion:^(BOOL finished){
         if (finished) {
@@ -31,6 +31,16 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (UIInterfaceOrientationMaskLandscape);
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskLandscape;
 }
 
 /*
