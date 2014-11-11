@@ -400,7 +400,7 @@
     }
 
     if ([message isKindOfClass:[MessageImage class]]) {
-        //MessageImage *msgImage = (MessageImage*) message;
+        MessageImage *msgImage = (MessageImage*) message;
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
@@ -2297,7 +2297,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 - (IBAction)openConnectionView:(id)sender {
     [self.connectDevice setSelected:YES];
     ConnectionsViewController *connectionVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"Connection"];
-    [connectionVC.swHost setOn:YES];
+    //[connectionVC.swHost setOn:YES];
+    connectionVC.isHost = isHosting;
     connectionVC.delegate = self;
     
     UIPopoverController *connectionP = [[UIPopoverController alloc] initWithContentViewController:connectionVC];

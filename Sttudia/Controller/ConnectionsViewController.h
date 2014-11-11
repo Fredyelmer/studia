@@ -18,6 +18,7 @@
 @interface ConnectionsViewController : UIViewController <MCBrowserViewControllerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak) id<ConnectionsViewControllerDelegate> delegate;
+@property (nonatomic) BOOL isHost;
 @property (strong, nonatomic) IBOutlet UITextField *txtName;
 @property (strong, nonatomic) IBOutlet UISwitch *swVisible;
 @property (strong, nonatomic) IBOutlet UISwitch *swHost;
