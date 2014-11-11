@@ -2372,7 +2372,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self.connectDevice setSelected:YES];
     
     ConnectionsViewController *connectionVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"Connection"];
-    [connectionVC.swHost setOn:YES];
+    //[connectionVC.swHost setOn:YES];
+    connectionVC.isHost = isHosting;
     connectionVC.delegate = self;
     
     self.popoverConnection = [[UIPopoverController alloc] initWithContentViewController:connectionVC];

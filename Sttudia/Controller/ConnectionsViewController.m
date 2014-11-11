@@ -47,6 +47,7 @@
     }
     
     [_txtName setDelegate:self];
+    [self.swHost setOn:self.isHost];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(peerDidChangeStateWithNotification:)
