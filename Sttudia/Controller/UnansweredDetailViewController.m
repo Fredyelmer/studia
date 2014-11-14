@@ -81,7 +81,10 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         //NSLog(@"%@",[self.selectedQuestion objectForKey:@"name"]);
         [cell userNameLabel].text = [self.selectedQuestion objectForKey:@"name"];
-        [cell questionTitleLabel].text = [self.selectedQuestion objectForKey:@"title"];;
+        [cell questionTitleLabel].text = [self.selectedQuestion objectForKey:@"title"];
+        
+        [cell questionTextTextView].layer.cornerRadius = 5.0;
+        [cell answerQuestionButton].layer.cornerRadius = 5.0;
         [cell questionTextTextView].text = [self.selectedQuestion objectForKey:@"text"];
         [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%@", [self.selectedQuestion objectForKey:@"upVotes"]];
         //[cell negativeNumberLabel].text = [NSString stringWithFormat: @"%@", [self.selectedQuestion objectForKey:@"downVotes"]];
@@ -114,7 +117,7 @@
         return 365.0;
     }
     
-    return 180.0;
+    return 190.0;
 }
 
 - (void)changeQuestionDetail : (PFObject*) question
