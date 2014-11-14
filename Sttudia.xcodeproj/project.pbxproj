@@ -138,8 +138,7 @@
 		71C3DE9519D9DA010078E7F2 /* Network-Virtual-Machine-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C3DE9419D9DA010078E7F2 /* Network-Virtual-Machine-icon.png */; };
 		71C3DE9719D9DC9E0078E7F2 /* frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 71C3DE9619D9DC9E0078E7F2 /* frame.png */; };
 		71C43F5E19EEFEBF0002CF01 /* MessageMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C43F5D19EEFEBF0002CF01 /* MessageMove.m */; };
-		71C43F6119EF08EF0002CF01 /* MessageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C43F6019EF08EF0002CF01 /* MessageResize.m */; };
-		71C43F6419F042560002CF01 /* MessageRotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C43F6319F042560002CF01 /* MessageRotate.m */; };
+		71C43F6419F042560002CF01 /* MessageTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 71C43F6319F042560002CF01 /* MessageTransform.m */; };
 		71E1B79B1990127C007C8425 /* ThicknessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71E1B79A1990127C007C8425 /* ThicknessViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -362,10 +361,8 @@
 		71C3DE9619D9DC9E0078E7F2 /* frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame.png; sourceTree = "<group>"; };
 		71C43F5C19EEFEBF0002CF01 /* MessageMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageMove.h; sourceTree = "<group>"; };
 		71C43F5D19EEFEBF0002CF01 /* MessageMove.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageMove.m; sourceTree = "<group>"; };
-		71C43F5F19EF08EF0002CF01 /* MessageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageResize.h; sourceTree = "<group>"; };
-		71C43F6019EF08EF0002CF01 /* MessageResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageResize.m; sourceTree = "<group>"; };
-		71C43F6219F042560002CF01 /* MessageRotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageRotate.h; sourceTree = "<group>"; };
-		71C43F6319F042560002CF01 /* MessageRotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageRotate.m; sourceTree = "<group>"; };
+		71C43F6219F042560002CF01 /* MessageTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTransform.h; sourceTree = "<group>"; };
+		71C43F6319F042560002CF01 /* MessageTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTransform.m; sourceTree = "<group>"; };
 		71E1B7991990127C007C8425 /* ThicknessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThicknessViewController.h; sourceTree = "<group>"; };
 		71E1B79A1990127C007C8425 /* ThicknessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThicknessViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -695,10 +692,8 @@
 				71529F9519CB758500D87FF9 /* MessageText.m */,
 				71C43F5C19EEFEBF0002CF01 /* MessageMove.h */,
 				71C43F5D19EEFEBF0002CF01 /* MessageMove.m */,
-				71C43F5F19EF08EF0002CF01 /* MessageResize.h */,
-				71C43F6019EF08EF0002CF01 /* MessageResize.m */,
-				71C43F6219F042560002CF01 /* MessageRotate.h */,
-				71C43F6319F042560002CF01 /* MessageRotate.m */,
+				71C43F6219F042560002CF01 /* MessageTransform.h */,
+				71C43F6319F042560002CF01 /* MessageTransform.m */,
 				0DBCCF7A19F528E20028269B /* MessageUndo.h */,
 				0DBCCF7B19F528E20028269B /* MessageUndo.m */,
 				0DBCCF7D19F528FA0028269B /* MessageRedo.h */,
@@ -872,7 +867,6 @@
 				71529F9619CB758500D87FF9 /* MessageText.m in Sources */,
 				0D081747196ED95A0007399B /* VideoParameter.m in Sources */,
 				0DA7189519AFB77400B8B08E /* QuestionsRepository.m in Sources */,
-				71C43F6119EF08EF0002CF01 /* MessageResize.m in Sources */,
 				0D9ECF5A1961867300882007 /* Sttudia.xcdatamodeld in Sources */,
 				7161203B1A07EF0100B81B6A /* MessageMake.m in Sources */,
 				0DE062E919B6456A00CFDF07 /* QuestionListTableViewCell.m in Sources */,
@@ -923,7 +917,7 @@
 				0DA7B58E198ABA7500D268E1 /* PhotoRepository.m in Sources */,
 				0D9ECF531961867300882007 /* main.m in Sources */,
 				48C52E8D1965E52D00AD013F /* RegisterViewController.m in Sources */,
-				71C43F6419F042560002CF01 /* MessageRotate.m in Sources */,
+				71C43F6419F042560002CF01 /* MessageTransform.m in Sources */,
 				0DC8534119F6C54600AAB7FE /* MessageResetTint.m in Sources */,
 				0DA267CB19953B0F00AE00FF /* ColorFontViewController.m in Sources */,
 				0DC8533E19F6C53200AAB7FE /* MessageResetAll.m in Sources */,

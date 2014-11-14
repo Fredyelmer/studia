@@ -510,55 +510,14 @@
         
     }
 
-    if ([message isKindOfClass:[MessageResize class]]) {
-        MessageResize *msg = (MessageResize*) message;
-        
-        NSOperationQueue *opque = [NSOperationQueue mainQueue];
-        
-        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
-        
-        [operation addExecutionBlock:^{
-            if (msg.isImage) {
-                CGAffineTransform currentTransform = currentImage.transform;
-                CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, msg.scale, msg.scale);
-                
-                for (UIImageView *image in self.arrayImages)
-                {
-                    if (image.tag == msg.tag)
-                    {
-                        [image setTransform:newTransform];
-                    }
-                }
-                
-
-            }else{
-                CGAffineTransform currentTransform = self.currentTextField.transform;
-                CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, msg.scale, msg.scale);
-                
-                for (UITextField* textField in self.arrayTexts) {
-                    if (textField.tag == msg.tag) {
-                        [textField setTransform:newTransform];
-                    }
-                }
-            }
-            
-        }];
-        
-        [opque addOperation:operation];
-        
-    }
-
-    if ([message isKindOfClass:[MessageRotate class]]) {
-        MessageRotate *msg = (MessageRotate*) message;
+    if ([message isKindOfClass:[MessageTransform class]]) {
+        MessageTransform *msg = (MessageTransform*) message;
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
             if (msg.isImage) {
-                //CGAffineTransform currentTransform = currentImage.transform;
-                //CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msg.rotation);
-                
                 for (UIImageView *image in self.arrayImages)
                 {
                     if (image.tag == msg.tag)
@@ -566,13 +525,7 @@
                         [image setTransform:msg.transform];
                     }
                 }
-
-                
-                
-            }else{
-                //CGAffineTransform currentTransform = self.currentTextField.transform;
-                //CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msg.rotation);
-                
+            } else {
                 for (UITextField* textField in self.arrayTexts) {
                     if (textField.tag == msg.tag) {
                         [textField setTransform:msg.transform];
@@ -757,19 +710,10 @@
     [self sendMessage:message];
 }
 
--(void)sendResize: (CGFloat) scale isImage: (BOOL) isImage tag:(NSInteger) tag
+-(void)sendTransform: (CGAffineTransform) transform isImage: (BOOL) isImage tag:(NSInteger) tag
 {
-    MessageResize* message = [[MessageResize alloc] init];
-    message.scale = scale;
-    message.isImage = isImage;
-    message.tag = tag;
-    [self sendMessage:message];
-}
-
--(void)sendRotation: (CGAffineTransform) rotation isImage: (BOOL) isImage tag:(NSInteger) tag
-{
-    MessageRotate* message = [[MessageRotate alloc] init];
-    message.transform = rotation;
+    MessageTransform* message = [[MessageTransform alloc] init];
+    message.transform = transform;
     message.isImage = isImage;
     message.tag = tag;
     [self sendMessage:message];
@@ -1898,7 +1842,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         [recognizer.view setTransform:newTransform];
         
         if (isConnected) {
-            [self sendResize:scale isImage:YES tag:recognizer.view.tag];
+            [self sendTransform:newTransform isImage:YES tag:recognizer.view.tag];
         }
         
         lastScale = recognizer.scale;
@@ -2008,7 +1952,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         [[recognizer view] setTransform:newTransform];
         
         if (isConnected) {
-            [self sendRotation:newTransform isImage:YES tag:recognizer.view.tag];
+            [self sendTransform: newTransform isImage:YES tag:recognizer.view.tag];
         }
         
         lastRotation = [recognizer rotation];
@@ -2600,7 +2544,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         [recognizer.view setTransform:newTransform];
     
     if (isConnected) {
-        [self sendResize:scale isImage:NO tag:recognizer.view.tag];
+        [self sendTransform:newTransform isImage:NO tag:recognizer.view.tag];
     }
 
     
@@ -2737,7 +2681,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         [[recognizer view] setTransform:newTransform];
     
     if (isConnected) {
-        [self sendRotation:newTransform isImage:NO tag:recognizer.view.tag];
+        [self sendTransform:newTransform isImage:NO tag:recognizer.view.tag];
     }
     
         lastRotation = [recognizer rotation];
