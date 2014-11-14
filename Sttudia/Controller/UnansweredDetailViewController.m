@@ -84,11 +84,11 @@
         [cell questionTitleLabel].text = [self.selectedQuestion objectForKey:@"title"];;
         [cell questionTextTextView].text = [self.selectedQuestion objectForKey:@"text"];
         [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%@", [self.selectedQuestion objectForKey:@"upVotes"]];
-        [cell negativeNumberLabel].text = [NSString stringWithFormat: @"%@", [self.selectedQuestion objectForKey:@"downVotes"]];
+        //[cell negativeNumberLabel].text = [NSString stringWithFormat: @"%@", [self.selectedQuestion objectForKey:@"downVotes"]];
         [[cell answerQuestionButton]setHidden:NO];
         [[cell answerQuestionButton] addTarget:self action:@selector(answerQuestion:) forControlEvents:UIControlEventTouchUpInside];
         [[cell positiveButton] addTarget:self action:@selector(positiveQuestion:) forControlEvents:UIControlEventTouchUpInside];
-        [[cell negativeButton] addTarget:self action:@selector(negativeQuestion:) forControlEvents:UIControlEventTouchUpInside];
+        //[[cell negativeButton] addTarget:self action:@selector(negativeQuestion:) forControlEvents:UIControlEventTouchUpInside];
         if ([self.selectedQuestion objectForKey:@"imageFile"]) {
             
             PFFile *thumbnail = [self.selectedQuestion objectForKey:@"imageFile"];
@@ -143,30 +143,75 @@
 
 - (void) positiveQuestion: (UIButton *)sender
 {
-    [self.selectedQuestion incrementKey:@"upVotes" byAmount:[NSNumber numberWithInt:1]];
-    [self.selectedQuestion incrementKey:@"upDownDifference" byAmount:[NSNumber numberWithInt:1]];
-    [self.selectedQuestion save];
+    PFUser *user = [PFUser currentUser];
     
-    [self.tableView reloadData];
-    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
-    NSArray *viewControllers = VCRef.viewControllers;
-    UnansweredTableViewController *VC = [viewControllers objectAtIndex:0];
-    [VC loadObjects];
-    
-    
-}
-- (void) negativeQuestion: (UIButton *)sender
-{
-    [self.selectedQuestion incrementKey:@"downVotes" byAmount:[NSNumber numberWithInt:1]];
-    [self.selectedQuestion incrementKey:@"upDownDifference" byAmount:[NSNumber numberWithInt:-1]];
-    [self.selectedQuestion save];
+    if (user) {
+        self.userArray = [self.selectedQuestion objectForKey:@"arrayUser"];
+        
+        if (!self.userArray) {
+            self.userArray = [[NSMutableArray alloc]init];
+        }
+        NSString* name = [user objectForKey:@"username"];
+        bool isInArray = NO;
+        
+        for (NSString *nameInArray in self.userArray) {
+            if ([nameInArray isEqualToString:name]) {
+                isInArray = YES;
+            }
+        }
+        
+        if (!isInArray) {
+            [self.userArray addObject: name];
+            
+            [self.selectedQuestion incrementKey:@"upVotes" byAmount:[NSNumber numberWithInt:1]];
+            [self.selectedQuestion addObjectsFromArray:self.userArray forKey:@"arrayUser"];
+            //[self.selectedQuestion incrementKey:@"upDownDifference" byAmount:[NSNumber numberWithInt:1]];
+            [self.selectedQuestion save];
+            
+            [self.tableView reloadData];
+            UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
+            NSArray *viewControllers = VCRef.viewControllers;
+            UnansweredTableViewController *VC = [viewControllers objectAtIndex:0];
+            [VC loadObjects];
+        }
+        else {
+            UIAlertView *likedAlert = [[UIAlertView alloc]initWithTitle:@"Positivado" message:@"Você já positivou a questão" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [likedAlert show];
+        }
+        
+    }
+    else {
+        UIAlertView *logInAlert = [[UIAlertView alloc]initWithTitle:@"Acesso negado" message:@"Você precisa estar logado para positivar a questão" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [logInAlert show];
+    }
 
-    [self.tableView reloadData];
-    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
-    NSArray *viewControllers = VCRef.viewControllers;
-    UnansweredTableViewController *VC = [viewControllers objectAtIndex:0];
-    [VC loadObjects];
+    
+    
+    
+//    [self.selectedQuestion incrementKey:@"upVotes" byAmount:[NSNumber numberWithInt:1]];
+//    //[self.selectedQuestion incrementKey:@"upDownDifference" byAmount:[NSNumber numberWithInt:1]];
+//    [self.selectedQuestion save];
+//    
+//    [self.tableView reloadData];
+//    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
+//    NSArray *viewControllers = VCRef.viewControllers;
+//    UnansweredTableViewController *VC = [viewControllers objectAtIndex:0];
+//    [VC loadObjects];
+    
+    
 }
+//- (void) negativeQuestion: (UIButton *)sender
+//{
+//    [self.selectedQuestion incrementKey:@"downVotes" byAmount:[NSNumber numberWithInt:1]];
+//    [self.selectedQuestion incrementKey:@"upDownDifference" byAmount:[NSNumber numberWithInt:-1]];
+//    [self.selectedQuestion save];
+//
+//    [self.tableView reloadData];
+//    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
+//    NSArray *viewControllers = VCRef.viewControllers;
+//    UnansweredTableViewController *VC = [viewControllers objectAtIndex:0];
+//    [VC loadObjects];
+//}
 
 
 

@@ -26,7 +26,7 @@
 @property (strong, nonatomic) Answer *currentAnswer;
 @property (strong, nonatomic) PFObject *selectedQuestion;
 @property (strong, nonatomic) PFObject *answeredQuestionList;
-
+@property (strong, nonatomic) NSMutableArray *userArray;
 
 - (void)changeQuestionDetail : (PFObject*) selectedQuestion;
 @end

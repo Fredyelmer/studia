@@ -18,5 +18,7 @@
 
 @property (weak, nonatomic) id <ColorFontViewControllerDelegate> delegate;
 
+@property (strong, nonatomic) UIColor *fontColor;
 
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *colorButton;
 @end

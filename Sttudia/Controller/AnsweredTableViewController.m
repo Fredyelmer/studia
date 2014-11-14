@@ -98,7 +98,7 @@
     [cell questionTitleLabel].text = [object objectForKey:@"title"];
     [cell userNameLabel].text = [object objectForKey:@"text"];
     [cell numPositiveLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"upVotes"]];
-    [cell numNegativeLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"downVotes"]];
+    //[cell numNegativeLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"downVotes"]];
     
     return cell;
 }

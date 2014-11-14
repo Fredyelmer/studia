@@ -26,7 +26,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    for (UIButton *button in self.colorButton) {
+        if ([button.backgroundColor isEqual:self.fontColor]) {
+            button.layer.borderColor = [[UIColor yellowColor]CGColor];
+        }
+        else {
+            button.layer.borderColor = [[UIColor blackColor]CGColor];
+        }
+    }
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,9 +62,36 @@
         case 4:
             [self.delegate setTextColor:[UIColor blackColor]];
             break;
+        case 5:
+            [self.delegate setTextColor:[UIColor magentaColor]];
+            break;
+        case 6:
+            [self.delegate setTextColor:[UIColor cyanColor]];
+            break;
+        case 7:
+            [self.delegate setTextColor:[UIColor purpleColor]];
+            break;
+        case 8:
+            [self.delegate setTextColor:[UIColor whiteColor]];
+            break;
         default:
             break;
     }
+    self.fontColor = button.backgroundColor;
+    
+    [self selectButton:button.backgroundColor];
+}
+- (void) selectButton : (UIColor*) selectedColor {
+    
+    for (UIButton *button in self.colorButton) {
+        if ([button.backgroundColor isEqual:selectedColor]) {
+            button.layer.borderColor = [[UIColor yellowColor]CGColor];
+        }
+        else {
+            button.layer.borderColor = [[UIColor blackColor]CGColor];
+        }
+    }
+    
 }
 
 @end

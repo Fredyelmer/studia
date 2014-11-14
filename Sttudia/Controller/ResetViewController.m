@@ -27,7 +27,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.thicknessSlider.value = self.eraserBrush;
+    self.thicknessLabel.text = [NSString stringWithFormat:@"%.1f", self.eraserBrush];
+    [self updateBrushView:self.eraserBrush];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,16 +46,35 @@
     
     [self.delegate resetTint];
 }
+- (IBAction)sliderChanged:(id)sender {
+    
+    self.eraserBrush = self.thicknessSlider.value;
+    self.thicknessLabel.text = [NSString stringWithFormat:@"%.1f", self.eraserBrush];
+    
+    UIGraphicsBeginImageContext(self.thicknessImageView.frame.size);
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    CGContextSetLineWidth(UIGraphicsGetCurrentContext(),self.eraserBrush);
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), 45, 45);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), 45, 45);
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
+    self.thicknessImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [self updateBrushView:self.eraserBrush];
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
-*/
 
+- (void)updateBrushView : (CGFloat)brush {
+    UIGraphicsBeginImageContext(self.thicknessImageView.frame.size);
+    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
+    CGContextSetLineWidth(UIGraphicsGetCurrentContext(),brush);
+    CGContextMoveToPoint(UIGraphicsGetCurrentContext(), 45, 45);
+    CGContextAddLineToPoint(UIGraphicsGetCurrentContext(), 45, 45);
+    CGContextStrokePath(UIGraphicsGetCurrentContext());
+    self.thicknessImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [self.delegate newThicknessBrush : brush];
+
+}
 @end

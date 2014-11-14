@@ -19,7 +19,7 @@
     
     self.titleLabel.alpha = 0.0;
     
-    [UIView animateWithDuration:3.0 delay:0.5 options:UIViewAnimationOptionTransitionNone animations:^{
+    [UIView animateWithDuration:2.0 delay:0.5 options:UIViewAnimationOptionTransitionNone animations:^{
         self.titleLabel.alpha += 1;
     } completion:^(BOOL finished){
         if (finished) {
