@@ -12,6 +12,7 @@
 
 @property (nonatomic) NSInteger tag;
 @property (nonatomic) CGFloat rotation;
+@property (nonatomic) CGAffineTransform transform;
 @property (nonatomic) BOOL isImage;
 
 @end

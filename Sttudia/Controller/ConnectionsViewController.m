@@ -129,6 +129,7 @@
      NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [_txtName resignFirstResponder];
@@ -157,24 +158,24 @@
     MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
     
     
-    if (state != MCSessionStateConnecting) {
-        if (state == MCSessionStateConnected) {
-            
-            [_arrConnectedDevices addObject:peerDisplayName];
-        }
-        else if (state == MCSessionStateNotConnected){
-            if ([_arrConnectedDevices count] > 0) {
-                int indexOfPeer = (int)[_arrConnectedDevices indexOfObject:peerDisplayName];
-                [_arrConnectedDevices removeObjectAtIndex:indexOfPeer];
-            }
-        }
-        
-        [_tblConnectedDevices reloadData];
-        
-        BOOL peersExist = ([[_appDelegate.mcManager.session connectedPeers] count] == 0);
-        [_btnDisconnect setEnabled:!peersExist];
-        [_txtName setEnabled:peersExist];
-    }
+//    if (state != MCSessionStateConnecting) {
+//        if (state == MCSessionStateConnected) {
+//            
+//            [_arrConnectedDevices addObject:peerDisplayName];
+//        }
+//        else if (state == MCSessionStateNotConnected){
+//            if ([_arrConnectedDevices count] > 0) {
+//                int indexOfPeer = (int)[_arrConnectedDevices indexOfObject:peerDisplayName];
+//                [_arrConnectedDevices removeObjectAtIndex:indexOfPeer];
+//            }
+//        }
+//        
+//        [_tblConnectedDevices reloadData];
+//        
+//        BOOL peersExist = ([[_appDelegate.mcManager.session connectedPeers] count] == 0);
+//        [_btnDisconnect setEnabled:!peersExist];
+//        [_txtName setEnabled:peersExist];
+//    }
     
     NSLog(@"%s", __PRETTY_FUNCTION__);
 }

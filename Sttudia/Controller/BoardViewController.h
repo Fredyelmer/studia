@@ -39,6 +39,7 @@
 #import "MessageText.h"
 #import "MessageTag.h"
 #import "MessageDelete.h"
+#import "MessageSelected.h"
 #import "MessageMake.h"
 #import "MessageRequestTag.h"
 #import "Brush.h"

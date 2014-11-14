@@ -128,6 +128,7 @@
 		7156214319BA26FA00C17233 /* AnsweredTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7156214219BA26FA00C17233 /* AnsweredTableViewController.m */; };
 		7161203B1A07EF0100B81B6A /* MessageMake.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161203A1A07EF0100B81B6A /* MessageMake.m */; };
 		7161203E1A08037C00B81B6A /* MessageRequestTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 7161203D1A08037C00B81B6A /* MessageRequestTag.m */; };
+		716120411A151BF700B81B6A /* MessageSelected.m in Sources */ = {isa = PBXBuildFile; fileRef = 716120401A151BF700B81B6A /* MessageSelected.m */; };
 		71913C20199542720097162C /* Expand_B-512.png in Resources */ = {isa = PBXBuildFile; fileRef = 71913C1F199542720097162C /* Expand_B-512.png */; };
 		719C9EFF19F9647F0075C615 /* MessageTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 719C9EFE19F9647F0075C615 /* MessageTag.m */; };
 		719C9F021A0170310075C615 /* MessageDelete.m in Sources */ = {isa = PBXBuildFile; fileRef = 719C9F011A0170310075C615 /* MessageDelete.m */; };
@@ -347,6 +348,8 @@
 		7161203A1A07EF0100B81B6A /* MessageMake.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageMake.m; sourceTree = "<group>"; };
 		7161203C1A08037C00B81B6A /* MessageRequestTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageRequestTag.h; sourceTree = "<group>"; };
 		7161203D1A08037C00B81B6A /* MessageRequestTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageRequestTag.m; sourceTree = "<group>"; };
+		7161203F1A151BF700B81B6A /* MessageSelected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageSelected.h; sourceTree = "<group>"; };
+		716120401A151BF700B81B6A /* MessageSelected.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageSelected.m; sourceTree = "<group>"; };
 		71913C1F199542720097162C /* Expand_B-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Expand_B-512.png"; sourceTree = "<group>"; };
 		719C9EFD19F9647F0075C615 /* MessageTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTag.h; sourceTree = "<group>"; };
 		719C9EFE19F9647F0075C615 /* MessageTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTag.m; sourceTree = "<group>"; };
@@ -718,6 +721,8 @@
 				7161203A1A07EF0100B81B6A /* MessageMake.m */,
 				7161203C1A08037C00B81B6A /* MessageRequestTag.h */,
 				7161203D1A08037C00B81B6A /* MessageRequestTag.m */,
+				7161203F1A151BF700B81B6A /* MessageSelected.h */,
+				716120401A151BF700B81B6A /* MessageSelected.m */,
 			);
 			name = message;
 			sourceTree = "<group>";
@@ -770,7 +775,7 @@
 				ORGANIZATIONNAME = "Ricardo Nagaishi";
 				TargetAttributes = {
 					0D9ECF401961867300882007 = {
-						DevelopmentTeam = 2P6ZLVHDMJ;
+						DevelopmentTeam = 8VVUD96VR6;
 					};
 					0D9ECF601961867300882007 = {
 						TestTargetID = 0D9ECF401961867300882007;
@@ -905,6 +910,7 @@
 				48C52E8A1965E52D00AD013F /* BoardViewController.m in Sources */,
 				7156214019B7A08000C17233 /* Model.xcdatamodeld in Sources */,
 				0DA267C8199515AD00AE00FF /* FontTypeViewController.m in Sources */,
+				716120411A151BF700B81B6A /* MessageSelected.m in Sources */,
 				710DE24D19801FA00095E34E /* ColorSquareView.m in Sources */,
 				71529F8D19C8AB9D00D87FF9 /* MessagePoint.m in Sources */,
 				0DDDC47019C1FEEC008B0D93 /* ImageDetailViewController.m in Sources */,

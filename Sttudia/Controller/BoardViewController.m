@@ -89,8 +89,7 @@
     
     [super viewDidLoad];
 
-    textTag = 1;
-    imageTag = 1;
+    objectTag = 1;
     
     [self.view setBackgroundColor:[UIColor blackColor]];
     
@@ -365,8 +364,6 @@
         
         if ([messageBrush.actionName isEqualToString:@"toucheEnded"])
         {
-//            receivedLastPoint = point;
-//            lastPoint = point;
             UIImage *newImage = self.tempImageView.image;
             
             if (newImage) {
@@ -429,6 +426,32 @@
                 [self deleteImage:msg.tag];
             } else {
                 [self deleteTextField:msg.tag];
+            }
+            
+        }];
+        
+        [opque addOperation:operation];
+        
+    }
+
+    if ([message isKindOfClass:[MessageSelected class]]) {
+        MessageSelected *msg = (MessageSelected*) message;
+        
+        NSOperationQueue *opque = [NSOperationQueue mainQueue];
+        NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+        
+        [operation addExecutionBlock:^{
+            if (msg.isImage) {
+                for (UIImageView *image in self.arrayImages)
+                {
+                    if (image.tag == msg.tag)
+                    {
+                        [self makeSelected:image Selected:msg.isSelected];
+                    }
+                }
+                
+            } else {
+                //[self deleteTextField:msg.tag];
             }
             
         }];
@@ -531,26 +554,26 @@
         
         [operation addExecutionBlock:^{
             if (msg.isImage) {
-                CGAffineTransform currentTransform = currentImage.transform;
-                CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msg.rotation);
+                //CGAffineTransform currentTransform = currentImage.transform;
+                //CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msg.rotation);
                 
                 for (UIImageView *image in self.arrayImages)
                 {
                     if (image.tag == msg.tag)
                     {
-                        [image setTransform:newTransform];
+                        [image setTransform:msg.transform];
                     }
                 }
 
                 
                 
             }else{
-                CGAffineTransform currentTransform = self.currentTextField.transform;
-                CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msg.rotation);
+                //CGAffineTransform currentTransform = self.currentTextField.transform;
+                //CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,msg.rotation);
                 
                 for (UITextField* textField in self.arrayTexts) {
                     if (textField.tag == msg.tag) {
-                        [textField setTransform:newTransform];
+                        [textField setTransform:msg.transform];
                     }
                 }
 
@@ -605,9 +628,9 @@
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         [operation addExecutionBlock:^{
-            //if (isHosting) {
+            if (isHosting) {
                 [self sendTagMessage];
-            //}
+            }
         }];
         
         [opque addOperation:operation];
@@ -741,10 +764,10 @@
     [self sendMessage:message];
 }
 
--(void)sendRotation: (CGFloat) rotation isImage: (BOOL) isImage tag:(NSInteger) tag
+-(void)sendRotation: (CGAffineTransform) rotation isImage: (BOOL) isImage tag:(NSInteger) tag
 {
     MessageRotate* message = [[MessageRotate alloc] init];
-    message.rotation = rotation;
+    message.transform = rotation;
     message.isImage = isImage;
     message.tag = tag;
     [self sendMessage:message];
@@ -1032,7 +1055,26 @@
         [self.scribbleView bringSubviewToFront:(UIImageView*)gesture.view];
         [self bringToolBarToFront];
         //self.tempImageView.image = nil;
+        
+        MessageSelected *message = [MessageSelected new];
+        message.tag = [[gesture view] tag];
+        message.isImage = YES;
+        message.isSelected = YES;
+        
+        [self sendMessage:message];
     }
+}
+
+-(void)makeSelected:(UIImageView *) image Selected:(BOOL) option
+{
+    if (option) {
+        [image.layer setBorderWidth:5.0];
+        [image.layer setBorderColor:[[UIColor redColor] CGColor]];
+    } else {
+        [image.layer setBorderWidth:0.0];
+        [image.layer setBorderColor:[[UIColor blueColor] CGColor]];
+    }
+    
 }
 
 - (IBAction)erasePressed:(CorUIButton*)sender{
@@ -1375,6 +1417,12 @@ bool moveScribble = NO;
         self.undoButton.enabled = YES;
         isFixTouch = YES;
         
+        MessageSelected *message = [MessageSelected new];
+        message.tag = [currentImage tag];
+        message.isImage = YES;
+        message.isSelected = NO;
+        
+        [self sendMessage:message];
     };
     
     if (![event touchesForView:self.currentTextField] && isTextEditing) {
@@ -1957,7 +2005,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         [[recognizer view] setTransform:newTransform];
         
         if (isConnected) {
-            [self sendRotation:rotation isImage:YES tag:recognizer.view.tag];
+            [self sendRotation:newTransform isImage:YES tag:recognizer.view.tag];
         }
         
         lastRotation = [recognizer rotation];
@@ -2247,7 +2295,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 -(void) deleteImage: (NSInteger) tag
 {
-    for (UIImageView *image in self.arrayImages) {
+    NSArray *tempArray = [self.arrayImages copy];
+    for (UIImageView *image in tempArray) {
         if (image.tag == tag) {
             [self.arrayImages removeObject:image];
             [image removeFromSuperview];
@@ -2683,7 +2732,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         [[recognizer view] setTransform:newTransform];
     
     if (isConnected) {
-        [self sendRotation:rotation isImage:NO tag:recognizer.view.tag];
+        [self sendRotation:newTransform isImage:NO tag:recognizer.view.tag];
     }
     
         lastRotation = [recognizer rotation];
