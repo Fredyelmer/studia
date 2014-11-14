@@ -21,5 +21,6 @@
 @property (assign, nonatomic) BOOL isAnswer;
 @property (strong, nonatomic) PFObject *currentQuestion;
 @property (strong, nonatomic) IBOutlet UISwitch *isAnonymSwitch;
+@property (strong, nonatomic) IBOutlet UIView *toolBarView;
 
 @end

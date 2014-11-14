@@ -125,7 +125,7 @@
     [cell questionTitleLabel].text = [object objectForKey:@"title"];
     [cell userNameLabel].text = [object objectForKey:@"text"];
     [cell numPositiveLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"upVotes"]];
-    [cell numNegativeLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"downVotes"]];
+    //[cell numNegativeLabel].text = [NSString stringWithFormat:@"%@",[object objectForKey:@"downVotes"]];
     
     return cell;
 }
@@ -142,11 +142,11 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void) sortUnansweredQuestionsArray
-{
-    NSSortDescriptor *sDescriptor = [[NSSortDescriptor alloc]initWithKey:@"upDownDifference" ascending:NO];
-    self.arrayUnansweredQuestion = (NSMutableArray *)[self.arrayUnansweredQuestion sortedArrayUsingDescriptors:@[sDescriptor]];
-}
+//- (void) sortUnansweredQuestionsArray
+//{
+//    NSSortDescriptor *sDescriptor = [[NSSortDescriptor alloc]initWithKey:@"upDownDifference" ascending:NO];
+//    self.arrayUnansweredQuestion = (NSMutableArray *)[self.arrayUnansweredQuestion sortedArrayUsingDescriptors:@[sDescriptor]];
+//}
 
 - (PFQuery *)queryForTable
 {

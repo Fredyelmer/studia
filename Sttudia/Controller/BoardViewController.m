@@ -249,7 +249,9 @@
     [self.redoButton setBackgroundImage:[UIImage imageNamed:@"ic_next_normal.png"] forState:UIControlStateNormal];
     [self.redoButton setBackgroundImage:[UIImage imageNamed:@"ic_next_select.png"] forState:UIControlStateHighlighted];
     [self.backGroundButton setBackgroundImage:[UIImage imageNamed:@"ic_background_normal.png"] forState:UIControlStateNormal];
-    [self.backGroundButton setBackgroundImage:[UIImage imageNamed:@"ic_background_select.png"] forState:UIControlStateHighlighted];
+    [self.backGroundButton setBackgroundImage:[UIImage imageNamed:@"ic_background_select.png"] forState:UIControlStateSelected];
+    [self.questionsButton setBackgroundImage:[UIImage imageNamed:@"ic_help_normal.png"] forState:UIControlStateNormal];
+    [self.questionsButton setBackgroundImage:[UIImage imageNamed:@"ic_help_select.png"] forState:UIControlStateHighlighted];
 
     self.colorArray = [[NSMutableArray alloc]initWithArray:@[[UIColor blackColor],[UIColor whiteColor],[UIColor redColor],[UIColor greenColor],[UIColor blueColor],[UIColor yellowColor],[UIColor orangeColor]]];
     
@@ -310,7 +312,7 @@
     MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
     
     NSLog(@"device name: %@",peerDisplayName);
-    NSLog(@"state: %d",state);
+    NSLog(@"state: %ld",state);
     if (state == MCSessionStateConnected) {
         isConnected = YES;
     } else {
@@ -1049,11 +1051,12 @@
     else {
         ResetViewController *resetVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"resetVC"];
         
-        resetVC. delegate = self;
+        resetVC.eraserBrush = self.currentBrush.thickness;
+        resetVC.delegate = self;
         
-        self.popoverAddImage = [[UIPopoverController alloc] initWithContentViewController:resetVC];
-        [self.popoverAddImage presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        self.popoverAddImage.delegate = self;
+        self.popoverEraser = [[UIPopoverController alloc] initWithContentViewController:resetVC];
+        [self.popoverEraser presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        self.popoverEraser.delegate = self;
         numEraserButtonTap = 0;
         
         //[self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_eraser_select.png"] forState:UIControlStateNormal];
@@ -2053,7 +2056,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     }
 }
 
--(UITextField*) makeTextField: (NSString*) text font:(UIFont*) font color:(UIColor*) color
+-(UITextField*) makeTextField: (NSString*) text withFont:(UIFont*) font withColor:(UIColor*) color
 {
     UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(self.tempImageView.frame.size.width/2, 80, 100, 50)];
     
@@ -2395,7 +2398,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     colorPickerViewController.delegate = self;
     
     self.popoverColorPicker = [[UIPopoverController alloc] initWithContentViewController:colorPickerViewController];
-    [self.popoverColorPicker presentPopoverFromRect:[(UIButton *)self.chooseColorButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    [self.popoverColorPicker presentPopoverFromRect:[(UIButton *)self.chooseColorButton frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
     self.popoverColorPicker.delegate = self;
 }
 
@@ -2407,9 +2410,9 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     NSString* text = @"";
     UIFont* font = [UIFont systemFontOfSize:textFont];
-    UIColor* color = [UIColor blackColor];
+    UIColor *color = [UIColor blackColor];
     
-    UITextField *textField = [self makeTextField:text font:font color:color];
+    UITextField *textField = [self makeTextField:text withFont:font withColor:color];
     
     //selected textfield
     [self toggleSelectedText:textField];
@@ -2436,7 +2439,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     UIFont* font = [UIFont systemFontOfSize:textFont];
     UIColor* color = [UIColor blackColor];
     
-    UITextField *textField = [self makeTextField:text font:font color:color];
+    UITextField *textField = [self makeTextField:text withFont:font withColor:color];
     textField.tag = tag;
 }
 
@@ -2513,6 +2516,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         ColorFontViewController *colorFontVC = [[self storyboard] instantiateViewControllerWithIdentifier:@"colorFontVC"];
         
         colorFontVC.delegate = self;
+        UIColor*color = (UIColor*)self.currentTextField.textColor;
+        [colorFontVC setFontColor:color];
         
         self.popoverFontColor = [[UIPopoverController alloc] initWithContentViewController:colorFontVC];
         [self.popoverFontColor presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -3654,7 +3659,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (void)showMenu{
     
-    self.sideBar.alpha = 1,0;
+    self.sideBar.alpha = 0.95;
+    [self.sideBar.layer setShadowColor:[UIColor blackColor].CGColor];
+    [self.sideBar.layer setShadowOpacity:0.8];
+    [self.sideBar.layer setShadowRadius:3.0];
+    [self.sideBar.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
     [UIView animateWithDuration:0.5
                           delay:0.0
                         options: UIViewAnimationOptionCurveEaseOut

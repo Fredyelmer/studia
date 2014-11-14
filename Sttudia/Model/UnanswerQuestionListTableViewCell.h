@@ -11,6 +11,7 @@
 @interface UnanswerQuestionListTableViewCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *questionTitleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *subjectLabel;
 @property (strong, nonatomic) IBOutlet UILabel *numPositiveLabel;
 @property (strong, nonatomic) IBOutlet UILabel *numNegativeLabel;
 
