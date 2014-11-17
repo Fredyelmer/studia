@@ -68,7 +68,7 @@
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString *sectionName = @"Question";
+    NSString *sectionName = @"Pergunta";
     
     return sectionName;
 }
@@ -82,9 +82,12 @@
         //NSLog(@"%@",[self.selectedQuestion objectForKey:@"name"]);
         [cell userNameLabel].text = [self.selectedQuestion objectForKey:@"name"];
         [cell questionTitleLabel].text = [self.selectedQuestion objectForKey:@"title"];
-        
+        cell.contentView.backgroundColor = [UIColor clearColor];
+        [cell setBackgroundColor:[UIColor colorWithRed:235.0/255.0 green:235.0/255.0 blue:235.0/255.0 alpha:1.0]];
         [cell questionTextTextView].layer.cornerRadius = 5.0;
         [cell answerQuestionButton].layer.cornerRadius = 5.0;
+        [cell drawImageView].layer.cornerRadius = 5.0;
+        [cell drawImageView].clipsToBounds = YES;
         [cell questionTextTextView].text = [self.selectedQuestion objectForKey:@"text"];
         [cell positiveNumberLabel].text = [NSString stringWithFormat: @"%@", [self.selectedQuestion objectForKey:@"upVotes"]];
         //[cell negativeNumberLabel].text = [NSString stringWithFormat: @"%@", [self.selectedQuestion objectForKey:@"downVotes"]];

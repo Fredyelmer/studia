@@ -23,7 +23,15 @@
         self.titleLabel.alpha += 1;
     } completion:^(BOOL finished){
         if (finished) {
-            [self performSegueWithIdentifier:@"continueSegue" sender:nil];
+            
+            if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasSeenTutorial"])
+            {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSeenTutorial"];
+                [self performSegueWithIdentifier:@"TutorialSegue" sender:nil];
+            }
+            else{
+                [self performSegueWithIdentifier:@"continueSegue" sender:nil];
+            }
         }
     }];
 }

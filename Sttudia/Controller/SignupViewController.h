@@ -15,6 +15,7 @@
 @property (strong, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (strong, nonatomic) IBOutlet UITextField *emailTextField;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *categorySegmentedControl;
+@property (strong, nonatomic) IBOutlet UIButton *signupButton;
 - (IBAction)createUser:(id)sender;
 
 @end

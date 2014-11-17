@@ -96,6 +96,7 @@
     //será substituido pelo método que cria o novo repositório
     QuestionsRepository *qRepository = [QuestionsRepository sharedRepository];
     
+    self.loginButton.layer.cornerRadius = 5.0;
     if (![qRepository answeredQuestionsList]) {
         self.questionsButton.enabled = NO;
     }
@@ -283,7 +284,7 @@
         [self.loginButton setTitle:@"Logout" forState:UIControlStateNormal];
     }
     else {
-        self.userNameLabel.text = @"Anonimo";
+        self.userNameLabel.text = @"Não logado";
         [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
     }
 }
@@ -311,7 +312,7 @@
     MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
     
     NSLog(@"device name: %@",peerDisplayName);
-    NSLog(@"state: %ld",state);
+    //NSLog(@"state: %ld",state);
     if (state == MCSessionStateConnected) {
         isConnected = YES;
     } else {
@@ -2115,7 +2116,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     textField.keyboardType = UIKeyboardTypeDefault;
     textField.returnKeyType = UIReturnKeyDone;
     textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.placeholder = @"text";
+    textField.placeholder = @"Texto";
     textField.userInteractionEnabled = YES;
     textField.tag = 0;
     
@@ -2817,13 +2818,13 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     NSLog(@"button %@", imageName);
     UIImage *image;
     
-    if ([imageName  isEqualToString: @"White"]) {
+    if ([imageName  isEqualToString: @"Branco"]) {
         image = [[UIImage alloc] init];
     }
-    else if ([imageName  isEqualToString: @"Square"]) {
+    else if ([imageName  isEqualToString: @"Quadriculado"]) {
         image = [UIImage imageNamed:@"squared.png"];
     }
-    else if ([imageName  isEqualToString: @"Notebook"]) {
+    else if ([imageName  isEqualToString: @"Caderno"]) {
         image = [UIImage imageNamed:@"notebookPaper.png"];
     }
     else if ([imageName  isEqualToString: @"Original"]) {
@@ -2851,7 +2852,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 - (void)changeBackground :(NSString*)name{
     [self performChangeBackground:name];
     
-    if ([name  isEqual: @"Custom Image"]) {
+    if ([name  isEqual: @"Imagem"]) {
         [self.backGroundButton setSelected:NO];
         [self.popoverBackground dismissPopoverAnimated:YES];
         UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
@@ -3723,7 +3724,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         [self.loginButton setTitle:@"Logout" forState:UIControlStateNormal];
     }
     else {
-        self.userNameLabel.text = @"Anonimo";
+        self.userNameLabel.text = @"Não logado";
         [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
     }
 
