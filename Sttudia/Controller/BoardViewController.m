@@ -311,13 +311,27 @@
     MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
     
     NSLog(@"device name: %@",peerDisplayName);
-    NSLog(@"state: %ld",state);
+    NSLog(@"state: %d",state);
+//    if (state == MCSessionStateConnecting) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading" message:@"\n\n"
+//                                                        delegate:self
+//                                               cancelButtonTitle:@""
+//                                               otherButtonTitles:@"OK", nil];
+//                              
+//        UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc]
+//                                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        loading.frame=CGRectMake(80, 0, 30, 30);
+//        [alert addSubview:loading];
+//        [alert show];
+//    } else {
     if (state == MCSessionStateConnected) {
         isConnected = YES;
     } else {
-        isConnected = NO;
+        //isConnected = NO;
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"perdeu a conexão" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//        [alert show];
     }
-
+    //}
 }
 
 #pragma mark - MultPeerMethods
@@ -523,6 +537,7 @@
                     if (image.tag == msg.tag)
                     {
                         [image setTransform:msg.transform];
+                        
                     }
                 }
             } else {
@@ -1016,9 +1031,12 @@
     if (option) {
         [image.layer setBorderWidth:5.0];
         [image.layer setBorderColor:[[UIColor redColor] CGColor]];
+        [self.scribbleView bringSubviewToFront:image];
+        
     } else {
         [image.layer setBorderWidth:0.0];
         [image.layer setBorderColor:[[UIColor blueColor] CGColor]];
+        [self.scribbleView bringSubviewToFront:self.tempImageView];
     }
     
 }
@@ -2018,7 +2036,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
     if(!isForBackGround){
-        [self putImageInScreen:choseImage tag:0 isEditable:YES];
+        NSInteger tag = [self getObjectTag];
+        [self putImageInScreen:choseImage tag:tag isEditable:YES];
         
         MessageImage *message =[[MessageImage alloc] init];
         message.image = choseImage;
