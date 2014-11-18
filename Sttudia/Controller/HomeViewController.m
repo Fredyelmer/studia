@@ -22,7 +22,9 @@
     [self.usernameTextField setDelegate:self];
     self.passwordTextField.returnKeyType = UIReturnKeyDone;
     [self.passwordTextField setDelegate:self];
-    
+    self.loginButton.layer.cornerRadius = 5.0;
+    self.loginFacebookButton.layer.cornerRadius = 5.0;
+    self.loginTwitterButton.layer.cornerRadius = 5.0;
     //[PFUser logOut];
 }
 
@@ -137,7 +139,7 @@
         } else {
             // The login failed. Check error to see why.
             NSLog(@"Failure");
-            UIAlertView *alertViewLoginFailure = [[UIAlertView alloc] initWithTitle:@"Your login credentials were invalid" message:@"Please try entering your information again" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            UIAlertView *alertViewLoginFailure = [[UIAlertView alloc] initWithTitle:@"Seus credenciais de login estão errados" message:@"Por favor entre com as suas informações novamente" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
                                             
             [alertViewLoginFailure show];
         }
@@ -146,10 +148,10 @@
 
 - (IBAction)forgotPassword:(id)sender {
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Email Address"
-                                                        message:@"Enter the email for your account:"
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Endereço de E-mail"
+                                                        message:@"Insira seu endereço de e-mail cadastrado:"
                                                        delegate:self
-                                              cancelButtonTitle:@"Cancel"
+                                              cancelButtonTitle:@"Cancelar"
                                               otherButtonTitles:@"Ok", nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alertView show];
@@ -189,7 +191,7 @@
         
         [PFUser requestPasswordResetForEmailInBackground: emailAddress.text];
         
-        UIAlertView *alertViewSuccess = [[UIAlertView alloc] initWithTitle:@"Success! A reset email was sent to you" message:@""
+        UIAlertView *alertViewSuccess = [[UIAlertView alloc] initWithTitle:@"Sucesso! Um e-mail de redefinição de senha foi enviado para você" message:@""
                                                                   delegate:self
                                                          cancelButtonTitle:@"Ok"
                                                          otherButtonTitles:nil];

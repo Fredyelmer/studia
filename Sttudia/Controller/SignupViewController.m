@@ -22,6 +22,7 @@
     [self.userNameTextField setDelegate:self];
     self.passwordTextField.returnKeyType = UIReturnKeyDone;
     [self.passwordTextField setDelegate:self];
+    self.signupButton.layer.cornerRadius = 5.0;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,15 +51,15 @@
     
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
-            UIAlertView *alertViewSignupSuccess = [[UIAlertView alloc] initWithTitle:@"Success! Thanks for signing up!"
-                                                                             message:@"Press OK to get started"
+            UIAlertView *alertViewSignupSuccess = [[UIAlertView alloc] initWithTitle:@"Sucesso! Obrigado por cadastrar-se!"
+                                                                             message:@"Aperte OK para começar"
                                                                             delegate:self
                                                                    cancelButtonTitle:@"Ok"
                                                                    otherButtonTitles:nil];
             [alertViewSignupSuccess show];
         } else {
             UIAlertView *alertViewLoginFailure = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Error : %@", [error localizedDescription]]
-                                                                            message:@"Please try entering your information again"
+                                                                            message:@"Por favor tente entrar com suas informações novamente"
                                                                            delegate:self
                                                                   cancelButtonTitle:@"Ok" 
                                                                   otherButtonTitles:nil];

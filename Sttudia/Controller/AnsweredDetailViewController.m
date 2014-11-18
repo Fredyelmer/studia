@@ -109,10 +109,10 @@
     NSString *sectionName;
     
     if (section == 0) {
-        sectionName = @"Question";
+        sectionName = @"Pergunta";
     }
     else {
-        sectionName = @"Answers";
+        sectionName = @"Resposta";
     }
     return sectionName;
 }
@@ -123,7 +123,13 @@
     
     if (cell) {
         if (indexPath.section == 0) {
+            [cell questionTextTextView].layer.cornerRadius = 5.0;
+            [cell answerQuestionButton].layer.cornerRadius = 5.0;
+            [cell drawImageView].layer.cornerRadius = 5.0;
+            [cell drawImageView].clipsToBounds = YES;
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            cell.contentView.backgroundColor = [UIColor clearColor];
+            [cell setBackgroundColor:[UIColor colorWithRed:235.0/255.0 green:235.0/255.0 blue:235.0/255.0 alpha:1.0]];
             [cell userNameLabel].text = [self.selectedQuestion objectForKey:@"name"];
             [cell questionTitleLabel].text = [self.selectedQuestion objectForKey:@"title"];;
             [cell questionTextTextView].text = [self.selectedQuestion objectForKey:@"text"];
@@ -151,7 +157,13 @@
         }
         else if (indexPath.section == 1) {
             PFObject *answer = [self.arrayAnswers objectAtIndex:indexPath.row];
+            [cell questionTextTextView].layer.cornerRadius = 5.0;
+            [cell answerQuestionButton].layer.cornerRadius = 5.0;
+            [cell drawImageView].layer.cornerRadius = 5.0;
+            [cell drawImageView].clipsToBounds = YES;
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            cell.contentView.backgroundColor = [UIColor clearColor];
+            [cell setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:248.0/255.0 blue:255.0/255.0 alpha:1.0]];
             
             [cell userNameLabel].text = [answer objectForKey:@"name"];
             [cell questionTitleLabel].text = nil;
@@ -198,7 +210,7 @@
             return 365.0;
         }
     }
-    return 180.0;
+    return 190.0;
 }
 
 - (void)changeQuestionDetail : (PFObject*) selectedQuestion
