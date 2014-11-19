@@ -49,7 +49,7 @@
     CGPoint currentPoint;
     BOOL sideBarIsVisible;
 }
-@property (strong, nonatomic) IBOutlet UIButton *colorBackgroundButton;
+//@property (strong, nonatomic) IBOutlet UIButton *colorBackgroundButton;
 
 //variaveis usadas para oespelhamento das telas
 @property (nonatomic, strong) AppDelegate *appDelegate;
@@ -78,9 +78,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    
-    self.arrayRedo = [[NSMutableArray alloc]init];
-    self.arrayUndo = [[NSMutableArray alloc]init];
 }
 
 
@@ -88,7 +85,7 @@
 {
     
     [super viewDidLoad];
-
+    
     objectTag = 1;
     
     [self.view setBackgroundColor:[UIColor blackColor]];
@@ -130,35 +127,35 @@
     //self.arrayPoints = [[NSMutableArray alloc]init];
     //self.isRecording = NO;
     
-//    [self.recAudio setEnabled:YES];
-//    [self.pauseRecAudio setHidden:YES];
-//    [self.pauseRecAudio setEnabled:YES];
+    //    [self.recAudio setEnabled:YES];
+    //    [self.pauseRecAudio setHidden:YES];
+    //    [self.pauseRecAudio setEnabled:YES];
     
     //long press gesture
     [self.layoutView setHidden:YES];
     
     [self updateThicknessButton];
     
-//    // Set the audio file
-//    NSArray *pathComponents = [NSArray arrayWithObjects:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],@"MyAudioMemo.m4a",nil];
-//    NSURL *outputFileURL = [NSURL fileURLWithPathComponents:pathComponents];
-//    
-//    // Setup audio session
-//    AVAudioSession *session = [AVAudioSession sharedInstance];
-//    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-//    
-//    // Define the recorder setting
-//    NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc] init];
-//    
-//    [recordSetting setValue:[NSNumber numberWithInt:kAudioFormatMPEG4AAC] forKey:AVFormatIDKey];
-//    [recordSetting setValue:[NSNumber numberWithFloat:44100.0] forKey:AVSampleRateKey];
-//    [recordSetting setValue:[NSNumber numberWithInt: 2] forKey:AVNumberOfChannelsKey];
+    //    // Set the audio file
+    //    NSArray *pathComponents = [NSArray arrayWithObjects:[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],@"MyAudioMemo.m4a",nil];
+    //    NSURL *outputFileURL = [NSURL fileURLWithPathComponents:pathComponents];
+    //
+    //    // Setup audio session
+    //    AVAudioSession *session = [AVAudioSession sharedInstance];
+    //    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    //
+    //    // Define the recorder setting
+    //    NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc] init];
+    //
+    //    [recordSetting setValue:[NSNumber numberWithInt:kAudioFormatMPEG4AAC] forKey:AVFormatIDKey];
+    //    [recordSetting setValue:[NSNumber numberWithFloat:44100.0] forKey:AVSampleRateKey];
+    //    [recordSetting setValue:[NSNumber numberWithInt: 2] forKey:AVNumberOfChannelsKey];
     
-//    // Initiate and prepare the recorder
-//    recorder = [[AVAudioRecorder alloc] initWithURL:outputFileURL settings:recordSetting error:NULL];
-//    recorder.delegate = self;
-//    recorder.meteringEnabled = YES;
-//    [recorder prepareToRecord];
+    //    // Initiate and prepare the recorder
+    //    recorder = [[AVAudioRecorder alloc] initWithURL:outputFileURL settings:recordSetting error:NULL];
+    //    recorder.delegate = self;
+    //    recorder.meteringEnabled = YES;
+    //    [recorder prepareToRecord];
     
     isScreenTouched = NO;
     isEraser = NO;
@@ -252,7 +249,7 @@
     [self.backGroundButton setBackgroundImage:[UIImage imageNamed:@"ic_background_select.png"] forState:UIControlStateSelected];
     [self.questionsButton setBackgroundImage:[UIImage imageNamed:@"ic_help_normal.png"] forState:UIControlStateNormal];
     [self.questionsButton setBackgroundImage:[UIImage imageNamed:@"ic_help_select.png"] forState:UIControlStateHighlighted];
-
+    
     self.colorArray = [[NSMutableArray alloc]initWithArray:@[[UIColor blackColor],[UIColor whiteColor],[UIColor redColor],[UIColor greenColor],[UIColor blueColor],[UIColor yellowColor],[UIColor orangeColor]]];
     
     [self.thicknessButton setSelected:YES];
@@ -293,59 +290,59 @@
 {
     isHosting = isHost;
     if (isHosting) {
-        NSLog(@"connected as host");
+        //NSLog(@"connected as host");
     } else {
-        NSLog(@"connected as client");
+        //NSLog(@"connected as client");
     }
 }
 
 - (void) didFinishedLoadRepository
 {
     self.questionsButton.enabled = YES;
-
+    
 }
 
 -(void)peerDidChangeStateWithNotification:(NSNotification *)notification
 {
-    MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
-    NSString *peerDisplayName = peerID.displayName;
+    //MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
+    //NSString *peerDisplayName = peerID.displayName;
     MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
     
-    NSLog(@"device name: %@",peerDisplayName);
-    NSLog(@"state: %d",state);
-//    if (state == MCSessionStateConnecting) {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading" message:@"\n\n"
-//                                                        delegate:self
-//                                               cancelButtonTitle:@""
-//                                               otherButtonTitles:@"OK", nil];
-//                              
-//        UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc]
-//                                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//        loading.frame=CGRectMake(80, 0, 30, 30);
-//        [alert addSubview:loading];
-//        [alert show];
-//    } else {
-
+    //NSLog(@"device name: %@",peerDisplayName);
+    // NSLog(@"state: %d",state);
+    //    if (state == MCSessionStateConnecting) {
+    //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Loading" message:@"\n\n"
+    //                                                        delegate:self
+    //                                               cancelButtonTitle:@""
+    //                                               otherButtonTitles:@"OK", nil];
+    //
+    //        UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc]
+    //                                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    //        loading.frame=CGRectMake(80, 0, 30, 30);
+    //        [alert addSubview:loading];
+    //        [alert show];
+    //    } else {
+    
     if (state == MCSessionStateConnected) {
         isConnected = YES;
     } else {
         //isConnected = NO;
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"perdeu a conexão" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//        [alert show];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"perdeu a conexão" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        //        [alert show];
     }
     //}
 }
 
 #pragma mark - MultPeerMethods
 -(void)didReceiveDataWithNotification:(NSNotification *)notification{
-    MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
-    NSString *peerDisplayName = peerID.displayName;
+    //MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
+   // NSString *peerDisplayName = peerID.displayName;
     
     NSData *receivedData = [[notification userInfo] objectForKey:@"data"];
     
     MessageBoard *message = [NSKeyedUnarchiver unarchiveObjectWithData:receivedData];
     
-    NSLog(@"device %@", peerDisplayName);
+    // NSLog(@"device %@", peerDisplayName);
     
     if ([message isKindOfClass:[MessageBrush class]]) {
         MessageBrush *messageBrush = (MessageBrush *)message;
@@ -357,45 +354,45 @@
         self.receivedBrush.thickness = messageBrush.thickness;
         self.receivedBrush.isEraser = messageBrush.isEraser;
         
-        NSLog(@"received point %@", NSStringFromCGPoint(point));
-        NSLog(@"nome %@", messageBrush.actionName);
+        //NSLog(@"received point %@", NSStringFromCGPoint(point));
+        //NSLog(@"nome %@", messageBrush.actionName);
         
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-
-        if ([messageBrush.actionName isEqualToString:@"toucheBegan"])
-        {
-            receivedCurrentPoint = point;
-            receivedLastPoint = pPoint;
-        }
-        
-        if ([messageBrush.actionName isEqualToString:@"toucheMoved"])
-        {
-            receivedCurrentPoint = point;
-            receivedLastPoint = pPoint;
-            receivedLastPoint2 = ppPoint;
-            [self drawScribble:point with:self.receivedBrush received:YES];
-        }
-        
-        if ([messageBrush.actionName isEqualToString:@"toucheEnded"])
-        {
-            UIImage *newImage = self.tempImageView.image;
             
-            if (newImage) {
-                [self.arrayUndo addObject:newImage];
-                self.undoButton.enabled = YES;
+            if ([messageBrush.actionName isEqualToString:@"toucheBegan"])
+            {
+                receivedCurrentPoint = point;
+                receivedLastPoint = pPoint;
             }
             
-            if (undoMade) {
-                self.arrayRedo = [[NSMutableArray alloc]init];
-                self.redoButton.enabled = NO;
-                undoMade = NO;
+            if ([messageBrush.actionName isEqualToString:@"toucheMoved"])
+            {
+                receivedCurrentPoint = point;
+                receivedLastPoint = pPoint;
+                receivedLastPoint2 = ppPoint;
+                [self drawScribble:point with:self.receivedBrush received:YES];
             }
-
-        }
+            
+            if ([messageBrush.actionName isEqualToString:@"toucheEnded"])
+            {
+                UIImage *newImage = self.tempImageView.image;
+                
+                if (newImage) {
+                    [self.arrayUndo addObject:newImage];
+                    self.undoButton.enabled = YES;
+                }
+                
+                if (undoMade) {
+                    self.arrayRedo = [[NSMutableArray alloc]init];
+                    self.redoButton.enabled = NO;
+                    undoMade = NO;
+                }
+                
+            }
             
         }];
         
@@ -431,7 +428,7 @@
         }];
         
         [opque addOperation:operation];
-
+        
     }
     if ([message isKindOfClass:[MessageDelete class]]) {
         MessageDelete *msg = (MessageDelete*) message;
@@ -451,7 +448,7 @@
         [opque addOperation:operation];
         
     }
-
+    
     if ([message isKindOfClass:[MessageSelected class]]) {
         MessageSelected *msg = (MessageSelected*) message;
         
@@ -477,7 +474,7 @@
         [opque addOperation:operation];
         
     }
-
+    
     if ([message isKindOfClass:[MessageImage class]]) {
         MessageImage *msgImage = (MessageImage*) message;
         
@@ -485,10 +482,10 @@
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         
         [operation addExecutionBlock:^{
-            NSLog(@"received image");
+            // NSLog(@"received image");
             [self putImageInScreen:msgImage.image tag:msgImage.tag isEditable:NO];
         }];
-         
+        
         [opque addOperation:operation];
     }
     
@@ -507,17 +504,17 @@
                 {
                     if (image.tag == msg.tag)
                     {
-                         [image setCenter:point];
+                        [image setCenter:point];
                     }
                 }
-               
+                
             }else{
                 for (UITextField* textField in self.arrayTexts) {
                     if (textField.tag == msg.tag) {
-                         [textField setCenter:point];
+                        [textField setCenter:point];
                     }
                 }
-               
+                
             }
             
         }];
@@ -525,7 +522,7 @@
         [opque addOperation:operation];
         
     }
-
+    
     if ([message isKindOfClass:[MessageTransform class]]) {
         MessageTransform *msg = (MessageTransform*) message;
         
@@ -548,7 +545,7 @@
                         [textField setTransform:msg.transform];
                     }
                 }
-
+                
                 
             }
             
@@ -557,14 +554,14 @@
         [opque addOperation:operation];
         
     }
-
+    
     else if ([message isKindOfClass:[MessageUndo class]]) {
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         [operation addExecutionBlock:^{
             [self realizeUndo];
-            }];
+        }];
         
         [opque addOperation:operation];
     }
@@ -595,7 +592,7 @@
         
         [opque addOperation:operation];
     }
-
+    
     else if ([message isKindOfClass:[MessageRequestTag class]]) {
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
@@ -610,18 +607,18 @@
     
     if ([message isKindOfClass:[MessageTag class]]) {
         MessageTag *msgTag = (MessageTag*) message;
-
+        
         self.operationWaitHostTag.suspended = NO;
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         [operation addExecutionBlock:^{
-
-        receivedTag = msgTag.tag;
-        NSLog(@"received tag %ld",(long)receivedTag);
+            
+            receivedTag = msgTag.tag;
+            NSLog(@"received TAG %ld",(long)receivedTag);
         }];
         
         [opque addOperation:operation];
-
+        
     }
     else if ([message isMemberOfClass:[MessageChangeBackGround class]]) {
         
@@ -646,12 +643,12 @@
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
         [operation addExecutionBlock:^{
             [self performResetAll];
-
+            
         }];
         
         [opque addOperation:operation];
     }
-
+    
     else if ([message isMemberOfClass:[MessageResetTint class]]) {
         NSOperationQueue *opque = [NSOperationQueue mainQueue];
         NSBlockOperation *operation = [[NSBlockOperation alloc] init];
@@ -715,7 +712,7 @@
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
-
+    
 }
 
 -(void)sendMove: (CGPoint) point isImage: (BOOL) isImage tag:(NSInteger) tag
@@ -748,7 +745,7 @@
     message.text = text;
     message.font = font;
     message.color = color;
-                            
+    
     [self sendMessage:message];
 }
 
@@ -781,8 +778,8 @@
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
-
-
+    
+    
 }
 
 - (void)sendResetAllMessage: (MessageResetAll*)message {
@@ -798,7 +795,7 @@
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
-
+    
     
 }
 - (void)sendResetTintMessage: (MessageResetTint*)message {
@@ -814,7 +811,7 @@
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
-
+    
     
 }
 
@@ -827,11 +824,11 @@
             return;
         }
         
-//        CGPoint center;
-//        
-//        if (sender.state == UIGestureRecognizerStateBegan) {
-//            center = self.scribbleView.center;
-//        }
+        //        CGPoint center;
+        //
+        //        if (sender.state == UIGestureRecognizerStateBegan) {
+        //            center = self.scribbleView.center;
+        //        }
         CGFloat scale = 1.0 - (lastScale - sender.scale);
         
         
@@ -845,25 +842,25 @@
         lastScale = sender.scale;
     }
     
-
-//    static CGRect initialBounds;
-//    CGRect newBounds;
-//    
-//    switch (sender.state) {
-//        case UIGestureRecognizerStateBegan:
-//            initialBounds = self.scribbleView.bounds;
-//            break;
-//        case UIGestureRecognizerStateChanged:
-//            newBounds = initialBounds;
-//            newBounds.size.width *= sender.scale;
-//            newBounds.size.height *= sender.scale;
-//            self.scribbleView.bounds = newBounds;
-//            break;
-//        default:
-//            break;
-//    }
-//    
-//    [self.scribbleView setNeedsDisplay];
+    
+    //    static CGRect initialBounds;
+    //    CGRect newBounds;
+    //
+    //    switch (sender.state) {
+    //        case UIGestureRecognizerStateBegan:
+    //            initialBounds = self.scribbleView.bounds;
+    //            break;
+    //        case UIGestureRecognizerStateChanged:
+    //            newBounds = initialBounds;
+    //            newBounds.size.width *= sender.scale;
+    //            newBounds.size.height *= sender.scale;
+    //            self.scribbleView.bounds = newBounds;
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //
+    //    [self.scribbleView setNeedsDisplay];
 }
 
 - (void) setBrushColor:(UIColor *) color
@@ -874,6 +871,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
@@ -897,20 +895,20 @@
 }
 
 //- (IBAction)startVideoRecord:(id)sender {
-//    
-//    
+//
+//
 //    if (!self.isRecording) {
 //        self.isRecording = YES;
-//        
+//
 //        //inicia a gravação de aúdio
 //        if(player.playing) {
 //            [player stop];
 //        }
-//        
+//
 //        if(!recorder.recording){
 //            AVAudioSession *session = [AVAudioSession sharedInstance];
 //            [session setActive:YES error:nil];
-//            
+//
 //            // Start recording
 //            [recorder record];
 //            //[recordPauseButton setTitle:@"Pause" forStateUIControlStateNormal];
@@ -918,29 +916,29 @@
 //
 //    }
 //    else{
-//        
+//
 //        //termina a gravação de aúdio
 //        [recorder stop];
 //        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
 //        [audioSession setActive:NO error:nil];
-//        
-//        
+//
+//
 //        self.isRecording = NO;
 //    }
 //}
 
 //- (IBAction)reproduzirGravacao:(id)sender {
-//    
+//
 //    self.tempImageView.image = nil;
-//    
+//
 //    if (!recorder.recording){
 //        player = [[AVAudioPlayer alloc] initWithContentsOfURL:recorder.url error:nil];
 //        [player setDelegate:self];
 //        [player play];
 //    }
-//    
+//
 //    for (int i = 0; i < [self.arrayPoints count]; i++) {
-//        
+//
 //        VideoParameter *parameter = self.arrayPoints[i];
 //        if ([parameter isDrawing]){
 //            [self performSelector:@selector(draw:) withObject:parameter afterDelay:[parameter interval]];
@@ -949,7 +947,7 @@
 ////            while (![self.arrayPoints[i] isTaskTerminated]) {
 ////                NSLog(@"não terminado");
 ////                if ([self.arrayPoints[i-1] isTaskTerminated]) {
-////                    
+////
 ////                     NSLog(@"terminado");
 ////                    [self.view addSubview:[self.arrayPoints[i] imageView]];
 ////                    [self.view sendSubviewToBack:[self.arrayPoints[i] imageView]];
@@ -962,7 +960,7 @@
 ////                    self.tempImageView.image = nil;
 ////                }
 ////                else{
-////                    
+////
 ////                }
 ////            }
 ////        }
@@ -970,7 +968,7 @@
 //}
 
 //-(void)chamada{
-//    
+//
 //    UIImage *image = [self snapshot:self.tempImageView];
 //    [self.arraySnapshots addObject:image];
 //    NSLog(@"tirou foto");
@@ -992,7 +990,7 @@
 {
     if (gesture.state==UIGestureRecognizerStateBegan)
     {
-        NSLog(@"long press");
+        //NSLog(@"long press");
         
         allowImageEdition = YES;
         isImageEditing = YES;
@@ -1186,8 +1184,8 @@
     self.pageNumberLabel.text = [NSString stringWithFormat:@"%d", currentPageIndex+1];
     self.pageNumberTotalLabel.text = [NSString stringWithFormat:@"%d", maxPageIndex+1];
     //    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :YES];
-//    
-//    [self.arrayPoints addObject:parameter];
+    //
+    //    [self.arrayPoints addObject:parameter];
     
     self.backButton.enabled = YES;
     
@@ -1205,9 +1203,13 @@
     }
     [self.scribbleView bringSubviewToFront: self.tempImageView];
     [self bringToolBarToFront];
+    
+    if (currentPageIndex == 98 && maxPageIndex == 98) {
+        self.nextButton.enabled = NO;
+    }
 }
 - (IBAction)nextPage:(id)sender {
-        
+    
     MessageNextPage * message = [[MessageNextPage alloc]init];
     [self realizeNextPage];
     [self sendNextPageMessage:message];
@@ -1297,12 +1299,16 @@
         self.redoButton.enabled = YES;
     }
     
-//    
-//    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :NO];
-//    
-//    [self.arrayPoints addObject:parameter];
+    //
+    //    VideoParameter *parameter = [[VideoParameter alloc]initWithNumberOfPage:currentPageIndex :maxPageIndex :NO];
+    //
+    //    [self.arrayPoints addObject:parameter];
     [self.scribbleView bringSubviewToFront: self.tempImageView];
     [self bringToolBarToFront];
+    
+    if (currentPageIndex < 98 && maxPageIndex == 98) {
+        self.nextButton.enabled = YES;
+    }
 }
 - (IBAction)previewsPage:(id)sender {
     
@@ -1359,9 +1365,9 @@ bool moveScribble = NO;
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-//    if (sideBarIsVisible && ![event touchesForView:self.sideBar]) {
-//        [self hideMenu];
-//    }
+    //    if (sideBarIsVisible && ![event touchesForView:self.sideBar]) {
+    //        [self hideMenu];
+    //    }
     
     //fixação da imagem
     if (currentImage && ![event touchesForView:currentImage]&& isImageEditing) {
@@ -1393,7 +1399,7 @@ bool moveScribble = NO;
     };
     
     if (![event touchesForView:self.currentTextField] && isTextEditing) {
-        NSLog(@"text not touched");
+        // NSLog(@"text not touched");
         
         isTextEditing = NO;
         //[self.currentTextField.layer setBorderWidth:0.0];
@@ -1412,7 +1418,7 @@ bool moveScribble = NO;
     if(!isImageEditing || !isTextEditing)
     {
         UITouch *touch = [touches anyObject];
-    
+        
         currentPoint = [touch locationInView:self.mainImageView];
         lastPoint = [touch previousLocationInView:self.mainImageView];
         
@@ -1422,19 +1428,19 @@ bool moveScribble = NO;
         message.previousPoint = [NSValue valueWithCGPoint:lastPoint];
         
         [self sendActionMessage:message];
-
         
         
-//        if (!isScreenTouched)
-//        {
-//            self.lastTouch = [event timestamp];
-//        }
-//        else
-//        {
-//            self.lastTouch =[event timestamp]-totalInterval;
-//        }
-
-    
+        
+        //        if (!isScreenTouched)
+        //        {
+        //            self.lastTouch = [event timestamp];
+        //        }
+        //        else
+        //        {
+        //            self.lastTouch =[event timestamp]-totalInterval;
+        //        }
+        
+        
         isScreenTouched = YES;
         //NSLog(@"point %f %f", lastPoint.x, lastPoint.y);
         //[[self.ColorButton objectAtIndex:selectedButton] setState:NO];
@@ -1446,12 +1452,12 @@ bool moveScribble = NO;
             //actualPoint = [touch locationInView:self.view];
             //actualPoint = self.scribbleView.center;
             //NSLog(@"actual point: %@",NSStringFromCGPoint(actualPoint));
-//            touch=[[[event allTouches] allObjects] objectAtIndex:0];
-//            firstPoint1=[touch locationInView:self.view];
-//            touch=[[[event allTouches] allObjects] objectAtIndex:1];
-//            firstPoint2=[touch locationInView:self.view];
-//            
-//            point1 = CGPointMake((firstPoint1.x + firstPoint2.x)/2, (firstPoint1.y + firstPoint2.y)/2);
+            //            touch=[[[event allTouches] allObjects] objectAtIndex:0];
+            //            firstPoint1=[touch locationInView:self.view];
+            //            touch=[[[event allTouches] allObjects] objectAtIndex:1];
+            //            firstPoint2=[touch locationInView:self.view];
+            //
+            //            point1 = CGPointMake((firstPoint1.x + firstPoint2.x)/2, (firstPoint1.y + firstPoint2.y)/2);
             centerPoint = self.scribbleView.center;
             NSLog(@"center 1 %f %f",self.scribbleView.center.x,self.scribbleView.center.y);
         }
@@ -1469,38 +1475,38 @@ bool moveScribble = NO;
     CGPoint mid1,mid2;
     
     UIGraphicsBeginImageContext(self.mainImageView.frame.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    self.context = UIGraphicsGetCurrentContext();
     [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
     
     
     if (isReceived) {
         mid1 = midPoint(receivedLastPoint, receivedLastPoint2);
         mid2 = midPoint(receivedCurrentPoint, receivedLastPoint);
-        CGContextMoveToPoint(context, mid1.x, mid1.y);
+        CGContextMoveToPoint(self.context, mid1.x, mid1.y);
         
-        CGContextAddQuadCurveToPoint(context, receivedLastPoint.x, receivedLastPoint.y, mid2.x, mid2.y);
+        CGContextAddQuadCurveToPoint(self.context, receivedLastPoint.x, receivedLastPoint.y, mid2.x, mid2.y);
     }else{
         mid1 = midPoint(lastPoint, lastPoint2);
         mid2 = midPoint(currentPoint, lastPoint);
-        CGContextMoveToPoint(context, mid1.x, mid1.y);
+        CGContextMoveToPoint(self.context, mid1.x, mid1.y);
         
-        CGContextAddQuadCurveToPoint(context, lastPoint.x, lastPoint.y, mid2.x, mid2.y);
+        CGContextAddQuadCurveToPoint(self.context, lastPoint.x, lastPoint.y, mid2.x, mid2.y);
     }
-
-    CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextSetLineWidth(context, drawBrush.thickness);
-    CGContextSetStrokeColorWithColor(context, [drawBrush.color CGColor]);
-    CGContextSetBlendMode(context, kCGBlendModeNormal);
+    
+    CGContextSetLineCap(self.context, kCGLineCapRound);
+    CGContextSetLineWidth(self.context, drawBrush.thickness);
+    CGContextSetStrokeColorWithColor(self.context, [drawBrush.color CGColor]);
+    CGContextSetBlendMode(self.context, kCGBlendModeNormal);
     
     if (drawBrush.isEraser) {
-        CGContextSetBlendMode(context, kCGBlendModeClear);
+        CGContextSetBlendMode(self.context, kCGBlendModeClear);
     }
     else{
-        CGContextSetBlendMode(context,kCGBlendModeNormal);
+        CGContextSetBlendMode(self.context,kCGBlendModeNormal);
     }
-
     
-    CGContextStrokePath(context);
+    
+    CGContextStrokePath(self.context);
     self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
     [self.tempImageView setAlpha:opacity];
     UIGraphicsEndImageContext();
@@ -1534,18 +1540,18 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
             
             [self drawScribble:currentPoint with:self.currentBrush received:NO];
             
-//            NSTimeInterval interval = [event timestamp] - self.lastTouch;
-//            VideoParameter *parameter;
-//            if (isEraser) {
-//                parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :-1 : -1: -1: 20];
-//            }
-//            else{
-//                parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :red : green: blue : 5];
-//            }
-//            
-//            [self.arrayPoints addObject:parameter];
+            //            NSTimeInterval interval = [event timestamp] - self.lastTouch;
+            //            VideoParameter *parameter;
+            //            if (isEraser) {
+            //                parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :-1 : -1: -1: 20];
+            //            }
+            //            else{
+            //                parameter = [[VideoParameter alloc] initWithParameter:lastPoint :currentPoint :interval :0 :red : green: blue : 5];
+            //            }
+            //
+            //            [self.arrayPoints addObject:parameter];
         }
-
+        
     }
     else if ([[event allTouches] count] == 2)
     {
@@ -1557,8 +1563,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
             touch=[[[event allTouches] allObjects] objectAtIndex:1];
             firstPoint2=[touch previousLocationInView:self.view];
             
-           // point1 = CGPointMake((firstPoint1.x + firstPoint2.x)/2, (firstPoint1.y + firstPoint2.y)/2);
-
+            // point1 = CGPointMake((firstPoint1.x + firstPoint2.x)/2, (firstPoint1.y + firstPoint2.y)/2);
+            
             touch=[[[event allTouches] allObjects] objectAtIndex:0];
             CGPoint currentPoint1=[touch locationInView:self.view];
             touch=[[[event allTouches] allObjects] objectAtIndex:1];
@@ -1568,23 +1574,23 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
             ///point2 = CGPointMake((currentPoint1.x + currentPoint2.x)/2, (currentPoint1.y + currentPoint2.y)/2);
             
             scale=[self distance:currentPoint1 toPoint:currentPoint2]/[self distance:firstPoint1 toPoint:firstPoint2];
-            NSLog(@"scale %f",scale);
+            //NSLog(@"scale %f",scale);
             
             if(isnan(scale)){
                 scale=1.0f;
             }
             
-//            self.scribbleView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-//            self.scribbleView.superview.layer.anchorPoint = CGPointMake(0.5, 0.5);
-//            self.scribbleView.backgroundColor = [UIColor redColor];
-
+            //            self.scribbleView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+            //            self.scribbleView.superview.layer.anchorPoint = CGPointMake(0.5, 0.5);
+            //            self.scribbleView.backgroundColor = [UIColor redColor];
+            
             //self.scribbleView.center = centerPoint;
             self.scribbleView.transform=CGAffineTransformScale(self.scribbleView.transform, scale,scale);
-            NSLog(@"center %f %f",self.scribbleView.center.x,self.scribbleView.center.y);
+            // NSLog(@"center %f %f",self.scribbleView.center.x,self.scribbleView.center.y);
             //self.scribbleView.layer.anchorPoint = CGPointMake(0.5, 0.5);
             //self.scribbleView.transform = CGAffineTransformTranslate(self.scribbleView.transform, point2.x - point1.x, point2.y - point1.y);
-
-           // point1 = point2;
+            
+            // point1 = point2;
             firstPoint1=currentPoint1;
             firstPoint2=currentPoint2;
         }
@@ -1595,16 +1601,16 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         {
             touch=[[[event allTouches] allObjects] objectAtIndex:0];
             point1=[touch previousLocationInView:self.view];
-//            touch=[[[event allTouches] allObjects] objectAtIndex:1];
-//            firstPoint2=[touch previousLocationInView:self.view];
-//            
-           // point1 = CGPointMake((firstPoint1.x + firstPoint2.x)/2, (firstPoint1.y + firstPoint2.y)/2);
+            //            touch=[[[event allTouches] allObjects] objectAtIndex:1];
+            //            firstPoint2=[touch previousLocationInView:self.view];
+            //
+            // point1 = CGPointMake((firstPoint1.x + firstPoint2.x)/2, (firstPoint1.y + firstPoint2.y)/2);
             
             touch=[[[event allTouches] allObjects] objectAtIndex:0];
             point2=[touch locationInView:self.view];
-//            touch=[[[event allTouches] allObjects] objectAtIndex:1];
-//            CGPoint currentPoint2=[touch locationInView:self.view];
-//            
+            //            touch=[[[event allTouches] allObjects] objectAtIndex:1];
+            //            CGPoint currentPoint2=[touch locationInView:self.view];
+            //
             
             //point2 = CGPointMake((currentPoint1.x + currentPoint2.x)/2, (currentPoint1.y + currentPoint2.y)/2);
             
@@ -1615,14 +1621,14 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
             point1 = point2;
         }
     }
-
+    
     NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 - (CGFloat) distance:(CGPoint) p1 toPoint:(CGPoint) p2
 {
     CGFloat distance = hypotf(p1.x - p2.x, p1.y - p2.y);
-
+    
     if (distance != 0) {
         return distance;
     }
@@ -1636,12 +1642,12 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 {
     if((!isImageEditing || !isTextEditing) && !isFixTouch){
         
-//        UITouch *touch = [touches anyObject];
-//        //CGPoint currentPoint = [touch locationInView:self.mainImageView];
-//        currentPoint = [touch locationInView:self.mainImageView];
-//        totalInterval = [event timestamp]-self.lastTouch;
-//    
-//        lastPoint = currentPoint;
+        //        UITouch *touch = [touches anyObject];
+        //        //CGPoint currentPoint = [touch locationInView:self.mainImageView];
+        //        currentPoint = [touch locationInView:self.mainImageView];
+        //        totalInterval = [event timestamp]-self.lastTouch;
+        //
+        //        lastPoint = currentPoint;
         
         MessageBrush *message = [[MessageBrush alloc] init];
         message.actionName = @"toucheEnded";
@@ -1655,7 +1661,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
             [self.arrayUndo addObject:newImage];
             self.undoButton.enabled = YES;
         }
-
+        
         if (undoMade) {
             self.arrayRedo = [[NSMutableArray alloc]init];
             self.redoButton.enabled = NO;
@@ -1688,7 +1694,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
 //    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
 //    UIGraphicsEndImageContext();
-//    
+//
 //    return image;
 //}
 //
@@ -1698,40 +1704,40 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
 //    UIImage *printScreen = UIGraphicsGetImageFromCurrentImageContext();
 //    UIGraphicsEndImageContext();
-//    
+//
 //    [self.arraySnapshots addObject:printScreen];
 //
 //}
 //
 ////métodos para gravar o audio e reproduzí-los
 //- (IBAction)gravarAudio:(id)sender {
-//    
+//
 //    if(player.playing) {
 //        [player stop];
 //    }
-//    
+//
 //    if(!recorder.recording){
 //        AVAudioSession *session = [AVAudioSession sharedInstance];
 //        [session setActive:YES error:nil];
-//        
+//
 //        // Start recording
 //        [recorder record];
 //        //[recordPauseButton setTitle:@"Pause" forStateUIControlStateNormal];
 //    }
 ////    else {
-////        
+////
 ////        // Pause recording
 ////        [recorder pause];
 ////        [recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
 ////    }
-//    
+//
 //    [self.pauseRecAudio setEnabled:YES];
 //    [self.pauseRecAudio setHidden:NO];
 //    [self.recAudio setEnabled:NO];
 //    [self.recAudio setHidden:YES];
 //}
 //- (IBAction)stopAudioRecorder:(id)sender {
-//    
+//
 //    [recorder stop];
 //    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
 //    [audioSession setActive:NO error:nil];
@@ -1746,7 +1752,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //
 //- (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)avrecorder successfully:(BOOL)flag{
 //    //[recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
-//    
+//
 //    [self.pauseRecAudio setEnabled:NO];
 //    [self.recAudio setEnabled:YES];
 //    [self.pauseRecAudio setHidden:YES];
@@ -1772,22 +1778,22 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //    CGContextSetLineCap(UIGraphicsGetCurrentContext(), kCGLineCapRound);
 //    CGContextSetLineWidth(UIGraphicsGetCurrentContext(), [parameter currentBrush] );
 //    CGContextSetRGBStrokeColor(UIGraphicsGetCurrentContext(), [parameter currentRed], [parameter currentGreen], [parameter currentBlue], 1.0);
-//    
+//
 //    if ([parameter currentRed] == -1 && [parameter currentGreen] == -1 &&[parameter currentBlue] == -1) {
 //        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeClear);
 //    }
 //    else{
 //        CGContextSetBlendMode(UIGraphicsGetCurrentContext(),kCGBlendModeNormal);
 //    }
-//    
+//
 //    CGContextStrokePath(UIGraphicsGetCurrentContext());
 //    self.tempImageView.image = UIGraphicsGetImageFromCurrentImageContext();
 //    [self.tempImageView setAlpha:opacity];
 //    UIGraphicsEndImageContext();
-//    
+//
 //    [parameter setIsTaskTerminated: YES];
 //    NSLog(@"Terminou task");
-//    
+//
 //}
 
 #pragma mark - AddImageMethods
@@ -1807,9 +1813,9 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 -(void)addImageFromLibrary
 {
     [self.popoverAddImage dismissPopoverAnimated:YES];
-
+    
     [self.addImageButton setSelected:NO];
-
+    
     UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
     pickerLibrary.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     pickerLibrary.delegate = self;
@@ -1866,7 +1872,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         }
         
         lastScale = recognizer.scale;
-        NSLog(@"Resizing frame: (%f, %f)", recognizer.view.frame.size.width, recognizer.view.frame.size.height);
+        // NSLog(@"Resizing frame: (%f, %f)", recognizer.view.frame.size.width, recognizer.view.frame.size.height);
     }
 }
 
@@ -1956,7 +1962,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
             [UIView commitAnimations];
             
         }
-
+        
     }
 }
 
@@ -1976,13 +1982,13 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         }
         
         lastRotation = [recognizer rotation];
-         NSLog(@"Rotate frame: (%f, %f)", recognizer.view.frame.size.width, recognizer.view.frame.size.height);
+        // NSLog(@"Rotate frame: (%f, %f)", recognizer.view.frame.size.width, recognizer.view.frame.size.height);
         
         if([recognizer state] == UIGestureRecognizerStateEnded) {
             lastRotation = 0.0;
             return;
         }
-
+        
     }
 }
 
@@ -1999,8 +2005,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     self.addImageButton.enabled = YES;
     self.addImageButton.hidden = NO;
-//    self.confirmImageButton.enabled = NO;
-//    self.confirmImageButton.hidden = YES;
+    //    self.confirmImageButton.enabled = NO;
+    //    self.confirmImageButton.hidden = YES;
     
     
     isImageEditing = NO;
@@ -2011,8 +2017,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-	
-	return ![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]];
+    
+    return ![gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]];
 }
 
 #pragma mark - ImagePickerControllerDelegateMethod
@@ -2029,43 +2035,45 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         self.redoButton.enabled = NO;
         undoMade = NO;
     }
-
+    
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	
+    
     [self dismissViewControllerAnimated:YES completion:nil];
-	UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    UIImage *choseImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
     if(!isForBackGround){
         NSInteger tag = [self getObjectTag];
+        NSLog(@"Role : %ld", (long)tag);
         [self putImageInScreen:choseImage tag:tag isEditable:YES];
         
         MessageImage *message =[[MessageImage alloc] init];
         message.image = choseImage;
+        message.tag = tag;
         [self sendImageMessage:message];
         
     }
     else{
-//        BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:choseImage];
-//        [self.arrayUndo addObject:bgImage];
-//        [self.layoutImageView setImage:choseImage];
-//        [self.view sendSubviewToBack:self.layoutImageView];
-//        [self.layoutView setHidden:YES];
-//        isForBackGround = NO;
-//        
-//        if (undoMade) {
-//            self.arrayRedo = [[NSMutableArray alloc]init];
-//            self.redoButton.enabled = NO;
-//            undoMade = NO;
-//        }
+        //        BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:choseImage];
+        //        [self.arrayUndo addObject:bgImage];
+        //        [self.layoutImageView setImage:choseImage];
+        //        [self.view sendSubviewToBack:self.layoutImageView];
+        //        [self.layoutView setHidden:YES];
+        //        isForBackGround = NO;
+        //
+        //        if (undoMade) {
+        //            self.arrayRedo = [[NSMutableArray alloc]init];
+        //            self.redoButton.enabled = NO;
+        //            undoMade = NO;
+        //        }
         [self putImageAsBackground:choseImage];
         
         MessageChangeBackGround* message = [[MessageChangeBackGround alloc]init];
         message.image = choseImage;
         [self sendChangeBackgroundMessage:message];
         
-
+        
     }
 }
 
@@ -2152,11 +2160,12 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     //setting custom parameters
     textField.text = text;
     textField.font = font;
+    nameOfFont = [font fontName];
     textField.textColor = color;
     
     //set delegate
     textField.delegate = self;
-
+    
     //auxiliar tasks
     [self.scribbleView addSubview:textField];
     self.currentTextField = textField;
@@ -2212,7 +2221,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [customImage addSubview:deleteButton];
     deleteButton.hidden = YES;
     deleteButton.enabled = NO;
-
+    
     [currentImage.layer setBorderColor:[[UIColor blueColor] CGColor]];
     
     if (isEditable) {
@@ -2287,20 +2296,20 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (IBAction)ColorPressed:(CorUIButton *)sender
 {
-//    self.currentBrush.isEraser = isEraser = NO;
-//    self.currentBrush.thickness = brush;
-//    if (sender.state)
-//    {
-//        //ativa acao de cor customizado
-//        [self initPickerColor:sender];
-//    }
-//    else
-//    {
-//        [self selectedButton:sender];
-//        //ativa o cor que vai se usar
-//        [self setBrushColor:sender.backgroundColor];
-//        [self updateThicknessButton];
-//    }
+    //    self.currentBrush.isEraser = isEraser = NO;
+    //    self.currentBrush.thickness = brush;
+    //    if (sender.state)
+    //    {
+    //        //ativa acao de cor customizado
+    //        [self initPickerColor:sender];
+    //    }
+    //    else
+    //    {
+    //        [self selectedButton:sender];
+    //        //ativa o cor que vai se usar
+    //        [self setBrushColor:sender.backgroundColor];
+    //        [self updateThicknessButton];
+    //    }
 }
 
 - (CAShapeLayer *) addDashedBorderWithView: (UIView*) view {
@@ -2354,33 +2363,33 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     }
     //[self.thicknessButton setSelected:YES];
     
-//    
-//    for (CorUIButton *button in self.ColorButton)
-//    {
-//        if (button.state)
-//        {
-//            thicknessViewController.color = self.currentBrush.color;
-//        }
-//    }
+    //
+    //    for (CorUIButton *button in self.ColorButton)
+    //    {
+    //        if (button.state)
+    //        {
+    //            thicknessViewController.color = self.currentBrush.color;
+    //        }
+    //    }
     
-//    if (isEraser) {
-//        thicknessViewController.brush = eraser;
-//        thicknessViewController.color = [UIColor blackColor];
-//    }
-//    else
-//    {
-//        thicknessViewController.color = self.currentBrush.color;
-//        thicknessViewController.brush = brush;
-//    self.currentBrush.isEraser = isEraser = NO;
-//    [self.eraseButton setSelected:NO];
-//    numEraserButtonTap = 0;
-   // }
+    //    if (isEraser) {
+    //        thicknessViewController.brush = eraser;
+    //        thicknessViewController.color = [UIColor blackColor];
+    //    }
+    //    else
+    //    {
+    //        thicknessViewController.color = self.currentBrush.color;
+    //        thicknessViewController.brush = brush;
+    //    self.currentBrush.isEraser = isEraser = NO;
+    //    [self.eraseButton setSelected:NO];
+    //    numEraserButtonTap = 0;
+    // }
     
-//    self.popoverThickness = [[UIPopoverController alloc] initWithContentViewController:thicknessViewController];
-//    [self.popoverThickness presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//    
-//    self.popoverThickness.delegate = self;
-//    [self updateThicknessButton];
+    //    self.popoverThickness = [[UIPopoverController alloc] initWithContentViewController:thicknessViewController];
+    //    [self.popoverThickness presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    //
+    //    self.popoverThickness.delegate = self;
+    //    [self updateThicknessButton];
     
     //[self.chooseColorButton setBackgroundImage:[UIImage imageNamed:@"ic_pencil_select.png"] forState:UIControlStateNormal];
 }
@@ -2480,6 +2489,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 -(NSInteger)getObjectTag
 {
     if (isConnected) {
+        NSLog(@"receivedTag: %ld", (long)receivedTag);
         if (isHosting) {
             return objectTag++;
         } else {
@@ -2500,7 +2510,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self.operationWaitHostTag addOperationWithBlock:^{}];
     [self.operationWaitHostTag waitUntilAllOperationsAreFinished];
 }
-             
+
 - (void) barButtonPressed :(UIBarButtonItem*)sender
 {
     if ([sender.title isEqualToString:@"T+"]) {
@@ -2536,13 +2546,13 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         self.popoverFontColor = [[UIPopoverController alloc] initWithContentViewController:colorFontVC];
         [self.popoverFontColor presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
-
+    
     
 }
 
 -(void)resizingText:(UIPinchGestureRecognizer *)recognizer
 {
-
+    
     [self.view bringSubviewToFront:recognizer.view];
     
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
@@ -2550,28 +2560,28 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         [recognizer.view.layer setBorderWidth:1];
         self.addTextButton.enabled = NO;
     }
-        if (recognizer.state == UIGestureRecognizerStateEnded) {
-            lastScale = 1.0;
-            self.currentTextField = (UITextField *)recognizer.view;
-            return;
-        }
-        
-        CGFloat scale = 1.0 - (lastScale - recognizer.scale);
-        
-        
-        CGAffineTransform currentTransform = recognizer.view.transform;
-        CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
-        
-        [recognizer.view setTransform:newTransform];
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        lastScale = 1.0;
+        self.currentTextField = (UITextField *)recognizer.view;
+        return;
+    }
+    
+    CGFloat scale = 1.0 - (lastScale - recognizer.scale);
+    
+    
+    CGAffineTransform currentTransform = recognizer.view.transform;
+    CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
+    
+    [recognizer.view setTransform:newTransform];
     
     if (isConnected) {
         [self sendTransform:newTransform isImage:NO tag:recognizer.view.tag];
     }
-
     
     
-        lastScale = recognizer.scale;
-
+    
+    lastScale = recognizer.scale;
+    
     isTextEditing = YES;
 }
 
@@ -2580,133 +2590,133 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 {
     
     
-        [[[recognizer view] layer] removeAllAnimations];
-        //[self.view bringSubviewToFront:[recognizer view]];
-        CGPoint translatedPoint = [recognizer translationInView:self.view];
+    [[[recognizer view] layer] removeAllAnimations];
+    //[self.view bringSubviewToFront:[recognizer view]];
+    CGPoint translatedPoint = [recognizer translationInView:self.view];
+    
+    if([recognizer state] == UIGestureRecognizerStateBegan) {
         
-        if([recognizer state] == UIGestureRecognizerStateBegan) {
-            
-            centerImage.x = [[recognizer view] center].x;
-            centerImage.y = [[recognizer view] center].y;
-            
-            [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
-            [recognizer.view.layer setBorderWidth:1];
-            self.addTextButton.enabled = NO;
-
-        }
+        centerImage.x = [[recognizer view] center].x;
+        centerImage.y = [[recognizer view] center].y;
         
-        translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
+        [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
+        [recognizer.view.layer setBorderWidth:1];
+        self.addTextButton.enabled = NO;
         
-        [[recognizer view] setCenter:translatedPoint];
+    }
+    
+    translatedPoint = CGPointMake(centerImage.x+translatedPoint.x, centerImage.y+translatedPoint.y);
+    
+    [[recognizer view] setCenter:translatedPoint];
     
     if (isConnected) {
         [self sendMove:translatedPoint isImage:NO tag:recognizer.view.tag];
     }
     
-        if([recognizer state] == UIGestureRecognizerStateEnded) {
+    if([recognizer state] == UIGestureRecognizerStateEnded) {
+        
+        CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.view].x);
+        CGFloat finalY = translatedPoint.y + (.35*[recognizer velocityInView:self.view].y);
+        
+        if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
             
-            CGFloat finalX = translatedPoint.x + (.35*[recognizer velocityInView:self.view].x);
-            CGFloat finalY = translatedPoint.y + (.35*[recognizer velocityInView:self.view].y);
-            
-            if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
+            if(finalX < 0) {
                 
-                if(finalX < 0) {
-                    
-                    finalX = 0;
-                }
-                
-                else if(finalX > 768) {
-                    
-                    finalX = 768;
-                }
-                
-                if(finalY < 0) {
-                    
-                    finalY = 0;
-                }
-                
-                else if(finalY > 1024) {
-                    
-                    finalY = 1024;
-                }
+                finalX = 0;
             }
             
-            else {
+            else if(finalX > 768) {
                 
-                if(finalX < 0) {
-                    
-                    finalX = 0;
-                }
-                
-                else if(finalX > 1024) {
-                    
-                    finalX = 1024;
-                }
-                
-                if(finalY < 0) {
-                    
-                    finalY = 0;
-                }
-                
-                else if(finalY > 768) {
-                    
-                    finalY = 768;
-                }
+                finalX = 768;
             }
             
-            [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:.35];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            
-            CGPoint final = CGPointMake(finalX, finalY);
-            [[recognizer view] setCenter:final];
-            
-
-            if (isConnected) {
-                [self sendMove:final isImage:NO tag:recognizer.view.tag];
+            if(finalY < 0) {
+                
+                finalY = 0;
             }
             
-            [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
-            [recognizer.view.layer setBorderWidth:1];
-
-            [UIView commitAnimations];
-            
-            self.currentTextField = (UITextField *)recognizer.view;
+            else if(finalY > 1024) {
+                
+                finalY = 1024;
+            }
         }
+        
+        else {
+            
+            if(finalX < 0) {
+                
+                finalX = 0;
+            }
+            
+            else if(finalX > 1024) {
+                
+                finalX = 1024;
+            }
+            
+            if(finalY < 0) {
+                
+                finalY = 0;
+            }
+            
+            else if(finalY > 768) {
+                
+                finalY = 768;
+            }
+        }
+        
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:.35];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        
+        CGPoint final = CGPointMake(finalX, finalY);
+        [[recognizer view] setCenter:final];
+        
+        
+        if (isConnected) {
+            [self sendMove:final isImage:NO tag:recognizer.view.tag];
+        }
+        
+        [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
+        [recognizer.view.layer setBorderWidth:1];
+        
+        [UIView commitAnimations];
+        
+        self.currentTextField = (UITextField *)recognizer.view;
+    }
     isTextEditing = YES;
 }
 
 -(void)rotateText: (UIRotationGestureRecognizer *)recognizer
 {
     
-        if([recognizer state] == UIGestureRecognizerStateEnded) {
-            
-            lastRotation = 0.0;
-            self.currentTextField = (UITextField *)recognizer.view;
-            return;
-        }
+    if([recognizer state] == UIGestureRecognizerStateEnded) {
+        
+        lastRotation = 0.0;
+        self.currentTextField = (UITextField *)recognizer.view;
+        return;
+    }
     
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
         [recognizer.view.layer setBorderColor:[[UIColor blueColor] CGColor]];
         [recognizer.view.layer setBorderWidth:1];
         self.addTextButton.enabled = NO;
-
+        
     }
-   
     
-        CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
-        
-        CGAffineTransform currentTransform = [recognizer view].transform;
-        CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
-        
-        [[recognizer view] setTransform:newTransform];
+    
+    CGFloat rotation = 0.0 - (lastRotation - [recognizer rotation]);
+    
+    CGAffineTransform currentTransform = [recognizer view].transform;
+    CGAffineTransform newTransform = CGAffineTransformRotate(currentTransform,rotation);
+    
+    [[recognizer view] setTransform:newTransform];
     
     if (isConnected) {
         [self sendTransform:newTransform isImage:NO tag:recognizer.view.tag];
     }
     
-        lastRotation = [recognizer rotation];
-
+    lastRotation = [recognizer rotation];
+    
     isTextEditing = YES;
 }
 
@@ -2715,7 +2725,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     [self autoSizeTextFieldFrame:textField];
-   
+    
     //send edit text to peers
     if (isConnected) {
         [self sendTextMessage:[textField.text stringByReplacingCharactersInRange:range withString:string] font:textField.font color:textField.textColor tag:textField.tag];
@@ -2742,14 +2752,15 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [self toggleSelectedText:textField];
+    //self.currentTextField.layer.borderWidth = 0.0;
     currentTextCenter = textField.center;
     currentTextTransform = textField.transform;
     textField.transform = CGAffineTransformMakeRotation(0);
     textField.center = CGPointMake(self.tempImageView.frame.size.width/2, 80);
     self.currentColorText = textField.textColor;
-    
+    nameOfFont = textField.font.fontName;
     isTextEditing = YES;
-    
+    textFont = textField.font.pointSize;
     self.currentTextField = textField;
     self.addTextButton.enabled = NO;
     NSLog(@"%s", __PRETTY_FUNCTION__);
@@ -2781,6 +2792,20 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         }
         [self deleteTextField:textField.tag];
     }
+    
+    isTextEditing = NO;
+    //[self.currentTextField.layer setBorderWidth:0.0];
+    
+    NSString *fontName = [self.currentTextField.font fontName];
+    
+    TextRef *textRef = [[TextRef alloc]initWithText:self.currentTextField :self.currentTextField.center :self.tempImageView.image :self.currentTextField.transform : self.currentTextField.text : fontName : textFont : self.currentColorText];
+    [self.arrayUndo addObject:textRef];
+    self.undoButton.enabled = YES;
+    isFixTouch = YES;
+    //self.addTextButton.enabled = YES;
+    [self.addTextButton setSelected:NO];
+    
+    [self.currentTextField.layer setBorderWidth:0.0];
     
     textField.center = currentTextCenter;
     textField.transform = currentTextTransform;
@@ -2819,8 +2844,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 #pragma mark backGroundMethods
 - (IBAction)setBackgroundView:(id)sender
 {
-//    [self.layoutView setHidden:NO];
-//    [self.view bringSubviewToFront:self.layoutView];
+    //    [self.layoutView setHidden:NO];
+    //    [self.view bringSubviewToFront:self.layoutView];
     [self.backGroundButton setSelected:YES];
     BackgroundMenuViewController *backgroundMenu = [[self storyboard] instantiateViewControllerWithIdentifier:@"backgroundID"];
     
@@ -2830,12 +2855,12 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self.popoverBackground presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
     
     self.popoverBackground.delegate = self;
-
+    
 }
 
 - (void)performChangeBackground: (NSString*)imageName
 {
-    NSLog(@"button %@", imageName);
+    //NSLog(@"button %@", imageName);
     UIImage *image;
     
     if ([imageName  isEqualToString: @"Branco"]) {
@@ -2855,19 +2880,19 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         [self.layoutImageView setImage:image];
         BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
         [self.arrayUndo addObject:bgImage];
-
+        
         bgImage = [[BackGroundImage alloc]initWithImage:image];
         [self.view sendSubviewToBack:self.layoutImageView];
         [self.layoutView setHidden:YES];
         [self.arrayUndo addObject:bgImage];
-    
+        
         if (undoMade) {
             self.arrayRedo = [[NSMutableArray alloc]init];
             self.redoButton.enabled = NO;
             undoMade = NO;
         }
     }
-
+    
 }
 - (void)changeBackground :(NSString*)name{
     [self performChangeBackground:name];
@@ -2894,15 +2919,15 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         message.nameImage = name;
         [self sendChangeBackgroundMessage:message];
     }
-
-
+    
+    
 }
 //- (IBAction)changeLayout:(UIButton *)sender
 //{
 //    BackgroundMenuViewController *backgroundMenu = [[self storyboard] instantiateViewControllerWithIdentifier:@"backgroundID"];
-//    
+//
 //    backgroundMenu.delegate = self;
-//    
+//
 //    self.popoverBackground = [[UIPopoverController alloc]initWithContentViewController:backgroundMenu];
 //    [self.popoverBackground presentPopoverFromRect:[(UIButton *)sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 //    self.popoverBackground.delegate = self;
@@ -2912,7 +2937,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 ////    UIImage *image;
 ////    BackGroundImage *bgImage = [[BackGroundImage alloc]initWithImage:self.layoutImageView.image];
 ////    [self.arrayUndo addObject:bgImage];
-////    
+////
 ////    if ([sender.titleLabel.text  isEqual: @"White"]) {
 ////        image = [[UIImage alloc] init];
 ////    }
@@ -2925,11 +2950,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 ////    if ([sender.titleLabel.text  isEqual: @"Note"]) {
 ////        image = [UIImage imageNamed:@"agenda.png"];
 ////    }
-//    
-//    
+//
+//
 //    /*TESTE
 //    [self performChangeBackground:sender.titleLabel.text];
-//    
+//
 //    if ([sender.titleLabel.text  isEqual: @"Custom Image"]) {
 //        UIImagePickerController *pickerLibrary = [[ImagePickerLandscapeController alloc]init];
 //        //UIImagePickerController *pickerLibrary = [[UIImagePickerController alloc]init];
@@ -2937,49 +2962,49 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 //        pickerLibrary.delegate = self;
 //        isForBackGround = YES;
 //        [self presentViewController:pickerLibrary animated:YES completion:nil];
-//        
+//
 //        if (undoMade) {
 //            self.arrayRedo = [[NSMutableArray alloc]init];
 //            self.redoButton.enabled = NO;
 //            undoMade = NO;
 //        }
 //    }
-//    
+//
 //    else {
 //        MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
 //        message.nameImage = sender.titleLabel.text;
 //        [self sendChangeBackgroundMessage:message];
 //    }
 //     */
-//    
-//    
+//
+//
 ////    [self.layoutImageView setImage:image];
-////    
+////
 ////    bgImage = [[BackGroundImage alloc]initWithImage:image];
 ////    [self.view sendSubviewToBack:self.layoutImageView];
 ////    [self.layoutView setHidden:YES];
 ////    [self.arrayUndo addObject:bgImage];
-//    
+//
 ////    MessageChangeBackGround *message = [[MessageChangeBackGround alloc] init];
 ////    message.nameImage = sender.titleLabel.text;
 ////    [self sendChangeBackgroundMessage:message];
-//    
+//
 //}
 //
 
 #pragma mark - colorMethods
 -(void)newColorBrush:(UIColor *)newColor : (NSMutableArray *)colorArray : (CorUIButton*)selectedButton
 {
-//    for (CorUIButton *button in self.ColorButton)
-//    {
-//        if (button.state)
-//        {
-//            button.backgroundColor = newColor;
-//        }
-//    }
-//    [self setBrushColor:newColor];
+    //    for (CorUIButton *button in self.ColorButton)
+    //    {
+    //        if (button.state)
+    //        {
+    //            button.backgroundColor = newColor;
+    //        }
+    //    }
+    //    [self setBrushColor:newColor];
     self.colorArray = colorArray;
-    self.colorBackgroundButton.backgroundColor = newColor;
+    //self.colorBackgroundButton.backgroundColor = newColor;
     self.selectedButton = selectedButton;
     [self setBrushColor:newColor];
 }
@@ -3111,132 +3136,13 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     self.redoButton.enabled = YES;
     undoMade = YES;
-    //NSLog(@"undo");
-
-
+    
+    if ([self.arrayUndo count] > 15) {
+        [self.arrayUndo removeObjectAtIndex:0];
+    }
 }
 
 - (IBAction)undo:(id)sender {
-    
-//    if ([[self.arrayUndo lastObject] isKindOfClass:[UIImage class]]) {
-//        UIImage *image = [self.arrayUndo lastObject];
-//        if (image) {
-//            [self.arrayRedo addObject:image];
-//            [self.arrayUndo removeObject:image];
-//            
-//            if ([[self.arrayUndo lastObject] isKindOfClass:[UIImage class]]) {
-//                self.tempImageView.image = [self.arrayUndo lastObject];
-//            }
-//            else if ([[self.arrayUndo lastObject] isKindOfClass:[Image class]]) {
-//                Image *photo = [self.arrayUndo lastObject];
-//                self.tempImageView.image = [photo canvasImage];
-//            }
-//            else if ([[self.arrayUndo lastObject] isKindOfClass:[UIImageView class]] || [[self.arrayUndo lastObject] isKindOfClass:[BackGroundImage class]]) {
-//                int flag = 0;
-//                
-//                for (int i = ([self.arrayUndo count] - 1.0); i >= 0 && flag == 0; i--) {
-//                    if ([self.arrayUndo[i] isKindOfClass:[UIImage class]]) {
-//                        self.tempImageView.image = self.arrayUndo[i];
-//                        flag = 1;
-//                    }
-//                }
-//                
-//                if (flag == 0) {
-//                    self.tempImageView.image = nil;
-//                }
-//            }
-//            else if ([[self.arrayUndo lastObject] isKindOfClass:[TextRef class]]) {
-//                TextRef *textRef = [self.arrayUndo lastObject];
-//                self.tempImageView.image = [textRef canvasImage];
-//            }
-//        }
-//        
-//    }
-//    else if ([[self.arrayUndo lastObject] isKindOfClass:[Image class]]) {
-//        Image *photo = [self.arrayUndo lastObject];
-//        
-//        if (photo) {
-//            currentImage = [photo imageView];
-//            [self.arrayRedo addObject:photo];
-//            [self.arrayUndo removeObject:photo];
-//            [currentImage removeFromSuperview];
-//            
-//            int flag = 0;
-//
-//            for (int i = ([self.arrayUndo count] - 1.0); i >= 0 && flag == 0; i--) {
-//                if ([self.arrayUndo[i] isKindOfClass:[Image class]]) {
-//                    if ([[self.arrayUndo[i] imageView] isEqual:currentImage]) {
-//                        Image *photo = self.arrayUndo[i];
-//                        currentImage.center = [photo imageCenter];
-//                        currentImage.transform = [photo imageTransform];
-//                        [self.scribbleView addSubview:currentImage];
-//                        [self.scribbleView bringSubviewToFront:self.tempImageView];
-//                        [self bringToolBarToFront];
-//                        flag = 1;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-//    else if ([[self.arrayUndo lastObject] isKindOfClass:[UIImageView class]]) {
-//        UIImageView *imageView = [self.arrayUndo lastObject];
-//        [self.arrayRedo addObject:imageView];
-//        [self.arrayUndo removeObject:imageView];
-//        [self.scribbleView addSubview:imageView];
-//        [imageView.layer setBorderWidth:0.0];
-//        UIButton *deleteButton = [[imageView subviews] objectAtIndex:0];
-//        deleteButton.hidden = YES;
-//        deleteButton.enabled = NO;
-//
-//    }
-//    else if ([[self.arrayUndo lastObject] isKindOfClass:[TextRef class]]) {
-//        TextRef *text = [self.arrayUndo lastObject];
-//        self.currentTextField = [text textField];
-//        [self.arrayRedo addObject:text];
-//        [self.arrayUndo removeObject:text];
-//        [self.currentTextField removeFromSuperview];
-//        
-//        int flag = 0;
-//        
-//        for (int i = ([self.arrayUndo count] - 1.0); i >= 0 && flag == 0; i--) {
-//            if ([self.arrayUndo[i] isKindOfClass:[TextRef class]]) {
-//                if ([[self.arrayUndo[i] textField] isEqual:self.currentTextField]) {
-//                    text = self.arrayUndo[i];
-//                    self.currentTextField.text = [text textString];
-//                    self.currentTextField.font = [UIFont fontWithName:[text textFontName] size:[text textFontSize]];
-//                    self.currentTextField.textColor = [text textColor];
-//                    self.currentTextField.center = [text textCenter];
-//                    self.currentTextField.transform = [text textTransform];
-//                    [self.scribbleView addSubview:self.currentTextField];
-//                    //[self.view bringSubviewToFront:self.tempImageView];
-//                    [self bringToolBarToFront];
-//                    flag = 1;
-//                }
-//            }
-//        }
-//    }
-//    else if ([[self.arrayUndo lastObject] isKindOfClass:[BackGroundImage class]]) {
-//        BackGroundImage *bgImage = [self.arrayUndo lastObject];
-//        [self.arrayRedo addObject:bgImage];
-//        [self.arrayUndo removeObject:bgImage];
-//        if ([[self.arrayUndo lastObject] isKindOfClass:[BackGroundImage class]]) {
-//            bgImage = [self.arrayUndo lastObject];
-//            self.layoutImageView.image = [bgImage image];
-//            [self.arrayRedo addObject:bgImage];
-//            [self.arrayUndo removeObject:bgImage];
-//        }
-//        
-//    }
-//
-//    if ([self.arrayUndo count] == 0) {
-//        self.undoButton.enabled = NO;
-//        self.tempImageView.image = nil;
-//    }
-//    
-//    self.redoButton.enabled = YES;
-//    undoMade = YES;
-//    NSLog(@"undo");
     
     MessageUndo * message = [[MessageUndo alloc]init];
     [self sendUndoMessage:message];
@@ -3352,120 +3258,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     
     self.undoButton.enabled = YES;
-
+    
 }
 
 - (IBAction)redo:(id)sender {
     
-    
-//    if ([[self.arrayRedo lastObject] isKindOfClass:[UIImage class]]) {
-//        UIImage *image = [self.arrayRedo lastObject];
-//        
-//        if (image) {
-//            [self.arrayUndo addObject:image];
-//            [self.arrayRedo removeObject:image];
-//            if ([[self.arrayRedo lastObject] isKindOfClass:[UIImage class]] || [[self.arrayRedo lastObject] isKindOfClass:[UIImageView class]]|| [[self.arrayRedo lastObject] isKindOfClass:[BackGroundImage class]]) {
-//                self.tempImageView.image = image;
-//            }
-//            else if ([[self.arrayRedo lastObject] isKindOfClass:[Image class]]) {
-//                Image *photo = [self.arrayRedo lastObject];
-//                self.tempImageView.image = [photo canvasImage];
-//                
-//            }
-//            else if ([[self.arrayRedo lastObject] isKindOfClass:[TextRef class]]){
-//                TextRef *textRef = [self.arrayRedo lastObject];
-//                self.tempImageView.image = [textRef canvasImage];
-//            }
-//        }
-//        if ([self.arrayRedo count] == 0) {
-//            self.tempImageView.image = image;
-//        }
-//    }
-//    else if ([[self.arrayRedo lastObject] isKindOfClass:[Image class]]) {
-//        Image *photo = [self.arrayRedo lastObject];
-//        if (photo) {
-//            currentImage = [photo imageView];
-//            [self.arrayUndo addObject:photo];
-//            [self.arrayRedo removeObject:photo];
-//            [currentImage removeFromSuperview];
-//            currentImage.center = [photo imageCenter];
-//            currentImage.transform = [photo imageTransform];
-//            self.tempImageView.image = [photo canvasImage];
-//            [self.scribbleView addSubview:currentImage];
-//            [self.scribbleView bringSubviewToFront:self.tempImageView];
-//            [self bringToolBarToFront];
-//            
-//            if ([self.arrayRedo count] == 0) {
-//                currentImage.center = [photo imageCenter];
-//                currentImage.transform = [photo imageTransform];
-//                [self.scribbleView addSubview:currentImage];
-//                [self.scribbleView bringSubviewToFront:self.tempImageView];
-//                [self bringToolBarToFront];
-//            }
-//        }
-//    }
-//    else if ([[self.arrayRedo lastObject] isKindOfClass:[UIImageView class]]) {
-//        UIImageView *imageView = [self.arrayRedo lastObject];
-//        [self.arrayUndo addObject:imageView];
-//        [self.arrayRedo removeObject:imageView];
-//        [imageView removeFromSuperview];
-//        [imageView.layer setBorderWidth:0.0];
-//        UIButton *deleteButton = [[imageView subviews] objectAtIndex:0];
-//        deleteButton.hidden = YES;
-//        deleteButton.enabled = NO;
-//
-//    }
-//    else if ([[self.arrayRedo lastObject] isKindOfClass:[TextRef class]]) {
-//        TextRef *text = [self.arrayRedo lastObject];
-//        self.currentTextField = [text textField];
-//        [self.arrayUndo addObject:text];
-//        [self.arrayRedo removeObject:text];
-//        [self.currentTextField removeFromSuperview];
-//        self.currentTextField.text = [text textString];
-//        self.currentTextField.font = [UIFont fontWithName:[text textFontName] size:[text textFontSize]];
-//        self.currentTextField.textColor = [text textColor];
-//        self.currentTextField.center = [text textCenter];
-//        self.currentTextField.transform = [text textTransform];
-//        self.tempImageView.image = [text canvasImage];
-//        
-//        [self.scribbleView addSubview:self.currentTextField];
-//        [self bringToolBarToFront];
-//        
-//        if ([self.arrayRedo count] == 0) {
-//            self.currentTextField.text = [text textString];
-//            self.currentTextField.font = [UIFont fontWithName:[text textFontName] size:[text textFontSize]];
-//            self.currentTextField.textColor = [text textColor];
-//            self.currentTextField.center = [text textCenter];
-//            self.currentTextField.transform = [text textTransform];
-//            [self.scribbleView addSubview:self.currentTextField];
-//            //[self.view bringSubviewToFront:self.tempImageView];
-//            [self bringToolBarToFront];
-//        }
-//
-//    }
-//    
-//    else if ([[self.arrayRedo lastObject] isKindOfClass:[BackGroundImage class]]) {
-//        BackGroundImage *bgImage = [self.arrayRedo lastObject];
-//        [self.arrayUndo addObject:bgImage];
-//        [self.arrayRedo removeObject:bgImage];
-//        if ([[self.arrayRedo lastObject] isKindOfClass:[BackGroundImage class]]) {
-//            bgImage = [self.arrayRedo lastObject];
-//            self.layoutImageView.image = [bgImage image];
-//            [self.arrayUndo addObject:bgImage];
-//            [self.arrayRedo removeObject:bgImage];
-//        }
-//        
-//    }
-//
-//
-//    
-//    if ([self.arrayRedo count] == 0) {
-//        self.redoButton.enabled = NO;
-//        undoMade = NO;
-//    }
-//    
-//    
-//    self.undoButton.enabled = YES;
     MessageRedo * message = [[MessageRedo alloc]init];
     [self sendRedoMessage:message];
     
@@ -3478,7 +3275,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     NSInteger tag = [self getObjectTag];
     [self putImageInScreen:image tag: tag isEditable:YES];
-
+    
     MessageImage *message =[[MessageImage alloc] init];
     message.image = image;
     message.tag = tag;
@@ -3515,7 +3312,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     self.arrayImages = [[NSMutableArray alloc]init];
     self.arrayTexts = [[NSMutableArray alloc]init];
     indexImage = 0;
-
+    
 }
 
 -(void)newThicknessBrush:(CGFloat)thickness
@@ -3560,8 +3357,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     //[self.view bringSubviewToFront: self.maskToolBarButton];
     [self.view bringSubviewToFront: self.bottonBar];
     [self.view bringSubviewToFront: self.maskActionBarButton];
-//    [self.view bringSubviewToFront: self.recAudio];
-//    [self.view bringSubviewToFront: self.pauseRecAudio];
+    //    [self.view bringSubviewToFront: self.recAudio];
+    //    [self.view bringSubviewToFront: self.pauseRecAudio];
     [self.view bringSubviewToFront: self.backButton];
     //[self.view bringSubviewToFront: self.topBar];
     [self.view bringSubviewToFront: self.bottonBar];
@@ -3571,32 +3368,12 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self.view bringSubviewToFront: self.menuButton];
     [self.view bringSubviewToFront: self.userNameLabel];
     [self.view bringSubviewToFront: self.loginButton];
-//    [self.view bringSubviewToFront: self.playButton];
-//    [self.view bringSubviewToFront: self.recButton];
-//    [self.view bringSubviewToFront: self.pauseButton];
-//    [self.view bringSubviewToFront: self.recAudioButton];
-//    [self.view bringSubviewToFront: self.playAudioButton];
-//    [self.view bringSubviewToFront: self.questionsButton];
-//    [self.view bringSubviewToFront: self.ColorButton[0]];
-//    [self.view bringSubviewToFront: self.ColorButton[1]];
-//    [self.view bringSubviewToFront: self.ColorButton[2]];
-//    [self.view bringSubviewToFront: self.ColorButton[3]];
-//    [self.view bringSubviewToFront: self.ColorButton[4]];
-//    [self.view bringSubviewToFront: self.eraseButton];
-//    [self.view bringSubviewToFront: self.thicknessButton];
-//    [self.view bringSubviewToFront: self.backGroundButton];
-//    [self.view bringSubviewToFront: self.snapShotButtom];
-//    [self.view bringSubviewToFront: self.undoButton];
-//    [self.view bringSubviewToFront: self.redoButton];
-//    [self.view bringSubviewToFront: self.addImageButton];
-//    [self.view bringSubviewToFront: self.connectDevice];
-//    [self.view bringSubviewToFront:self.menuButton];
     [self.view bringSubviewToFront:self.sideBar];
     [self.view bringSubviewToFront: self.pageNumberLabel];
     [self.view bringSubviewToFront: self.pageNumberTotalLabel];
     [self.view bringSubviewToFront: self.numberSeparatorLabel];
-
-
+    
+    
 }
 
 - (IBAction)perguntas:(id)sender {
@@ -3604,25 +3381,6 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     //[self.navigationController pushViewController:tab animated:YES];
     [self presentViewController:tab animated:YES completion:nil];
 }
-
-//- (void)createNewDrawLayer
-//{
-//    self.mainImageView.image = self.tempImageView.image;
-//    self.tempImageView.image = nil;
-//    [self.view bringSubviewToFront:self.tempImageView];
-//}
-//
-//- (UIImage *) mergeImage: (UIImage *)backImage toImage: (UIImage *)frontImage
-//{
-//    UIGraphicsBeginImageContext(backImage.size);
-//    
-//    [backImage drawInRect:CGRectMake(0, 0, backImage.size.width, backImage.size.height)];
-//    [frontImage drawInRect:CGRectMake(0, 0, frontImage.size.width, frontImage.size.height)];
-//    
-//    UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();
-//    
-//    return resultingImage;
-//}
 
 #pragma mark - sideBarMethods
 - (void)dismissSideBar : (UITapGestureRecognizer*)sender{
@@ -3668,7 +3426,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
                          sideBarIsVisible = NO;
                          self.sideBar.alpha = 0.1;
                      }];
-
+    
 }
 
 - (void)showMenu{
@@ -3689,7 +3447,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
                          sideBarIsVisible = YES;
                          //[self.view bringSubviewToFront:self.sideBar];
                      }];
-
+    
 }
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     
@@ -3747,7 +3505,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         self.userNameLabel.text = @"Não logado";
         [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
     }
-
+    
     
 }
 

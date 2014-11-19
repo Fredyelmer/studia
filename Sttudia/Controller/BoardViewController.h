@@ -83,6 +83,7 @@
 }
 
 @property (nonatomic, strong) Brush *currentBrush;
+@property (nonatomic, assign) CGContextRef context;
 
 @property (nonatomic,strong) UIPopoverController *popoverColorPicker;
 @property (nonatomic,strong) UIPopoverController *popoverThickness;

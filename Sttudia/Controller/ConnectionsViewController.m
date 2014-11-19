@@ -68,10 +68,6 @@
     NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
--(void)viewDidDisappear:(BOOL)animated
-{
-    //NSLog(@"teste");
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -153,9 +149,9 @@
 
 -(void)peerDidChangeStateWithNotification:(NSNotification *)notification
 {
-    MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
-    NSString *peerDisplayName = peerID.displayName;
-    MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
+   // MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
+   // NSString *peerDisplayName = peerID.displayName;
+   // MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
     
     
 //    if (state != MCSessionStateConnecting) {

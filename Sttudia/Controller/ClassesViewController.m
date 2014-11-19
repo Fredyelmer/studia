@@ -35,10 +35,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    //[self performSegueWithIdentifier:@"specificClassSegue" sender:self];
-}
 - (IBAction)login:(id)sender {
     [self performSegueWithIdentifier:@"login" sender:nil];
 }
