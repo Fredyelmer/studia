@@ -3440,6 +3440,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self.view bringSubviewToFront: self.pageNumberTotalLabel];
     [self.view bringSubviewToFront: self.numberSeparatorLabel];
     
+    [self.view bringSubviewToFront: self.infoButton];
     
 }
 
@@ -3575,5 +3576,11 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     
 }
+
+- (IBAction)showInformations:(id)sender {
+    
+    [self performSegueWithIdentifier:@"infoSegue" sender:nil];
+}
+
 
 @end

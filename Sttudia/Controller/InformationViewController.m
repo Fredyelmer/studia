@@ -1,46 +1,41 @@
 //
-//  InitialViewController.m
+//  InformationViewController.m
 //  Sttudia
 //
-//  Created by Ricardo Nagaishi on 13/10/14.
+//  Created by Ricardo Nagaishi on 19/11/14.
 //  Copyright (c) 2014 Ricardo Nagaishi. All rights reserved.
 //
 
-#import "InitialViewController.h"
+#import "InformationViewController.h"
 
-@interface InitialViewController ()
+@interface InformationViewController ()
+@property (strong, nonatomic) IBOutlet UITextView *creditsTextView;
+
 
 @end
 
-@implementation InitialViewController
+@implementation InformationViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSString* path = [[NSBundle mainBundle] pathForResource:@"credito"
+                                                     ofType:@"txt"];
+    NSString* content = [NSString stringWithContentsOfFile:path
+                                                  encoding:NSUTF8StringEncoding
+                                                     error:NULL];
     
-    self.titleLabel.alpha = 0.0;
-    
-    [UIView animateWithDuration:2.0 delay:0.5 options:UIViewAnimationOptionTransitionNone animations:^{
-        self.titleLabel.alpha += 1;
-    } completion:^(BOOL finished){
-        if (finished) {
-            
-            if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasSeenTutorial"])
-            {
-//                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSeenTutorial"];
-                [self performSegueWithIdentifier:@"TutorialSegue" sender:nil];
-            }
-            else{
-                [self performSegueWithIdentifier:@"continueSegue" sender:nil];
-            }
-        }
-    }];
+    self.creditsTextView.text = content;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (IBAction)backToTutorial:(id)sender {
+    
+    [self performSegueWithIdentifier:@"toTutorialSegue" sender:nil];
+}
+//metodos para forçar em landscape mode
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (UIInterfaceOrientationMaskLandscape);

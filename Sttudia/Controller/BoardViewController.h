@@ -151,6 +151,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *maskActionBarButton;
 @property (strong, nonatomic) IBOutlet UIButton *connectDevice;
 @property (strong, nonatomic) IBOutlet UIButton *menuButton;
+@property (strong, nonatomic) IBOutlet UIButton *infoButton;
 
 @property (strong, nonatomic) IBOutlet UIButton *chooseColorButton;
 

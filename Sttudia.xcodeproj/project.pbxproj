@@ -10,6 +10,9 @@
 		0D081747196ED95A0007399B /* VideoParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D081746196ED95A0007399B /* VideoParameter.m */; };
 		0D0DB8C71A06B2920083AA3A /* mainBackGround.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D0DB8C61A06B2920083AA3A /* mainBackGround.png */; };
 		0D2BD0901A1CDBBE002860C8 /* squared.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D2BD08F1A1CDBBE002860C8 /* squared.png */; };
+		0D2BD0921A1CF095002860C8 /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D2BD0911A1CF095002860C8 /* info.png */; };
+		0D2D83BA1A1CF7DD00D327D4 /* InformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D2D83B91A1CF7DD00D327D4 /* InformationViewController.m */; };
+		0D2D83C01A1D032200D327D4 /* credito.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0D2D83BF1A1D032200D327D4 /* credito.txt */; };
 		0D38E2EA1A193870000147A3 /* Foto3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D38E2E21A193870000147A3 /* Foto3.png */; };
 		0D38E2EB1A193870000147A3 /* Foto4.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D38E2E31A193870000147A3 /* Foto4.png */; };
 		0D38E2EC1A193870000147A3 /* Foto1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D38E2E41A193870000147A3 /* Foto1.png */; };
@@ -154,6 +157,10 @@
 		0D081746196ED95A0007399B /* VideoParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoParameter.m; sourceTree = "<group>"; };
 		0D0DB8C61A06B2920083AA3A /* mainBackGround.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainBackGround.png; sourceTree = "<group>"; };
 		0D2BD08F1A1CDBBE002860C8 /* squared.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = squared.png; sourceTree = "<group>"; };
+		0D2BD0911A1CF095002860C8 /* info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info.png; sourceTree = "<group>"; };
+		0D2D83B81A1CF7DD00D327D4 /* InformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationViewController.h; sourceTree = "<group>"; };
+		0D2D83B91A1CF7DD00D327D4 /* InformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InformationViewController.m; sourceTree = "<group>"; };
+		0D2D83BF1A1D032200D327D4 /* credito.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = credito.txt; sourceTree = "<group>"; };
 		0D38E2E21A193870000147A3 /* Foto3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Foto3.png; sourceTree = "<group>"; };
 		0D38E2E31A193870000147A3 /* Foto4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Foto4.png; sourceTree = "<group>"; };
 		0D38E2E41A193870000147A3 /* Foto1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Foto1.png; sourceTree = "<group>"; };
@@ -516,6 +523,8 @@
 		0D9ECF7F1961911100882007 /* AppImages */ = {
 			isa = PBXGroup;
 			children = (
+				0D2D83BF1A1D032200D327D4 /* credito.txt */,
+				0D2BD0911A1CF095002860C8 /* info.png */,
 				0D5A03221A18FF8500265B6A /* like.png */,
 				0D5A031C1A18DD3A00265B6A /* questionIconSmall.png */,
 				0D5A031D1A18DD3A00265B6A /* addIconSmall.png */,
@@ -594,6 +603,8 @@
 				0D55AB971A17CCB300CE60E4 /* PageContentViewController.m */,
 				0D38E2F21A1938FA000147A3 /* PageControllerManagerViewController.m */,
 				0D55ABA81A17E1D400CE60E4 /* PageControllerManagerViewController.h */,
+				0D2D83B81A1CF7DD00D327D4 /* InformationViewController.h */,
+				0D2D83B91A1CF7DD00D327D4 /* InformationViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -827,6 +838,8 @@
 				0D5A03211A18DD3A00265B6A /* questionAnswerIconSmall.png in Resources */,
 				0D5A03201A18DD3A00265B6A /* addIconSmall.png in Resources */,
 				0D38E2F01A193870000147A3 /* Foto8.png in Resources */,
+				0D2D83C01A1D032200D327D4 /* credito.txt in Resources */,
+				0D2BD0921A1CF095002860C8 /* info.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -879,6 +892,7 @@
 				48C52E9D1965E67000AD013F /* Answer.m in Sources */,
 				7156214319BA26FA00C17233 /* AnsweredTableViewController.m in Sources */,
 				0DAB2FC019915794002E3EBB /* AddImageViewController.m in Sources */,
+				0D2D83BA1A1CF7DD00D327D4 /* InformationViewController.m in Sources */,
 				71529F8A19C8AA5900D87FF9 /* MessageBoard.m in Sources */,
 				0D38E2F31A1938FA000147A3 /* PageControllerManagerViewController.m in Sources */,
 				0D9ECF571961867300882007 /* AppDelegate.m in Sources */,

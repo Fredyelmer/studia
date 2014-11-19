@@ -9,6 +9,8 @@
 #import "PageControllerManagerViewController.h"
 
 @interface PageControllerManagerViewController ()
+@property (strong, nonatomic) IBOutlet UIButton *skipTutorialButton;
+@property (strong, nonatomic) IBOutlet UIButton *backToMainScreen;
 
 @end
 
@@ -34,6 +36,18 @@
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
+    
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasSeenTutorial"])
+    {
+        self.backToMainScreen.hidden = YES;
+        self.skipTutorialButton.hidden = NO;
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSeenTutorial"];
+    }
+    else
+    {
+        self.backToMainScreen.hidden = NO;
+        self.skipTutorialButton.hidden = YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,9 +56,6 @@
 }
 
 - (IBAction)startWalkthrough:(id)sender {
-//    PageContentViewController *startingViewController = [self viewControllerAtIndex:0];
-//    NSArray  *viewControllers = @[startingViewController];
-//    [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
     
     [self performSegueWithIdentifier:@"skipTutorialSegue" sender:nil];
 }
