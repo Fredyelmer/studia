@@ -46,7 +46,9 @@
     HSBSupport *support = [[HSBSupport alloc] init];
 	CGImageRef imageRef = [support createSaturationBrightnessSquareContentImageWithHue:(self.hue * 360)];
 	self.image = [UIImage imageWithCGImage: imageRef];
-	CGImageRelease(imageRef);
+	
+    //Criando erro de analysing
+    //CGImageRelease(imageRef);
 }
 
 #pragma mark	Properties

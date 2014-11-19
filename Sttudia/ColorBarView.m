@@ -45,7 +45,8 @@ static CGImageRef createContentImage()
 		
 		CGContextDrawImage(context, [self bounds], image);
 		
-		CGImageRelease(image);
+        //estava dando erro de analysing
+		//CGImageRelease(image);
 	}
 }
 

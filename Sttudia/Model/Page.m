@@ -19,8 +19,17 @@
         self.drawView = drawView;
         self.arrayImage = arrayImage;
         self.arrayText = arrayText;
-        self.arrayUndo = arrayUndo;
-        self.arrayRedo = arrayRedo;
+        
+        if (!arrayUndo && !arrayRedo) {
+            self.arrayUndo = [[NSMutableArray alloc]init];
+            self.arrayRedo = [[NSMutableArray alloc]init];
+        }
+        else{
+            self.arrayUndo = arrayUndo;
+            self.arrayRedo = arrayRedo;
+        }
+//        self.arrayUndo = arrayUndo;
+//        self.arrayRedo = arrayRedo;
         self.backGroundImage = bacKGroundImage;
     }
     

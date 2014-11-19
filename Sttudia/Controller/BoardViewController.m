@@ -326,6 +326,8 @@
     if (state == MCSessionStateConnected) {
         isConnected = YES;
     } else {
+        
+        NSLog(@"Mostrando desconectado");
         //isConnected = NO;
         //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"perdeu a conexão" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         //        [alert show];
@@ -614,7 +616,7 @@
         [operation addExecutionBlock:^{
             
             receivedTag = msgTag.tag;
-            NSLog(@"received TAG %ld",(long)receivedTag);
+            //NSLog(@"received TAG %ld",(long)receivedTag);
         }];
         
         [opque addOperation:operation];
@@ -817,7 +819,7 @@
 
 -(void) handlePinch:(UIPinchGestureRecognizer*)sender
 {
-    NSLog(@"pinch");
+    //NSLog(@"pinch");
     if (!isImageEditing) {
         if (sender.state == UIGestureRecognizerStateEnded) {
             lastScale = 1.0;
@@ -1090,11 +1092,11 @@
             UIImage *drawImageView = self.tempImageView.image;
             NSMutableArray *arrayImage = self.arrayImages;
             NSMutableArray *arrayText = self.arrayTexts;
-            NSMutableArray *arrayUndo = self.arrayUndo;
+            /*NSMutableArray *arrayUndo = self.arrayUndo;
             NSMutableArray *arrayRedo = self.arrayRedo;
-            
-            Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
-            
+            */
+            //Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
+            Page *page = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : nil : nil : self.layoutImageView.image];
             [self.arrayPages addObject:page];
         }
         
@@ -1222,11 +1224,11 @@
         UIImage *drawImageView = self.tempImageView.image;
         NSMutableArray *arrayImage = self.arrayImages;
         NSMutableArray *arrayText = self.arrayTexts;
-        NSMutableArray *arrayUndo = self.arrayUndo;
-        NSMutableArray *arrayRedo = self.arrayRedo;
+//        NSMutableArray *arrayUndo = self.arrayUndo;
+//        NSMutableArray *arrayRedo = self.arrayRedo;
         
-        Page *newPage = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
-        
+        //Page *newPage = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : arrayUndo : arrayRedo : self.layoutImageView.image];
+        Page *newPage = [[Page alloc]initWithElements :drawImageView :arrayImage :arrayText : nil : nil : self.layoutImageView.image];
         
         if ([self.arrayPages count]-1 >= currentPageIndex)
         {
@@ -1368,7 +1370,7 @@ bool moveScribble = NO;
     //    if (sideBarIsVisible && ![event touchesForView:self.sideBar]) {
     //        [self hideMenu];
     //    }
-    
+    //NSLog(isConnected? @"true" : @"false");
     //fixação da imagem
     if (currentImage && ![event touchesForView:currentImage]&& isImageEditing) {
         allowImageEdition = NO;
@@ -1390,12 +1392,20 @@ bool moveScribble = NO;
         self.undoButton.enabled = YES;
         isFixTouch = YES;
         
-        MessageSelected *message = [MessageSelected new];
-        message.tag = [currentImage tag];
-        message.isImage = YES;
-        message.isSelected = NO;
-        
-        [self sendMessage:message];
+        if (isConnected) {
+            MessageSelected *message = [MessageSelected new];
+            message.tag = [currentImage tag];
+            message.isImage = YES;
+            message.isSelected = NO;
+            
+            [self sendMessage:message];
+        }
+//        MessageSelected *message = [MessageSelected new];
+//        message.tag = [currentImage tag];
+//        message.isImage = YES;
+//        message.isSelected = NO;
+//        
+//        [self sendMessage:message];
     };
     
     if (![event touchesForView:self.currentTextField] && isTextEditing) {
@@ -1419,15 +1429,26 @@ bool moveScribble = NO;
     {
         UITouch *touch = [touches anyObject];
         
-        currentPoint = [touch locationInView:self.mainImageView];
-        lastPoint = [touch previousLocationInView:self.mainImageView];
+//        currentPoint = [touch locationInView:self.mainImageView];
+//        lastPoint = [touch previousLocationInView:self.mainImageView];
         
-        MessageBrush *message = [[MessageBrush alloc] init];
-        message.actionName = @"toucheBegan";
-        message.point = [NSValue valueWithCGPoint:currentPoint];
-        message.previousPoint = [NSValue valueWithCGPoint:lastPoint];
-        
-        [self sendActionMessage:message];
+        currentPoint = [touch locationInView:self.tempImageView];
+        lastPoint = [touch previousLocationInView:self.tempImageView];
+
+        if (isConnected) {
+            MessageBrush *message = [[MessageBrush alloc] init];
+            message.actionName = @"toucheBegan";
+            message.point = [NSValue valueWithCGPoint:currentPoint];
+            message.previousPoint = [NSValue valueWithCGPoint:lastPoint];
+            
+            [self sendActionMessage:message];
+        }
+//        MessageBrush *message = [[MessageBrush alloc] init];
+//        message.actionName = @"toucheBegan";
+//        message.point = [NSValue valueWithCGPoint:currentPoint];
+//        message.previousPoint = [NSValue valueWithCGPoint:lastPoint];
+//        
+//        [self sendActionMessage:message];
         
         
         
@@ -1459,14 +1480,14 @@ bool moveScribble = NO;
             //
             //            point1 = CGPointMake((firstPoint1.x + firstPoint2.x)/2, (firstPoint1.y + firstPoint2.y)/2);
             centerPoint = self.scribbleView.center;
-            NSLog(@"center 1 %f %f",self.scribbleView.center.x,self.scribbleView.center.y);
+            //NSLog(@"center 1 %f %f",self.scribbleView.center.x,self.scribbleView.center.y);
         }
     }
     
     [self.currentTextField resignFirstResponder];
     [self.currentTextField.layer setBorderWidth:0.0];
     
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(void) drawScribble:(CGPoint) currentPoint234 with: (Brush *) drawBrush received: (BOOL) isReceived
@@ -1474,9 +1495,11 @@ bool moveScribble = NO;
     
     CGPoint mid1,mid2;
     
-    UIGraphicsBeginImageContext(self.mainImageView.frame.size);
+//    UIGraphicsBeginImageContext(self.mainImageView.frame.size);
+    UIGraphicsBeginImageContext(self.tempImageView.frame.size);
     self.context = UIGraphicsGetCurrentContext();
-    [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
+//    [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.mainImageView.frame.size.width, self.mainImageView.frame.size.height)];
+    [self.tempImageView.image drawInRect:CGRectMake(0, 0, self.tempImageView.frame.size.width, self.tempImageView.frame.size.height)];
     
     
     if (isReceived) {
@@ -1528,15 +1551,26 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         if(!isImageEditing){
             
             lastPoint2 = lastPoint;
-            lastPoint = [touch previousLocationInView:self.mainImageView];
-            currentPoint = [touch locationInView:self.mainImageView];
+//            lastPoint = [touch previousLocationInView:self.mainImageView];
+//            currentPoint = [touch locationInView:self.mainImageView];
+            lastPoint = [touch previousLocationInView:self.tempImageView];
+            currentPoint = [touch locationInView:self.tempImageView];
             
-            MessageBrush *message = [[MessageBrush alloc] init];
-            message.actionName = @"toucheMoved";
-            message.point = [NSValue valueWithCGPoint:currentPoint];
-            message.previousPoint = [NSValue valueWithCGPoint:lastPoint];
-            message.previousPreviousPoint = [NSValue valueWithCGPoint:lastPoint2];
-            [self sendActionMessage:message];
+            
+            if (isConnected) {
+                MessageBrush *message = [[MessageBrush alloc] init];
+                message.actionName = @"toucheMoved";
+                message.point = [NSValue valueWithCGPoint:currentPoint];
+                message.previousPoint = [NSValue valueWithCGPoint:lastPoint];
+                message.previousPreviousPoint = [NSValue valueWithCGPoint:lastPoint2];
+                [self sendActionMessage:message];
+            }
+//            MessageBrush *message = [[MessageBrush alloc] init];
+//            message.actionName = @"toucheMoved";
+//            message.point = [NSValue valueWithCGPoint:currentPoint];
+//            message.previousPoint = [NSValue valueWithCGPoint:lastPoint];
+//            message.previousPreviousPoint = [NSValue valueWithCGPoint:lastPoint2];
+//            [self sendActionMessage:message];
             
             [self drawScribble:currentPoint with:self.currentBrush received:NO];
             
@@ -1622,7 +1656,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         }
     }
     
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 - (CGFloat) distance:(CGPoint) p1 toPoint:(CGPoint) p2
@@ -1649,17 +1683,29 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         //
         //        lastPoint = currentPoint;
         
-        MessageBrush *message = [[MessageBrush alloc] init];
-        message.actionName = @"toucheEnded";
-        //message.point = [NSValue valueWithCGPoint:lastPoint];
+        if (isConnected) {
+            MessageBrush *message = [[MessageBrush alloc] init];
+            message.actionName = @"toucheEnded";
+            //message.point = [NSValue valueWithCGPoint:lastPoint];
+            
+            [self sendActionMessage:message];
+        }
         
-        [self sendActionMessage:message];
+//        MessageBrush *message = [[MessageBrush alloc] init];
+//        message.actionName = @"toucheEnded";
+//        //message.point = [NSValue valueWithCGPoint:lastPoint];
+//        
+//        [self sendActionMessage:message];
         
         UIImage *newImage = self.tempImageView.image;
         
         if (newImage) {
             [self.arrayUndo addObject:newImage];
             self.undoButton.enabled = YES;
+            
+            if ([self.arrayUndo count] > 15) {
+                [self.arrayUndo removeObjectAtIndex:0];
+            }
         }
         
         if (undoMade) {
@@ -1676,7 +1722,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     isFixTouch = NO;
     
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 
@@ -2045,7 +2091,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     
     if(!isForBackGround){
         NSInteger tag = [self getObjectTag];
-        NSLog(@"Role : %ld", (long)tag);
+       // NSLog(@"Role : %ld", (long)tag);
         [self putImageInScreen:choseImage tag:tag isEditable:YES];
         
         MessageImage *message =[[MessageImage alloc] init];
@@ -2451,7 +2497,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     if (isConnected) {
         [self sendMakeDelete:textField.tag isImage:NO make:YES];
     }
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+   // NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(void) putTextField:(NSInteger) tag
@@ -2489,7 +2535,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 -(NSInteger)getObjectTag
 {
     if (isConnected) {
-        NSLog(@"receivedTag: %ld", (long)receivedTag);
+       // NSLog(@"receivedTag: %ld", (long)receivedTag);
         if (isHosting) {
             return objectTag++;
         } else {
@@ -2500,7 +2546,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     } else {
         return 0;
     }
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(void) waitForResponse
@@ -2731,7 +2777,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
         [self sendTextMessage:[textField.text stringByReplacingCharactersInRange:range withString:string] font:textField.font color:textField.textColor tag:textField.tag];
     }
     
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
     return YES;
 }
 
@@ -2746,7 +2792,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     [self endTextEditing:textField];
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
@@ -2763,7 +2809,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     textFont = textField.font.pointSize;
     self.currentTextField = textField;
     self.addTextButton.enabled = NO;
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -2771,7 +2817,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self endTextEditing:textField];
     
     return YES;
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(void) endTextEditing:(UITextField *) textField
@@ -3137,15 +3183,18 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     self.redoButton.enabled = YES;
     undoMade = YES;
     
-    if ([self.arrayUndo count] > 15) {
-        [self.arrayUndo removeObjectAtIndex:0];
-    }
+//    if ([self.arrayUndo count] > 15) {
+//        [self.arrayUndo removeObjectAtIndex:0];
+//    }
 }
 
 - (IBAction)undo:(id)sender {
     
     MessageUndo * message = [[MessageUndo alloc]init];
-    [self sendUndoMessage:message];
+    if (isConnected) {
+        [self sendUndoMessage:message];
+    }
+    //[self sendUndoMessage:message];
     [self realizeUndo];
 }
 
@@ -3263,8 +3312,12 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (IBAction)redo:(id)sender {
     
-    MessageRedo * message = [[MessageRedo alloc]init];
-    [self sendRedoMessage:message];
+//    MessageRedo * message = [[MessageRedo alloc]init];
+    if (isConnected) {
+        MessageRedo * message = [[MessageRedo alloc]init];
+        [self sendRedoMessage:message];
+    }
+    //[self sendRedoMessage:message];
     
     [self realizeRedo];
 }
@@ -3276,10 +3329,16 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     NSInteger tag = [self getObjectTag];
     [self putImageInScreen:image tag: tag isEditable:YES];
     
-    MessageImage *message =[[MessageImage alloc] init];
-    message.image = image;
-    message.tag = tag;
-    [self sendImageMessage:message];
+    if (isConnected) {
+        MessageImage *message =[[MessageImage alloc] init];
+        message.image = image;
+        message.tag = tag;
+        [self sendImageMessage:message];
+    }
+//    MessageImage *message =[[MessageImage alloc] init];
+//    message.image = image;
+//    message.tag = tag;
+//    [self sendImageMessage:message];
 }
 
 #pragma mark - ResetViewControllerMethods
@@ -3289,16 +3348,24 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
 
 - (void) resetTint
 {
-    MessageResetTint * message = [[MessageResetTint alloc]init];
+    if (isConnected) {
+        MessageResetTint * message = [[MessageResetTint alloc]init];
+        [self sendResetTintMessage:message];
+    }
+    //MessageResetTint * message = [[MessageResetTint alloc]init];
     [self performResetTint];
-    [self sendResetTintMessage:message];
+    //[self sendResetTintMessage:message];
 }
 
 - (void) resetAll
 {
-    MessageResetAll * message = [[MessageResetAll alloc]init];
+    if (isConnected) {
+         MessageResetAll * message = [[MessageResetAll alloc]init];
+        [self sendResetAllMessage:message];
+    }
+    //MessageResetAll * message = [[MessageResetAll alloc]init];
     [self performResetAll];
-    [self sendResetAllMessage:message];
+    //[self sendResetAllMessage:message];
 }
 
 - (void)performResetAll {
