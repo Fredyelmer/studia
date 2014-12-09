@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="5aq-Bp-SDO">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -89,6 +88,11 @@
                                     <action selector="loginWithTwitter:" destination="dOp-Z9-jzu" eventType="touchUpInside" id="LFy-gq-0Az"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Nome de usuário" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="llL-aD-Dxi">
+                                <rect key="frame" x="352" y="253" width="320" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1UZ-87-htg">
                                 <rect key="frame" x="16" y="10" width="61" height="30"/>
                                 <state key="normal" title="Cancelar">
@@ -98,11 +102,6 @@
                                     <segue destination="6No-sH-bnw" kind="unwind" identifier="loggedInSegue" unwindAction="unwindSegueToBoard:" id="hJp-Vs-41k"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Nome de usuário" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="llL-aD-Dxi">
-                                <rect key="frame" x="352" y="253" width="320" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.86631944439999997" green="0.86631944439999997" blue="0.86631944439999997" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -418,6 +417,57 @@
             </objects>
             <point key="canvasLocation" x="75" y="-393"/>
         </scene>
+        <!--Add New Class View Controller-->
+        <scene sceneID="CoB-lU-Waa">
+            <objects>
+                <viewController storyboardIdentifier="newClass" id="ubr-rA-1X7" customClass="AddNewClassViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="l32-ZC-jEP"/>
+                        <viewControllerLayoutGuide type="bottom" id="9cQ-zv-PdX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gyu-gI-wSU">
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="180"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nome da aula" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EWW-fU-26i">
+                                <rect key="frame" x="22" y="37" width="107" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uKU-lT-hxJ">
+                                <rect key="frame" x="16" y="66" width="368" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qjW-h2-jkl">
+                                <rect key="frame" x="236" y="356" width="46" height="30"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zRP-xY-4bw">
+                                <rect key="frame" x="167" y="130" width="66" height="30"/>
+                                <state key="normal" title="Criar aula">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="createClass:" destination="ubr-rA-1X7" eventType="touchUpInside" id="T28-3E-qQZ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="400" height="180"/>
+                    <connections>
+                        <outlet property="classNameTextField" destination="uKU-lT-hxJ" id="bia-PE-Q7B"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jNe-GI-cwC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="269" y="236"/>
+        </scene>
         <!--Information View Controller-->
         <scene sceneID="RZS-Bo-3P4">
             <objects>
@@ -430,16 +480,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="      Sttudia foi desenvolvido por Fredy Elmer Arias e Ricardo Akira Nagaishi" translatesAutoresizingMaskIntoConstraints="NO" id="ppA-Jq-TAl">
-                                <rect key="frame" x="123" y="181" width="793" height="493"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
-                            </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Créditos" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rl9-b9-MNO">
                                 <rect key="frame" x="462" y="116" width="100" height="30"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="24"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="24"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -461,6 +504,31 @@
                                     <segue destination="mfW-ZY-jcj" kind="unwind" unwindAction="unwindSegueToBoard:" id="bdA-ky-zpg"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Versão 1.0.1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqN-2F-ZTb" userLabel="Versão 1.0.1">
+                                <rect key="frame" x="379" y="645" width="273" height="68"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="      Sttudia foi desenvolvido por Fredy Elmer Arias e Ricardo Akira Nagaishi" translatesAutoresizingMaskIntoConstraints="NO" id="ppA-Jq-TAl">
+                                <rect key="frame" x="87" y="179" width="851" height="472"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sttudia © 2014 Team CodeWarriors" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vyt-0f-a54">
+                                <rect key="frame" x="290" y="616" width="444" height="68"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TB&amp;LA Educational Division" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ROl-Nx-mQW">
+                                <rect key="frame" x="293" y="675" width="444" height="68"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" red="0.947213955026455" green="0.947213955026455" blue="0.947213955026455" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -673,7 +741,7 @@
                             </view>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GAi-N1-go1">
                                 <rect key="frame" x="492" y="720" width="45" height="45"/>
-                                <state key="normal" image="Record-Pressed-icon.png">
+                                <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -784,6 +852,24 @@
                                     <action selector="previewsPage:" destination="cOT-VF-1aa" eventType="touchUpInside" id="Xcg-aE-eNX"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xt-DL-zXS">
+                                <rect key="frame" x="619" y="728" width="38" height="30"/>
+                                <state key="normal" title="Aulas">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="seeClasses:" destination="cOT-VF-1aa" eventType="touchUpInside" id="c0V-q8-eWN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xFV-EY-Xa6">
+                                <rect key="frame" x="685" y="729" width="78" height="30"/>
+                                <state key="normal" title="Screenshot">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="takeScreenshot:" destination="cOT-VF-1aa" eventType="touchUpInside" id="f24-QH-HnY"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <navigationItem key="navigationItem" id="y5k-vw-c9v"/>
@@ -795,6 +881,7 @@
                         <outlet property="backGroundButton" destination="LXU-Mr-fSF" id="aTJ-rs-BKX"/>
                         <outlet property="bottonBar" destination="jci-4u-whL" id="JWX-DA-5Ac"/>
                         <outlet property="chooseColorButton" destination="XeZ-w7-jRl" id="WwE-oh-nEM"/>
+                        <outlet property="classesAccessButton" destination="6xt-DL-zXS" id="QZw-HM-ZZ6"/>
                         <outlet property="connectDevice" destination="uqq-Kw-7Av" id="JFx-D9-tam"/>
                         <outlet property="eraseButton" destination="0vR-rb-MlG" id="5We-wl-t0v"/>
                         <outlet property="infoButton" destination="aTA-SK-1Dc" id="eFT-Bv-Gl7"/>
@@ -817,6 +904,7 @@
                         <outlet property="recAudioButton" destination="Gwd-3y-oKD" id="12F-19-QsQ"/>
                         <outlet property="recButton" destination="GAi-N1-go1" id="E9T-qx-gQI"/>
                         <outlet property="redoButton" destination="5dp-Fh-fuJ" id="pj8-P5-aBY"/>
+                        <outlet property="screenShootButton" destination="xFV-EY-Xa6" id="Cqs-F2-44x"/>
                         <outlet property="scribbleView" destination="EYt-Vr-BRU" id="yr6-7t-lgA"/>
                         <outlet property="sideBar" destination="0bo-1M-tI9" id="P94-Gx-YVh"/>
                         <outlet property="snapShotButtom" destination="kR3-oG-Xxm" id="DNN-jF-GTj"/>
@@ -826,6 +914,7 @@
                         <outlet property="userNameLabel" destination="N0V-HF-gxp" id="mFN-HK-yvr"/>
                         <segue destination="dOp-Z9-jzu" kind="modal" identifier="classLogOutSender" id="3bR-2s-hb5"/>
                         <segue destination="whw-Nw-X4d" kind="modal" identifier="infoSegue" id="ErK-TF-K7m"/>
+                        <segue destination="EOd-fh-eLP" kind="modal" identifier="seeClassesSegue" id="MeG-Cw-jCh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OGK-po-Ra9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1401,6 +1490,7 @@
                         <outlet property="sendToEveryoneButton" destination="aBB-WF-gXM" id="cQK-wl-KA0"/>
                         <outlet property="sendToTeacherButton" destination="bLn-uD-1Pi" id="XBQ-nJ-RWd"/>
                         <outlet property="subjectTextField" destination="aQM-Zh-3PW" id="5q0-zf-ch1"/>
+                        <outlet property="textLabel" destination="n00-iI-1oI" id="33b-X4-YuN"/>
                         <outlet property="textView" destination="nZx-bL-AeU" id="b7p-0B-BeM"/>
                         <outlet property="titleLabel" destination="Eqa-aW-15n" id="zBU-qf-kHI"/>
                         <outlet property="titleTextField" destination="iDs-wi-krw" id="id3-ET-k35"/>
@@ -2154,6 +2244,109 @@
             </objects>
             <point key="canvasLocation" x="2771" y="520"/>
         </scene>
+        <!--Classes View Controller-->
+        <scene sceneID="XJq-18-PBH">
+            <objects>
+                <viewController id="EOd-fh-eLP" customClass="ClassesViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="X6T-PS-vEN"/>
+                        <viewControllerLayoutGuide type="bottom" id="4t9-6M-ESv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Anu-81-CxB">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6oB-Gd-g2S">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                                <items>
+                                    <barButtonItem title="Voltar" id="EZp-g1-bPo">
+                                        <connections>
+                                            <segue destination="kIt-hu-xKa" kind="unwind" unwindAction="unwindSegueToBoard:" id="TGX-Vb-BUY"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="217" style="plain" systemItem="fixedSpace" id="OfK-XJ-Vrb"/>
+                                    <barButtonItem style="plain" id="5A4-SK-P1m">
+                                        <searchBar key="customView" contentMode="redraw" text="" id="kvC-2i-Whh">
+                                            <rect key="frame" x="230" y="0.0" width="467" height="44"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </searchBar>
+                                    </barButtonItem>
+                                    <barButtonItem width="11" style="plain" systemItem="fixedSpace" id="Rkh-nn-SPs"/>
+                                    <barButtonItem title="Pesquisar" id="hwT-wd-fxL">
+                                        <connections>
+                                            <action selector="performSearch:" destination="EOd-fh-eLP" id="1IT-1u-0cn"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="55" style="plain" systemItem="fixedSpace" id="hPF-Wz-Uwy"/>
+                                    <barButtonItem title="Nova Aula" id="450-hr-uJ9">
+                                        <connections>
+                                            <action selector="newClass:" destination="EOd-fh-eLP" id="Gqx-SN-H86"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="p3C-f9-pTg">
+                                <rect key="frame" x="0.0" y="44" width="1030" height="724"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="3oz-mG-3T0">
+                                    <size key="itemSize" width="200" height="200"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="classcell" id="Teh-EI-b8F" customClass="ClassesCollectionViewCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="200" height="180"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MFG-x7-Ars">
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="130"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dzm-eU-Y7D">
+                                                    <rect key="frame" x="8" y="133" width="184" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddY-ia-0Vb">
+                                                    <rect key="frame" x="8" y="151" width="184" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <size key="customSize" width="200" height="180"/>
+                                        <connections>
+                                            <outlet property="author" destination="Dzm-eU-Y7D" id="GZY-ml-jLu"/>
+                                            <outlet property="imageView" destination="MFG-x7-Ars" id="vck-y7-yE5"/>
+                                            <outlet property="name" destination="ddY-ia-0Vb" id="7So-gB-rhL"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <connections>
+                        <outlet property="collectionView" destination="p3C-f9-pTg" id="agg-TJ-qT8"/>
+                        <outlet property="searchBar" destination="kvC-2i-Whh" id="2Jv-t1-AmK"/>
+                        <outlet property="searchButton" destination="hwT-wd-fxL" id="oBT-pU-jQ1"/>
+                        <segue destination="cOT-VF-1aa" kind="modal" identifier="newClassSegue" id="rSK-me-1ZO"/>
+                        <segue destination="cOT-VF-1aa" kind="modal" identifier="loadClass" id="OFp-PY-aVE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uSQ-bw-qMt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="kIt-hu-xKa" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="461" y="-1192"/>
+        </scene>
         <!--Page Controller Manager View Controller-->
         <scene sceneID="CUf-di-oGL">
             <objects>
@@ -2199,7 +2392,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="buz-eB-Hwd" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="w88-bb-jUr" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1419" y="754"/>
+            <point key="canvasLocation" x="1523" y="450"/>
         </scene>
         <!--Page Content View Controller-->
         <scene sceneID="SJB-9f-uby">
@@ -2242,7 +2435,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Record-Pressed-icon.png" width="32" height="32"/>
         <image name="addIconSmall.png" width="32" height="32"/>
         <image name="ic_back_normal" width="60" height="60"/>
         <image name="ic_background_normal" width="60" height="60"/>
@@ -2271,7 +2463,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="ZYf-2O-EQl"/>
-        <segue reference="dXc-eJ-ncP"/>
+        <segue reference="OFp-PY-aVE"/>
+        <segue reference="moW-xp-QgE"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -88,7 +88,7 @@
         
     }
     
-    if ([[object objectForKey:@"title"]isEqual:[self.selectedQuestion objectForKey:@"title"]]) {
+    if ([[object objectId]isEqual:[self.selectedQuestion objectId]]) {
         [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
         self.detail = [self.splitViewController.viewControllers lastObject];

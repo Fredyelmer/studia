@@ -72,14 +72,20 @@
     isEraser = NO;
     
     if (!self.isAnswer) {
+        //self.tabBarController.tabBarItem
         [self.sendAnswerButton setHidden:YES];
         [self.sendToEveryoneButton setHidden:NO];
+        self.title = @"Adicionar pergunta";
+        self.textLabel.text = @"Pergunta";
+    
         //[self.sendToTeacherButton setHidden:NO];
     }
     else {
         [self.sendToEveryoneButton setHidden:YES];
         //[self.sendToTeacherButton setHidden:YES];
         [self.sendAnswerButton setHidden:NO];
+        self.title = @"Responder";
+        self.textLabel.text = @"Resposta";
     }
 }
 

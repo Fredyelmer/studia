@@ -13,6 +13,7 @@
 @protocol QuestionRepositoryDelegate <NSObject>
 
 - (void) didFinishedLoadRepository;
+- (void) didFinishedLoadAQuestion;
 
 @end
 @interface QuestionsRepository : NSObject
@@ -26,9 +27,13 @@
 @property (strong, nonatomic) PFObject *answeredQuestionsList;
 @property (strong, nonatomic) PFQuery *answeredQuestionsQuery;
 @property (strong, nonatomic) PFQuery *unansweredQuestionsQuery;
+@property (strong, nonatomic) PFObject *classRepository;
+
+
 
 +(id)allocWithZone:(struct _NSZone *)zone;
 
 +(QuestionsRepository *)sharedRepository;
+- (void)changeRepository : (PFObject *)classObject;
 
 @end

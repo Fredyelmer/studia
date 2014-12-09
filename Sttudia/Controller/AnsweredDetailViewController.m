@@ -33,54 +33,56 @@
     [super viewWillAppear:animated];
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
     
-    PFQuery *answeredQuestionsQuery = [repository answeredQuestionsQuery];
-    if ([answeredQuestionsQuery countObjects] > 0) {
-        PFQuery *questionsQuery = [PFQuery queryWithClassName:@"Question"];
-        
-        //PFObject *questionList = [answeredQuestionsQuery getFirstObject];
-        PFObject *questionList = [repository answeredQuestionsList];
-        [questionsQuery whereKey:@"aQuestions" equalTo:questionList];
-        self.selectedQuestion = [questionsQuery getFirstObject];
-        
-//        [questionsQuery getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
-//            if (!error) {
-//                self.selectedQuestion = object;
-//                PFQuery *answersQuery = [PFQuery queryWithClassName:@"Answer"];
-//                [answersQuery whereKey:@"question" equalTo:self.selectedQuestion];
-//                
-//                //self.arrayAnswers = [answersQuery findObjects];
-//                
-//                [answersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
-//                    
-//                    if (!error) {
-//                        self.arrayAnswers = objects;
-//                    }
-//                }];
-//
-//            }
-//        
-//        }];
-        
-        PFQuery *answersQuery = [PFQuery queryWithClassName:@"Answer"];
-        [answersQuery whereKey:@"question" equalTo:self.selectedQuestion];
-        
-        //self.arrayAnswers = [answersQuery findObjects];
-        
-        [answersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
-        
-            if (!error) {
-                self.arrayAnswers = objects;
+    PFQuery *answeredQuestionsQuery = [PFQuery queryWithClassName:@"Question"];
+    [answeredQuestionsQuery whereKey:@"aQuestions" equalTo:[repository answeredQuestionsList]];
+    [answeredQuestionsQuery countObjectsInBackgroundWithBlock:^(int number, NSError *errror){
+        if(!errror){
+            if (number > 0) {
+                
+                [answeredQuestionsQuery getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error){
+                    if (!error) {
+                        self.selectedQuestion = object;
+                        PFQuery *answersQuery = [PFQuery queryWithClassName:@"Answer"];
+                        [answersQuery whereKey:@"question" equalTo:self.selectedQuestion];
+                        
+                        //self.arrayAnswers = [answersQuery findObjects];
+                        
+                        [answersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+                            
+                            if (!error) {
+                                self.arrayAnswers = objects;
+                                PFQuery *answersQuery = [PFQuery queryWithClassName:@"Answer"];
+                                [answersQuery whereKey:@"question" equalTo:self.selectedQuestion];
+                                
+                                //self.arrayAnswers = [answersQuery findObjects];
+                                
+                                [answersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+                                    
+                                    if (!error) {
+                                        self.arrayAnswers = objects;
+                                    }
+                                }];
+                                
+                            }
+                        }];
+                        
+                    }
+                    
+                }];
+                
             }
-        }];
-    }
-    else {
-        self.selectedQuestion = nil;
-    }
+            else {
+                self.selectedQuestion = nil;
+            }
+            
+            [self sortAnswers];
+            [self.tableView reloadData];
 
-    //self.currentQuestion = [[repository answeredQuestionsArray]objectAtIndex:0];
-//    self.arrayAnswers = [self.currentQuestion answersArray];
-    [self sortAnswers];
-    [self.tableView reloadData];
+        }
+    }];
+    
+//    [self sortAnswers];
+//    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -98,7 +100,11 @@
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 1;
+        if (self.selectedQuestion) {
+            return 1;
+        }
+        else
+            return 0;
     }
     else {
         return [self.arrayAnswers count];
@@ -298,18 +304,6 @@
     }
     
 }
-//- (void) negativeQuestion: (UIButton *)sender
-//{
-//    [self.selectedQuestion incrementKey:@"downVotes" byAmount:[NSNumber numberWithInt:1]];
-//    [self.selectedQuestion incrementKey:@"upDownDifference" byAmount:[NSNumber numberWithInt:-1]];
-//    [self.selectedQuestion save];
-//    
-//    [self.tableView reloadData];
-//    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
-//    NSArray *viewControllers = VCRef.viewControllers;
-//    AnsweredTableViewController *VC = [viewControllers objectAtIndex:0];
-//    [VC loadObjects];
-//}
 
 - (void) positiveAnswer: (UIButton *)sender
 {

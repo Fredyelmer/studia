@@ -32,20 +32,26 @@
 {
     [super viewWillAppear:animated];
     QuestionsRepository *repository = [QuestionsRepository sharedRepository];
-    PFQuery *unansweredQuestionsQuery = [repository unansweredQuestionsQuery];
-    if ([unansweredQuestionsQuery countObjects] > 0) {
-        PFQuery *questionsQuery = [PFQuery queryWithClassName:@"Question"];
-        //PFObject *questionList = [unansweredQuestionsQuery getFirstObject];
-        PFObject *questionList = [repository unansweredQuestionsList];
-        [questionsQuery whereKey:@"uQuestions" equalTo:questionList];
-        //self.selectedQuestion = [questionsQuery getFirstObject];
-        
-    }
-    else {
-        self.selectedQuestion = nil;
-    }
-
-    [self.tableView reloadData];
+    //PFQuery *unansweredQuestionsQuery = [repository unansweredQuestionsQuery];
+    PFQuery *questionsQuery = [PFQuery queryWithClassName:@"Question"];
+    [questionsQuery whereKey:@"uQuestions" equalTo:[repository unansweredQuestionsList]];
+    
+    [questionsQuery countObjectsInBackgroundWithBlock:^(int number, NSError *error){
+        if (!error) {
+            if (number > 0) {
+                
+                PFObject *questionList = [repository unansweredQuestionsList];
+                [questionsQuery whereKey:@"uQuestions" equalTo:questionList];
+                //self.selectedQuestion = [questionsQuery getFirstObject];
+                
+            }
+            else {
+                self.selectedQuestion = nil;
+            }
+            
+            [self.tableView reloadData];
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,7 +85,6 @@
     
     if (cell) {
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        //NSLog(@"%@",[self.selectedQuestion objectForKey:@"name"]);
         [cell userNameLabel].text = [self.selectedQuestion objectForKey:@"name"];
         [cell questionTitleLabel].text = [self.selectedQuestion objectForKey:@"title"];
         cell.contentView.backgroundColor = [UIColor clearColor];
@@ -190,35 +195,6 @@
         UIAlertView *logInAlert = [[UIAlertView alloc]initWithTitle:@"Acesso negado" message:@"Você precisa estar logado para positivar a questão" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [logInAlert show];
     }
-
-    
-    
-    
-//    [self.selectedQuestion incrementKey:@"upVotes" byAmount:[NSNumber numberWithInt:1]];
-//    //[self.selectedQuestion incrementKey:@"upDownDifference" byAmount:[NSNumber numberWithInt:1]];
-//    [self.selectedQuestion save];
-//    
-//    [self.tableView reloadData];
-//    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
-//    NSArray *viewControllers = VCRef.viewControllers;
-//    UnansweredTableViewController *VC = [viewControllers objectAtIndex:0];
-//    [VC loadObjects];
-    
-    
 }
-//- (void) negativeQuestion: (UIButton *)sender
-//{
-//    [self.selectedQuestion incrementKey:@"downVotes" byAmount:[NSNumber numberWithInt:1]];
-//    [self.selectedQuestion incrementKey:@"upDownDifference" byAmount:[NSNumber numberWithInt:-1]];
-//    [self.selectedQuestion save];
-//
-//    [self.tableView reloadData];
-//    UINavigationController *VCRef = [self.splitViewController.viewControllers firstObject];
-//    NSArray *viewControllers = VCRef.viewControllers;
-//    UnansweredTableViewController *VC = [viewControllers objectAtIndex:0];
-//    [VC loadObjects];
-//}
-
-
 
 @end

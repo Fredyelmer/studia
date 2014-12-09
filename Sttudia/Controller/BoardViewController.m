@@ -48,6 +48,7 @@
     CGPoint lastPoint2;
     CGPoint currentPoint;
     BOOL sideBarIsVisible;
+    //BOOL isVisualization;
 }
 //@property (strong, nonatomic) IBOutlet UIButton *colorBackgroundButton;
 
@@ -85,13 +86,29 @@
 {
     
     [super viewDidLoad];
-    
+
     objectTag = 1;
     
     [self.view setBackgroundColor:[UIColor blackColor]];
     
     //será substituido pelo método que cria o novo repositório
     QuestionsRepository *qRepository = [QuestionsRepository sharedRepository];
+    
+    if (self.objectClass) {
+        [qRepository changeRepository:self.objectClass];
+        //self.isVisualization = YES;
+    }
+    
+    if (self.isVisualization && self.objectClass) {
+        self.arrayScreenShot = [self.objectClass objectForKey:@"imageArray"];
+        
+        PFFile *imageFile = [self.arrayScreenShot objectAtIndex:0];
+        [imageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+            // Now that the data is fetched, update the cell's image property.
+            self.layoutImageView.image = [UIImage imageWithData:data];
+            
+        }];
+    }
     
     self.loginButton.layer.cornerRadius = 5.0;
     if (![qRepository answeredQuestionsList]) {
@@ -123,7 +140,7 @@
     [self.view setBackgroundColor:[UIColor colorWithRed:backGroundRed green:backGroundGreen blue:backGroundBlue alpha:1]];
     /*[self selectedButton:[self.ColorButton objectAtIndex:0 ]];*/
     
-    //self.arraySnapshots = [[NSMutableArray alloc]init];
+    self.arraySnapshots = [[NSMutableArray alloc]init];
     //self.arrayPoints = [[NSMutableArray alloc]init];
     //self.isRecording = NO;
     
@@ -298,6 +315,11 @@
 
 - (void) didFinishedLoadRepository
 {
+    self.questionsButton.enabled = YES;
+    
+}
+
+- (void) didFinishedLoadAQuestion {
     self.questionsButton.enabled = YES;
     
 }
@@ -881,6 +903,10 @@
 
 
 
+- (IBAction)seeClasses:(id)sender {
+    [self performSegueWithIdentifier:@"seeClassesSegue" sender:nil];
+}
+
 - (IBAction)logOut:(id)sender {
     
     PFUser *currentUser = [PFUser currentUser];
@@ -1105,7 +1131,24 @@
         self.arrayTexts = [[NSMutableArray alloc]init];
         self.arrayUndo = [[NSMutableArray alloc]init];
         self.arrayRedo = [[NSMutableArray alloc]init];
-        self.layoutImageView.image = [UIImage imageNamed:@"mainBackGround.png"];
+        
+        if (!self.isVisualization) {
+            self.layoutImageView.image = [UIImage imageNamed:@"mainBackGround.png"];
+        }
+        else{
+            
+            if (currentPageIndex < [self.arrayScreenShot count]) {
+                PFFile *imageFile = [self.arrayScreenShot objectAtIndex:currentPageIndex];
+                [imageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+                    
+                    self.layoutImageView.image = [UIImage imageWithData:data];
+                    
+                }];
+            }
+            else{
+                self.layoutImageView.image = [UIImage imageNamed:@"mainBackGround.png"];
+            }
+        }
         
         
         //aumenta o numero de paginas total e avanca uma pagina
@@ -2263,7 +2306,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     deleteButton.frame = CGRectMake(customImage.bounds.origin.x, customImage.bounds.origin.y, 30, 30);
     [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
-    [deleteButton addTarget:self action:@selector(delete:) forControlEvents:UIControlEventTouchUpInside];
+    [deleteButton addTarget:self action:@selector(deleteStuff:) forControlEvents:UIControlEventTouchUpInside];
     [customImage addSubview:deleteButton];
     deleteButton.hidden = YES;
     deleteButton.enabled = NO;
@@ -2300,7 +2343,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     return CGRectMake(leftOffset, topOffset, newWidth, newHeight);
 }
 
-- (void) delete:(id)sender
+- (void) deleteStuff:(id)sender
 {
     UIImageView* trashImage = (UIImageView*)[(UIButton*)sender superview];
     NSInteger tag = trashImage.tag;
@@ -3441,6 +3484,9 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self.view bringSubviewToFront: self.numberSeparatorLabel];
     
     [self.view bringSubviewToFront: self.infoButton];
+    [self.view bringSubviewToFront: self.classesAccessButton];
+    [self.view bringSubviewToFront: self.screenShootButton];
+    
     
 }
 
@@ -3582,5 +3628,54 @@ CGPoint midPoint(CGPoint p1, CGPoint p2)
     [self performSegueWithIdentifier:@"infoSegue" sender:nil];
 }
 
+- (IBAction)takeScreenshot:(id)sender {
+    
+    
+    CGRect rect = [self.scribbleView bounds];
+    UIGraphicsBeginImageContextWithOptions(rect.size,NO,0.0f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [self.scribbleView.layer renderInContext:context];
+    UIImage *screenShot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    if (self.objectClass) {
+        self.arrayScreenShot = [self.objectClass objectForKey:@"imageArray"];
+        
+        if (!self.arraySnapshots) {
+            self.arraySnapshots = [[NSMutableArray alloc]init];
+        }
+        
+        NSData *imageData = UIImageJPEGRepresentation(screenShot, 0.8);
+        NSString *filename = [NSString stringWithFormat:@"%@.png", [self.objectClass objectForKey:@"name"]];
+        PFFile *imageFile = [PFFile fileWithName:filename data:imageData];
+        
+        [self.arraySnapshots addObject:imageFile];
+        
+        PFFile *mainImage = [self.arrayScreenShot objectAtIndex:0];
+        
+        [self.objectClass setObject:mainImage forKey:@"image"];
+        [self.objectClass addObjectsFromArray:self.arraySnapshots forKey:@"imageArray"];
+//        [self.objectClass addObject:self.arrayScreenShot forKey:@"imageArray"];
+        [self.objectClass saveInBackgroundWithBlock:^(BOOL succeded, NSError *error){
+            if (!error) {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Salva!" message:@"Você salvou o screenshot no repositório da aula!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [message show];
+            }
+            else {
+                UIImageWriteToSavedPhotosAlbum(screenShot, nil, nil, nil);
+
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Salva!" message:@"Você salvou o screenshot no album de fotos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [message show];
+            }
+        }];
+    }
+    else {
+        UIImageWriteToSavedPhotosAlbum(screenShot, nil, nil, nil);
+
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Salva!" message:@"Você salvou o screenshot no album de fotos!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [message show];
+    }
+    
+}
 
 @end

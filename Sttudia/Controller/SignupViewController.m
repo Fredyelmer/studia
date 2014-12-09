@@ -39,6 +39,7 @@
 - (IBAction)createUser:(id)sender {
     
     PFUser *user = [PFUser user];
+    
     user.email = self.emailTextField.text;
     user.username = self.userNameTextField.text;
     user.password = self.passwordTextField.text;
@@ -57,6 +58,10 @@
                                                                    cancelButtonTitle:@"Ok"
                                                                    otherButtonTitles:nil];
             [alertViewSignupSuccess show];
+            
+            PFObject *classRepository =[PFObject objectWithClassName:@"ClassRepository"];
+            [classRepository setObject:user forKey:@"owner"];
+            [classRepository saveInBackground];
         } else {
             UIAlertView *alertViewLoginFailure = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Error : %@", [error localizedDescription]]
                                                                             message:@"Por favor tente entrar com suas informações novamente"

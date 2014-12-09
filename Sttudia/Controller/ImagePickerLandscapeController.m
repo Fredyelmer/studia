@@ -49,14 +49,4 @@
     return UIInterfaceOrientationMaskLandscape;
 }
 
-//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-//{
-//    return UIInterfaceOrientationLandscapeLeft;
-//}
-//
-//- (NSUInteger) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-//    return UIInterfaceOrientationLandscapeLeft;
-//}
-
-
 @end

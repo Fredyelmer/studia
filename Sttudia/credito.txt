@@ -1,8 +1,7 @@
-	
-	Sttudia foi criado e desenvolvido por Fredy Elmer Arias Chipana e Ricardo Akira Nagaishi.
+Sttudia foi criado e desenvolvido por Fredy Elmer Arias Chipana e Ricardo Akira Nagaishi.
 
-	Design de ícones do menu e tela principal Alessandra Peguim.
+Nome do aplicativo, testes e detalhes de interface por Diogo Shiraishi.
 
-   	Ícones de passagem de tela, informação, menu, perguntas e like foram retirados do 
+Design de ícones do menu e tela principal Alessandra Peguim.
 
-site www.flaticon.com licenciado por http://creativecommons.org/licenses/by/3.0
+Ícones de passagem de tela, informação, menu, perguntas e like foram retirados do site www.flaticon.com licenciado por http://creativecommons.org/licenses/by/3.0

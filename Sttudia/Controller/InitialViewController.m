@@ -19,6 +19,12 @@
     
     self.titleLabel.alpha = 0.0;
     
+    PFUser *user = [PFUser currentUser];
+    if (user) {
+        
+//        [classRepository get]
+    }
+    
     [UIView animateWithDuration:2.0 delay:0.5 options:UIViewAnimationOptionTransitionNone animations:^{
         self.titleLabel.alpha += 1;
     } completion:^(BOOL finished){
@@ -26,7 +32,6 @@
             
             if(![[NSUserDefaults standardUserDefaults] boolForKey:@"hasSeenTutorial"])
             {
-//                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasSeenTutorial"];
                 [self performSegueWithIdentifier:@"TutorialSegue" sender:nil];
             }
             else{
@@ -50,15 +55,4 @@
 {
     return UIInterfaceOrientationMaskLandscape;
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end

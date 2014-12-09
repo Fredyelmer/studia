@@ -22,12 +22,12 @@
 		0D38E2F11A193870000147A3 /* Foto7.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D38E2E91A193870000147A3 /* Foto7.png */; };
 		0D38E2F31A1938FA000147A3 /* PageControllerManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D38E2F21A1938FA000147A3 /* PageControllerManagerViewController.m */; };
 		0D38E2F51A193D37000147A3 /* Foto2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D38E2F41A193D37000147A3 /* Foto2.png */; };
+		0D55922A1A2B4B6100C60C47 /* ClassesCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D5592291A2B4B6100C60C47 /* ClassesCollectionViewCell.m */; };
 		0D55AB981A17CCB300CE60E4 /* PageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D55AB971A17CCB300CE60E4 /* PageContentViewController.m */; };
 		0D5A031F1A18DD3A00265B6A /* questionIconSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D5A031C1A18DD3A00265B6A /* questionIconSmall.png */; };
 		0D5A03201A18DD3A00265B6A /* addIconSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D5A031D1A18DD3A00265B6A /* addIconSmall.png */; };
 		0D5A03211A18DD3A00265B6A /* questionAnswerIconSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D5A031E1A18DD3A00265B6A /* questionAnswerIconSmall.png */; };
 		0D5A03231A18FF8500265B6A /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 0D5A03221A18FF8500265B6A /* like.png */; };
-		0D63B589197833B20099797F /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 710DE2151976EA700095E34E /* MainStoryboard.storyboard */; };
 		0D70227A1964855E004DB9EC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7022791964855E004DB9EC /* AVFoundation.framework */; };
 		0D74BA1B1A1A59A9003E0358 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D74BA1A1A1A59A9003E0358 /* FacebookSDK.framework */; };
 		0D8DC9AF1A079E9F00DA7AB8 /* BackgroundMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8DC9AE1A079E9F00DA7AB8 /* BackgroundMenuViewController.m */; };
@@ -35,7 +35,6 @@
 		0D9ECF451961867300882007 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF441961867300882007 /* Foundation.framework */; };
 		0D9ECF471961867300882007 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF461961867300882007 /* CoreGraphics.framework */; };
 		0D9ECF491961867300882007 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF481961867300882007 /* UIKit.framework */; };
-		0D9ECF4B1961867300882007 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9ECF4A1961867300882007 /* CoreData.framework */; };
 		0D9ECF511961867300882007 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D9ECF4F1961867300882007 /* InfoPlist.strings */; };
 		0D9ECF531961867300882007 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9ECF521961867300882007 /* main.m */; };
 		0D9ECF571961867300882007 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D9ECF561961867300882007 /* AppDelegate.m */; };
@@ -95,6 +94,8 @@
 		0DC0F96C19EC046B00E1D66D /* LoggedInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0F96B19EC046B00E1D66D /* LoggedInViewController.m */; };
 		0DC0F96F19EC087700E1D66D /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0F96E19EC087700E1D66D /* SignupViewController.m */; };
 		0DC0F97219EC31D200E1D66D /* InitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC0F97119EC31D200E1D66D /* InitialViewController.m */; };
+		0DC46E131A2B81D700DAA719 /* AddNewClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC46E121A2B81D700DAA719 /* AddNewClassViewController.m */; };
+		0DC598A91A2B8B5D0052FF84 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DC598A81A2B8B5D0052FF84 /* MainStoryboard.storyboard */; };
 		0DC8533B19F6C51000AAB7FE /* MessageChangeBackGround.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC8533A19F6C51000AAB7FE /* MessageChangeBackGround.m */; };
 		0DC8533E19F6C53200AAB7FE /* MessageResetAll.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC8533D19F6C53200AAB7FE /* MessageResetAll.m */; };
 		0DC8534119F6C54600AAB7FE /* MessageResetTint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DC8534019F6C54600AAB7FE /* MessageResetTint.m */; };
@@ -170,6 +171,8 @@
 		0D38E2E91A193870000147A3 /* Foto7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Foto7.png; sourceTree = "<group>"; };
 		0D38E2F21A1938FA000147A3 /* PageControllerManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageControllerManagerViewController.m; sourceTree = "<group>"; };
 		0D38E2F41A193D37000147A3 /* Foto2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Foto2.png; sourceTree = "<group>"; };
+		0D5592281A2B4B6100C60C47 /* ClassesCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassesCollectionViewCell.h; sourceTree = "<group>"; };
+		0D5592291A2B4B6100C60C47 /* ClassesCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassesCollectionViewCell.m; sourceTree = "<group>"; };
 		0D55AB961A17CCB300CE60E4 /* PageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageContentViewController.h; sourceTree = "<group>"; };
 		0D55AB971A17CCB300CE60E4 /* PageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageContentViewController.m; sourceTree = "<group>"; };
 		0D55ABA81A17E1D400CE60E4 /* PageControllerManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageControllerManagerViewController.h; sourceTree = "<group>"; };
@@ -177,7 +180,6 @@
 		0D5A031D1A18DD3A00265B6A /* addIconSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addIconSmall.png; sourceTree = "<group>"; };
 		0D5A031E1A18DD3A00265B6A /* questionAnswerIconSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = questionAnswerIconSmall.png; sourceTree = "<group>"; };
 		0D5A03221A18FF8500265B6A /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
-		0D63B58A197833FC0099797F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		0D7022791964855E004DB9EC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0D74BA1A1A1A59A9003E0358 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		0D8DC9AD1A079E9F00DA7AB8 /* BackgroundMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundMenuViewController.h; sourceTree = "<group>"; };
@@ -279,6 +281,9 @@
 		0DC0F96E19EC087700E1D66D /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
 		0DC0F97019EC31D200E1D66D /* InitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitialViewController.h; sourceTree = "<group>"; };
 		0DC0F97119EC31D200E1D66D /* InitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitialViewController.m; sourceTree = "<group>"; };
+		0DC46E111A2B81D700DAA719 /* AddNewClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddNewClassViewController.h; path = ../Model/AddNewClassViewController.h; sourceTree = "<group>"; };
+		0DC46E121A2B81D700DAA719 /* AddNewClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddNewClassViewController.m; path = ../Model/AddNewClassViewController.m; sourceTree = "<group>"; };
+		0DC598A81A2B8B5D0052FF84 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MainStoryboard.storyboard; path = Sttudia/MainStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
 		0DC7DBCD19CB5C9300635871 /* AnsweredTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnsweredTableViewController.h; sourceTree = "<group>"; };
 		0DC8533919F6C51000AAB7FE /* MessageChangeBackGround.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageChangeBackGround.h; sourceTree = "<group>"; };
 		0DC8533A19F6C51000AAB7FE /* MessageChangeBackGround.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageChangeBackGround.m; sourceTree = "<group>"; };
@@ -389,7 +394,6 @@
 				0DB11FCC19C5E56200BEFFAF /* AudioToolbox.framework in Frameworks */,
 				0D70227A1964855E004DB9EC /* AVFoundation.framework in Frameworks */,
 				0DB11FCA19C5D40A00BEFFAF /* ParseFacebookUtils.framework in Frameworks */,
-				0D9ECF4B1961867300882007 /* CoreData.framework in Frameworks */,
 				0D9ECF491961867300882007 /* UIKit.framework in Frameworks */,
 				0D9ECF451961867300882007 /* Foundation.framework in Frameworks */,
 				0DB11FC919C5D40A00BEFFAF /* Parse.framework in Frameworks */,
@@ -544,6 +548,8 @@
 		48C52E7B1965E52D00AD013F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				0DC46E111A2B81D700DAA719 /* AddNewClassViewController.h */,
+				0DC46E121A2B81D700DAA719 /* AddNewClassViewController.m */,
 				71529F8719C8AA2D00D87FF9 /* message */,
 				71305E5F19AFBBEC00C94CF6 /* ConnectionsViewController.h */,
 				71305E6019AFBBEC00C94CF6 /* ConnectionsViewController.m */,
@@ -583,8 +589,8 @@
 				7156214219BA26FA00C17233 /* AnsweredTableViewController.m */,
 				7156214119BA26E100C17233 /* AnsweredDetailViewController.h */,
 				0DA7031519B4B7BB00139082 /* AnsweredDetailViewController.m */,
-				0DA7031119B4B78300139082 /* UnansweredTableViewController.h */,
 				0DA7031219B4B78300139082 /* UnansweredTableViewController.m */,
+				0DA7031119B4B78300139082 /* UnansweredTableViewController.h */,
 				0DA7031719B4B7F500139082 /* UnansweredDetailViewController.h */,
 				0DA7031819B4B7F500139082 /* UnansweredDetailViewController.m */,
 				0DDF9CAD19B8FF390025AB0F /* TabViewController.h */,
@@ -652,6 +658,8 @@
 				0DA9D71619BDF00C006BE0C1 /* UnanswerQuestionTableViewCell.m */,
 				0DDDC46E19C1FEEC008B0D93 /* ImageDetailViewController.h */,
 				0DDDC46F19C1FEEC008B0D93 /* ImageDetailViewController.m */,
+				0D5592281A2B4B6100C60C47 /* ClassesCollectionViewCell.h */,
+				0D5592291A2B4B6100C60C47 /* ClassesCollectionViewCell.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -659,7 +667,7 @@
 		48C52E921965E54100AD013F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				710DE2151976EA700095E34E /* MainStoryboard.storyboard */,
+				0DC598A81A2B8B5D0052FF84 /* MainStoryboard.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -815,7 +823,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D63B589197833B20099797F /* MainStoryboard.storyboard in Resources */,
 				0D38E2F11A193870000147A3 /* Foto7.png in Resources */,
 				0D2BD0901A1CDBBE002860C8 /* squared.png in Resources */,
 				0DAA8ED419A3D11800F65CC9 /* notebookPaper.png in Resources */,
@@ -827,6 +834,7 @@
 				0DA9B429199A7FE500A86418 /* delete.png in Resources */,
 				0D38E2EE1A193870000147A3 /* Foto5.png in Resources */,
 				0D38E2F51A193D37000147A3 /* Foto2.png in Resources */,
+				0DC598A91A2B8B5D0052FF84 /* MainStoryboard.storyboard in Resources */,
 				0D9ECF5C1961867300882007 /* Images.xcassets in Resources */,
 				0D38E2EA1A193870000147A3 /* Foto3.png in Resources */,
 				0DA6C91F1982C71E006AB299 /* next.png in Resources */,
@@ -872,11 +880,13 @@
 				0DAA646F19ACFC3600529E74 /* BackGroundImage.m in Sources */,
 				48C52E971965E57700AD013F /* CorUIButton.m in Sources */,
 				71305E6119AFBBEC00C94CF6 /* ConnectionsViewController.m in Sources */,
+				0DC46E131A2B81D700DAA719 /* AddNewClassViewController.m in Sources */,
 				710DE25319801FA00095E34E /* SourceColorView.m in Sources */,
 				0DA9D71419BDEF39006BE0C1 /* UnanswerQuestionListTableViewCell.m in Sources */,
 				48C52EA01965EC6B00AD013F /* Forum.m in Sources */,
 				71529F9619CB758500D87FF9 /* MessageText.m in Sources */,
 				0D081747196ED95A0007399B /* VideoParameter.m in Sources */,
+				0D55922A1A2B4B6100C60C47 /* ClassesCollectionViewCell.m in Sources */,
 				0DA7189519AFB77400B8B08E /* QuestionsRepository.m in Sources */,
 				0D9ECF5A1961867300882007 /* Sttudia.xcdatamodeld in Sources */,
 				7161203B1A07EF0100B81B6A /* MessageMake.m in Sources */,
@@ -979,14 +989,6 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		710DE2151976EA700095E34E /* MainStoryboard.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0D63B58A197833FC0099797F /* Base */,
-			);
-			name = MainStoryboard.storyboard;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -1077,7 +1079,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sttudia/Sttudia-Prefix.pch";
 				INFOPLIST_FILE = "Sttudia/Sttudia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -1099,7 +1101,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sttudia/Sttudia-Prefix.pch";
 				INFOPLIST_FILE = "Sttudia/Sttudia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

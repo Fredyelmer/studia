@@ -106,11 +106,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *snapShotButtom;
 @property (strong, nonatomic) IBOutlet UIButton *recAudio;
 @property (strong, nonatomic) IBOutlet UIButton *pauseRecAudio;
-//@property (strong, nonatomic) IBOutlet UIButton *confirmImageButton;
 @property (strong, nonatomic) IBOutlet UIButton *addImageButton;
 
 @property (nonatomic, retain) NSOperationQueue *operationWaitHostTag;
-
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tempImageView;
 @property (strong, nonatomic) IBOutlet UIImageView *layoutImageView;
@@ -131,7 +129,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *pageNumberLabel;
 @property (strong, nonatomic) IBOutlet UILabel *pageNumberTotalLabel;
 @property (strong, nonatomic) IBOutlet UILabel *numberSeparatorLabel;
-
 @property (strong, nonatomic) IBOutlet UIButton *undoButton;
 @property (strong, nonatomic) IBOutlet UIButton *redoButton;
 @property (strong, nonatomic) IBOutlet UIButton *backButton;
@@ -152,15 +149,19 @@
 @property (strong, nonatomic) IBOutlet UIButton *connectDevice;
 @property (strong, nonatomic) IBOutlet UIButton *menuButton;
 @property (strong, nonatomic) IBOutlet UIButton *infoButton;
-
 @property (strong, nonatomic) IBOutlet UIButton *chooseColorButton;
-
 @property (strong, nonatomic) IBOutlet UIView *sideBar;
 @property (strong, nonatomic) NSMutableArray *colorArray;
 @property (strong, nonatomic) CorUIButton * selectedButton;
 @property (strong, nonatomic) IBOutlet UIButton *loginButton;
 @property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (strong, nonatomic) PFObject *objectClass;
+@property (strong, nonatomic) IBOutlet UIButton *classesAccessButton;
+@property (strong, nonatomic) IBOutlet UIButton *screenShootButton;
+@property (strong, nonatomic) NSMutableArray *arrayScreenShot;
+@property (assign, nonatomic) BOOL isVisualization;
 
+- (IBAction)seeClasses:(id)sender;
 
 - (IBAction)logOut:(id)sender;
 
@@ -180,7 +181,6 @@
 
 
 - (IBAction)setBackgroundView:(id)sender;
-//- (IBAction)changeLayout:(UIButton *)sender;
 
 - (void)addImageFromLibrary;
 - (void)addPhoto;

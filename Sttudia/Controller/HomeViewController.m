@@ -97,6 +97,11 @@
         } else {
             if (user.isNew) {
                 NSLog(@"User with facebook signed up and logged in!");
+                PFObject *classRepository = [PFObject objectWithClassName:@"ClassRepository"];
+                [classRepository setObject:user forKey:@"owner"];
+                [classRepository saveInBackground];
+                
+                
             } else {
                 NSLog(@"User with facebook logged in!");
             }
@@ -118,6 +123,10 @@
         } else {
             if (user.isNew) {
                 NSLog(@"User signed up and logged in with Twitter!");
+                PFObject *classRepository = [PFObject objectWithClassName:@"ClassRepository"];
+                [classRepository setObject:user forKey:@"owner"];
+                [classRepository saveInBackground];
+                
             } else {
                 NSLog(@"User logged in with Twitter!");
             }
